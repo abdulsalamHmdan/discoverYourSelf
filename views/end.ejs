@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏅 تم الإنجاز بنجاح - Achievement Unlocked</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap');
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background:
+                linear-gradient(135deg, #0f172a 0%, #1e293b 15%, #1e40af 30%, #3b82f6 45%, #60a5fa 60%, #93c5fd 75%, #dbeafe 90%, #f0f9ff 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 12s ease infinite;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated Wave Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(ellipse at 25% 25%, rgba(59, 130, 246, 0.4) 0%, transparent 50%),
+                radial-gradient(ellipse at 75% 75%, rgba(96, 165, 250, 0.3) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 10%, rgba(147, 197, 253, 0.5) 0%, transparent 40%),
+                radial-gradient(ellipse at 10% 90%, rgba(30, 58, 138, 0.4) 0%, transparent 50%),
+                radial-gradient(ellipse at 90% 10%, rgba(219, 234, 254, 0.3) 0%, transparent 40%);
+            animation: floatingBubbles 15s ease-in-out infinite;
+            pointer-events: none;
+            z-index: -3;
+        }
+
+        /* Geometric Patterns */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at 15% 40%, rgba(255, 215, 0, 0.1) 0%, transparent 30%),
+                radial-gradient(circle at 85% 60%, rgba(192, 192, 192, 0.1) 0%, transparent 30%),
+                radial-gradient(circle at 40% 80%, rgba(59, 130, 246, 0.2) 0%, transparent 35%),
+                radial-gradient(circle at 70% 20%, rgba(147, 197, 253, 0.15) 0%, transparent 40%);
+            animation: floatingBubbles 18s ease-in-out infinite reverse;
+            pointer-events: none;
+            z-index: -2;
+        }
+
+        /* Floating Particles Layer */
+        .particles-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(59, 130, 246, 0.4) 100%);
+            border-radius: 50%;
+            animation: floatParticle 20s linear infinite;
+        }
+
+        .particle:nth-child(odd) {
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.6) 0%, rgba(147, 197, 253, 0.3) 100%);
+            animation-duration: 25s;
+        }
+
+        .particle:nth-child(3n) {
+            background: radial-gradient(circle, rgba(192, 192, 192, 0.7) 0%, rgba(96, 165, 250, 0.4) 100%);
+            animation-duration: 30s;
+        }
+
+        /* Geometric Shapes */
+        .geometric-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .shape {
+            position: absolute;
+            opacity: 0.1;
+            animation: rotateShape 20s linear infinite;
+        }
+
+        .shape-1 {
+            top: 10%;
+            left: 10%;
+            width: 100px;
+            height: 100px;
+            border: 2px solid rgba(59, 130, 246, 0.3);
+            border-radius: 50%;
+            animation-duration: 25s;
+        }
+
+        .shape-2 {
+            top: 60%;
+            right: 15%;
+            width: 80px;
+            height: 80px;
+            border: 2px solid rgba(255, 215, 0, 0.4);
+            transform: rotate(45deg);
+            animation-duration: 30s;
+            animation-direction: reverse;
+        }
+
+        .shape-3 {
+            bottom: 20%;
+            left: 20%;
+            width: 0;
+            height: 0;
+            border-left: 40px solid transparent;
+            border-right: 40px solid transparent;
+            border-bottom: 70px solid rgba(147, 197, 253, 0.2);
+            animation-duration: 35s;
+        }
+
+        /* Pulsing Light Effects */
+        .light-effects {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .light-pulse {
+            position: absolute;
+            border-radius: 50%;
+            animation: pulseLight 8s ease-in-out infinite;
+        }
+
+        .light-1 {
+            top: 20%;
+            left: 80%;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+            animation-delay: 0s;
+        }
+
+        .light-2 {
+            bottom: 30%;
+            left: 10%;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.08) 0%, transparent 70%);
+            animation-delay: 2s;
+        }
+
+        .light-3 {
+            top: 50%;
+            right: 20%;
+            width: 180px;
+            height: 180px;
+            background: radial-gradient(circle, rgba(147, 197, 253, 0.12) 0%, transparent 70%);
+            animation-delay: 4s;
+        }
+
+        @keyframes gradientShift {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            25% {
+                background-position: 100% 25%;
+            }
+
+            50% {
+                background-position: 100% 75%;
+            }
+
+            75% {
+                background-position: 0% 75%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        @keyframes floatingBubbles {
+
+            0%,
+            100% {
+                transform: translateX(0px) translateY(0px) scale(1) rotate(0deg);
+                opacity: 0.7;
+            }
+
+            25% {
+                transform: translateX(30px) translateY(-40px) scale(1.2) rotate(90deg);
+                opacity: 0.9;
+            }
+
+            50% {
+                transform: translateX(-25px) translateY(-30px) scale(0.8) rotate(180deg);
+                opacity: 0.8;
+            }
+
+            75% {
+                transform: translateX(35px) translateY(20px) scale(1.1) rotate(270deg);
+                opacity: 0.85;
+            }
+        }
+
+        @keyframes floatParticle {
+            0% {
+                transform: translateY(100vh) translateX(0px) rotate(0deg);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-100px) translateX(100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes rotateShape {
+            0% {
+                transform: rotate(0deg) scale(1);
+                opacity: 0.1;
+            }
+
+            50% {
+                transform: rotate(180deg) scale(1.2);
+                opacity: 0.2;
+            }
+
+            100% {
+                transform: rotate(360deg) scale(1);
+                opacity: 0.1;
+            }
+        }
+
+        @keyframes pulseLight {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 0.1;
+            }
+
+            50% {
+                transform: scale(1.3);
+                opacity: 0.3;
+            }
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #ffd700;
+            border-radius: 50%;
+            animation: sparkle 2s infinite;
+        }
+
+        @keyframes sparkle {
+
+            0%,
+            100% {
+                opacity: 0;
+                transform: scale(0);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 1.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .bounce-in {
+            animation: bounceIn 1s ease-out;
+        }
+
+        @keyframes bounceIn {
+            0% {
+                transform: scale(0.3);
+                opacity: 0;
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            70% {
+                transform: scale(0.9);
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .hover-lift:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .achievement-badge {
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+    </style>
+</head>
+
+<body class="overflow-x-hidden">
+    <!-- Advanced Background Effects -->
+    <div class="particles-layer" id="particles"></div>
+    <div class="geometric-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
+    <div class="light-effects">
+        <div class="light-pulse light-1"></div>
+        <div class="light-pulse light-2"></div>
+        <div class="light-pulse light-3"></div>
+    </div>
+
+    <!-- Sparkle Effects -->
+    <div id="sparkles"></div>
+
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+        <!-- Header Section -->
+        <div class="text-center mb-12 fade-in">
+            <div
+                class="achievement-badge inline-flex items-center px-6 py-3 rounded-full text-purple-900 font-bold text-lg mb-4 bounce-in">
+                🏅 تم الإنجاز بنجاح - Achievement Unlocked 🏅
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">
+                مبروك! <%=user%> لقد أنهيت جميع اختباراتك الثلاث بنجاح
+            </h1>
+        </div>
+
+        <!-- Tests Completed Cards -->
+        <div class="grid md:grid-cols-3 gap-8 mb-12 fade-in">
+            <!-- RIASEC Test -->
+            <div
+                class="group relative bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 border border-blue-200 overflow-hidden">
+                <!-- Background Pattern -->
+                <div class="absolute inset-0 opacity-10">
+                    <svg class="w-full h-full" viewBox="0 0 100 100">
+                        <defs>
+                            <pattern id="riasec-pattern" x="0" y="0" width="20" height="20"
+                                patternUnits="userSpaceOnUse">
+                                <circle cx="10" cy="10" r="2" fill="currentColor" />
+                            </pattern>
+                        </defs>
+                        <rect width="100" height="100" fill="url(#riasec-pattern)" class="text-blue-400" />
+                    </svg>
+                </div>
+
+                <div class="relative text-center">
+                    <div
+                        class="bg-blue-500 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:rotate-12 transition-transform duration-300">
+                        <span class="text-3xl">🎯</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-2">الميول المهنية</h3>
+                    <p class="text-xl font-bold text-blue-600 mb-4 tracking-wide">RIASEC</p>
+                    <div
+                        class="bg-gradient-to-r from-green-400 to-green-500 text-white px-6 py-2 rounded-full text-sm font-bold shadow-lg">
+                        ✅ مكتمل بنجاح
+                    </div>
+                    <div class="mt-4 text-sm text-gray-600">
+                        <span class="bg-blue-100 px-3 py-1 rounded-full">تحليل الميول المهنية</span>
+                    </div>
+                </div>
+
+                <!-- Hover Effect Glow -->
+                <div
+                    class="absolute inset-0 bg-gradient-to-r from-blue-400 to-blue-600 opacity-0 group-hover:opacity-10 rounded-2xl transition-opacity duration-300">
+                </div>
+            </div>
+
+            <!-- MBTI Test -->
+            <div
+                class="group relative bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 border border-purple-200 overflow-hidden">
+                <!-- Background Pattern -->
+                <div class="absolute inset-0 opacity-10">
+                    <svg class="w-full h-full" viewBox="0 0 100 100">
+                        <defs>
+                            <pattern id="mbti-pattern" x="0" y="0" width="15" height="15" patternUnits="userSpaceOnUse">
+                                <rect x="5" y="5" width="5" height="5" fill="currentColor" />
+                            </pattern>
+                        </defs>
+                        <rect width="100" height="100" fill="url(#mbti-pattern)" class="text-purple-400" />
+                    </svg>
+                </div>
+
+                <div class="relative text-center">
+                    <div
+                        class="bg-purple-500 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:rotate-12 transition-transform duration-300">
+                        <span class="text-3xl">🧠</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-2">تحليل الشخصية</h3>
+                    <p class="text-xl font-bold text-purple-600 mb-4 tracking-wide">MBTI</p>
+                    <div
+                        class="bg-gradient-to-r from-green-400 to-green-500 text-white px-6 py-2 rounded-full text-sm font-bold shadow-lg">
+                        ✅ مكتمل بنجاح
+                    </div>
+                    <div class="mt-4 text-sm text-gray-600">
+                        <span class="bg-purple-100 px-3 py-1 rounded-full">16 نمط شخصية</span>
+                    </div>
+                </div>
+
+                <!-- Hover Effect Glow -->
+                <div
+                    class="absolute inset-0 bg-gradient-to-r from-purple-400 to-purple-600 opacity-0 group-hover:opacity-10 rounded-2xl transition-opacity duration-300">
+                </div>
+            </div>
+
+            <!-- Multiple Intelligences Test -->
+            <div
+                class="group relative bg-gradient-to-br from-orange-50 to-orange-100 rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 border border-orange-200 overflow-hidden">
+                <!-- Background Pattern -->
+                <div class="absolute inset-0 opacity-10">
+                    <svg class="w-full h-full" viewBox="0 0 100 100">
+                        <defs>
+                            <pattern id="intelligence-pattern" x="0" y="0" width="25" height="25"
+                                patternUnits="userSpaceOnUse">
+                                <polygon points="12.5,2 18,10 12.5,18 7,10" fill="currentColor" />
+                            </pattern>
+                        </defs>
+                        <rect width="100" height="100" fill="url(#intelligence-pattern)" class="text-orange-400" />
+                    </svg>
+                </div>
+
+                <div class="relative text-center">
+                    <div
+                        class="bg-orange-500 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:rotate-12 transition-transform duration-300">
+                        <span class="text-3xl">🌟</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-2">الذكاءات المتعددة</h3>
+                    <p class="text-xl font-bold text-orange-600 mb-4 tracking-wide">Multiple Intelligences</p>
+                    <div
+                        class="bg-gradient-to-r from-green-400 to-green-500 text-white px-6 py-2 rounded-full text-sm font-bold shadow-lg">
+                        ✅ مكتمل بنجاح
+                    </div>
+                    <div class="mt-4 text-sm text-gray-600">
+                        <span class="bg-orange-100 px-3 py-1 rounded-full">8 أنواع ذكاء</span>
+                    </div>
+                </div>
+
+                <!-- Hover Effect Glow -->
+                <div
+                    class="absolute inset-0 bg-gradient-to-r from-orange-400 to-orange-600 opacity-0 group-hover:opacity-10 rounded-2xl transition-opacity duration-300">
+                </div>
+            </div>
+        </div>
+
+        <!-- Journey Summary -->
+        <div class="bg-white rounded-xl p-8 shadow-lg mb-12 fade-in">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">
+                📦 رحلتك باختصار - Your Journey Summary
+            </h2>
+            <div class="grid md:grid-cols-3 gap-6 text-center">
+                <div class="bg-blue-50 rounded-lg p-4">
+                    <div class="text-3xl text-blue-600 mb-2">✅</div>
+                    <div class="text-sm text-gray-600 mb-1">عدد الاختبارات المكتملة</div>
+                    <div class="text-2xl font-bold text-blue-600">3 / 3</div>
+                </div>
+                <div class="bg-green-50 rounded-lg p-4">
+                    <div class="text-3xl text-green-600 mb-2">⏱️</div>
+                    <div class="text-sm text-gray-600 mb-1">الوقت الكلي المستغرق</div>
+                    <div class="text-2xl font-bold text-green-600">00:12:45</div>
+                </div>
+                <div class="bg-purple-50 rounded-lg p-4">
+                    <div class="text-3xl text-purple-600 mb-2">📊</div>
+                    <div class="text-sm text-gray-600 mb-1">نسبة التقدّم الكلي</div>
+                    <div class="text-2xl font-bold text-purple-600">100%</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Motivational Message -->
+        <div class="text-center mb-12 fade-in">
+            <div
+                class="relative bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-600 text-white rounded-xl p-6 shadow-xl overflow-hidden border border-emerald-300 max-w-4xl mx-auto">
+                <!-- Floating Elements -->
+                <div class="absolute top-2 left-3 text-2xl animate-bounce">✨</div>
+                <div class="absolute top-2 right-3 text-2xl animate-pulse">🏆</div>
+
+                <div class="relative z-10">
+                    <h2 class="text-2xl md:text-3xl font-bold mb-3 leading-tight">
+                        🎯 لقد اجتزت رحلة استكشاف الذات بنجاح — نحن فخورون بك 🌟
+                    </h2>
+
+                    <p class="text-lg md:text-xl opacity-90 leading-relaxed">
+                        📝 لقد أكملت رحلتك بنجاح من بداية استكشاف الذات إلى الوصول للهدف — خطوة مهمّة نحو مستقبلك
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="grid md:grid-cols-2 gap-8 mb-12 fade-in max-w-4xl mx-auto">
+            <!-- استعراض النتائج -->
+            <button
+                class="group relative bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 hover:from-blue-700 hover:via-blue-800 hover:to-indigo-900 text-white font-bold py-8 px-8 rounded-2xl transition-all duration-500 hover-lift shadow-2xl overflow-hidden border border-blue-400">
+                <!-- Background Pattern -->
+                <div class="absolute inset-0 opacity-20">
+                    <svg class="w-full h-full" viewBox="0 0 100 100">
+                        <defs>
+                            <pattern id="results-pattern" x="0" y="0" width="20" height="20"
+                                patternUnits="userSpaceOnUse">
+                                <circle cx="10" cy="10" r="2" fill="currentColor" />
+                            </pattern>
+                        </defs>
+                        <rect width="100" height="100" fill="url(#results-pattern)" class="text-white" />
+                    </svg>
+                </div>
+
+                <div class="relative z-10 flex flex-col items-center">
+                    <div
+                        class="bg-white bg-opacity-20 w-20 h-20 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                        <span class="text-4xl">🔍</span>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-2">استعراض نتائجي</h3>
+                    <p class="text-blue-100 text-center text-sm leading-relaxed">
+                        شاهد تحليل شامل لنتائج اختباراتك الثلاث مع الرسوم البيانية والتوصيات
+                    </p>
+                    <div class="mt-4 flex gap-2">
+                        <span class="bg-white bg-opacity-20 px-3 py-1 rounded-full text-xs">📊 تحليل مفصل</span>
+                        <span class="bg-white bg-opacity-20 px-3 py-1 rounded-full text-xs">📈 رسوم بيانية</span>
+                    </div>
+                </div>
+
+                <!-- Glow Effect -->
+                <div
+                    class="absolute inset-0 bg-gradient-to-r from-blue-400 to-indigo-500 opacity-0 group-hover:opacity-30 rounded-2xl transition-opacity duration-300">
+                </div>
+            </button>
+
+            <!-- تحميل PDF -->
+            <button
+                class="group relative bg-gradient-to-br from-red-600 via-red-700 to-rose-800 hover:from-red-700 hover:via-red-800 hover:to-rose-900 text-white font-bold py-8 px-8 rounded-2xl transition-all duration-500 hover-lift shadow-2xl overflow-hidden border border-red-400">
+                <!-- Background Pattern -->
+                <div class="absolute inset-0 opacity-20">
+                    <svg class="w-full h-full" viewBox="0 0 100 100">
+                        <defs>
+                            <pattern id="pdf-pattern" x="0" y="0" width="25" height="25" patternUnits="userSpaceOnUse">
+                                <rect x="8" y="8" width="9" height="9" fill="currentColor" />
+                            </pattern>
+                        </defs>
+                        <rect width="100" height="100" fill="url(#pdf-pattern)" class="text-white" />
+                    </svg>
+                </div>
+
+                <div class="relative z-10 flex flex-col items-center">
+                    <div
+                        class="bg-white bg-opacity-20 w-20 h-20 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                        <span class="text-4xl">📄</span>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-2">تحميل PDF</h3>
+                    <p class="text-red-100 text-center text-sm leading-relaxed">
+                        احصل على تقرير شامل بصيغة PDF يحتوي على جميع نتائجك وتوصياتك المهنية
+                    </p>
+                    <div class="mt-4 flex gap-2">
+                        <span class="bg-white bg-opacity-20 px-3 py-1 rounded-full text-xs">📋 تقرير كامل</span>
+                        <span class="bg-white bg-opacity-20 px-3 py-1 rounded-full text-xs">⬇️ تحميل فوري</span>
+                    </div>
+                </div>
+
+                <!-- Glow Effect -->
+                <div
+                    class="absolute inset-0 bg-gradient-to-r from-red-400 to-rose-500 opacity-0 group-hover:opacity-30 rounded-2xl transition-opacity duration-300">
+                </div>
+            </button>
+        </div>
+
+        <!-- Footer -->
+        <footer class="text-center text-white opacity-75 fade-in">
+            <div class="border-t border-white border-opacity-20 pt-6">
+                <p class="mb-2">👨‍💻 تم التطوير بواسطة: حمد السليم & عبدالسلام الشرقي — فريق Spark_HA</p>
+                <p class="text-sm">©️ 2025 جميع الحقوق محفوظة — All Rights Reserved 🌟</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Create advanced sparkle effects
+        function createSparkle() {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            sparkle.style.left = Math.random() * 100 + '%';
+            sparkle.style.top = Math.random() * 100 + '%';
+            sparkle.style.animationDelay = Math.random() * 2 + 's';
+
+            // Random colors for sparkles
+            const colors = ['#ffd700', '#ffffff', '#3b82f6', '#60a5fa', '#c0c0c0'];
+            sparkle.style.background = colors[Math.floor(Math.random() * colors.length)];
+
+            document.getElementById('sparkles').appendChild(sparkle);
+
+            setTimeout(() => {
+                sparkle.remove();
+            }, 2000);
+        }
+
+        // Create floating particles
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 5 + 's';
+            particle.style.animationDuration = (20 + Math.random() * 10) + 's';
+
+            document.getElementById('particles').appendChild(particle);
+
+            setTimeout(() => {
+                particle.remove();
+            }, 30000);
+        }
+
+        // Generate effects continuously
+        setInterval(createSparkle, 200);
+        setInterval(createParticle, 800);
+
+        // Create initial particles
+        for (let i = 0; i < 15; i++) {
+            setTimeout(createParticle, i * 200);
+        }
+
+        // Add click handlers to buttons
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('click', function () {
+                const buttonText = this.textContent.trim();
+
+                // Create ripple effect
+                const ripple = document.createElement('div');
+                ripple.style.position = 'absolute';
+                ripple.style.borderRadius = '50%';
+                ripple.style.background = 'rgba(255,255,255,0.6)';
+                ripple.style.transform = 'scale(0)';
+                ripple.style.animation = 'ripple 0.6s linear';
+                ripple.style.left = '50%';
+                ripple.style.top = '50%';
+                ripple.style.width = '20px';
+                ripple.style.height = '20px';
+                ripple.style.marginLeft = '-10px';
+                ripple.style.marginTop = '-10px';
+
+                this.style.position = 'relative';
+                this.appendChild(ripple);
+
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+
+                // Show action feedback
+                if (buttonText.includes('استعراض')) {
+                    // Create results modal
+                    showResultsModal();
+                } else if (buttonText.includes('تحميل')) {
+                    // Generate and download PDF
+                    generatePDF();
+                }
+            });
+        });
+
+        // Add CSS for ripple animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Show Results Modal Function
+        function showResultsModal() {
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4';
+            modal.innerHTML = `
+                <div class="bg-white rounded-2xl p-8 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-3xl font-bold text-gray-800">📊 نتائج اختباراتك الشاملة</h2>
+                        <button onclick="this.closest('.fixed').remove()" class="text-gray-500 hover:text-gray-700 text-2xl">✕</button>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-3 gap-6 mb-8">
+                        <!-- RIASEC Results -->
+                        <div class="bg-blue-50 rounded-xl p-6 border border-blue-200">
+                            <div class="text-center mb-4">
+                                <div class="bg-blue-500 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3">
+                                    <span class="text-2xl">🎯</span>
+                                </div>
+                                <h3 class="text-xl font-bold text-gray-800">RIASEC</h3>
+                            </div>
+                            <div class="space-y-2">
+                                <div class="flex justify-between">
+                                    <span class="text-sm">واقعي (Realistic)</span>
+                                    <span class="font-bold text-blue-600">85%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-blue-500 h-2 rounded-full" style="width: 85%"></div>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-sm">استقصائي (Investigative)</span>
+                                    <span class="font-bold text-blue-600">72%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-blue-500 h-2 rounded-full" style="width: 72%"></div>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-sm">فني (Artistic)</span>
+                                    <span class="font-bold text-blue-600">68%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-blue-500 h-2 rounded-full" style="width: 68%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- MBTI Results -->
+                        <div class="bg-purple-50 rounded-xl p-6 border border-purple-200">
+                            <div class="text-center mb-4">
+                                <div class="bg-purple-500 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3">
+                                    <span class="text-2xl">🧠</span>
+                                </div>
+                                <h3 class="text-xl font-bold text-gray-800">MBTI</h3>
+                            </div>
+                            <div class="text-center">
+                                <div class="bg-purple-100 rounded-lg p-4 mb-3">
+                                    <div class="text-3xl font-bold text-purple-600 mb-2">INTJ</div>
+                                    <div class="text-sm text-gray-600">المهندس المعماري</div>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2 text-xs">
+                                    <div class="bg-purple-200 rounded px-2 py-1">انطوائي 78%</div>
+                                    <div class="bg-purple-200 rounded px-2 py-1">حدسي 82%</div>
+                                    <div class="bg-purple-200 rounded px-2 py-1">مفكر 75%</div>
+                                    <div class="bg-purple-200 rounded px-2 py-1">حاكم 88%</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Multiple Intelligences Results -->
+                        <div class="bg-orange-50 rounded-xl p-6 border border-orange-200">
+                            <div class="text-center mb-4">
+                                <div class="bg-orange-500 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3">
+                                    <span class="text-2xl">🌟</span>
+                                </div>
+                                <h3 class="text-xl font-bold text-gray-800">الذكاءات المتعددة</h3>
+                            </div>
+                            <div class="space-y-2">
+                                <div class="flex justify-between">
+                                    <span class="text-sm">منطقي-رياضي</span>
+                                    <span class="font-bold text-orange-600">92%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-orange-500 h-2 rounded-full" style="width: 92%"></div>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-sm">مكاني-بصري</span>
+                                    <span class="font-bold text-orange-600">78%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-orange-500 h-2 rounded-full" style="width: 78%"></div>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-sm">لغوي</span>
+                                    <span class="font-bold text-orange-600">71%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-orange-500 h-2 rounded-full" style="width: 71%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Career Recommendations -->
+                    <div class="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-6 border border-green-200">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                            <span class="text-2xl mr-2">💼</span>
+                            التوصيات المهنية المناسبة لك
+                        </h3>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="bg-white rounded-lg p-4">
+                                <h4 class="font-bold text-green-700 mb-2">🔬 المجال العلمي والتقني</h4>
+                                <ul class="text-sm text-gray-600 space-y-1">
+                                    <li>• مهندس برمجيات</li>
+                                    <li>• عالم بيانات</li>
+                                    <li>• مهندس نظم</li>
+                                    <li>• باحث علمي</li>
+                                </ul>
+                            </div>
+                            <div class="bg-white rounded-lg p-4">
+                                <h4 class="font-bold text-green-700 mb-2">🎯 المجال الإداري والاستراتيجي</h4>
+                                <ul class="text-sm text-gray-600 space-y-1">
+                                    <li>• مدير مشاريع</li>
+                                    <li>• محلل أعمال</li>
+                                    <li>• استشاري إداري</li>
+                                    <li>• مخطط استراتيجي</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        // Generate PDF Function
+        // function generatePDF() 
+        async function generatePDF() {
+            var data = new URLSearchParams();
+            data.append("html", `${document.querySelector("html").innerHTML}`);
+            const resp = await fetch('/html-to-pdf', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                },
+                body: data
+            });
+            const blob = await resp.blob();
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'تقرير_نتائج_الاختبارات_الشاملة.pdf';
+            link.click();
+            URL.revokeObjectURL(link.href);
+        }
+
+        // Celebration sound effect simulation (visual feedback)
+        setTimeout(() => {
+            const celebration = document.createElement('div');
+            celebration.innerHTML = '🎉';
+            celebration.style.position = 'fixed';
+            celebration.style.top = '20px';
+            celebration.style.right = '20px';
+            celebration.style.fontSize = '3rem';
+            celebration.style.zIndex = '1000';
+            celebration.style.animation = 'bounceIn 1s ease-out';
+            document.body.appendChild(celebration);
+
+            setTimeout(() => {
+                celebration.remove();
+            }, 3000);
+        }, 1000);
+    </script>
+    <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'9804aff8547be8e2',t:'MTc1ODA3MTA0NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script>
+</body>
+
+</html>

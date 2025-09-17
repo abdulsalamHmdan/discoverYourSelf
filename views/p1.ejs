@@ -1,0 +1,1933 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار RIASEC - اكتشف ميولك المهنية</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap');
+
+        * {
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .slide-enter {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+
+        .slide-enter-active {
+            transform: translateX(0);
+            opacity: 1;
+            transition: all 0.22s ease-out;
+        }
+
+        .pulse-success {
+            animation: pulse-green 0.6s ease-out;
+        }
+
+        @keyframes pulse-green {
+            0% {
+                transform: scale(1);
+                background-color: rgb(34, 197, 94);
+            }
+
+            50% {
+                transform: scale(1.05);
+                background-color: rgb(22, 163, 74);
+            }
+
+            100% {
+                transform: scale(1);
+                background-color: rgb(34, 197, 94);
+            }
+        }
+
+        .breathing-circle {
+            animation: breathe 4s ease-in-out infinite;
+        }
+
+        @keyframes breathe {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .dark-mode {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            color: white;
+        }
+
+        .radar-chart {
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+
+        @media print {
+            .noP {
+                display: none;
+            }
+
+            * {
+                break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+
+<body class="min-h-screen transition-all duration-300" id="body">
+    <!-- شاشة البداية -->
+    <div id="onboarding-screen" class="min-h-screen gradient-bg flex items-center justify-center p-4">
+        <div class="max-w-2xl w-full">
+
+
+            <!-- المحتوى الرئيسي -->
+            <div class="bg-white/95 backdrop-blur-sm rounded-3xl p-8 shadow-2xl">
+                <div class="text-center mb-8">
+                    <div class="text-6xl mb-4">🎯</div>
+                    <h1 class="text-4xl font-bold text-gray-800 mb-4">اكتشف ميولك المهنية!</h1>
+                    <p class="text-lg text-gray-600">اختبار RIASEC العلمي لتحديد شخصيتك المهنية</p>
+                </div>
+
+                <!-- شرح مفصل للاختبار -->
+                <div class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-6 mb-6 text-right">
+                    <h3 class="font-bold text-gray-800 mb-4 text-xl">📖 ما هو اختبار RIASEC؟</h3>
+                    <div class="space-y-4 text-gray-700">
+                        <p class="leading-relaxed">
+                            اختبار RIASEC هو أداة علمية طورها عالم النفس <strong>جون هولاند</strong> لتحديد الميول
+                            المهنية والشخصية.
+                            يقسم الاختبار الشخصيات إلى 6 أنواع رئيسية تساعدك في اختيار المهنة المناسبة لك.
+                        </p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                            <div class="bg-white rounded-xl p-4 border border-red-200">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <span class="text-xl">🔧</span>
+                                    <span class="font-semibold text-red-700">الواقعي (R)</span>
+                                </div>
+                                <p class="text-sm text-gray-600">يحب العمل بالأيدي والأنشطة العملية</p>
+                            </div>
+
+                            <div class="bg-white rounded-xl p-4 border border-blue-200">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <span class="text-xl">🔬</span>
+                                    <span class="font-semibold text-blue-700">الاستقصائي (I)</span>
+                                </div>
+                                <p class="text-sm text-gray-600">يستمتع بالبحث والتحليل العلمي</p>
+                            </div>
+
+                            <div class="bg-white rounded-xl p-4 border border-purple-200">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <span class="text-xl">🎨</span>
+                                    <span class="font-semibold text-purple-700">الفني (A)</span>
+                                </div>
+                                <p class="text-sm text-gray-600">يفضل الإبداع والتعبير الفني</p>
+                            </div>
+
+                            <div class="bg-white rounded-xl p-4 border border-green-200">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <span class="text-xl">👥</span>
+                                    <span class="font-semibold text-green-700">الاجتماعي (S)</span>
+                                </div>
+                                <p class="text-sm text-gray-600">يحب مساعدة الآخرين والعمل معهم</p>
+                            </div>
+
+                            <div class="bg-white rounded-xl p-4 border border-orange-200">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <span class="text-xl">💼</span>
+                                    <span class="font-semibold text-orange-700">المغامر (E)</span>
+                                </div>
+                                <p class="text-sm text-gray-600">يستمتع بالقيادة وإقناع الآخرين</p>
+                            </div>
+
+                            <div class="bg-white rounded-xl p-4 border border-gray-300">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <span class="text-xl">📊</span>
+                                    <span class="font-semibold text-gray-700">التقليدي (C)</span>
+                                </div>
+                                <p class="text-sm text-gray-600">يفضل العمل المنظم والمنهجي</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- كيفية عمل الاختبار -->
+                <div class="bg-green-50 rounded-2xl p-6 mb-6 text-right">
+                    <h3 class="font-bold text-gray-800 mb-4 text-xl">⚙️ كيف يعمل الاختبار؟</h3>
+                    <div class="space-y-3 text-gray-700">
+                        <div class="flex items-start gap-3">
+                            <span
+                                class="bg-green-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold mt-1">1</span>
+                            <p>ستُعرض عليك <strong>45 نشاطاً مختلفاً</strong> من مجالات متنوعة</p>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <span
+                                class="bg-green-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold mt-1">2</span>
+                            <p>قيّم كل نشاط حسب <strong>مدى استمتاعك</strong> به (لا أستمتع، محايد، أستمتع جداً)</p>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <span
+                                class="bg-green-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold mt-1">3</span>
+                            <p>سيحلل النظام إجاباتك ويحدد <strong>أقوى 3 أبعاد</strong> في شخصيتك</p>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <span
+                                class="bg-green-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold mt-1">4</span>
+                            <p>ستحصل على <strong>تقرير مفصل</strong> مع المهن والأنشطة المناسبة لك</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- معلومات الاختبار -->
+                <div class="bg-blue-50 rounded-2xl p-6 mb-6 text-right">
+                    <h3 class="font-semibold text-gray-700 mb-4">📊 معلومات الاختبار:</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div
+                            class="bg-white rounded-xl p-4 border border-blue-200 text-center hover:shadow-md transition-shadow">
+                            <div class="text-3xl mb-2">📝</div>
+                            <div class="font-bold text-blue-600 text-xl">45</div>
+                            <div class="text-sm text-gray-600 font-medium">سؤال</div>
+                            <div class="text-xs text-gray-500 mt-1">أنشطة متنوعة</div>
+                        </div>
+                        <div
+                            class="bg-white rounded-xl p-4 border border-green-200 text-center hover:shadow-md transition-shadow">
+                            <div class="text-3xl mb-2">⏱️</div>
+                            <div class="font-bold text-green-600 text-xl">10-15</div>
+                            <div class="text-sm text-gray-600 font-medium">دقيقة</div>
+                            <div class="text-xs text-gray-500 mt-1">وقت مناسب</div>
+                        </div>
+                        <div
+                            class="bg-white rounded-xl p-4 border border-purple-200 text-center hover:shadow-md transition-shadow">
+                            <div class="text-3xl mb-2">🎯</div>
+                            <div class="font-bold text-purple-600 text-xl">6</div>
+                            <div class="text-sm text-gray-600 font-medium">أبعاد</div>
+                            <div class="text-xs text-gray-500 mt-1">شخصية مهنية</div>
+                        </div>
+                        <div
+                            class="bg-white rounded-xl p-4 border border-orange-200 text-center hover:shadow-md transition-shadow">
+                            <div class="text-3xl mb-2">💰</div>
+                            <div class="font-bold text-orange-600 text-xl">رسوم</div>
+                            <div class="text-sm text-gray-600 font-medium">مخفضة</div>
+                            <div class="text-xs text-gray-500 mt-1">سعر مناسب</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- نصائح مهمة -->
+                <div class="bg-yellow-50 border-r-4 border-yellow-400 p-4 mb-6 text-right">
+                    <h4 class="font-semibold text-yellow-800 mb-3">💡 نصائح للحصول على أفضل النتائج:</h4>
+                    <ul class="text-sm text-yellow-700 space-y-2">
+                        <li class="flex items-start gap-2">
+                            <span class="text-yellow-600 mt-1">•</span>
+                            <span><strong>كن صادقاً:</strong> أجب بناءً على ما تحبه فعلاً، وليس ما تعتقد أنه
+                                "صحيح"</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-yellow-600 mt-1">•</span>
+                            <span><strong>لا تفكر كثيراً:</strong> الإجابة الأولى عادة هي الأصدق</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-yellow-600 mt-1">•</span>
+                            <span><strong>تخيل نفسك:</strong> فكر في كيف ستشعر لو قمت بهذا النشاط فعلاً</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-yellow-600 mt-1">•</span>
+                            <span><strong>لا توجد إجابة خاطئة:</strong> كل الإجابات صحيحة طالما تعبر عنك</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- <div class="mb-6">
+                    <label class="block text-right font-semibold text-gray-700 mb-2">الاسم (مطلوب):</label>
+                    <input type="text" id="userName"
+                        class="w-full p-4 border-2 border-gray-200 rounded-xl text-center text-lg focus:border-blue-500 focus:outline-none"
+                        placeholder="أدخل اسمك هنا" required>
+                </div> -->
+
+                <button onclick="startTest()"
+                    class="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white text-xl font-bold py-4 px-8 rounded-xl hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-200 shadow-lg">
+                    ابدأ الآن 🚀
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- شاشة التحميل -->
+    <div id="loading-screen" class="hidden min-h-screen gradient-bg flex items-center justify-center">
+        <div class="text-center text-white">
+            <div class="w-16 h-16 border-4 border-white/30 border-t-white rounded-full animate-spin mx-auto mb-4"></div>
+            <p class="text-xl">📌 يتم تجهيز اختبارك — ركّز وكن صادقاً 🌟</p>
+        </div>
+    </div>
+
+    <!-- واجهة الأسئلة -->
+    <div id="test-screen" class="hidden min-h-screen bg-gray-50 noP">
+        <!-- الشريط العلوي -->
+        <div class="bg-white shadow-sm border-b sticky top-0 z-10">
+            <div class="max-w-4xl mx-auto px-4 py-3">
+                <div class="flex justify-between items-center mb-2">
+                    <div class="font-bold text-gray-800">اختبار RIASEC</div>
+                    <div class="flex items-center gap-4">
+                        <span id="question-counter" class="text-sm text-gray-600">1 / 45</span>
+                        <span id="progress-percentage" class="text-sm font-semibold text-blue-600">2%</span>
+                        <span id="timer" class="text-sm text-gray-500">00:00</span>
+                        <button onclick="goToInstructions()"
+                            class="bg-red-100 hover:bg-red-200 text-red-700 px-3 py-1 rounded-lg text-sm transition-colors">📋
+                            التعليمات</button>
+                        <button onclick="goBack()"
+                            class="bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded-lg text-sm transition-colors">رجوع</button>
+                    </div>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                    <div id="progress-bar"
+                        class="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full transition-all duration-300"
+                        style="width: 2%"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- شريط الأقسام -->
+        <div class="bg-white border-b">
+            <div class="max-w-4xl mx-auto px-4 py-2">
+                <div class="flex justify-center gap-2" id="sections-bar">
+                    <!-- سيتم إنشاؤها ديناميكياً -->
+                </div>
+            </div>
+        </div>
+
+        <!-- بطاقة السؤال -->
+        <div class="max-w-4xl mx-auto p-6">
+            <!-- بطاقة السؤال الرئيسية -->
+            <div class="bg-white rounded-3xl shadow-xl p-8 mb-6 relative overflow-hidden">
+                <!-- خلفية متدرجة للبُعد -->
+                <div id="dimension-bg"
+                    class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-red-400 to-red-600"></div>
+
+                <!-- معلومات البُعد -->
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center gap-4">
+                        <div class="bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl p-4">
+                            <span id="dimension-icon" class="text-3xl">🔧</span>
+                        </div>
+                        <div>
+                            <span id="dimension-name" class="text-lg font-bold text-gray-800">البُعد الواقعي (R)</span>
+                            <div id="dimension-desc" class="text-sm text-gray-500">يفضل الأنشطة العملية والعمل بالأيدي
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- مؤشر التقدم الدائري -->
+                    <div class="relative w-16 h-16">
+                        <svg class="w-16 h-16 transform -rotate-90" viewBox="0 0 36 36">
+                            <path class="text-gray-200" stroke="currentColor" stroke-width="3" fill="none"
+                                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831">
+                            </path>
+                            <path id="progress-circle" class="text-blue-500" stroke="currentColor" stroke-width="3"
+                                fill="none" stroke-dasharray="2, 98"
+                                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831">
+                            </path>
+                        </svg>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <span id="circle-progress" class="text-xs font-bold text-gray-600">2%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- السؤال -->
+                <div class="text-center mb-8">
+                    <div class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-6 mb-4">
+                        <h2 id="question-text" class="text-3xl font-bold text-gray-800 mb-3 leading-relaxed">
+                            إصلاح الأجهزة الكهربائية
+                        </h2>
+                        <p class="text-lg text-gray-600">كيف تشعر تجاه هذا النشاط؟</p>
+                    </div>
+
+                    <!-- شريط تقدم السؤال -->
+                    <div class="flex items-center gap-2 justify-center mb-6">
+                        <span class="text-sm text-gray-500">السؤال</span>
+                        <div class="bg-gray-200 rounded-full h-2 w-32">
+                            <div id="question-progress"
+                                class="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full transition-all duration-300"
+                                style="width: 2%"></div>
+                        </div>
+                        <span id="question-number" class="text-sm font-semibold text-gray-700">1/45</span>
+                    </div>
+                </div>
+
+                <!-- أزرار الإجابة المحسنة -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <button onclick="selectAnswer(0)"
+                        class="answer-btn group relative bg-gradient-to-br from-red-200 to-red-300 hover:from-red-300 hover:to-red-400 border-2 border-red-400 hover:border-red-500 text-red-800 p-8 rounded-2xl text-xl font-bold transition-all duration-300 hover:scale-105 hover:shadow-lg">
+                        <div class="flex flex-col items-center gap-3">
+                            <div class="text-4xl group-hover:scale-110 transition-transform">✗</div>
+                            <div>لا أستمتع</div>
+                        </div>
+                        <div
+                            class="absolute inset-0 bg-red-600 opacity-0 group-hover:opacity-20 rounded-2xl transition-opacity">
+                        </div>
+                    </button>
+
+                    <button onclick="selectAnswer(1)"
+                        class="answer-btn group relative bg-gradient-to-br from-orange-200 to-orange-300 hover:from-orange-300 hover:to-orange-400 border-2 border-orange-400 hover:border-orange-500 text-orange-800 p-8 rounded-2xl text-xl font-bold transition-all duration-300 hover:scale-105 hover:shadow-lg">
+                        <div class="flex flex-col items-center gap-3">
+                            <div class="text-4xl group-hover:scale-110 transition-transform">—</div>
+                            <div>محايد</div>
+                        </div>
+                        <div
+                            class="absolute inset-0 bg-orange-600 opacity-0 group-hover:opacity-20 rounded-2xl transition-opacity">
+                        </div>
+                    </button>
+
+                    <button onclick="selectAnswer(2)"
+                        class="answer-btn group relative bg-gradient-to-br from-green-200 to-green-300 hover:from-green-300 hover:to-green-400 border-2 border-green-400 hover:border-green-500 text-green-800 p-8 rounded-2xl text-xl font-bold transition-all duration-300 hover:scale-105 hover:shadow-lg">
+                        <div class="flex flex-col items-center gap-3">
+                            <div class="text-4xl group-hover:scale-110 transition-transform">✓</div>
+                            <div>أستمتع جداً</div>
+                        </div>
+                        <div
+                            class="absolute inset-0 bg-green-600 opacity-0 group-hover:opacity-20 rounded-2xl transition-opacity">
+                        </div>
+                    </button>
+                </div>
+
+                <!-- أزرار التنقل -->
+                <div class="flex justify-between items-center">
+                    <button onclick="goBack()"
+                        class="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-3 rounded-xl transition-colors disabled:opacity-50"
+                        id="back-btn">
+                        <span>←</span>
+                        <span>السابق</span>
+                    </button>
+
+                    <!-- مؤشر الاختصارات -->
+                    <div class="text-center">
+                        <div class="text-sm text-gray-400 mb-1">اختصارات سريعة</div>
+                        <div class="flex gap-4 text-xs text-gray-500">
+                            <span class="bg-gray-100 px-2 py-1 rounded">1 = لا أستمتع</span>
+                            <span class="bg-gray-100 px-2 py-1 rounded">2 = محايد</span>
+                            <span class="bg-gray-100 px-2 py-1 rounded">3 = أستمتع</span>
+                        </div>
+                    </div>
+
+                    <div class="w-24"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- شاشة الاستراحة -->
+    <div id="break-screen" class="hidden min-h-screen gradient-bg flex items-center justify-center">
+        <div class="text-center text-white">
+            <div
+                class="breathing-circle w-32 h-32 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                <div class="text-4xl">😌</div>
+            </div>
+            <h2 class="text-2xl font-bold mb-4">وقت استراحة قصيرة</h2>
+            <p class="text-lg mb-6">خذ نفساً عميقاً واسترخ لثوانٍ قليلة</p>
+            <div class="flex gap-4 justify-center">
+                <button onclick="skipBreak()"
+                    class="bg-white/20 hover:bg-white/30 px-6 py-3 rounded-xl transition-colors">تخطي الاستراحة</button>
+                <div id="break-timer" class="bg-white/10 px-6 py-3 rounded-xl">15</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- تنبيه السرعة -->
+    <div id="speed-warning" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-2xl p-8 max-w-md mx-4 text-center">
+            <div class="text-4xl mb-4">⚠️</div>
+            <h3 class="text-xl font-bold text-gray-800 mb-4">يبدو أنك تجيب بسرعة كبيرة</h3>
+            <p class="text-gray-600 mb-6">تمهّل قليلاً لتحصل على نتيجة أدق وأكثر فائدة</p>
+            <div class="flex gap-3">
+                <button onclick="reviewFastAnswers()"
+                    class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl transition-colors">🔁
+                    مراجعة</button>
+                <button onclick="continueTest()"
+                    class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 py-3 rounded-xl transition-colors">✅
+                    متابعة</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة خيارات التعليمات -->
+    <div id="instructions-modal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-2xl p-8 max-w-md mx-4 text-center">
+            <div class="text-4xl mb-4">📋</div>
+            <h3 class="text-xl font-bold text-gray-800 mb-4">العودة للتعليمات</h3>
+            <p class="text-gray-600 mb-6" id="instructions-modal-text">اختر ما تريد فعله:</p>
+
+            <div class="space-y-3">
+                <button onclick="goToInstructionsWithSave()"
+                    class="w-full bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-xl transition-colors flex items-center justify-center gap-2">
+                    <span>💾</span>
+                    <span>حفظ التقدم والعودة للتعليمات</span>
+                </button>
+
+                <button onclick="goToInstructionsWithoutSave()"
+                    class="w-full bg-red-600 hover:bg-red-700 text-white py-3 px-4 rounded-xl transition-colors flex items-center justify-center gap-2">
+                    <span>🗑️</span>
+                    <span>العودة بدون حفظ التقدم</span>
+                </button>
+
+                <button onclick="closeInstructionsModal()"
+                    class="w-full bg-gray-200 hover:bg-gray-300 text-gray-700 py-3 px-4 rounded-xl transition-colors">
+                    إلغاء
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- شاشة الانتقال للنتائج -->
+    <div id="transition-screen" class="hidden min-h-screen gradient-bg flex items-center justify-center">
+        <div class="text-center text-white max-w-md mx-auto p-8">
+            <div class="w-24 h-24 border-4 border-white/30 border-t-white rounded-full animate-spin mx-auto mb-6"></div>
+            <h2 class="text-3xl font-bold mb-4">🎉 تهانينا!</h2>
+            <p class="text-xl mb-6">لقد أكملت الاختبار بنجاح</p>
+            <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-6 mb-6">
+                <p class="text-lg mb-4">جاري تحليل إجاباتك وإعداد تقريرك الشخصي...</p>
+                <div class="flex items-center justify-center gap-2">
+                    <div class="w-2 h-2 bg-white rounded-full animate-bounce"></div>
+                    <div class="w-2 h-2 bg-white rounded-full animate-bounce" style="animation-delay: 0.1s"></div>
+                    <div class="w-2 h-2 bg-white rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+                </div>
+            </div>
+            <p class="text-sm opacity-80">سيتم عرض النتائج خلال ثوانٍ قليلة</p>
+        </div>
+    </div>
+
+    <!-- شاشة النتائج -->
+    <div id="results-screen" class="hidden min-h-screen bg-gray-50 p-6">
+        <div class="max-w-6xl mx-auto">
+            <!-- هيدر النتيجة -->
+            <div
+                class="bg-gradient-to-r from-blue-600 to-purple-600 rounded-3xl shadow-2xl p-8 mb-8 text-white text-center">
+                <div class="text-6xl mb-4">🎉</div>
+                <h1 class="text-4xl font-bold mb-4">
+                    تهانينا يا <span id="result-name" class="text-yellow-300"></span>!
+                </h1>
+                <p class="text-xl mb-6 opacity-90">لقد اكتشفت شخصيتك المهنية بنجاح</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-4">
+                        <div class="text-2xl mb-2">⏱️</div>
+                        <div class="text-sm opacity-80">الوقت الكلي</div>
+                        <div id="total-time" class="text-lg font-bold"></div>
+                    </div>
+                    <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-4">
+                        <div class="text-2xl mb-2">🎯</div>
+                        <div class="text-sm opacity-80">مؤشر الثقة</div>
+                        <div id="confidence-level" class="text-lg font-bold"></div>
+                    </div>
+                    <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-4">
+                        <div class="text-2xl mb-2">📊</div>
+                        <div class="text-sm opacity-80">نقاط القوة</div>
+                        <div id="strength-count" class="text-lg font-bold">3 أبعاد</div>
+                    </div>
+                </div>
+
+                <!-- أعلى 3 أبعاد -->
+                <div class="flex flex-col items-center gap-4" id="top-dimensions">
+                    <!-- سيتم إنشاؤها ديناميكياً -->
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                <!-- الرسوم البيانية -->
+                <div class="bg-white rounded-2xl shadow-lg p-4">
+                    <h3 class="text-lg font-bold text-gray-800 mb-3 text-center">نتائجك التفصيلية</h3>
+                    <canvas id="barChart" width="300" height="200"></canvas>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-lg p-4">
+                    <h3 class="text-lg font-bold text-gray-800 mb-3 text-center">مخطط التوازن</h3>
+                    <div class="radar-chart">
+                        <canvas id="radarChart" width="250" height="200"></canvas>
+                    </div>
+                </div>
+
+                <!-- أفضل 5 مهن -->
+                <div class="bg-white rounded-2xl shadow-lg p-4">
+                    <h3 class="text-lg font-bold text-gray-800 mb-3 text-center">أفضل 5 مهن لك</h3>
+                    <div id="top-careers" class="space-y-3">
+                        <!-- سيتم إنشاؤها ديناميكياً -->
+                    </div>
+                </div>
+
+                <!-- أفضل 5 تخصصات جامعية -->
+                <div class="bg-white rounded-2xl shadow-lg p-4">
+                    <h3 class="text-lg font-bold text-gray-800 mb-3 text-center">أفضل 5 تخصصات جامعية</h3>
+                    <div id="top-majors" class="space-y-3">
+                        <!-- سيتم إنشاؤها ديناميكياً -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- بطاقات الأبعاد -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 mt-6" id="dimension-cards">
+                <!-- سيتم إنشاؤها ديناميكياً -->
+            </div>
+
+            <!-- التوصيات -->
+            <div class="bg-white rounded-2xl shadow-lg p-8 mt-6">
+                <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">ما الخطوة القادمة؟</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="recommendations">
+                    <!-- سيتم إنشاؤها ديناميكياً -->
+                </div>
+            </div>
+
+            <!-- أزرار المشاركة -->
+            <div class="bg-white rounded-2xl shadow-lg p-6 mt-6 noP">
+                <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">احفظ نتيجتك</h3>
+                <div class="flex flex-wrap justify-center gap-3">
+                    <button onclick="saveAsPDF()"
+                        class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg transition-colors flex items-center gap-2">
+                        <span>📄</span>
+                        <span>حفظ كـ PDF</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- زر إعادة الاختبار -->
+            <div class="text-center mt-8 noP">
+                <button onclick="restartTest()"
+                    class="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-200 transform hover:scale-105">
+                    الانتقال الى الاختبار الثاني ( MPTI )
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // بيانات الاختبار
+        const questions = [
+            // البُعد الواقعي (R) - الأسئلة 1-8
+            { id: 1, text: "إصلاح الأجهزة الكهربائية", dimension: "R", section: 1, icon: "🔧" },
+            { id: 2, text: "العمل في ورشة نجارة", dimension: "R", section: 1, icon: "🔧" },
+            { id: 3, text: "قيادة الشاحنات أو المعدات الثقيلة", dimension: "R", section: 1, icon: "🔧" },
+            { id: 4, text: "العمل في مزرعة", dimension: "R", section: 1, icon: "🔧" },
+            { id: 5, text: "بناء الأثاث الخشبي", dimension: "R", section: 1, icon: "🔧" },
+            { id: 6, text: "صيانة السيارات", dimension: "R", section: 2, icon: "🔧" },
+            { id: 7, text: "العمل في البناء والتشييد", dimension: "R", section: 2, icon: "🔧" },
+            { id: 8, text: "تشغيل الآلات الصناعية", dimension: "R", section: 2, icon: "🔧" },
+
+            // البُعد الاستقصائي (I) - الأسئلة 9-16
+            { id: 9, text: "إجراء التجارب العلمية", dimension: "I", section: 2, icon: "🔬" },
+            { id: 10, text: "دراسة الكيمياء أو الفيزياء", dimension: "I", section: 2, icon: "🔬" },
+            { id: 11, text: "البحث في المكتبات أو الإنترنت", dimension: "I", section: 3, icon: "🔬" },
+            { id: 12, text: "حل المسائل الرياضية المعقدة", dimension: "I", section: 3, icon: "🔬" },
+            { id: 13, text: "تحليل البيانات والإحصائيات", dimension: "I", section: 3, icon: "🔬" },
+            { id: 14, text: "كتابة التقارير العلمية", dimension: "I", section: 3, icon: "🔬" },
+            { id: 15, text: "دراسة علم الأحياء", dimension: "I", section: 3, icon: "🔬" },
+            { id: 16, text: "العمل في المختبرات", dimension: "I", section: 4, icon: "🔬" },
+
+            // البُعد الفني (A) - الأسئلة 17-24
+            { id: 17, text: "الرسم أو التصوير", dimension: "A", section: 4, icon: "🎨" },
+            { id: 18, text: "تصميم الشعارات والهويات البصرية", dimension: "A", section: 4, icon: "🎨" },
+            { id: 19, text: "كتابة القصص أو الشعر", dimension: "A", section: 4, icon: "🎨" },
+            { id: 20, text: "تصميم الملابس أو الديكور", dimension: "A", section: 4, icon: "🎨" },
+            { id: 21, text: "التمثيل أو الإخراج", dimension: "A", section: 5, icon: "🎨" },
+            { id: 22, text: "تصميم المواقع الإلكترونية", dimension: "A", section: 5, icon: "🎨" },
+            { id: 23, text: "النحت أو الأعمال اليدوية", dimension: "A", section: 5, icon: "🎨" },
+            { id: 24, text: "التصوير الفوتوغرافي", dimension: "A", section: 5, icon: "🎨" },
+
+            // البُعد الاجتماعي (S) - الأسئلة 25-32
+            { id: 25, text: "تدريس الأطفال", dimension: "S", section: 5, icon: "👥" },
+            { id: 26, text: "مساعدة كبار السن", dimension: "S", section: 6, icon: "👥" },
+            { id: 27, text: "العمل في المستشفيات", dimension: "S", section: 6, icon: "👥" },
+            { id: 28, text: "تقديم المشورة للآخرين", dimension: "S", section: 6, icon: "👥" },
+            { id: 29, text: "تنظيم الفعاليات الاجتماعية", dimension: "S", section: 6, icon: "👥" },
+            { id: 30, text: "العمل مع ذوي الاحتياجات الخاصة", dimension: "S", section: 6, icon: "👥" },
+            { id: 31, text: "التطوع في الجمعيات الخيرية", dimension: "S", section: 7, icon: "👥" },
+            { id: 32, text: "حل النزاعات بين الناس", dimension: "S", section: 7, icon: "👥" },
+
+            // البُعد المغامر (E) - الأسئلة 33-40
+            { id: 33, text: "قيادة فريق العمل", dimension: "E", section: 7, icon: "💼" },
+            { id: 34, text: "بدء مشروع تجاري", dimension: "E", section: 7, icon: "💼" },
+            { id: 35, text: "إقناع الآخرين بأفكارك", dimension: "E", section: 7, icon: "💼" },
+            { id: 36, text: "إدارة الاجتماعات", dimension: "E", section: 8, icon: "💼" },
+            { id: 37, text: "التفاوض في الصفقات", dimension: "E", section: 8, icon: "💼" },
+            { id: 38, text: "العمل في المبيعات", dimension: "E", section: 8, icon: "💼" },
+            { id: 39, text: "تنظيم المؤتمرات", dimension: "E", section: 8, icon: "💼" },
+            { id: 40, text: "إدارة الأعمال", dimension: "E", section: 8, icon: "💼" },
+
+            // البُعد التقليدي (C) - الأسئلة 41-45
+            { id: 41, text: "تنظيم الملفات والوثائق", dimension: "C", section: 9, icon: "📊" },
+            { id: 42, text: "العمل مع الأرقام والحسابات", dimension: "C", section: 9, icon: "📊" },
+            { id: 43, text: "إدخال البيانات في الكمبيوتر", dimension: "C", section: 9, icon: "📊" },
+            { id: 44, text: "مراجعة التقارير المالية", dimension: "C", section: 9, icon: "📊" },
+            { id: 45, text: "العمل في المحاسبة", dimension: "C", section: 9, icon: "📊" }
+        ];
+
+        // معلومات الأبعاد
+        const dimensions = {
+            R: {
+                name: "الواقعي (Realistic)",
+                description: "يفضل الأنشطة العملية والعمل بالأيدي",
+                careers: ["مهندس", "فني", "نجار", "كهربائي", "مزارع"],
+                color: "#ef4444",
+                activities: ["تعلم مهارة يدوية جديدة", "إصلاح شيء في المنزل", "العمل في الحديقة", "بناء نموذج", "تعلم استخدام أدوات جديدة"]
+            },
+            I: {
+                name: "الاستقصائي (Investigative)",
+                description: "يحب البحث والتحليل وحل المشكلات",
+                careers: ["عالم", "باحث", "طبيب", "محلل", "مبرمج"],
+                color: "#3b82f6",
+                activities: ["قراءة المقالات العلمية", "إجراء تجربة بسيطة", "حل الألغاز المعقدة", "تعلم لغة برمجة", "تحليل البيانات"]
+            },
+            A: {
+                name: "الفني (Artistic)",
+                description: "يستمتع بالإبداع والتعبير الفني",
+                careers: ["فنان", "مصمم", "كاتب", "موسيقي", "مخرج"],
+                color: "#8b5cf6",
+                activities: ["الرسم أو التصوير", "كتابة قصة قصيرة", "تعلم آلة موسيقية", "تصميم شعار", "زيارة معرض فني"]
+            },
+            S: {
+                name: "الاجتماعي (Social)",
+                description: "يفضل مساعدة الآخرين والعمل معهم",
+                careers: ["معلم", "مستشار", "ممرض", "أخصائي اجتماعي", "مدرب"],
+                color: "#10b981",
+                activities: ["التطوع في جمعية خيرية", "تدريس شخص مهارة جديدة", "تنظيم فعالية اجتماعية", "مساعدة الجيران", "الانضمام لنادي اجتماعي"]
+            },
+            E: {
+                name: "المغامر (Enterprising)",
+                description: "يحب القيادة وإقناع الآخرين",
+                careers: ["مدير", "رجل أعمال", "مندوب مبيعات", "محامي", "سياسي"],
+                color: "#f59e0b",
+                activities: ["قيادة مشروع صغير", "تنظيم فعالية", "إقناع الأصدقاء بفكرة", "بدء مبادرة", "التطوع في منصب قيادي"]
+            },
+            C: {
+                name: "التقليدي (Conventional)",
+                description: "يفضل العمل المنظم والروتيني",
+                careers: ["محاسب", "سكرتير", "موظف بنك", "مراجع", "كاتب"],
+                color: "#6b7280",
+                activities: ["تنظيم الملفات الشخصية", "إعداد جدول زمني", "تتبع المصروفات", "ترتيب المكتبة", "إنشاء قائمة مهام"]
+            }
+        };
+
+        // قاعدة بيانات المهن الشاملة
+        const careerDatabase = {
+            // مهن تتطلب أبعاد متعددة مع نقاط القوة
+            "مهندس معماري": { dimensions: ["R", "A", "I"], score: 0, icon: "🏗️", description: "تصميم وتخطيط المباني والمساحات" },
+            "طبيب": { dimensions: ["I", "S"], score: 0, icon: "👨‍⚕️", description: "تشخيص وعلاج الأمراض ومساعدة المرضى" },
+            "مصمم جرافيك": { dimensions: ["A", "C"], score: 0, icon: "🎨", description: "إنشاء التصاميم البصرية والهوية البصرية" },
+            "مدير مشروع": { dimensions: ["E", "C", "S"], score: 0, icon: "📊", description: "قيادة وتنسيق المشاريع والفرق" },
+            "مبرمج": { dimensions: ["I", "C"], score: 0, icon: "💻", description: "تطوير البرمجيات والتطبيقات" },
+            "معلم": { dimensions: ["S", "A"], score: 0, icon: "👨‍🏫", description: "تعليم وتوجيه الطلاب" },
+            "محاسب": { dimensions: ["C", "I"], score: 0, icon: "🧮", description: "إدارة الحسابات المالية والضرائب" },
+            "مصور فوتوغرافي": { dimensions: ["A", "E"], score: 0, icon: "📸", description: "التقاط وتحرير الصور الاحترافية" },
+            "مهندس كهربائي": { dimensions: ["R", "I"], score: 0, icon: "⚡", description: "تصميم وصيانة الأنظمة الكهربائية" },
+            "أخصائي تسويق": { dimensions: ["E", "A", "S"], score: 0, icon: "📈", description: "تطوير استراتيجيات التسويق والترويج" },
+            "طبيب نفسي": { dimensions: ["S", "I"], score: 0, icon: "🧠", description: "تشخيص وعلاج الاضطرابات النفسية" },
+            "مهندس برمجيات": { dimensions: ["I", "C", "R"], score: 0, icon: "⚙️", description: "تطوير وصيانة الأنظمة البرمجية" },
+            "مدير مبيعات": { dimensions: ["E", "S"], score: 0, icon: "💼", description: "قيادة فرق المبيعات وتحقيق الأهداف" },
+            "كاتب محتوى": { dimensions: ["A", "I"], score: 0, icon: "✍️", description: "إنشاء المحتوى المكتوب والإبداعي" },
+            "فني صيانة": { dimensions: ["R", "C"], score: 0, icon: "🔧", description: "إصلاح وصيانة الأجهزة والمعدات" },
+            "مستشار إداري": { dimensions: ["E", "I", "S"], score: 0, icon: "🎯", description: "تقديم المشورة لتحسين الأداء التنظيمي" },
+            "مصمم داخلي": { dimensions: ["A", "R"], score: 0, icon: "🏠", description: "تصميم وتنسيق المساحات الداخلية" },
+            "محلل بيانات": { dimensions: ["I", "C"], score: 0, icon: "📊", description: "تحليل البيانات واستخراج الرؤى" },
+            "ممرض": { dimensions: ["S", "C"], score: 0, icon: "👩‍⚕️", description: "رعاية المرضى وتقديم الخدمات الطبية" },
+            "مهندس ميكانيكي": { dimensions: ["R", "I"], score: 0, icon: "⚙️", description: "تصميم وتطوير الآلات والأنظمة الميكانيكية" },
+            "محامي": { dimensions: ["E", "I", "S"], score: 0, icon: "⚖️", description: "تمثيل العملاء في القضايا القانونية" },
+            "موسيقي": { dimensions: ["A"], score: 0, icon: "🎵", description: "العزف والتأليف الموسيقي" },
+            "عالم أحياء": { dimensions: ["I", "R"], score: 0, icon: "🔬", description: "دراسة الكائنات الحية والنظم البيولوجية" },
+            "مدرب رياضي": { dimensions: ["S", "E"], score: 0, icon: "🏃‍♂️", description: "تدريب الرياضيين وتطوير مهاراتهم" },
+            "مهندس مدني": { dimensions: ["R", "I", "C"], score: 0, icon: "🌉", description: "تصميم وإشراف على مشاريع البنية التحتية" },
+            "صحفي": { dimensions: ["A", "I", "S"], score: 0, icon: "📰", description: "جمع الأخبار وكتابة التقارير الإعلامية" },
+            "طبيب أسنان": { dimensions: ["I", "S", "R"], score: 0, icon: "🦷", description: "تشخيص وعلاج مشاكل الأسنان والفم" },
+            "مصمم ويب": { dimensions: ["A", "I", "C"], score: 0, icon: "🌐", description: "تصميم وتطوير المواقع الإلكترونية" },
+            "أخصائي موارد بشرية": { dimensions: ["S", "E", "C"], score: 0, icon: "👥", description: "إدارة شؤون الموظفين والتوظيف" },
+            "مهندس كمبيوتر": { dimensions: ["I", "R", "C"], score: 0, icon: "💻", description: "تطوير وصيانة أنظمة الحاسوب" }
+        };
+
+        // حالة الاختبار
+        let testState = {
+            currentIndex: 0,
+            answers: {},
+            startedAt: null,
+            perQuestionTime: {},
+            fastStreakCount: 0,
+            sectionsProgress: Array(9).fill(0),
+            userName: '',
+            isDarkMode: false,
+            isSoundEnabled: true,
+            questionStartTime: null
+        };
+
+        // قاعدة بيانات التخصصات الجامعية
+        const majorDatabase = {
+            "هندسة الحاسوب": { dimensions: ["I", "R", "C"], score: 0, icon: "💻", description: "تطوير وتصميم أنظمة الحاسوب والبرمجيات", category: "هندسة" },
+            "الطب": { dimensions: ["I", "S"], score: 0, icon: "🩺", description: "دراسة جسم الإنسان وعلاج الأمراض", category: "طبية" },
+            "التصميم الجرافيكي": { dimensions: ["A", "C"], score: 0, icon: "🎨", description: "إنشاء التصاميم البصرية والإعلانية", category: "فنون" },
+            "إدارة الأعمال": { dimensions: ["E", "C", "S"], score: 0, icon: "📊", description: "إدارة المؤسسات والمشاريع التجارية", category: "إدارة" },
+            "علوم الحاسوب": { dimensions: ["I", "C"], score: 0, icon: "⚡", description: "البرمجة وتطوير الخوارزميات", category: "تقنية" },
+            "التربية": { dimensions: ["S", "A"], score: 0, icon: "👨‍🏫", description: "تعليم وتربية الأجيال", category: "تعليم" },
+            "المحاسبة": { dimensions: ["C", "I"], score: 0, icon: "🧮", description: "إدارة الحسابات المالية والضرائب", category: "مالية" },
+            "الهندسة المعمارية": { dimensions: ["A", "R", "I"], score: 0, icon: "🏗️", description: "تصميم وتخطيط المباني والمساحات", category: "هندسة" },
+            "الهندسة الكهربائية": { dimensions: ["R", "I"], score: 0, icon: "⚡", description: "تصميم وصيانة الأنظمة الكهربائية", category: "هندسة" },
+            "التسويق": { dimensions: ["E", "A", "S"], score: 0, icon: "📈", description: "ترويج المنتجات والخدمات", category: "إدارة" },
+            "علم النفس": { dimensions: ["S", "I"], score: 0, icon: "🧠", description: "دراسة السلوك البشري والعقل", category: "علوم إنسانية" },
+            "هندسة البرمجيات": { dimensions: ["I", "C", "R"], score: 0, icon: "⚙️", description: "تطوير وصيانة الأنظمة البرمجية", category: "تقنية" },
+            "الإعلام": { dimensions: ["A", "E", "S"], score: 0, icon: "📺", description: "الصحافة والإذاعة والتلفزيون", category: "إعلام" },
+            "الصيدلة": { dimensions: ["I", "S", "C"], score: 0, icon: "💊", description: "دراسة الأدوية وتأثيراتها", category: "طبية" },
+            "الهندسة الميكانيكية": { dimensions: ["R", "I"], score: 0, icon: "⚙️", description: "تصميم وتطوير الآلات والأنظمة الميكانيكية", category: "هندسة" },
+            "القانون": { dimensions: ["E", "I", "S"], score: 0, icon: "⚖️", description: "دراسة القوانين والأنظمة القضائية", category: "قانون" },
+            "الفنون الجميلة": { dimensions: ["A"], score: 0, icon: "🎭", description: "الرسم والنحت والفنون التشكيلية", category: "فنون" },
+            "علم الأحياء": { dimensions: ["I", "R"], score: 0, icon: "🔬", description: "دراسة الكائنات الحية والنظم البيولوجية", category: "علوم" },
+            "التمريض": { dimensions: ["S", "C"], score: 0, icon: "👩‍⚕️", description: "رعاية المرضى وتقديم الخدمات الطبية", category: "طبية" },
+            "الهندسة المدنية": { dimensions: ["R", "I", "C"], score: 0, icon: "🌉", description: "تصميم وإشراف على مشاريع البنية التحتية", category: "هندسة" },
+            "الصحافة": { dimensions: ["A", "I", "S"], score: 0, icon: "📰", description: "جمع الأخبار وكتابة التقارير الإعلامية", category: "إعلام" },
+            "طب الأسنان": { dimensions: ["I", "S", "R"], score: 0, icon: "🦷", description: "تشخيص وعلاج مشاكل الأسنان والفم", category: "طبية" },
+            "تصميم المواقع": { dimensions: ["A", "I", "C"], score: 0, icon: "🌐", description: "تصميم وتطوير المواقع الإلكترونية", category: "تقنية" },
+            "الموارد البشرية": { dimensions: ["S", "E", "C"], score: 0, icon: "👥", description: "إدارة شؤون الموظفين والتوظيف", category: "إدارة" },
+            "هندسة الاتصالات": { dimensions: ["I", "R", "C"], score: 0, icon: "📡", description: "تطوير وصيانة أنظمة الاتصالات", category: "هندسة" },
+            "الاقتصاد": { dimensions: ["I", "C", "E"], score: 0, icon: "💰", description: "دراسة الأسواق والنظم الاقتصادية", category: "اقتصاد" },
+            "العلاج الطبيعي": { dimensions: ["S", "R"], score: 0, icon: "🏃‍♂️", description: "إعادة التأهيل والعلاج الحركي", category: "طبية" },
+            "الأمن السيبراني": { dimensions: ["I", "C", "R"], score: 0, icon: "🔒", description: "حماية الأنظمة والبيانات الرقمية", category: "تقنية" },
+            "إدارة الفنادق": { dimensions: ["E", "S", "C"], score: 0, icon: "🏨", description: "إدارة وتشغيل المنشآت الفندقية", category: "خدمات" },
+            "الترجمة": { dimensions: ["A", "I", "S"], score: 0, icon: "🌍", description: "ترجمة النصوص بين اللغات المختلفة", category: "لغات" }
+        };
+
+        // حفظ التقدم في التخزين المحلي
+        function saveProgress() {
+            const progressData = {
+                userName: testState.userName,
+                currentIndex: testState.currentIndex,
+                answers: testState.answers,
+                startedAt: testState.startedAt,
+                perQuestionTime: testState.perQuestionTime,
+                sectionsProgress: testState.sectionsProgress,
+                lastSaved: Date.now()
+            };
+            localStorage.setItem(`riasec_progress_${testState.userName}`, JSON.stringify(progressData));
+        }
+
+        // استعادة التقدم من التخزين المحلي
+        function loadProgress(userName) {
+            const savedData = localStorage.getItem(`riasec_progress_${userName}`);
+            if (savedData) {
+                const progressData = JSON.parse(savedData);
+                // التحقق من أن البيانات ليست قديمة جداً (أكثر من 7 أيام)
+                const daysSinceLastSave = (Date.now() - progressData.lastSaved) / (1000 * 60 * 60 * 24);
+                if (daysSinceLastSave <= 7) {
+                    return progressData;
+                }
+            }
+            return null;
+        }
+
+        // مسح التقدم المحفوظ
+        function clearProgress(userName) {
+            localStorage.removeItem(`riasec_progress_${userName}`);
+        }
+
+        // فحص وجود تقدم محفوظ
+        function checkSavedProgress(userName) {
+            const savedProgress = loadProgress(userName);
+            if (savedProgress && Object.keys(savedProgress.answers).length > 0) {
+                return savedProgress;
+            }
+            return null;
+        }
+
+        // بدء الاختبار
+        function startTest() {
+            // const nameInput = document.getElementById('userName');
+            // if (!nameInput.value.trim()) {
+            //     nameInput.focus();
+            //     nameInput.classList.add('border-red-500');
+            //     return;
+            // }
+
+            // const userName = nameInput.value.trim();
+            const userName = "<%=user%>";
+            console.log()
+
+            // فحص وجود تقدم محفوظ
+            const savedProgress = checkSavedProgress(userName);
+            if (savedProgress) {
+                const answeredQuestions = Object.keys(savedProgress.answers).length;
+                const confirmMessage = `مرحباً ${userName}!\n\nوجدت تقدماً محفوظاً لك:\n• أجبت على ${answeredQuestions} سؤال من أصل 45\n• آخر مرة: ${new Date(savedProgress.lastSaved).toLocaleDateString('ar-SA')}\n\nهل تريد المتابعة من حيث توقفت؟`;
+
+                if (confirm(confirmMessage)) {
+                    // استعادة التقدم
+                    testState = { ...testState, ...savedProgress };
+                    testState.userName = userName;
+                } else {
+                    // بدء جديد
+                    clearProgress(userName);
+                    testState.userName = userName;
+                    testState.startedAt = Date.now();
+                }
+            } else {
+                // بدء جديد
+                testState.userName = userName;
+                testState.startedAt = Date.now();
+            }
+
+            // إظهار شاشة التحميل
+            document.getElementById('onboarding-screen').classList.add('hidden');
+            document.getElementById('loading-screen').classList.remove('hidden');
+
+            // الانتقال لشاشة الاختبار بعد 1.5 ثانية
+            setTimeout(() => {
+                document.getElementById('loading-screen').classList.add('hidden');
+                document.getElementById('test-screen').classList.remove('hidden');
+                initializeTest();
+                startTimer();
+            }, 1500);
+        }
+
+        // تهيئة الاختبار
+        function initializeTest() {
+            createSectionsBar();
+            displayQuestion();
+            setupKeyboardShortcuts();
+        }
+
+        // إنشاء شريط الأقسام
+        function createSectionsBar() {
+            const sectionsBar = document.getElementById('sections-bar');
+            sectionsBar.innerHTML = '';
+            for (let i = 1; i <= 9; i++) {
+                const section = document.createElement('button');
+                section.className = `section-btn px-3 py-2 rounded-lg text-sm font-medium transition-colors ${i === 1 ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-600 hover:bg-gray-300'}`;
+                section.textContent = i;
+                section.onclick = () => openSectionModal(i);
+                sectionsBar.appendChild(section);
+            }
+        }
+
+        // عرض السؤال الحالي
+        function displayQuestion() {
+            const question = questions[testState.currentIndex];
+            const dimension = dimensions[question.dimension];
+
+            // تحديث المعلومات الأساسية
+            document.getElementById('question-counter').textContent = `${testState.currentIndex + 1} / 45`;
+            document.getElementById('progress-percentage').textContent = `${Math.round(((testState.currentIndex + 1) / 45) * 100)}%`;
+            document.getElementById('progress-bar').style.width = `${((testState.currentIndex + 1) / 45) * 100}%`;
+
+            // تحديث العناصر الجديدة
+            document.getElementById('question-number').textContent = `${testState.currentIndex + 1}/45`;
+            document.getElementById('question-progress').style.width = `${((testState.currentIndex + 1) / 45) * 100}%`;
+            document.getElementById('circle-progress').textContent = `${Math.round(((testState.currentIndex + 1) / 45) * 100)}%`;
+
+            // تحديث مؤشر التقدم الدائري
+            const progressCircle = document.getElementById('progress-circle');
+            const percentage = ((testState.currentIndex + 1) / 45) * 100;
+            const dashArray = `${percentage}, 100`;
+            progressCircle.style.strokeDasharray = dashArray;
+
+            // تحديث معلومات البُعد
+            document.getElementById('dimension-icon').textContent = question.icon;
+            document.getElementById('dimension-name').textContent = dimension.name;
+            document.getElementById('dimension-desc').textContent = dimension.description;
+            document.getElementById('question-text').textContent = question.text;
+
+            // تحديث خلفية البُعد
+            const dimensionBg = document.getElementById('dimension-bg');
+            const color = dimension.color;
+            dimensionBg.style.background = `linear-gradient(to right, ${color}, ${color}dd)`;
+
+            // تحديث شريط الأقسام
+            updateSectionsBar();
+
+            // تم إزالة عرض الأسئلة القادمة
+
+            // تحديث حالة أزرار التنقل
+            updateNavigationButtons();
+
+            // بدء توقيت السؤال
+            testState.questionStartTime = Date.now();
+
+            // إزالة التحديد السابق
+            document.querySelectorAll('.answer-btn').forEach(btn => {
+                btn.classList.remove('pulse-success');
+                btn.style.transform = '';
+                btn.style.background = '';
+            });
+
+            // إظهار الإجابة المحفوظة إن وجدت
+            if (testState.answers[question.id] !== undefined) {
+                highlightSavedAnswer(testState.answers[question.id]);
+            }
+        }
+
+        // عرض الأسئلة القادمة - تم إزالتها
+        function displayUpcomingQuestions() {
+            // تم إزالة هذه الوظيفة
+        }
+
+        // تحديث أزرار التنقل
+        function updateNavigationButtons() {
+            const backBtn = document.getElementById('back-btn');
+            backBtn.disabled = testState.currentIndex === 0;
+            if (testState.currentIndex === 0) {
+                backBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            } else {
+                backBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+        }
+
+        // إبراز الإجابة المحفوظة
+        function highlightSavedAnswer(answerValue) {
+            const buttons = document.querySelectorAll('.answer-btn');
+            if (answerValue === 0) {
+                buttons[answerValue].style.background = 'linear-gradient(135deg, #dc2626, #b91c1c)';
+                buttons[answerValue].style.color = 'white';
+            } else if (answerValue === 1) {
+                buttons[answerValue].style.background = 'linear-gradient(135deg, #ea580c, #c2410c)';
+                buttons[answerValue].style.color = 'white';
+            } else if (answerValue === 2) {
+                buttons[answerValue].style.background = 'linear-gradient(135deg, #16a34a, #15803d)';
+                buttons[answerValue].style.color = 'white';
+            }
+            buttons[answerValue].style.transform = 'scale(1.02)';
+        }
+
+        // القفز لسؤال معين
+        function jumpToQuestion(index) {
+            if (index >= 0 && index < questions.length) {
+                testState.currentIndex = index;
+                displayQuestion();
+            }
+        }
+
+        // تخطي السؤال - تم إزالتها
+        function skipQuestion() {
+            // تم إزالة هذه الوظيفة
+        }
+
+        // تحديث شريط الأقسام
+        function updateSectionsBar() {
+            const currentSection = questions[testState.currentIndex].section;
+            document.querySelectorAll('.section-btn').forEach((btn, index) => {
+                const sectionNum = index + 1;
+                if (sectionNum === currentSection) {
+                    btn.className = 'section-btn px-3 py-2 rounded-lg text-sm font-medium bg-blue-600 text-white';
+                } else if (sectionNum < currentSection) {
+                    btn.className = 'section-btn px-3 py-2 rounded-lg text-sm font-medium bg-green-500 text-white';
+                } else {
+                    btn.className = 'section-btn px-3 py-2 rounded-lg text-sm font-medium bg-gray-200 text-gray-600 hover:bg-gray-300';
+                }
+            });
+        }
+
+        // اختيار إجابة
+        function selectAnswer(value) {
+            const question = questions[testState.currentIndex];
+            const responseTime = Date.now() - testState.questionStartTime;
+
+            // حفظ الإجابة والوقت
+            testState.answers[question.id] = value;
+            testState.perQuestionTime[question.id] = responseTime;
+
+            // تحديث تقدم القسم
+            testState.sectionsProgress[question.section - 1]++;
+
+            // حفظ التقدم في التخزين المحلي
+            saveProgress();
+
+            // فحص السرعة
+            if (responseTime < 1200) {
+                testState.fastStreakCount++;
+            } else {
+                testState.fastStreakCount = 0;
+            }
+
+            // تأثير بصري
+            const buttons = document.querySelectorAll('.answer-btn');
+            buttons[value].classList.add('pulse-success');
+
+            // تشغيل صوت (إذا كان مفعلاً)
+            if (testState.isSoundEnabled) {
+                playSound('select');
+            }
+
+            // فحص تنبيه السرعة
+            if (testState.fastStreakCount >= 10) {
+                setTimeout(() => showSpeedWarning(), 300);
+                return;
+            }
+
+            // الانتقال للسؤال التالي
+            setTimeout(() => {
+                nextQuestion();
+            }, 300);
+        }
+
+        // السؤال التالي
+        function nextQuestion() {
+            testState.currentIndex++;
+
+            // فحص الاستراحة
+            if (testState.currentIndex === 15 || testState.currentIndex === 30) {
+                showBreak();
+                return;
+            }
+
+            // فحص انتهاء الاختبار
+            if (testState.currentIndex >= questions.length) {
+                showResults();
+                return;
+            }
+
+            displayQuestion();
+        }
+
+        // الرجوع للسؤال السابق
+        function goBack() {
+            if (testState.currentIndex > 0) {
+                testState.currentIndex--;
+                displayQuestion();
+            }
+        }
+
+        // إظهار شاشة الاستراحة
+        function showBreak() {
+            document.getElementById('test-screen').classList.add('hidden');
+            document.getElementById('break-screen').classList.remove('hidden');
+
+            let timeLeft = 15;
+            const timer = document.getElementById('break-timer');
+
+            const countdown = setInterval(() => {
+                timeLeft--;
+                timer.textContent = timeLeft;
+
+                if (timeLeft <= 0) {
+                    clearInterval(countdown);
+                    skipBreak();
+                }
+            }, 1000);
+        }
+
+        // تخطي الاستراحة
+        function skipBreak() {
+            document.getElementById('break-screen').classList.add('hidden');
+            document.getElementById('test-screen').classList.remove('hidden');
+            displayQuestion();
+        }
+
+        // إظهار تنبيه السرعة
+        function showSpeedWarning() {
+            document.getElementById('speed-warning').classList.remove('hidden');
+        }
+
+        // مراجعة الإجابات السريعة
+        function reviewFastAnswers() {
+            document.getElementById('speed-warning').classList.add('hidden');
+            testState.fastStreakCount = 0;
+            // العودة للسؤال الحالي للمراجعة
+            displayQuestion();
+        }
+
+        // متابعة الاختبار
+        function continueTest() {
+            document.getElementById('speed-warning').classList.add('hidden');
+            testState.fastStreakCount = 0;
+            nextQuestion();
+        }
+
+        // إظهار النتائج
+        function showResults() {
+            document.getElementById('test-screen').classList.add('hidden');
+            document.getElementById('transition-screen').classList.remove('hidden');
+
+            // مسح التقدم المحفوظ لأن الاختبار اكتمل
+            clearProgress(testState.userName);
+
+            // إظهار شاشة الانتقال لمدة 3 ثوانٍ ثم الانتقال للنتائج
+            setTimeout(() => {
+                document.getElementById('transition-screen').classList.add('hidden');
+                document.getElementById('results-screen').classList.remove('hidden');
+                calculateAndDisplayResults();
+            }, 3000);
+        }
+
+        // حساب وعرض النتائج
+        function calculateAndDisplayResults() {
+            // حساب النقاط لكل بُعد
+            const scores = { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 };
+            const counts = { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 };
+
+            questions.forEach(q => {
+                if (testState.answers[q.id] !== undefined) {
+                    scores[q.dimension] += testState.answers[q.id];
+                    counts[q.dimension]++;
+                }
+            });
+
+            // حساب النسب المئوية
+            const percentages = {};
+            Object.keys(scores).forEach(dim => {
+                percentages[dim] = counts[dim] > 0 ? (scores[dim] / (counts[dim] * 2)) * 100 : 0;
+            });
+
+            // ترتيب الأبعاد
+            const sortedDimensions = Object.keys(percentages).sort((a, b) => percentages[b] - percentages[a]);
+
+            // عرض المعلومات الأساسية
+            document.getElementById('result-name').textContent = testState.userName;
+            document.getElementById('total-time').textContent = formatTime(Date.now() - testState.startedAt);
+            document.getElementById('confidence-level').textContent = calculateConfidenceLevel();
+
+            // عرض أعلى 3 أبعاد
+            displayTopDimensions(sortedDimensions.slice(0, 3), percentages);
+
+            // حساب وعرض أفضل المهن
+            const topCareers = calculateTopCareers(percentages);
+            displayTopCareers(topCareers);
+
+            // حساب وعرض أفضل التخصصات الجامعية
+            const topMajors = calculateTopMajors(percentages);
+            displayTopMajors(topMajors);
+
+            // رسم المخططات
+            drawBarChart(sortedDimensions, percentages, scores, counts);
+            drawRadarChart(percentages);
+
+            // عرض بطاقات الأبعاد
+            displayDimensionCards(sortedDimensions, percentages);
+
+            // عرض التوصيات
+            displayRecommendations(sortedDimensions.slice(0, 3), percentages);
+        }
+
+        // حساب أفضل المهن بناءً على النتائج
+        function calculateTopCareers(percentages) {
+            // إعادة تعيين النقاط
+            Object.keys(careerDatabase).forEach(career => {
+                careerDatabase[career].score = 0;
+            });
+
+            // حساب نقاط كل مهنة
+            Object.keys(careerDatabase).forEach(careerName => {
+                const career = careerDatabase[careerName];
+                career.dimensions.forEach(dim => {
+                    career.score += percentages[dim] || 0;
+                });
+                // حساب المتوسط
+                career.score = career.score / career.dimensions.length;
+            });
+
+            // ترتيب المهن حسب النقاط
+            return Object.keys(careerDatabase)
+                .sort((a, b) => careerDatabase[b].score - careerDatabase[a].score)
+                .slice(0, 5)
+                .map(name => ({
+                    name,
+                    ...careerDatabase[name]
+                }));
+        }
+
+        // حساب أفضل التخصصات الجامعية بناءً على النتائج
+        function calculateTopMajors(percentages) {
+            // إعادة تعيين النقاط
+            Object.keys(majorDatabase).forEach(major => {
+                majorDatabase[major].score = 0;
+            });
+
+            // حساب نقاط كل تخصص بطريقة أكثر دقة
+            Object.keys(majorDatabase).forEach(majorName => {
+                const major = majorDatabase[majorName];
+                let totalScore = 0;
+                let weightedScore = 0;
+
+                // حساب النقاط الأساسية
+                major.dimensions.forEach(dim => {
+                    const dimScore = percentages[dim] || 0;
+                    totalScore += dimScore;
+                });
+
+                // حساب المتوسط الأساسي
+                const averageScore = totalScore / major.dimensions.length;
+
+                // تطبيق معايير إضافية للدقة
+                if (major.dimensions.length === 1) {
+                    // للتخصصات أحادية البُعد: النقاط الكاملة للبُعد الواحد
+                    weightedScore = percentages[major.dimensions[0]] || 0;
+                } else if (major.dimensions.length === 2) {
+                    // للتخصصات ثنائية الأبعاد: متوسط مرجح مع مكافأة للتوازن
+                    const dim1Score = percentages[major.dimensions[0]] || 0;
+                    const dim2Score = percentages[major.dimensions[1]] || 0;
+                    const balance = 1 - Math.abs(dim1Score - dim2Score) / 100;
+                    weightedScore = averageScore * (0.8 + balance * 0.2);
+                } else {
+                    // للتخصصات متعددة الأبعاد: تركيز على الأبعاد القوية
+                    const strongDimensions = major.dimensions.filter(dim => percentages[dim] > 50);
+                    const veryStrongDimensions = major.dimensions.filter(dim => percentages[dim] > 70);
+
+                    weightedScore = averageScore;
+
+                    // مكافآت للأبعاد القوية
+                    if (strongDimensions.length >= 2) {
+                        weightedScore *= 1.1; // مكافأة 10%
+                    }
+                    if (veryStrongDimensions.length >= 1) {
+                        weightedScore *= 1.05; // مكافأة إضافية 5%
+                    }
+
+                    // تقليل النقاط إذا كان هناك بُعد ضعيف جداً
+                    const weakDimensions = major.dimensions.filter(dim => percentages[dim] < 30);
+                    if (weakDimensions.length > 0) {
+                        weightedScore *= (1 - weakDimensions.length * 0.1);
+                    }
+                }
+
+                // تطبيق حد أقصى وأدنى منطقي
+                major.score = Math.max(0, Math.min(100, weightedScore));
+            });
+
+            // ترتيب التخصصات حسب النقاط
+            return Object.keys(majorDatabase)
+                .sort((a, b) => majorDatabase[b].score - majorDatabase[a].score)
+                .slice(0, 5)
+                .map(name => ({
+                    name,
+                    ...majorDatabase[name]
+                }));
+        }
+
+        // عرض أفضل 5 مهن
+        function displayTopCareers(topCareers) {
+            const container = document.getElementById('top-careers');
+            container.innerHTML = '';
+
+            topCareers.forEach((career, index) => {
+                const careerCard = document.createElement('div');
+                careerCard.className = 'flex items-center gap-3 p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors cursor-pointer';
+                careerCard.onclick = () => showCareerDetails(career);
+
+                careerCard.innerHTML = `
+                    <div class="flex-shrink-0">
+                        <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                            <span class="text-lg">${career.icon}</span>
+                        </div>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="font-semibold text-gray-800 text-sm">${career.name}</span>
+                            <span class="bg-blue-500 text-white text-xs px-2 py-1 rounded-full">#${index + 1}</span>
+                        </div>
+                        <div class="text-xs text-gray-600 mb-2">${career.description}</div>
+                        <div class="flex items-center gap-1">
+                            <div class="text-xs font-semibold text-blue-600">${Math.round(career.score)}% مطابقة</div>
+                            <div class="flex-1 bg-gray-200 rounded-full h-1.5">
+                                <div class="bg-blue-500 h-1.5 rounded-full transition-all duration-300" style="width: ${career.score}%"></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                container.appendChild(careerCard);
+            });
+        }
+
+        // عرض أفضل 5 تخصصات جامعية
+        function displayTopMajors(topMajors) {
+            const container = document.getElementById('top-majors');
+            container.innerHTML = '';
+
+            topMajors.forEach((major, index) => {
+                const majorCard = document.createElement('div');
+                majorCard.className = 'flex items-center gap-3 p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors cursor-pointer';
+                majorCard.onclick = () => showMajorDetails(major);
+
+                majorCard.innerHTML = `
+                    <div class="flex-shrink-0">
+                        <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                            <span class="text-lg">${major.icon}</span>
+                        </div>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="font-semibold text-gray-800 text-sm">${major.name}</span>
+                            <span class="bg-purple-500 text-white text-xs px-2 py-1 rounded-full">#${index + 1}</span>
+                        </div>
+                        <div class="text-xs text-gray-600 mb-1">${major.description}</div>
+                        <div class="text-xs text-purple-600 mb-2">التصنيف: ${major.category}</div>
+                        <div class="flex items-center gap-1">
+                            <div class="text-xs font-semibold text-purple-600">${Math.round(major.score)}% مطابقة</div>
+                            <div class="flex-1 bg-gray-200 rounded-full h-1.5">
+                                <div class="bg-purple-500 h-1.5 rounded-full transition-all duration-300" style="width: ${Math.min(major.score, 100)}%"></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                container.appendChild(majorCard);
+            });
+        }
+
+        // عرض تفاصيل التخصص الجامعي
+        function showMajorDetails(major) {
+            const dimensionNames = major.dimensions.map(dim => dimensions[dim].name.split(' ')[0]).join(' + ');
+            alert(`${major.icon} ${major.name}\n\n${major.description}\n\nالتصنيف: ${major.category}\nالأبعاد المطلوبة: ${dimensionNames}\nنسبة المطابقة: ${Math.round(major.score)}%`);
+        }
+
+        // عرض تفاصيل المهنة
+        function showCareerDetails(career) {
+            const dimensionNames = career.dimensions.map(dim => dimensions[dim].name.split(' ')[0]).join(' + ');
+            alert(`${career.icon} ${career.name}\n\n${career.description}\n\nالأبعاد المطلوبة: ${dimensionNames}\nنسبة المطابقة: ${Math.round(career.score)}%`);
+        }
+
+        // عرض أعلى 3 أبعاد
+        function displayTopDimensions(topDims, percentages) {
+            const container = document.getElementById('top-dimensions');
+            container.innerHTML = '';
+
+            // إضافة عنوان "ميولك الأعلى"
+            const title = document.createElement('div');
+            title.className = 'w-full text-center mb-4';
+            title.innerHTML = `<h3 class="text-xl font-bold text-white mb-2">🎯 ميولك الأعلى</h3>`;
+            container.appendChild(title);
+
+            // إنشاء حاوية للأبعاد الثلاثة
+            const dimensionsContainer = document.createElement('div');
+            dimensionsContainer.className = 'flex flex-wrap justify-center gap-4 w-full';
+
+            topDims.forEach((dim, index) => {
+                const badge = document.createElement('div');
+                badge.className = 'bg-white/20 backdrop-blur-sm rounded-2xl px-6 py-4 border border-white/30 flex-1 min-w-[280px] max-w-[320px]';
+
+                // الحصول على الاسم العربي والإنجليزي
+                const arabicName = dimensions[dim].name.split('(')[0].trim();
+                const englishName = dimensions[dim].name.match(/\(([^)]+)\)/)[1];
+
+                badge.innerHTML = `
+                    <div class="flex flex-col items-center text-center gap-3">
+                        <div class="flex items-center gap-3">
+                            <span class="text-4xl">${questions.find(q => q.dimension === dim).icon}</span>
+                            <div class="bg-yellow-400 text-yellow-900 px-4 py-2 rounded-full text-lg font-bold">
+                                #${index + 1}
+                            </div>
+                        </div>
+                        <div>
+                            <div class="font-bold text-xl text-white">${arabicName}</div>
+                            <div class="text-base opacity-90 text-yellow-200">${englishName}</div>
+                            <div class="text-sm opacity-80 text-white mt-2 bg-white/10 px-3 py-1 rounded-full">الرمز: ${dim}</div>
+                        </div>
+                        <div class="text-lg font-bold text-yellow-300 bg-white/10 px-4 py-2 rounded-full">${Math.round(percentages[dim])}% مطابقة</div>
+                    </div>
+                `;
+                dimensionsContainer.appendChild(badge);
+            });
+
+            container.appendChild(dimensionsContainer);
+        }
+
+        // رسم مخطط الأعمدة
+        function drawBarChart(sortedDims, percentages, scores, counts) {
+            const ctx = document.getElementById('barChart').getContext('2d');
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: sortedDims.map(dim => dimensions[dim].name),
+                    datasets: [{
+                        label: 'النسبة المئوية',
+                        data: sortedDims.map(dim => percentages[dim]),
+                        backgroundColor: sortedDims.map(dim => dimensions[dim].color),
+                        borderRadius: 8,
+                        borderSkipped: false,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                callback: function (value) {
+                                    return value + '%';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // رسم مخطط الرادار
+        function drawRadarChart(percentages) {
+            const ctx = document.getElementById('radarChart').getContext('2d');
+
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: Object.keys(dimensions).map(dim => dimensions[dim].name.split(' ')[0]),
+                    datasets: [{
+                        label: 'ميولك المهنية',
+                        data: Object.keys(dimensions).map(dim => percentages[dim]),
+                        backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                        borderColor: 'rgb(59, 130, 246)',
+                        pointBackgroundColor: 'rgb(59, 130, 246)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgb(59, 130, 246)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                stepSize: 20
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // عرض بطاقات الأبعاد
+        function displayDimensionCards(sortedDims, percentages) {
+            const container = document.getElementById('dimension-cards');
+            container.innerHTML = '';
+
+            sortedDims.forEach(dim => {
+                const card = document.createElement('div');
+                card.className = 'bg-white border-2 rounded-xl p-4 hover:shadow-lg transition-shadow';
+                card.style.borderColor = dimensions[dim].color;
+
+                card.innerHTML = `
+                    <div class="text-center mb-3">
+                        <span class="text-3xl">${questions.find(q => q.dimension === dim).icon}</span>
+                        <h4 class="font-bold text-gray-800 text-sm mt-2">${dimensions[dim].name.split(' ')[0]}</h4>
+                        <div class="text-xl font-bold mt-1" style="color: ${dimensions[dim].color}">${Math.round(percentages[dim])}%</div>
+                    </div>
+                    
+                    <p class="text-gray-600 text-xs mb-3 text-center">${dimensions[dim].description}</p>
+                    
+                    <div class="mb-3">
+                        <h5 class="font-semibold text-gray-700 mb-2 text-xs">مهن مناسبة:</h5>
+                        <div class="flex flex-wrap gap-1">
+                            ${dimensions[dim].careers.slice(0, 3).map(career =>
+                    `<span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">${career}</span>`
+                ).join('')}
+                        </div>
+                    </div>
+                    
+                    <button onclick="showActivities('${dim}')" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 py-2 rounded-lg text-xs transition-colors">
+                        أنشطة مقترحة
+                    </button>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        // عرض التوصيات
+        function displayRecommendations(topDims, percentages) {
+            const container = document.getElementById('recommendations');
+            const topDim = topDims[0];
+            const topDimData = dimensions[topDim];
+
+            const recommendations = [
+                {
+                    icon: "🎯",
+                    title: "أنشطة لتقوية مهاراتك",
+                    description: `جرب هذه الأنشطة لتطوير البُعد ${topDimData.name.split(' ')[0]}:`,
+                    content: topDimData.activities.slice(0, 3).map(activity =>
+                        `<div class="flex items-start gap-2 mb-2">
+                            <span class="text-blue-500 mt-1">•</span>
+                            <span class="text-sm text-gray-700">${activity}</span>
+                        </div>`
+                    ).join(''),
+                    type: "activities"
+                },
+                {
+                    icon: "💼",
+                    title: "مهن مناسبة لك",
+                    description: `بناءً على نتائجك، هذه أفضل المهن المناسبة:`,
+                    content: calculateTopCareers(percentages).slice(0, 4).map(career =>
+                        `<div class="flex items-center gap-3 mb-2 p-2 bg-gray-50 rounded-lg">
+                            <span class="text-lg">${career.icon}</span>
+                            <div class="flex-1">
+                                <div class="font-semibold text-sm text-gray-800">${career.name}</div>
+                                <div class="text-xs text-gray-600">${Math.round(career.score)}% مطابقة</div>
+                            </div>
+                        </div>`
+                    ).join(''),
+                    type: "careers"
+                },
+                {
+                    icon: "📈",
+                    title: "خطة التطوير الشخصي",
+                    description: "خطوات عملية لتطوير مهاراتك:",
+                    content: `
+                        <div class="space-y-3">
+                            <div class="flex items-start gap-3">
+                                <div class="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">1</div>
+                                <div class="flex-1">
+                                    <div class="font-semibold text-sm text-gray-800">قيّم مهاراتك الحالية</div>
+                                    <div class="text-xs text-gray-600">حدد نقاط القوة والضعف في البُعد ${topDimData.name.split(' ')[0]}</div>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">2</div>
+                                <div class="flex-1">
+                                    <div class="font-semibold text-sm text-gray-800">ابحث عن فرص التعلم</div>
+                                    <div class="text-xs text-gray-600">دورات، ورش عمل، أو تجارب عملية</div>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">3</div>
+                                <div class="flex-1">
+                                    <div class="font-semibold text-sm text-gray-800">طبق ما تعلمته</div>
+                                    <div class="text-xs text-gray-600">ابدأ مشروع صغير أو تطوع في مجالك</div>
+                                </div>
+                            </div>
+                        </div>
+                    `,
+                    type: "plan"
+                }
+            ];
+
+            container.innerHTML = '';
+            recommendations.forEach(rec => {
+                const card = document.createElement('div');
+                card.className = 'bg-gradient-to-br from-blue-50 to-purple-50 border border-blue-200 rounded-xl p-6';
+                card.innerHTML = `
+                    <div class="text-center mb-4">
+                        <div class="text-4xl mb-2">${rec.icon}</div>
+                        <h4 class="font-bold text-gray-800 text-lg">${rec.title}</h4>
+                        <p class="text-gray-600 text-sm mt-2">${rec.description}</p>
+                    </div>
+                    <div class="bg-white rounded-lg p-4 shadow-sm">
+                        ${rec.content}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // حساب مستوى الثقة
+        function calculateConfidenceLevel() {
+            const fastAnswers = Object.values(testState.perQuestionTime).filter(time => time < 1200).length;
+            const totalAnswers = Object.keys(testState.answers).length;
+            const fastRatio = fastAnswers / totalAnswers;
+
+            if (fastRatio < 0.2) return "عالي";
+            if (fastRatio < 0.4) return "متوسط";
+            return "منخفض";
+        }
+
+        // تنسيق الوقت
+        function formatTime(ms) {
+            const minutes = Math.floor(ms / 60000);
+            const seconds = Math.floor((ms % 60000) / 1000);
+            return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        // بدء المؤقت
+        function startTimer() {
+            setInterval(() => {
+                if (testState.startedAt) {
+                    const elapsed = Date.now() - testState.startedAt;
+                    document.getElementById('timer').textContent = formatTime(elapsed);
+                }
+            }, 1000);
+        }
+
+        // إعداد اختصارات لوحة المفاتيح
+        function setupKeyboardShortcuts() {
+            document.addEventListener('keydown', (e) => {
+                if (document.getElementById('test-screen').classList.contains('hidden')) return;
+
+                switch (e.key) {
+                    case '1':
+                        selectAnswer(0);
+                        break;
+                    case '2':
+                        selectAnswer(1);
+                        break;
+                    case '3':
+                        selectAnswer(2);
+                        break;
+                    case 'Backspace':
+                        e.preventDefault();
+                        goBack();
+                        break;
+                }
+            });
+        }
+
+        // تبديل اللغة
+        function toggleLanguage() {
+            alert('سيتم إضافة دعم اللغة الإنجليزية قريباً');
+        }
+
+        // تبديل الوضع الليلي
+        function toggleDarkMode() {
+            testState.isDarkMode = !testState.isDarkMode;
+            document.getElementById('body').classList.toggle('dark-mode');
+        }
+
+        // تبديل الصوت
+        function toggleSound() {
+            testState.isSoundEnabled = !testState.isSoundEnabled;
+        }
+
+        // تشغيل الصوت
+        function playSound(type) {
+            // يمكن إضافة أصوات فعلية هنا
+            console.log(`Playing ${type} sound`);
+        }
+
+        // فتح نافذة القسم
+        function openSectionModal(sectionNum) {
+            alert(`سيتم إضافة نافذة مراجعة القسم ${sectionNum} قريباً`);
+        }
+
+        // إظهار الأنشطة
+        function showActivities(dimension) {
+            const activities = dimensions[dimension].activities;
+            alert(`أنشطة لتقوية البُعد ${dimensions[dimension].name}:\n\n${activities.join('\n• ')}`);
+        }
+
+        // وظائف الحفظ والطباعة
+        function saveAsImage() {
+            // استخدام html2canvas لحفظ النتائج كصورة
+            const resultsElement = document.getElementById('results-screen');
+
+            // إنشاء canvas مؤقت
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = 1200;
+            canvas.height = 1600;
+
+            // رسم خلفية بيضاء
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // إضافة النص الأساسي
+            ctx.fillStyle = '#1f2937';
+            ctx.font = 'bold 32px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(`نتائج اختبار RIASEC - ${testState.userName}`, canvas.width / 2, 60);
+
+            // رسم الأبعاد الثلاثة الأولى
+            const topDims = Object.keys(dimensions).sort((a, b) => {
+                const scoresA = calculateDimensionScore(a);
+                const scoresB = calculateDimensionScore(b);
+                return scoresB - scoresA;
+            }).slice(0, 3);
+
+            let yPos = 120;
+            topDims.forEach((dim, index) => {
+                const score = calculateDimensionScore(dim);
+                ctx.font = 'bold 24px Arial';
+                ctx.fillText(`${index + 1}. ${dimensions[dim].name}: ${Math.round(score)}%`, canvas.width / 2, yPos);
+                yPos += 40;
+            });
+
+            // تحويل إلى صورة وتحميلها
+            const link = document.createElement('a');
+            link.download = `نتائج-اختبار-RIASEC-${testState.userName}.png`;
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+
+        async function saveAsPDF() {
+            // print();
+            let html = `
+            <!DOCTYPE html>
+            ${document.querySelector("head").innerHTML}
+            <body class="min-h-screen transition-all duration-300" id="body">
+                <div id="results-screen" class="min-h-screen bg-gray-50 p-6">
+                    ${document.querySelector("#results-screen").innerHTML}
+                </div>
+            </body>
+            <html lang="ar" dir="rtl">
+            </html>
+            `
+            console.log(html)
+            var data = new URLSearchParams();
+            data.append("html", html);
+            const resp = await fetch('/html-to-pdf', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                },
+                body: data
+            });
+            const blob = await resp.blob();
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'تقرير_نتائج_الاختبارات_الشاملة.pdf';
+            link.click();
+            URL.revokeObjectURL(link.href);
+        }
+
+        function printResults() {
+            window.print();
+        }
+
+        // وظائف مساعدة للحفظ
+        function calculateDimensionScore(dimension) {
+            const dimQuestions = questions.filter(q => q.dimension === dimension);
+            let totalScore = 0;
+            let count = 0;
+
+            dimQuestions.forEach(q => {
+                if (testState.answers[q.id] !== undefined) {
+                    totalScore += testState.answers[q.id];
+                    count++;
+                }
+            });
+
+            return count > 0 ? (totalScore / (count * 2)) * 100 : 0;
+        }
+
+        function getPercentages() {
+            const percentages = {};
+            Object.keys(dimensions).forEach(dim => {
+                percentages[dim] = calculateDimensionScore(dim);
+            });
+            return percentages;
+        }
+
+        // الرجوع لصفحة التعليمات
+        function goToInstructions() {
+            const answeredQuestions = Object.keys(testState.answers).length;
+
+            if (answeredQuestions > 0) {
+                // تحديث نص النافذة بعدد الإجابات
+                document.getElementById('instructions-modal-text').textContent =
+                    `لديك ${answeredQuestions} إجابة محفوظة. اختر ما تريد فعله:`;
+
+                // إظهار النافذة
+                document.getElementById('instructions-modal').classList.remove('hidden');
+            } else {
+                // لا توجد إجابات، العودة مباشرة
+                document.getElementById('test-screen').classList.add('hidden');
+                document.getElementById('onboarding-screen').classList.remove('hidden');
+                // document.getElementById('userName').value = testState.userName;
+            }
+        }
+
+        // العودة للتعليمات مع حفظ التقدم
+        function goToInstructionsWithSave() {
+            // حفظ التقدم
+            saveProgress();
+
+            // إخفاء النافذة وشاشة الاختبار
+            document.getElementById('instructions-modal').classList.add('hidden');
+            document.getElementById('test-screen').classList.add('hidden');
+            document.getElementById('onboarding-screen').classList.remove('hidden');
+
+            // تعبئة الاسم مسبقاً
+            // document.getElementById('userName').value = testState.userName;
+
+            // إظهار رسالة تأكيد
+            setTimeout(() => {
+                alert(`تم حفظ تقدمك بنجاح!\n\nيمكنك العودة لاحقاً والمتابعة من السؤال رقم ${testState.currentIndex + 1}.`);
+            }, 500);
+        }
+
+        // العودة للتعليمات بدون حفظ التقدم
+        function goToInstructionsWithoutSave() {
+            // مسح التقدم المحفوظ
+            clearProgress(testState.userName);
+
+            // إخفاء النافذة وشاشة الاختبار
+            document.getElementById('instructions-modal').classList.add('hidden');
+            document.getElementById('test-screen').classList.add('hidden');
+            document.getElementById('onboarding-screen').classList.remove('hidden');
+
+            // تعبئة الاسم مسبقاً
+            // document.getElementById('userName').value = testState.userName;
+
+            // إظهار رسالة تأكيد
+            setTimeout(() => {
+                alert('تم حذف التقدم المحفوظ. يمكنك بدء اختبار جديد.');
+            }, 500);
+        }
+
+        // إغلاق نافذة التعليمات
+        function closeInstructionsModal() {
+            document.getElementById('instructions-modal').classList.add('hidden');
+        }
+
+        // إعادة الاختبار
+        function restartTest() {
+            // if (confirm('هل أنت متأكد من إعادة الاختبار؟ ستفقد النتيجة الحالية والتقدم المحفوظ.')) {
+            // }
+            // clearProgress(testState.userName);
+            // مسح التقدم المحفوظ
+            location.href = "/p2"
+        }
+
+        // إضافة مؤشر للتقدم المحفوظ في الشاشة الرئيسية
+        function checkForSavedProgress() {
+            const userName = "<%=user%>"
+            if (userName && checkSavedProgress(userName)) {
+                const savedProgress = loadProgress(userName);
+                const answeredQuestions = Object.keys(savedProgress.answers).length;
+
+                // إظهار مؤشر التقدم المحفوظ
+                let progressIndicator = document.getElementById('progress-indicator');
+                if (!progressIndicator) {
+                    progressIndicator = document.createElement('div');
+                    progressIndicator.id = 'progress-indicator';
+                    progressIndicator.className = 'mt-2 p-3 bg-green-50 border border-green-200 rounded-lg text-center';
+                    // nameInput.parentNode.appendChild(progressIndicator);
+                }
+
+                progressIndicator.innerHTML = `
+                        <div class="flex items-center justify-center gap-2 text-green-700">
+                            <span class="text-lg">💾</span>
+                            <span class="font-semibold">وجد تقدم محفوظ!</span>
+                        </div>
+                        <div class="text-sm text-green-600 mt-1">
+                            أجبت على ${answeredQuestions} سؤال من أصل 45
+                        </div>
+                        <div class="text-xs text-green-500 mt-1">
+                            آخر مرة: ${new Date(savedProgress.lastSaved).toLocaleDateString('ar-SA')}
+                        </div>
+                    `;
+            } else {
+                // إزالة مؤشر التقدم إذا لم يوجد تقدم محفوظ
+                const progressIndicator = document.getElementById('progress-indicator');
+                if (progressIndicator) {
+                    progressIndicator.remove();
+                }
+            }
+        }
+
+        // تشغيل فحص التقدم المحفوظ عند تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', function () {
+            checkForSavedProgress();
+        });
+    </script>
+    <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'98031896f1ed7892',t:'MTc1ODA1NDM1OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script>
+</body>
+
+</html>
