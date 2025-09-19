@@ -1,7 +1,6 @@
 var express = require('express')
 var session = require('express-session')
 var session = require('express-session')
-// var axios = require("axios");
 const puppeteer = require('puppeteer');
 
 var app = express()
@@ -66,6 +65,27 @@ app.get('/end', function (req, res) {
 // })
 
 
+// Result-Page
+app.get('/Results/:exam', async function (req, res) {
+    await client.connect();
+    const db = client.db("soqy");
+    const collection = db.collection('users');
+    const user = await collection.findOne({ name: req.session.user, })
+    console.log(req.params)
+    if (user[req.params.exam]) {
+        res.render("p3Result", { exam: user[req.params.exam], user: req.session.user });
+
+    } else {
+        res.send('notFound');
+    }
+
+
+
+})
+app.get('/Results', function (req, res) {
+    res.redirect("/");
+})
+
 
 
 app.post('/html-to-pdf', async (req, res) => {
@@ -100,20 +120,34 @@ app.post('/html-to-pdf', async (req, res) => {
         res.send(pdfBuffer);
 
     } catch (err) {
-        console.error(err);
+        console.error("err");
         res.status(500).send('خطأ في إنشاء PDF');
     }
 });
 
 
 
-app.post('/login', express.urlencoded({ extended: false }), async function (req, res) {
-
+app.post('/saveExam', async function (req, res) {
     await client.connect();
     const db = client.db("soqy");
     const collection = db.collection('users');
-    // const user = await collection.findOne({ name: "sllom", password: 123 })
-    // const user = await collection.find().toArray();
+    console.log(req.body)
+    await collection.updateOne({ name: req.session.user }, { $set: { [req.body.type]: req.body.data } }).then(() => {
+
+        res.send('saved')
+    }).catch(err => {
+
+        res.send('notFound');
+    })
+})
+
+
+
+
+app.post('/login', express.urlencoded({ extended: false }), async function (req, res) {
+    await client.connect();
+    const db = client.db("soqy");
+    const collection = db.collection('users');
     const user = await collection.findOne({ name: req.body.user, password: req.body.pass })
     console.log(req.body)
     console.log(user)
@@ -134,17 +168,6 @@ app.post('/login', express.urlencoded({ extended: false }), async function (req,
         res.send('notFound');
     }
 })
-
-// app.get('/logout', function (req, res, next) {
-//     req.session.user = null
-//     req.session.save(function (err) {
-//         if (err) next(err);
-//         req.session.regenerate(function (err) {
-//             if (err) next(err)
-//             res.redirect('/')
-//         })
-//     })
-// })
 
 app.get('/logout', (req, res) => {
     req.session.destroy(err => {

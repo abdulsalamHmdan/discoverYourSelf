@@ -114,605 +114,8 @@
 </head>
 
 <body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
-    <!-- شاشة البداية -->
-    <div id="welcome-screen" class="container mx-auto px-4 py-8 max-w-6xl">
-        <!-- العنوان الرئيسي مع تأثيرات بصرية -->
-        <div class="text-center mb-12 fade-in">
-            <div class="relative">
-                <h1
-                    class="text-5xl md:text-7xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-600 bg-clip-text text-transparent mb-6 leading-tight">
-                    🧠 اكتشف ذكاءاتك المتعددة!
-                </h1>
-                <div class="absolute -top-4 -right-4 w-20 h-20 bg-yellow-200 rounded-full opacity-20 animate-pulse">
-                </div>
-                <div
-                    class="absolute -bottom-4 -left-4 w-16 h-16 bg-pink-200 rounded-full opacity-20 animate-pulse delay-1000">
-                </div>
-            </div>
-
-            <!-- بطاقة الوصف المحسنة -->
-            <div
-                class="bg-gradient-to-br from-white to-indigo-50 rounded-3xl shadow-2xl p-8 mb-8 border border-indigo-100">
-                <div class="max-w-4xl mx-auto">
-                    <p class="text-xl md:text-2xl text-gray-700 leading-relaxed mb-6 font-medium">
-                        اكتشف أنماط ذكائك الثمانية واحصل على توصيات شخصية لطرق التعلم والأنشطة والتخصصات المناسبة لك
-                    </p>
-
-                    <!-- إحصائيات سريعة -->
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                        <div class="bg-white rounded-2xl p-4 shadow-lg border-l-4 border-green-500">
-                            <div class="flex items-center gap-3">
-                                <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-                                    <span class="text-2xl">⏱️</span>
-                                </div>
-                                <div>
-                                    <div class="font-bold text-gray-800">10-15 دقائق</div>
-                                    <div class="text-sm text-gray-600">مدة الاختبار</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="bg-white rounded-2xl p-4 shadow-lg border-l-4 border-blue-500">
-                            <div class="flex items-center gap-3">
-                                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                                    <span class="text-2xl">🎯</span>
-                                </div>
-                                <div>
-                                    <div class="font-bold text-gray-800">40 سؤال</div>
-                                    <div class="text-sm text-gray-600">متنوع وتفاعلي</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="bg-white rounded-2xl p-4 shadow-lg border-l-4 border-purple-500">
-                            <div class="flex items-center gap-3">
-                                <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
-                                    <span class="text-2xl">✅</span>
-                                </div>
-                                <div>
-                                    <div class="font-bold text-gray-800">لا توجد إجابات خاطئة</div>
-                                    <div class="text-sm text-gray-600">كن صادقاً مع نفسك</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- شريط الذكاءات المحسن -->
-        <div class="bg-gradient-to-br from-white to-gray-50 rounded-3xl shadow-2xl p-8 mb-8 border border-gray-100">
-            <div class="text-center mb-8">
-                <h3 class="text-3xl font-bold text-gray-800 mb-2">الذكاءات الثمانية</h3>
-                <p class="text-gray-600">مرر الماوس على كل ذكاء لتتعرف عليه أكثر</p>
-            </div>
-
-            <div class="grid grid-cols-4 md:grid-cols-8 gap-3">
-                <div class="intelligence-icon relative group" data-intelligence="linguistic">
-                    <div
-                        class="bg-gradient-to-br from-red-100 to-red-200 rounded-xl p-3 shadow-lg hover:shadow-2xl transform hover:scale-110 transition-all duration-300 border-2 border-red-200 hover:border-red-400">
-                        <div class="text-3xl mb-2 text-center">📚</div>
-                        <div class="text-xs font-bold text-center text-red-800">لغوي/لفظي</div>
-                    </div>
-                    <div
-                        class="tooltip absolute bottom-full left-1/2 transform -translate-x-1/2 mb-3 bg-gray-900 text-white text-sm rounded-xl px-4 py-3 w-56 shadow-2xl z-10">
-                        <div class="font-semibold mb-1">الذكاء اللغوي</div>
-                        يميل للتعبير بالكلمات، القراءة والكتابة والقصص
-                        <div
-                            class="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-900">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="intelligence-icon relative group" data-intelligence="logical">
-                    <div
-                        class="bg-gradient-to-br from-orange-100 to-orange-200 rounded-xl p-3 shadow-lg hover:shadow-2xl transform hover:scale-110 transition-all duration-300 border-2 border-orange-200 hover:border-orange-400">
-                        <div class="text-3xl mb-2 text-center">🔢</div>
-                        <div class="text-xs font-bold text-center text-orange-800">منطقي/رياضي</div>
-                    </div>
-                    <div
-                        class="tooltip absolute bottom-full left-1/2 transform -translate-x-1/2 mb-3 bg-gray-900 text-white text-sm rounded-xl px-4 py-3 w-56 shadow-2xl z-10">
-                        <div class="font-semibold mb-1">الذكاء المنطقي</div>
-                        يحب الأرقام، الأنماط، الأسباب والنتائج، حل الألغاز
-                        <div
-                            class="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-900">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="intelligence-icon relative group" data-intelligence="spatial">
-                    <div
-                        class="bg-gradient-to-br from-yellow-100 to-yellow-200 rounded-xl p-3 shadow-lg hover:shadow-2xl transform hover:scale-110 transition-all duration-300 border-2 border-yellow-200 hover:border-yellow-400">
-                        <div class="text-3xl mb-2 text-center">🎨</div>
-                        <div class="text-xs font-bold text-center text-yellow-800">بصري/مكاني</div>
-                    </div>
-                    <div
-                        class="tooltip absolute bottom-full left-1/2 transform -translate-x-1/2 mb-3 bg-gray-900 text-white text-sm rounded-xl px-4 py-3 w-56 shadow-2xl z-10">
-                        <div class="font-semibold mb-1">الذكاء البصري</div>
-                        يتعلّم بالصور والخرائط والتخيل، قوي في الرسم والتصميم
-                        <div
-                            class="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-900">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="intelligence-icon relative group" data-intelligence="bodily">
-                    <div
-                        class="bg-gradient-to-br from-green-100 to-green-200 rounded-xl p-3 shadow-lg hover:shadow-2xl transform hover:scale-110 transition-all duration-300 border-2 border-green-200 hover:border-green-400">
-                        <div class="text-3xl mb-2 text-center">🏃</div>
-                        <div class="text-xs font-bold text-center text-green-800">جسدي/حركي</div>
-                    </div>
-                    <div
-                        class="tooltip absolute bottom-full left-1/2 transform -translate-x-1/2 mb-3 bg-gray-900 text-white text-sm rounded-xl px-4 py-3 w-56 shadow-2xl z-10">
-                        <div class="font-semibold mb-1">الذكاء الحركي</div>
-                        يتعلّم بالحركة واللمس والتجربة العملية والرياضة
-                        <div
-                            class="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-900">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="intelligence-icon relative group" data-intelligence="musical">
-                    <div
-                        class="bg-gradient-to-br from-cyan-100 to-cyan-200 rounded-xl p-3 shadow-lg hover:shadow-2xl transform hover:scale-110 transition-all duration-300 border-2 border-cyan-200 hover:border-cyan-400">
-                        <div class="text-3xl mb-2 text-center">🎵</div>
-                        <div class="text-xs font-bold text-center text-cyan-800">إيقاعي</div>
-                    </div>
-                    <div
-                        class="tooltip absolute bottom-full left-1/2 transform -translate-x-1/2 mb-3 bg-gray-900 text-white text-sm rounded-xl px-4 py-3 w-56 shadow-2xl z-10">
-                        <div class="font-semibold mb-1">الذكاء الإيقاعي</div>
-                        يلاحظ الأنماط والإيقاعات، يتعلم بالتكرار المنتظم
-                        <div
-                            class="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-900">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="intelligence-icon relative group" data-intelligence="interpersonal">
-                    <div
-                        class="bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl p-3 shadow-lg hover:shadow-2xl transform hover:scale-110 transition-all duration-300 border-2 border-blue-200 hover:border-blue-400">
-                        <div class="text-3xl mb-2 text-center">👥</div>
-                        <div class="text-xs font-bold text-center text-blue-800">اجتماعي</div>
-                    </div>
-                    <div
-                        class="tooltip absolute bottom-full left-1/2 transform -translate-x-1/2 mb-3 bg-gray-900 text-white text-sm rounded-xl px-4 py-3 w-56 shadow-2xl z-10">
-                        <div class="font-semibold mb-1">الذكاء الاجتماعي</div>
-                        يفهم الآخرين، يحب العمل الجماعي والتواصل
-                        <div
-                            class="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-900">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="intelligence-icon relative group" data-intelligence="intrapersonal">
-                    <div
-                        class="bg-gradient-to-br from-purple-100 to-purple-200 rounded-xl p-3 shadow-lg hover:shadow-2xl transform hover:scale-110 transition-all duration-300 border-2 border-purple-200 hover:border-purple-400">
-                        <div class="text-3xl mb-2 text-center">🎭</div>
-                        <div class="text-xs font-bold text-center text-purple-800">ذاتي/شخصي</div>
-                    </div>
-                    <div
-                        class="tooltip absolute bottom-full left-1/2 transform -translate-x-1/2 mb-3 bg-gray-900 text-white text-sm rounded-xl px-4 py-3 w-56 shadow-2xl z-10">
-                        <div class="font-semibold mb-1">الذكاء الذاتي</div>
-                        يعرف نفسه وأهدافه، يحب التأمل والتعلّم الذاتي
-                        <div
-                            class="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-900">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="intelligence-icon relative group" data-intelligence="naturalist">
-                    <div
-                        class="bg-gradient-to-br from-emerald-100 to-emerald-200 rounded-xl p-3 shadow-lg hover:shadow-2xl transform hover:scale-110 transition-all duration-300 border-2 border-emerald-200 hover:border-emerald-400">
-                        <div class="text-3xl mb-2 text-center">🌿</div>
-                        <div class="text-xs font-bold text-center text-emerald-800">طبيعي/بيئي</div>
-                    </div>
-                    <div
-                        class="tooltip absolute bottom-full left-1/2 transform -translate-x-1/2 mb-3 bg-gray-900 text-white text-sm rounded-xl px-4 py-3 w-56 shadow-2xl z-10">
-                        <div class="font-semibold mb-1">الذكاء الطبيعي</div>
-                        يرتاح في الطبيعة، يلاحظ الكائنات والأنماط البيئية
-                        <div
-                            class="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-900">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- شرح طريقة الاختبار -->
-        <div
-            class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-3xl shadow-2xl p-8 mb-8 border border-amber-200">
-            <div class="text-center mb-6">
-                <h3 class="text-3xl font-bold text-amber-800 mb-2">🎯 كيف يعمل الاختبار؟</h3>
-                <p class="text-amber-700 text-lg">اقرأ هذه النقاط المهمة قبل البدء</p>
-            </div>
-
-            <div class="grid md:grid-cols-2 gap-6 mb-8">
-                <!-- النقاط المهمة -->
-                <div class="bg-white rounded-2xl p-6 shadow-lg border-l-4 border-green-500">
-                    <h4 class="text-xl font-bold text-green-700 mb-4 flex items-center gap-2">
-                        <span class="text-2xl">✅</span>
-                        نقاط مهمة
-                    </h4>
-                    <ul class="space-y-3 text-gray-700">
-                        <li class="flex items-start gap-3">
-                            <span class="text-green-500 font-bold">•</span>
-                            <span><strong>لا توجد إجابة صحيحة أو خاطئة</strong> - اختر ما يشبهك فعلاً</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <span class="text-green-500 font-bold">•</span>
-                            <span><strong>كن صادقاً مع نفسك</strong> - لا تختر ما تتمنى أن تكونه</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <span class="text-green-500 font-bold">•</span>
-                            <span><strong>فكر في سلوكك الطبيعي</strong> - ليس في المواقف الاستثنائية</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <span class="text-green-500 font-bold">•</span>
-                            <span><strong>لا تفكر كثيراً</strong> - الإجابة الأولى غالباً الأصدق</span>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- أنواع الأسئلة -->
-                <div class="bg-white rounded-2xl p-6 shadow-lg border-l-4 border-blue-500">
-                    <h4 class="text-xl font-bold text-blue-700 mb-4 flex items-center gap-2">
-                        <span class="text-2xl">📝</span>
-                        أنواع الأسئلة
-                    </h4>
-                    <ul class="space-y-3 text-gray-700">
-                        <li class="flex items-start gap-3">
-                            <span class="text-blue-500 font-bold">1.</span>
-                            <span><strong>اختيار واحد:</strong> اختر الإجابة الأقرب لك</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <span class="text-blue-500 font-bold">2.</span>
-                            <span><strong>اختيار متعدد:</strong> اختر كل ما ينطبق عليك</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <span class="text-blue-500 font-bold">3.</span>
-                            <span><strong>ترتيب:</strong> اسحب العناصر لترتيبها حسب تفضيلك</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <span class="text-blue-500 font-bold">4.</span>
-                            <span><strong>تقييم بالنجوم:</strong> قيّم من 1-5 نجوم</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- تنبيهات مهمة -->
-            <div class="bg-gradient-to-r from-red-50 to-pink-50 rounded-2xl p-6 border-2 border-red-200 mb-6">
-                <h4 class="text-xl font-bold text-red-700 mb-4 flex items-center gap-2">
-                    <span class="text-2xl">⚠️</span>
-                    تنبيهات مهمة
-                </h4>
-                <div class="grid md:grid-cols-2 gap-4">
-                    <div class="bg-white rounded-lg p-4 border border-red-200">
-                        <h5 class="font-semibold text-red-600 mb-2">🚫 تجنب هذا:</h5>
-                        <ul class="text-sm text-gray-700 space-y-1">
-                            <li>• اختيار ما يبدو "أفضل" أو "أذكى"</li>
-                            <li>• التفكير في توقعات الآخرين</li>
-                            <li>• محاولة الحصول على نتيجة معينة</li>
-                        </ul>
-                    </div>
-                    <div class="bg-white rounded-lg p-4 border border-green-200">
-                        <h5 class="font-semibold text-green-600 mb-2">✅ افعل هذا:</h5>
-                        <ul class="text-sm text-gray-700 space-y-1">
-                            <li>• فكر في سلوكك اليومي الطبيعي</li>
-                            <li>• اختر ما تستمتع به فعلاً</li>
-                            <li>• كن صادقاً حتى لو بدا "عادياً"</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- معلومات إضافية -->
-            <div class="bg-indigo-100 rounded-2xl p-6 text-center">
-                <h4 class="text-lg font-bold text-indigo-800 mb-3">💡 معلومة مهمة</h4>
-                <p class="text-indigo-700 leading-relaxed">
-                    هذا الاختبار يقيس <strong>أنماط التعلم والميول الطبيعية</strong> وليس مستوى الذكاء العام (IQ).
-                    كل شخص لديه مزيج فريد من الذكاءات، والهدف هو اكتشاف نقاط قوتك لتطويرها واستغلالها في التعلم والعمل.
-                </p>
-            </div>
-        </div>
-
-        <!-- قسم البداية المحسن -->
-        <div class="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-3xl shadow-2xl p-8 border border-indigo-200">
-            <div class="max-w-2xl mx-auto text-center">
-                <div class="mb-8">
-                    <h3 class="text-2xl font-bold text-gray-800 mb-6">🚀 جاهز لاكتشاف ذكاءاتك؟</h3>
-
-                    <!-- معلومات سريعة -->
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-                        <div class="bg-white rounded-xl p-4 shadow-md">
-                            <div class="text-2xl mb-2">⏱️</div>
-                            <div class="font-semibold text-gray-800">10-15 دقائق</div>
-                            <div class="text-sm text-gray-600">مدة الاختبار</div>
-                        </div>
-                        <div class="bg-white rounded-xl p-4 shadow-md">
-                            <div class="text-2xl mb-2">📊</div>
-                            <div class="font-semibold text-gray-800">40 سؤال</div>
-                            <div class="text-sm text-gray-600">متنوع وتفاعلي</div>
-                        </div>
-                        <div class="bg-white rounded-xl p-4 shadow-md">
-                            <div class="text-2xl mb-2">🎯</div>
-                            <div class="font-semibold text-gray-800">8 ذكاءات</div>
-                            <div class="text-sm text-gray-600">تقييم شامل</div>
-                        </div>
-                    </div>
-                </div>
-
-                <button id="startBtn"
-                    class="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-12 py-5 rounded-2xl text-2xl font-bold cursor-pointer mb-6 transition-all duration-300 shadow-lg transform hover:scale-105">
-                    🚀 ابدأ الاختبار الآن
-                </button>
-
-                <div class="flex justify-center gap-6 text-sm">
-                    <button id="howItWorksBtn"
-                        class="flex items-center gap-2 text-indigo-600 hover:text-indigo-800 font-medium transition-colors">
-                        <span class="text-lg">❓</span>
-                        تفاصيل إضافية
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- نافذة "التفاصيل الإضافية" -->
-    <div id="howItWorksModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-        <div class="bg-white rounded-2xl p-8 max-w-3xl mx-4 max-h-96 overflow-y-auto">
-            <h3 class="text-2xl font-bold text-indigo-800 mb-4">📋 تفاصيل إضافية عن الاختبار</h3>
-
-            <div class="grid md:grid-cols-2 gap-6 mb-6">
-                <div>
-                    <h4 class="font-bold text-green-700 mb-3">✅ ما يقيسه الاختبار:</h4>
-                    <ul class="space-y-2 text-sm text-gray-700">
-                        <li>• أنماط التعلم المفضلة لديك</li>
-                        <li>• نقاط القوة الطبيعية في شخصيتك</li>
-                        <li>• الأنشطة التي تستمتع بها أكثر</li>
-                        <li>• المجالات المهنية المناسبة لك</li>
-                        <li>• طرق التعلم الأكثر فعالية معك</li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h4 class="font-bold text-blue-700 mb-3">📊 ما ستحصل عليه:</h4>
-                    <ul class="space-y-2 text-sm text-gray-700">
-                        <li>• رسم بياني لجميع ذكاءاتك الثمانية</li>
-                        <li>• ترتيب أعلى 3 ذكاءات لديك</li>
-                        <li>• اقتراحات طرق تعلم مناسبة</li>
-                        <li>• أنشطة وهوايات مقترحة</li>
-                        <li>• مجالات مهنية تناسب ميولك</li>
-                        <li>• تقرير قابل للطباعة والمشاركة</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-4">
-                <h4 class="font-bold text-amber-800 mb-2">🎯 نصائح للحصول على أفضل النتائج:</h4>
-                <ul class="text-sm text-amber-700 space-y-1">
-                    <li>• أجب بناءً على سلوكك الطبيعي، ليس ما تتمناه</li>
-                    <li>• لا تفكر في "الإجابة الصحيحة" - لا توجد إجابة خاطئة</li>
-                    <li>• اختر الإجابة الأولى التي تخطر ببالك</li>
-                    <li>• فكر في معظم المواقف، ليس الاستثناءات</li>
-                </ul>
-            </div>
-
-            <div class="text-center">
-                <button id="closeModalBtn"
-                    class="bg-indigo-600 text-white px-8 py-3 rounded-lg hover:bg-indigo-700 transition-colors">
-                    فهمت، أريد البدء
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- نافذة تنبيه الاختبار غير المكتمل -->
-    <div id="incompleteTestModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-        <div class="bg-white rounded-2xl p-8 max-w-lg mx-4">
-            <div class="text-center mb-6">
-                <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <span class="text-3xl">⚠️</span>
-                </div>
-                <h3 class="text-2xl font-bold text-gray-800 mb-2">الاختبار غير مكتمل</h3>
-                <p class="text-gray-600" id="incompleteMessage">
-                    <!-- سيتم إدراج الرسالة هنا -->
-                </p>
-            </div>
-
-            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
-                <div class="flex items-start gap-3">
-                    <span class="text-yellow-600 text-xl">💡</span>
-                    <div class="text-sm text-yellow-800">
-                        <p class="font-semibold mb-1">للحصول على أفضل النتائج:</p>
-                        <p>يُنصح بإكمال جميع الأسئلة للحصول على تقييم دقيق وشامل لجميع أنواع الذكاءات الثمانية.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="flex flex-col gap-3">
-                <button id="continueTestFromModal"
-                    class="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition-colors font-semibold">
-                    📝 إكمال الأسئلة المتبقية (مُوصى به)
-                </button>
-                <button id="showPartialResults"
-                    class="bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600 transition-colors">
-                    📊 عرض النتائج الحالية
-                </button>
-                <button id="closeIncompleteModal" class="text-gray-600 hover:text-gray-800 underline text-sm">
-                    إلغاء
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- شاشة الدليل السريع -->
-    <div id="onboarding-screen" class="hidden container mx-auto px-4 py-8 max-w-4xl">
-        <div class="text-center mb-8">
-            <h2 class="text-3xl font-bold text-indigo-800 mb-4">دليل سريع</h2>
-            <p class="text-gray-600">نصائح مهمة قبل البدء</p>
-        </div>
-
-        <div class="grid md:grid-cols-3 gap-6 mb-8">
-            <div class="bg-white rounded-2xl shadow-lg p-6 text-center transform hover:scale-105 transition-transform">
-                <div class="text-4xl mb-4">💯</div>
-                <h3 class="text-xl font-semibold mb-3 text-indigo-800">اصدق مع نفسك</h3>
-                <p class="text-gray-600">اختر ما يشبهك فعلًا؛ لا توجد إجابة صحيحة أو خاطئة</p>
-            </div>
-
-            <div class="bg-white rounded-2xl shadow-lg p-6 text-center transform hover:scale-105 transition-transform">
-                <div class="text-4xl mb-4">📊</div>
-                <h3 class="text-xl font-semibold mb-3 text-indigo-800">تقدم واضح</h3>
-                <p class="text-gray-600">سترى رقم السؤال، ونسبة التقدم، وكم تبقّى من الأسئلة</p>
-            </div>
-
-            <div class="bg-white rounded-2xl shadow-lg p-6 text-center transform hover:scale-105 transition-transform">
-                <div class="text-4xl mb-4">📋</div>
-                <h3 class="text-xl font-semibold mb-3 text-indigo-800">تقرير مفيد</h3>
-                <p class="text-gray-600">ستتعرف على أعلى ذكاءاتك، مع طرق تعلّم وتخصصات مناسبة لك</p>
-            </div>
-        </div>
-
-        <div class="text-center">
-            <button id="startTestBtn"
-                class="bg-indigo-600 text-white px-8 py-4 rounded-lg text-xl font-semibold hover:bg-indigo-700 transition-colors">
-                فهمت، لنبدأ
-            </button>
-        </div>
-    </div>
-
-    <!-- شاشة الأسئلة -->
-    <div id="test-screen" class="hidden">
-        <!-- شريط علوي ثابت -->
-        <div class="bg-white shadow-md px-4 py-3 sticky top-0 z-40">
-            <div class="container mx-auto flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <span class="font-semibold text-indigo-800">اختبار الذكاءات المتعددة</span>
-                    <span class="w-2 h-2 bg-green-500 rounded-full" title="محفوظ تلقائيًا"></span>
-                </div>
-
-                <div class="flex items-center gap-4">
-                    <div class="text-lg font-semibold">
-                        <span id="currentQuestion">1</span> / 40
-                    </div>
-                    <div class="relative w-12 h-12">
-                        <svg class="w-12 h-12 progress-circle">
-                            <circle cx="24" cy="24" r="20" stroke="#e5e7eb" stroke-width="4" fill="none" />
-                            <circle id="progressCircle" cx="24" cy="24" r="20" stroke="#4f46e5" stroke-width="4"
-                                fill="none" stroke-dasharray="125.6" stroke-dashoffset="125.6" />
-                        </svg>
-                        <div
-                            class="absolute inset-0 flex items-center justify-center text-xs font-bold text-indigo-600">
-                            <span id="progressPercent">3%</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="timer" class="text-sm text-gray-600 hidden">
-                    ⏱️ <span id="timerDisplay">00:00</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- شريط التقدم التفاعلي -->
-        <div class="bg-gray-50 px-4 py-3">
-            <div class="container mx-auto">
-                <div id="progressTimeline" class="flex flex-wrap gap-1 justify-center">
-                    <!-- سيتم إنشاؤها بـ JavaScript -->
-                </div>
-            </div>
-        </div>
-
-        <!-- محتوى السؤال -->
-        <div class="container mx-auto px-4 py-8 max-w-4xl">
-            <div class="bg-white rounded-2xl shadow-lg p-8">
-                <!-- عنوان الذكاء الحالي -->
-                <div class="text-center mb-6">
-                    <div class="inline-flex items-center gap-3 bg-indigo-100 px-4 py-2 rounded-full">
-                        <span id="currentIntelligenceIcon" class="text-2xl">📚</span>
-                        <span id="currentIntelligenceName" class="font-semibold text-indigo-800">لغوي/لفظي</span>
-                    </div>
-                </div>
-
-                <!-- شرح نوع السؤال -->
-                <div id="questionTypeExplanation" class="mb-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
-                    <!-- سيتم إدراج شرح نوع السؤال هنا -->
-                </div>
-
-                <!-- السؤال -->
-                <div id="questionContainer" class="mb-8">
-                    <!-- سيتم إدراج السؤال هنا -->
-                </div>
-
-                <!-- سطر التقدم النصي -->
-                <div class="text-center text-sm text-gray-600 mb-6">
-                    <span id="progressText">تمت الإجابة على 0 من 40 · المتبقي: 40 سؤالًا</span>
-                    <div id="autoSaveMessage" class="text-green-600 mt-2 opacity-0 transition-opacity">
-                        تم الحفظ ✓
-                    </div>
-                </div>
-
-                <!-- مؤشر الانتقال التلقائي -->
-                <div id="autoAdvanceIndicator" class="text-center mb-4 opacity-0 transition-opacity duration-300">
-                    <div class="inline-flex items-center gap-2 bg-green-100 text-green-800 px-4 py-2 rounded-full">
-                        <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-                        <span class="text-sm font-medium">الانتقال للسؤال التالي...</span>
-                    </div>
-                </div>
-
-                <!-- أزرار التنقل -->
-                <div class="flex justify-between items-center">
-                    <button id="prevBtn"
-                        class="bg-gray-300 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-                        رجوع
-                    </button>
-
-                    <div class="text-center">
-                        <button id="goToUnansweredBtn"
-                            class="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors text-sm mb-2">
-                            📝 الأسئلة غير المجابة
-                        </button>
-                        <div>
-                            <button id="saveLaterBtn" class="text-indigo-600 hover:text-indigo-800 underline text-sm">
-                                حفظ لاحقًا
-                            </button>
-                        </div>
-                        <div class="text-xs text-gray-500 mt-1">
-                            💡 سينتقل تلقائياً بعد الإجابة
-                        </div>
-                    </div>
-
-                    <button id="nextBtn"
-                        class="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-                        التالي
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- استراحة منتصف الطريق -->
-    <div id="midway-break"
-        class="hidden fixed inset-0 bg-indigo-900 bg-opacity-95 flex items-center justify-center z-50">
-        <div class="bg-white rounded-2xl p-8 text-center max-w-md mx-4">
-            <h3 class="text-2xl font-bold text-indigo-800 mb-4">أحسنت! وصلت للنصف 🌟</h3>
-            <p class="text-gray-600 mb-6">خذ نفسًا عميقًا واسترح قليلاً</p>
-
-            <!-- تمرين التنفس -->
-            <div class="mb-6">
-                <div class="breathing-circle w-24 h-24 bg-indigo-200 rounded-full mx-auto mb-4"></div>
-                <div id="breathingText" class="text-lg font-semibold text-indigo-600">شهيق... 4</div>
-            </div>
-
-            <button id="continueTestBtn"
-                class="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition-colors">
-                أكمل الاختبار
-            </button>
-        </div>
-    </div>
-
     <!-- شاشة النتائج -->
-    <div id="results-screen" class="hidden container mx-auto px-4 py-8 max-w-6xl">
+    <div id="results-screen" class="container mx-auto px-4 py-8 max-w-6xl">
         <div class="text-center mb-8">
             <h2 class="text-4xl font-bold text-indigo-800 mb-4">
                 نتيجتك في الذكاءات المتعددة
@@ -1579,639 +982,50 @@
         const continueTestBtn = document.getElementById('continueTestBtn');
 
         // أحداث الأزرار
-        startBtn.addEventListener('click', function () {
-            currentUser = 'مستخدم الاختبار'; // اسم ثابت
-            showOnboarding();
-        });
+        // startBtn.addEventListener('click', function () {
+        //     currentUser = 'مستخدم الاختبار'; // اسم ثابت
+        //     showOnboarding();
+        // });
 
-        howItWorksBtn.addEventListener('click', function () {
-            howItWorksModal.classList.remove('hidden');
-            howItWorksModal.classList.add('flex');
-        });
+        // howItWorksBtn.addEventListener('click', function () {
+        //     howItWorksModal.classList.remove('hidden');
+        //     howItWorksModal.classList.add('flex');
+        // });
 
-        closeModalBtn.addEventListener('click', function () {
-            howItWorksModal.classList.add('hidden');
-            howItWorksModal.classList.remove('flex');
-        });
+        // closeModalBtn.addEventListener('click', function () {
+        //     howItWorksModal.classList.add('hidden');
+        //     howItWorksModal.classList.remove('flex');
+        // });
 
         // أحداث نافذة الاختبار غير المكتمل
-        document.getElementById('continueTestFromModal').addEventListener('click', function () {
-            document.getElementById('incompleteTestModal').classList.add('hidden');
-            // الانتقال لأول سؤال غير مُجاب عليه
-            goToFirstUnansweredQuestion();
-        });
+        // document.getElementById('continueTestFromModal').addEventListener('click', function () {
+        //     document.getElementById('incompleteTestModal').classList.add('hidden');
+        //     // الانتقال لأول سؤال غير مُجاب عليه
+        //     goToFirstUnansweredQuestion();
+        // });
 
-        document.getElementById('showPartialResults').addEventListener('click', function () {
-            document.getElementById('incompleteTestModal').classList.add('hidden');
-            proceedWithResults();
-        });
+        // document.getElementById('showPartialResults').addEventListener('click', function () {
+        //     document.getElementById('incompleteTestModal').classList.add('hidden');
+        //     proceedWithResults();
+        // });
 
-        document.getElementById('closeIncompleteModal').addEventListener('click', function () {
-            document.getElementById('incompleteTestModal').classList.add('hidden');
-        });
+        // document.getElementById('closeIncompleteModal').addEventListener('click', function () {
+        //     document.getElementById('incompleteTestModal').classList.add('hidden');
+        // });
 
-        startTestBtn.addEventListener('click', function () {
-            startTest();
-        });
+        // startTestBtn.addEventListener('click', function () {
+        //     startTest();
+        // });
 
-        continueTestBtn.addEventListener('click', function () {
-            midwayBreak.classList.add('hidden');
-        });
+        // continueTestBtn.addEventListener('click', function () {
+        //     midwayBreak.classList.add('hidden');
+        // });
 
         // إظهار شاشة الدليل السريع
-        function showOnboarding() {
-            welcomeScreen.classList.add('hidden');
-            onboardingScreen.classList.remove('hidden');
-        }
+        // functioة مستمعي الأحداث للسؤال
 
-        // بدء الاختبار
-        function startTest() {
-            onboardingScreen.classList.add('hidden');
-            testScreen.classList.remove('hidden');
 
-            // إنشاء شريط التقدم
-            createProgressTimeline();
 
-            // بدء المؤقت
-            startTimer();
-
-            // عرض السؤال الأول
-            showQuestion(0);
-        }
-
-        // إنشاء شريط التقدم التفاعلي
-        function createProgressTimeline() {
-            const timeline = document.getElementById('progressTimeline');
-            timeline.innerHTML = '';
-
-            for (let i = 1; i <= 40; i++) {
-                const dot = document.createElement('div');
-                const isAnswered = answers[i - 1] !== undefined;
-                const isCurrent = i === currentQuestionIndex + 1;
-
-                let className = 'w-8 h-8 rounded-full border-2 flex items-center justify-center text-xs font-bold cursor-pointer transition-all ';
-
-                if (isAnswered) {
-                    className += 'bg-green-500 text-white border-green-500 hover:bg-green-600';
-                } else if (isCurrent) {
-                    className += 'bg-indigo-600 text-white border-indigo-600 animate-pulse';
-                } else {
-                    className += 'bg-white text-gray-400 border-gray-300 hover:border-gray-400';
-                }
-
-                dot.className = className;
-                dot.textContent = i;
-                dot.title = isAnswered ? 'تمت الإجابة' : (isCurrent ? 'السؤال الحالي' : 'لم تتم الإجابة');
-                dot.addEventListener('click', () => goToQuestion(i - 1));
-                timeline.appendChild(dot);
-            }
-        }
-
-        // الانتقال لسؤال محدد
-        function goToQuestion(index) {
-            if (index >= 0 && index < questions.length) {
-                currentQuestionIndex = index;
-                showQuestion(index);
-            }
-        }
-
-        // الانتقال لأول سؤال غير مُجاب عليه
-        function goToFirstUnansweredQuestion() {
-            for (let i = 0; i < questions.length; i++) {
-                if (answers[i] === undefined) {
-                    currentQuestionIndex = i;
-                    showQuestion(i);
-                    return;
-                }
-            }
-        }
-
-        // عرض شرح نوع السؤال
-        function showQuestionTypeExplanation(questionType) {
-            const explanationContainer = document.getElementById('questionTypeExplanation');
-            let explanationHTML = '';
-
-            switch (questionType) {
-                case 'single':
-                    explanationHTML = `
-                        <div class="flex items-center gap-3">
-                            <span class="text-2xl">🎯</span>
-                            <div>
-                                <h4 class="font-semibold text-blue-800">اختيار واحد</h4>
-                                <p class="text-sm text-blue-600">اختر الإجابة الأقرب لك من بين الخيارات</p>
-                            </div>
-                        </div>
-                    `;
-                    break;
-
-                case 'multiple':
-                    explanationHTML = `
-                        <div class="flex items-center gap-3">
-                            <span class="text-2xl">☑️</span>
-                            <div>
-                                <h4 class="font-semibold text-blue-800">اختيار متعدد</h4>
-                                <p class="text-sm text-blue-600">اختر كل ما ينطبق عليك، ثم اضغط "تأكيد الإجابة"</p>
-                            </div>
-                        </div>
-                    `;
-                    break;
-
-                case 'ranking':
-                    explanationHTML = `
-                        <div class="flex items-center gap-3">
-                            <span class="text-2xl">📊</span>
-                            <div>
-                                <h4 class="font-semibold text-blue-800">ترتيب حسب التفضيل</h4>
-                                <p class="text-sm text-blue-600">اسحب العناصر لترتيبها من الأكثر تفضيلاً إلى الأقل</p>
-                            </div>
-                        </div>
-                    `;
-                    break;
-
-                case 'rating':
-                    explanationHTML = `
-                        <div class="flex items-center gap-3">
-                            <span class="text-2xl">⭐</span>
-                            <div>
-                                <h4 class="font-semibold text-blue-800">تقييم بالنجوم</h4>
-                                <p class="text-sm text-blue-600">قيّم كل عبارة من 1 إلى 5 نجوم حسب انطباقها عليك</p>
-                            </div>
-                        </div>
-                    `;
-                    break;
-            }
-
-            explanationContainer.innerHTML = explanationHTML;
-        }
-
-        // عرض السؤال
-        function showQuestion(index) {
-            const question = questions[index];
-            const intelligence = intelligences[question.type];
-            const container = document.getElementById('questionContainer');
-
-            // إضافة تأثير الخروج
-            container.classList.add('question-transition', 'question-exit');
-
-            setTimeout(() => {
-                // تحديث معلومات الذكاء الحالي
-                document.getElementById('currentIntelligenceIcon').textContent = intelligence.icon;
-                document.getElementById('currentIntelligenceName').textContent = intelligence.name;
-
-                // تحديث رقم السؤال والتقدم
-                document.getElementById('currentQuestion').textContent = index + 1;
-                const progress = ((index + 1) / 40) * 100;
-                document.getElementById('progressPercent').textContent = Math.round(progress) + '%';
-
-                // تحديث دائرة التقدم
-                const circle = document.getElementById('progressCircle');
-                const circumference = 2 * Math.PI * 20;
-                const offset = circumference - (progress / 100) * circumference;
-                circle.style.strokeDashoffset = offset;
-
-                // تحديث النص التقدمي
-                const answeredCount = Object.keys(answers).length;
-                document.getElementById('progressText').textContent =
-                    `تمت الإجابة على ${answeredCount} من 40 · المتبقي: ${40 - answeredCount} سؤالًا`;
-
-                // تحديث شريط التقدم
-                createProgressTimeline();
-
-                // عرض شرح نوع السؤال
-                showQuestionTypeExplanation(question.questionType);
-
-                // عرض السؤال الجديد
-                container.innerHTML = createQuestionHTML(question, index);
-
-                // إضافة تأثير الدخول
-                container.classList.remove('question-exit');
-                container.classList.add('question-enter');
-
-                setTimeout(() => {
-                    container.classList.remove('question-enter');
-                    container.classList.add('question-active');
-                }, 50);
-
-                // تحديث أزرار التنقل
-                document.getElementById('prevBtn').disabled = index === 0;
-                document.getElementById('nextBtn').disabled = !answers[index];
-
-                // إضافة مستمعي الأحداث
-                addQuestionEventListeners(question, index);
-
-                // استراحة منتصف الطريق
-                if (index === 20) {
-                    showMidwayBreak();
-                }
-            }, 200);
-        }
-
-        // إنشاء HTML للسؤال
-        function createQuestionHTML(question, index) {
-            let html = `<h3 class="text-2xl md:text-3xl font-semibold mb-8 text-center leading-relaxed">${question.question}</h3>`;
-
-            switch (question.questionType) {
-                case 'single':
-                    html += '<div class="space-y-3">';
-                    question.options.forEach((option, i) => {
-                        const checked = answers[index] === i ? 'checked' : '';
-                        html += `
-                            <label class="flex items-center p-6 border-2 rounded-xl cursor-pointer hover:bg-gray-50 transition-colors ${checked ? 'border-indigo-500 bg-indigo-50' : 'border-gray-200'}">
-                                <input type="radio" name="q${index}" value="${i}" class="mr-4 w-5 h-5" ${checked}>
-                                <span class="text-xl md:text-2xl leading-relaxed">${option.text}</span>
-                            </label>
-                        `;
-                    });
-                    html += '</div>';
-                    break;
-
-                case 'multiple':
-                    html += '<div class="space-y-3">';
-                    question.options.forEach((option, i) => {
-                        const checked = answers[index] && answers[index].includes(i) ? 'checked' : '';
-                        html += `
-                            <label class="flex items-center p-6 border-2 rounded-xl cursor-pointer hover:bg-gray-50 transition-colors ${checked ? 'border-indigo-500 bg-indigo-50' : 'border-gray-200'}">
-                                <input type="checkbox" name="q${index}" value="${i}" class="mr-4 w-5 h-5" ${checked}>
-                                <span class="text-xl md:text-2xl leading-relaxed">${option.text}</span>
-                            </label>
-                        `;
-                    });
-                    html += '</div>';
-                    html += `
-                        <div class="text-center mt-6">
-                            <button id="confirmMultipleBtn" class="bg-indigo-600 text-white px-8 py-3 rounded-lg hover:bg-indigo-700 transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed" disabled>
-                                ✅ تأكيد الإجابة
-                            </button>
-                        </div>
-                    `;
-                    break;
-
-                case 'ranking':
-                    html += '<div id="rankingContainer" class="space-y-2">';
-                    const currentRanking = answers[index] || [];
-                    const itemsToRank = currentRanking.length > 0 ?
-                        currentRanking.map(i => question.options[i]) :
-                        [...question.options];
-
-                    itemsToRank.forEach((option, i) => {
-                        html += `
-                            <div class="ranking-item p-6 border-2 border-gray-200 rounded-xl cursor-move bg-white hover:bg-gray-50 transition-colors" data-index="${question.options.indexOf(option)}">
-                                <div class="flex items-center">
-                                    <span class="w-10 h-10 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold mr-4 text-lg">${i + 1}</span>
-                                    <span class="text-xl md:text-2xl leading-relaxed flex-1">${option.text}</span>
-                                    <span class="mr-auto text-gray-400 text-xl">⋮⋮</span>
-                                </div>
-                            </div>
-                        `;
-                    });
-                    html += '</div>';
-                    html += `
-                        <div class="text-center mt-6">
-                            <button id="confirmRankingBtn" class="bg-indigo-600 text-white px-8 py-3 rounded-lg hover:bg-indigo-700 transition-colors font-semibold">
-                                ✅ تأكيد الترتيب
-                            </button>
-                        </div>
-                    `;
-                    break;
-
-                case 'rating':
-                    html += '<div class="space-y-6">';
-                    question.statements.forEach((statement, i) => {
-                        const currentRating = answers[index] && answers[index][i] ? answers[index][i] : 0;
-                        html += `
-                            <div class="bg-gray-50 p-6 rounded-xl">
-                                <p class="text-xl md:text-2xl mb-4 leading-relaxed">${statement.text}</p>
-                                <div class="flex items-center gap-3">
-                                    <span class="text-base text-gray-600 ml-3">ضعيف</span>
-                                    <div class="flex gap-2" data-statement="${i}">
-                        `;
-
-                        for (let star = 1; star <= 5; star++) {
-                            const filled = star <= currentRating ? 'text-yellow-400' : 'text-gray-300';
-                            html += `
-                                <button type="button" class="star-btn text-3xl hover:text-yellow-400 transition-colors ${filled}" 
-                                        data-rating="${star}" data-statement="${i}">
-                                    ★
-                                </button>
-                            `;
-                        }
-
-                        html += `
-                                    </div>
-                                    <span class="text-base text-gray-600 mr-3">قوي</span>
-                                </div>
-                            </div>
-                        `;
-                    });
-                    html += '</div>';
-                    html += `
-                        <div class="text-center mt-6">
-                            <button id="confirmRatingBtn" class="bg-indigo-600 text-white px-8 py-3 rounded-lg hover:bg-indigo-700 transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed" disabled>
-                                ✅ تأكيد التقييم
-                            </button>
-                        </div>
-                    `;
-                    break;
-            }
-
-            return html;
-        }
-
-        // إضافة مستمعي الأحداث للسؤال
-        function addQuestionEventListeners(question, index) {
-            switch (question.questionType) {
-                case 'single':
-                    document.querySelectorAll(`input[name="q${index}"]`).forEach(input => {
-                        input.addEventListener('change', function () {
-                            answers[index] = parseInt(this.value);
-                            saveAnswer();
-                            updateNavigationButtons();
-
-                            // إظهار مؤشر الانتقال
-                            showAutoAdvanceIndicator();
-
-                            // الانتقال التلقائي للسؤال التالي بسرعة أكبر
-                            setTimeout(() => {
-                                hideAutoAdvanceIndicator();
-                                if (currentQuestionIndex < questions.length - 1) {
-                                    currentQuestionIndex++;
-                                    showQuestion(currentQuestionIndex);
-                                }
-                            }, 300);
-                        });
-                    });
-                    break;
-
-                case 'multiple':
-                    const confirmBtn = document.getElementById('confirmMultipleBtn');
-
-                    document.querySelectorAll(`input[name="q${index}"]`).forEach(input => {
-                        input.addEventListener('change', function () {
-                            if (!answers[index]) answers[index] = [];
-
-                            const value = parseInt(this.value);
-                            if (this.checked) {
-                                if (!answers[index].includes(value)) {
-                                    answers[index].push(value);
-                                }
-                            } else {
-                                answers[index] = answers[index].filter(v => v !== value);
-                            }
-
-                            // تفعيل/تعطيل زر التأكيد
-                            confirmBtn.disabled = !answers[index] || answers[index].length === 0;
-
-                            saveAnswer();
-                            updateNavigationButtons();
-                        });
-                    });
-
-                    // إضافة مستمع لزر التأكيد
-                    confirmBtn.addEventListener('click', function () {
-                        if (answers[index] && answers[index].length > 0) {
-                            showAutoAdvanceIndicator();
-                            setTimeout(() => {
-                                hideAutoAdvanceIndicator();
-                                if (currentQuestionIndex < questions.length - 1) {
-                                    currentQuestionIndex++;
-                                    showQuestion(currentQuestionIndex);
-                                }
-                            }, 300);
-                        }
-                    });
-
-                    // تفعيل الزر إذا كانت هناك إجابة محفوظة
-                    if (answers[index] && answers[index].length > 0) {
-                        confirmBtn.disabled = false;
-                    }
-                    break;
-
-                case 'ranking':
-                    initializeSortable(index);
-
-                    // إضافة مستمع لزر تأكيد الترتيب
-                    const confirmRankingBtn = document.getElementById('confirmRankingBtn');
-                    confirmRankingBtn.addEventListener('click', function () {
-                        showAutoAdvanceIndicator();
-                        setTimeout(() => {
-                            hideAutoAdvanceIndicator();
-                            if (currentQuestionIndex < questions.length - 1) {
-                                currentQuestionIndex++;
-                                showQuestion(currentQuestionIndex);
-                            }
-                        }, 300);
-                    });
-                    break;
-
-                case 'rating':
-                    initializeRatingSystem(question, index);
-
-                    // إضافة مستمع لزر تأكيد التقييم
-                    const confirmRatingBtn = document.getElementById('confirmRatingBtn');
-                    confirmRatingBtn.addEventListener('click', function () {
-                        showAutoAdvanceIndicator();
-                        setTimeout(() => {
-                            hideAutoAdvanceIndicator();
-                            if (currentQuestionIndex < questions.length - 1) {
-                                currentQuestionIndex++;
-                                showQuestion(currentQuestionIndex);
-                            }
-                        }, 300);
-                    });
-                    break;
-            }
-        }
-
-        // تهيئة الترتيب بالسحب
-        function initializeSortable(index) {
-            const container = document.getElementById('rankingContainer');
-            let draggedElement = null;
-
-            container.addEventListener('dragstart', function (e) {
-                draggedElement = e.target.closest('.ranking-item');
-                e.dataTransfer.effectAllowed = 'move';
-            });
-
-            container.addEventListener('dragover', function (e) {
-                e.preventDefault();
-                e.dataTransfer.dropEffect = 'move';
-            });
-
-            container.addEventListener('drop', function (e) {
-                e.preventDefault();
-                const targetElement = e.target.closest('.ranking-item');
-
-                if (targetElement && draggedElement !== targetElement) {
-                    const allItems = Array.from(container.children);
-                    const draggedIndex = allItems.indexOf(draggedElement);
-                    const targetIndex = allItems.indexOf(targetElement);
-
-                    if (draggedIndex < targetIndex) {
-                        container.insertBefore(draggedElement, targetElement.nextSibling);
-                    } else {
-                        container.insertBefore(draggedElement, targetElement);
-                    }
-
-                    updateRankingNumbers();
-                    saveRankingAnswer(index);
-                }
-            });
-
-            // جعل العناصر قابلة للسحب
-            container.querySelectorAll('.ranking-item').forEach(item => {
-                item.draggable = true;
-            });
-        }
-
-        // تحديث أرقام الترتيب
-        function updateRankingNumbers() {
-            const items = document.querySelectorAll('.ranking-item');
-            items.forEach((item, i) => {
-                const numberSpan = item.querySelector('span');
-                numberSpan.textContent = i + 1;
-            });
-        }
-
-        // حفظ إجابة الترتيب
-        function saveRankingAnswer(index) {
-            const items = document.querySelectorAll('.ranking-item');
-            answers[index] = Array.from(items).map(item => parseInt(item.dataset.index));
-            saveAnswer();
-            updateNavigationButtons();
-        }
-
-        // تهيئة نظام التقييم بالنجوم
-        function initializeRatingSystem(question, index) {
-            const starButtons = document.querySelectorAll('.star-btn');
-
-            starButtons.forEach(button => {
-                button.addEventListener('click', function () {
-                    const rating = parseInt(this.dataset.rating);
-                    const statementIndex = parseInt(this.dataset.statement);
-
-                    // تهيئة مصفوفة الإجابات إذا لم تكن موجودة
-                    if (!answers[index]) {
-                        answers[index] = new Array(question.statements.length).fill(0);
-                    }
-
-                    // حفظ التقييم
-                    answers[index][statementIndex] = rating;
-
-                    // تحديث النجوم بصرياً
-                    const statementStars = document.querySelectorAll(`[data-statement="${statementIndex}"] .star-btn`);
-                    statementStars.forEach((star, i) => {
-                        if (i < rating) {
-                            star.classList.remove('text-gray-300');
-                            star.classList.add('text-yellow-400');
-                        } else {
-                            star.classList.remove('text-yellow-400');
-                            star.classList.add('text-gray-300');
-                        }
-                    });
-
-                    saveAnswer();
-                    updateNavigationButtons();
-
-                    // التحقق من اكتمال جميع التقييمات وتفعيل زر التأكيد
-                    const allRated = answers[index].every(rating => rating > 0);
-                    const confirmBtn = document.getElementById('confirmRatingBtn');
-                    if (confirmBtn) {
-                        confirmBtn.disabled = !allRated;
-                    }
-                });
-            });
-
-            // تفعيل الزر إذا كانت هناك إجابة محفوظة مسبقاً
-            if (answers[index] && answers[index].every(rating => rating > 0)) {
-                const confirmBtn = document.getElementById('confirmRatingBtn');
-                if (confirmBtn) {
-                    confirmBtn.disabled = false;
-                }
-            }
-        }
-
-        // حفظ الإجابة وإظهار رسالة
-        function saveAnswer() {
-            const message = document.getElementById('autoSaveMessage');
-            message.style.opacity = '1';
-            setTimeout(() => {
-                message.style.opacity = '0';
-            }, 2000);
-        }
-
-        // إظهار مؤشر الانتقال التلقائي
-        function showAutoAdvanceIndicator() {
-            const indicator = document.getElementById('autoAdvanceIndicator');
-            indicator.style.opacity = '1';
-        }
-
-        // إخفاء مؤشر الانتقال التلقائي
-        function hideAutoAdvanceIndicator() {
-            const indicator = document.getElementById('autoAdvanceIndicator');
-            indicator.style.opacity = '0';
-        }
-
-        // تحديث أزرار التنقل
-        function updateNavigationButtons() {
-            document.getElementById('prevBtn').disabled = currentQuestionIndex === 0;
-            document.getElementById('nextBtn').disabled = !answers[currentQuestionIndex];
-        }
-
-        // أحداث أزرار التنقل
-        document.getElementById('prevBtn').addEventListener('click', function () {
-            if (currentQuestionIndex > 0) {
-                currentQuestionIndex--;
-                showQuestion(currentQuestionIndex);
-            }
-        });
-
-        document.getElementById('nextBtn').addEventListener('click', function () {
-            if (currentQuestionIndex < questions.length - 1) {
-                currentQuestionIndex++;
-                showQuestion(currentQuestionIndex);
-            } else {
-                showResults();
-            }
-        });
-
-        // زر الأسئلة غير المجابة
-        document.getElementById('goToUnansweredBtn').addEventListener('click', function () {
-            goToFirstUnansweredQuestion();
-        });
-
-        // بدء المؤقت
-        function startTimer() {
-            timerInterval = setInterval(function () {
-                const elapsed = Date.now() - startTime;
-                const minutes = Math.floor(elapsed / 60000);
-                const seconds = Math.floor((elapsed % 60000) / 1000);
-                document.getElementById('timerDisplay').textContent =
-                    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-            }, 1000);
-        }
-
-        // إظهار استراحة منتصف الطريق
-        function showMidwayBreak() {
-            midwayBreak.classList.remove('hidden');
-
-            // تمرين التنفس
-            let breathCount = 0;
-            const breathingText = document.getElementById('breathingText');
-
-            const breathingInterval = setInterval(function () {
-                if (breathCount < 5) { // 5 دورات تنفس
-                    if (breathCount % 2 === 0) {
-                        breathingText.textContent = `شهيق... ${4 - (breathCount % 4)}`;
-                    } else {
-                        breathingText.textContent = `زفير... ${4 - (breathCount % 4)}`;
-                    }
-                    breathCount++;
-                } else {
-                    clearInterval(breathingInterval);
-                    breathingText.textContent = 'جاهز للمتابعة!';
-                }
-            }, 1000);
-        }
 
         // حساب النتائج
         function calculateResults() {
@@ -2347,75 +1161,40 @@
             document.getElementById('incompleteTestModal').classList.add('flex');
         }
 
+        proceedWithResults();
+
         // المتابعة مع النتائج
         function proceedWithResults() {
             clearInterval(timerInterval);
-            testScreen.classList.add('hidden');
+            // testScreen.classList.add('hidden');
             resultsScreen.classList.remove('hidden');
 
-            const scores = calculateResults();
+            const scores = JSON.parse('<%-p3%>')
 
-            var data = new URLSearchParams();
-            data.append('data', JSON.stringify(scores));
-            data.append('type', 'p3');
+            // عرض اسم المستخدم
+            document.getElementById('resultUserName').textContent = currentUser;
 
-            fetch('http://127.0.0.1:3000/saveExam', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-                },
-                body: data
-            }).then(() => {
-                // عرض اسم المستخدم
-                document.getElementById('resultUserName').textContent = currentUser;
+            // عرض ملخص نمط الذكاءات
+            showIntelligencePattern(scores);
 
-                // عرض ملخص نمط الذكاءات
-                showIntelligencePattern(scores);
+            // عرض أقل 3 ذكاءات
+            showLowestIntelligences(scores);
 
-                // عرض أقل 3 ذكاءات
-                showLowestIntelligences(scores);
+            // إنشاء الرسم البياني
+            createResultsChart(scores);
 
-                // إنشاء الرسم البياني
-                createResultsChart(scores);
+            // عرض أعلى 3 ذكاءات
+            showTopIntelligences(scores);
 
-                // عرض أعلى 3 ذكاءات
-                showTopIntelligences(scores);
+            // عرض التفاصيل الكاملة
+            showDetailedResults(scores);
 
-                // عرض التفاصيل الكاملة
-                showDetailedResults(scores);
+            // عرض التوصيات الشخصية
+            showPersonalRecommendations(scores);
 
-                // عرض التوصيات الشخصية
-                showPersonalRecommendations(scores);
+            // عرض خطة التطوير
+            showDevelopmentPlan(scores);
 
-                // عرض خطة التطوير
-                showDevelopmentPlan(scores);
-            }).catch(() => {
-                alert("حصلت مشكلة في حفظ البيانات قد تضطر الى اعادة الاختبار")
-                // عرض اسم المستخدم
-                document.getElementById('resultUserName').textContent = currentUser;
-
-                // عرض ملخص نمط الذكاءات
-                showIntelligencePattern(scores);
-
-                // عرض أقل 3 ذكاءات
-                showLowestIntelligences(scores);
-
-                // إنشاء الرسم البياني
-                createResultsChart(scores);
-
-                // عرض أعلى 3 ذكاءات
-                showTopIntelligences(scores);
-
-                // عرض التفاصيل الكاملة
-                showDetailedResults(scores);
-
-                // عرض التوصيات الشخصية
-                showPersonalRecommendations(scores);
-
-                // عرض خطة التطوير
-                showDevelopmentPlan(scores);
-
-            })
 
 
         }
