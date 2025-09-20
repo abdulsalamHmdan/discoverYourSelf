@@ -63,7 +63,7 @@ app.get('/p2', isAuthenticated, function (req, res) {
         res.redirect("p3")
         return;
     }
-    res.render("p2", { user: req.session.name });
+    res.render("p2", { name: req.session.name });
 })
 app.get('/p2', function (req, res) {
     res.redirect("/");
@@ -144,7 +144,6 @@ app.get('/Results/:exam', isAuthenticated, async function (req, res) {
     const db = client.db("soqy");
     const collection = db.collection('users');
     const user = await collection.findOne({ idNumber: req.session.user })
-    // console.log(req.params)
     if (user[req.params.exam]) {
         res.render(`${req.params.exam}Result`, { [req.params.exam]: user[req.params.exam], user: req.session.name });
         return;
