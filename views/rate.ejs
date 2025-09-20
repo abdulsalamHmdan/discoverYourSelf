@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>اختبار قياس مدى الجودة</title>
+    <title>قياس مستوى الرضا</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap');
@@ -82,7 +82,7 @@
 
         <!-- Header -->
         <div class="text-center mb-8">
-            <h1 class="text-4xl font-bold text-gray-800 mb-4">📊 اختبار قياس مدى الجودة</h1>
+            <h1 class="text-4xl font-bold text-gray-800 mb-4">📊 اختبار قياس مستوى الرضا</h1>
             <p class="text-lg text-gray-600">قيّم مدى ثقتك في نتائج الاختبارات النفسية التي أجريتها</p>
         </div>
 
@@ -472,7 +472,7 @@
 
                 <button onclick="resetTest()"
                     class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-8 py-3 rounded-lg font-semibold hover:from-blue-600 hover:to-indigo-700 transition-all duration-300 transform hover:scale-105">
-                    عرض ملخص النتائج النهائية
+                    عرض الملخص الشامل لأدائك لجميع الاختبارات
                 </button>
             </div>
         </div>
@@ -734,6 +734,7 @@
 
         function showResults() {
             // Calculate scores
+            console.log(testScores);
             const hollandScore = calculateTestScore(testScores.holland);
             const mbtiScore = calculateTestScore(testScores.mbti);
             const miScore = calculateTestScore(testScores.mi);
@@ -751,18 +752,31 @@
             const miLevel = getConfidenceLevel(miScore);
             const overallLevel = getConfidenceLevel(overallScore);
 
-            document.getElementById('hollandLevel').textContent = hollandLevel.level;
-            document.getElementById('mbtiLevel').textContent = mbtiLevel.level;
-            document.getElementById('miLevel').textContent = miLevel.level;
-            document.getElementById('overallLevel').textContent = overallLevel.level;
-            document.getElementById('overallLevel').className = 'text-lg mb-4 ' + overallLevel.color;
+            var data = new URLSearchParams();
+            data.append('data', JSON.stringify({ hollandLevel, mbtiLevel, miLevel, overallLevel }));
+            data.append('type', 'rate');
+            fetch('http://127.0.0.1:3000/saveExam', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                },
+                body: data
+            }).catch(() => {
+                alert("حصلت مشكلة في حفظ البيانات قد تضطر الى اعادة الاختبار")
+            }).finally(() => {
+                document.getElementById('hollandLevel').textContent = hollandLevel.level;
+                document.getElementById('mbtiLevel').textContent = mbtiLevel.level;
+                document.getElementById('miLevel').textContent = miLevel.level;
+                document.getElementById('overallLevel').textContent = overallLevel.level;
+                document.getElementById('overallLevel').className = 'text-lg mb-4 ' + overallLevel.color;
+                // Update recommendation
+                document.getElementById('recommendation').textContent = getOverallRecommendation(overallScore);
+                // Show results section
+                document.getElementById('resultsSection').classList.remove('hidden');
+                document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+            })
 
-            // Update recommendation
-            document.getElementById('recommendation').textContent = getOverallRecommendation(overallScore);
 
-            // Show results section
-            document.getElementById('resultsSection').classList.remove('hidden');
-            document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
         }
 
         function resetTest() {

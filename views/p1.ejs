@@ -324,12 +324,12 @@
                     </div>
                 </div>
 
-                <div class="mb-6">
+                <!-- <div class="mb-6">
                     <label class="block text-right font-semibold text-gray-700 mb-2">الاسم (مطلوب):</label>
                     <input type="text" id="userName"
                         class="w-full p-4 border-2 border-gray-200 rounded-xl text-center text-lg focus:border-blue-500 focus:outline-none"
                         placeholder="أدخل اسمك هنا" required>
-                </div>
+                </div> -->
 
                 <button onclick="startTest()" id="startButton"
                     class="w-full bg-gray-400 text-white text-xl font-bold py-4 px-8 rounded-xl cursor-not-allowed transition-all duration-200 shadow-lg"
@@ -700,6 +700,7 @@
 
     <script>
         // بيانات المقياس
+        const userName = '<%=name%>';
         const questions = [
             // البُعد الواقعي (R) - الأسئلة 1-8
             { id: 1, text: "إصلاح الأجهزة الكهربائية", dimension: "R", section: 1, icon: "🔧" },
@@ -1148,7 +1149,7 @@
 
         // بدء المقياس
         function startTest() {
-            const nameInput = document.getElementById('userName');
+            const nameInput = '<%=name%>'
             const agreementCheckbox = document.getElementById('agreementCheckbox');
 
             // فحص الموافقة على التنويه
@@ -1158,13 +1159,12 @@
                 return;
             }
 
-            if (!nameInput.value.trim()) {
-                nameInput.focus();
-                nameInput.classList.add('border-red-500');
-                return;
-            }
+            // if (!nameInput.value.trim()) {
+            //     nameInput.focus();
+            //     nameInput.classList.add('border-red-500');
+            //     return;
+            // }
 
-            const userName = nameInput.value.trim();
 
             // فحص وجود تقدم محفوظ
             const savedProgress = checkSavedProgress(userName);
@@ -2621,23 +2621,19 @@
 
         // إضافة مؤشر للتقدم المحفوظ في الشاشة الرئيسية
         function checkForSavedProgress() {
-            const nameInput = document.getElementById('userName');
-            nameInput.addEventListener('input', function () {
-                const userName = this.value.trim();
-                if (userName && checkSavedProgress(userName)) {
-                    const savedProgress = loadProgress(userName);
-                    const answeredQuestions = Object.keys(savedProgress.answers).length;
+            if (userName && checkSavedProgress(userName)) {
+                const savedProgress = loadProgress(userName);
+                const answeredQuestions = Object.keys(savedProgress.answers).length;
 
-                    // إظهار مؤشر التقدم المحفوظ
-                    let progressIndicator = document.getElementById('progress-indicator');
-                    if (!progressIndicator) {
-                        progressIndicator = document.createElement('div');
-                        progressIndicator.id = 'progress-indicator';
-                        progressIndicator.className = 'mt-2 p-3 bg-green-50 border border-green-200 rounded-lg text-center';
-                        nameInput.parentNode.appendChild(progressIndicator);
-                    }
+                // إظهار مؤشر التقدم المحفوظ
+                let progressIndicator = document.getElementById('progress-indicator');
+                if (!progressIndicator) {
+                    progressIndicator = document.createElement('div');
+                    progressIndicator.id = 'progress-indicator';
+                    progressIndicator.className = 'mt-2 p-3 bg-green-50 border border-green-200 rounded-lg text-center';
+                }
 
-                    progressIndicator.innerHTML = `
+                progressIndicator.innerHTML = `
                         <div class="flex items-center justify-center gap-2 text-green-700">
                             <span class="text-lg">💾</span>
                             <span class="font-semibold">وجد تقدم محفوظ!</span>
@@ -2649,26 +2645,26 @@
                             آخر مرة: ${new Date(savedProgress.lastSaved).toLocaleDateString('ar-SA')}
                         </div>
                     `;
-                } else {
-                    // إزالة مؤشر التقدم إذا لم يوجد تقدم محفوظ
-                    const progressIndicator = document.getElementById('progress-indicator');
-                    if (progressIndicator) {
-                        progressIndicator.remove();
-                    }
+            } else {
+                // إزالة مؤشر التقدم إذا لم يوجد تقدم محفوظ
+                const progressIndicator = document.getElementById('progress-indicator');
+                if (progressIndicator) {
+                    progressIndicator.remove();
                 }
-            });
-        }
+            }
+        };
+
 
         // تفعيل/تعطيل زر البدء حسب الموافقة وإدخال الاسم
         function updateStartButton() {
-            const nameInput = document.getElementById('userName');
+            // const nameInput = document.getElementById('userName');
             const agreementCheckbox = document.getElementById('agreementCheckbox');
             const startButton = document.getElementById('startButton');
 
-            const isNameValid = nameInput.value.trim().length > 0;
+            // const isNameValid = nameInput.value.trim().length > 0;
             const isAgreementChecked = agreementCheckbox.checked;
 
-            if (isNameValid && isAgreementChecked) {
+            if (isAgreementChecked) {
                 startButton.disabled = false;
                 startButton.className = 'w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white text-xl font-bold py-4 px-8 rounded-xl hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-200 shadow-lg cursor-pointer';
             } else {
@@ -2682,10 +2678,10 @@
             checkForSavedProgress();
 
             // إضافة مراقبات للحقول
-            const nameInput = document.getElementById('userName');
+            // const nameInput = document.getElementById('userName');
             const agreementCheckbox = document.getElementById('agreementCheckbox');
 
-            nameInput.addEventListener('input', updateStartButton);
+            // nameInput.addEventListener('input', updateStartButton);
             agreementCheckbox.addEventListener('change', updateStartButton);
 
             // تحديث حالة الزر في البداية

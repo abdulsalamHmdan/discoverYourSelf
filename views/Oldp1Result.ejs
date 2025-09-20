@@ -1,1070 +1,0 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>اختبار RIASEC - اكتشف ميولك المهنية</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap');
-
-        * {
-            font-family: 'Cairo', sans-serif;
-        }
-
-        .gradient-bg {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-
-        .slide-enter {
-            transform: translateX(100%);
-            opacity: 0;
-        }
-
-        .slide-enter-active {
-            transform: translateX(0);
-            opacity: 1;
-            transition: all 0.22s ease-out;
-        }
-
-        .pulse-success {
-            animation: pulse-green 0.6s ease-out;
-        }
-
-        @keyframes pulse-green {
-            0% {
-                transform: scale(1);
-                background-color: rgb(34, 197, 94);
-            }
-
-            50% {
-                transform: scale(1.05);
-                background-color: rgb(22, 163, 74);
-            }
-
-            100% {
-                transform: scale(1);
-                background-color: rgb(34, 197, 94);
-            }
-        }
-
-        .breathing-circle {
-            animation: breathe 4s ease-in-out infinite;
-        }
-
-        @keyframes breathe {
-
-            0%,
-            100% {
-                transform: scale(1);
-            }
-
-            50% {
-                transform: scale(1.1);
-            }
-        }
-
-        .dark-mode {
-            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
-            color: white;
-        }
-
-        .radar-chart {
-            max-width: 300px;
-            margin: 0 auto;
-        }
-
-
-        @media print {
-            .noP {
-                display: none;
-            }
-
-            * {
-                break-inside: avoid;
-            }
-        }
-    </style>
-</head>
-
-<body class="min-h-screen transition-all duration-300" id="body">
-    <!-- شاشة النتائج -->
-    <div id="results-screen" class="min-h-screen bg-gray-50 p-6">
-        <div class="max-w-6xl mx-auto">
-            <!-- هيدر النتيجة -->
-            <div
-                class="bg-gradient-to-r from-blue-600 to-purple-600 rounded-3xl shadow-2xl p-8 mb-8 text-white text-center">
-                <div class="text-6xl mb-4">🎉</div>
-                <h1 class="text-4xl font-bold mb-4">
-                    تهانينا يا <span id="result-name" class="text-yellow-300"></span>!
-                </h1>
-                <p class="text-xl mb-6 opacity-90">لقد اكتشفت شخصيتك المهنية بنجاح</p>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                    <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-4">
-                        <div class="text-2xl mb-2">⏱️</div>
-                        <div class="text-sm opacity-80">الوقت الكلي</div>
-                        <div id="total-time" class="text-lg font-bold"></div>
-                    </div>
-                    <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-4">
-                        <div class="text-2xl mb-2">🎯</div>
-                        <div class="text-sm opacity-80">مؤشر الثقة</div>
-                        <div id="confidence-level" class="text-lg font-bold"></div>
-                    </div>
-                    <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-4">
-                        <div class="text-2xl mb-2">📊</div>
-                        <div class="text-sm opacity-80">نقاط القوة</div>
-                        <div id="strength-count" class="text-lg font-bold">3 أبعاد</div>
-                    </div>
-                </div>
-
-                <!-- أعلى 3 أبعاد -->
-                <div class="flex flex-col items-center gap-4" id="top-dimensions">
-                    <!-- سيتم إنشاؤها ديناميكياً -->
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
-                <!-- الرسوم البيانية -->
-                <div class="bg-white rounded-2xl shadow-lg p-4">
-                    <h3 class="text-lg font-bold text-gray-800 mb-3 text-center">نتائجك التفصيلية</h3>
-                    <canvas id="barChart" width="300" height="200"></canvas>
-                </div>
-
-                <div class="bg-white rounded-2xl shadow-lg p-4">
-                    <h3 class="text-lg font-bold text-gray-800 mb-3 text-center">مخطط التوازن</h3>
-                    <div class="radar-chart">
-                        <canvas id="radarChart" width="250" height="200"></canvas>
-                    </div>
-                </div>
-
-                <!-- أفضل 5 مهن -->
-                <div class="bg-white rounded-2xl shadow-lg p-4">
-                    <h3 class="text-lg font-bold text-gray-800 mb-3 text-center">أفضل 5 مهن لك</h3>
-                    <div id="top-careers" class="space-y-3">
-                        <!-- سيتم إنشاؤها ديناميكياً -->
-                    </div>
-                </div>
-
-                <!-- أفضل 5 تخصصات جامعية -->
-                <div class="bg-white rounded-2xl shadow-lg p-4">
-                    <h3 class="text-lg font-bold text-gray-800 mb-3 text-center">أفضل 5 تخصصات جامعية</h3>
-                    <div id="top-majors" class="space-y-3">
-                        <!-- سيتم إنشاؤها ديناميكياً -->
-                    </div>
-                </div>
-            </div>
-
-            <!-- بطاقات الأبعاد -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 mt-6" id="dimension-cards">
-                <!-- سيتم إنشاؤها ديناميكياً -->
-            </div>
-
-            <!-- التوصيات -->
-            <div class="bg-white rounded-2xl shadow-lg p-8 mt-6">
-                <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">ما الخطوة القادمة؟</h3>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="recommendations">
-                    <!-- سيتم إنشاؤها ديناميكياً -->
-                </div>
-            </div>
-
-            <!-- أزرار المشاركة -->
-            <div class="bg-white rounded-2xl shadow-lg p-6 mt-6 noP">
-                <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">احفظ نتيجتك</h3>
-                <div class="flex flex-wrap justify-center gap-3">
-                    <button onclick="saveAsPDF()"
-                        class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg transition-colors flex items-center gap-2">
-                        <span>📄</span>
-                        <span>حفظ كـ PDF</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- زر إعادة الاختبار
-            <div class="text-center mt-8 noP">
-                <button onclick="restartTest()"
-                    class="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-200 transform hover:scale-105">
-                    الانتقال الى الاختبار الثاني ( MPTI )
-                </button>
-            </div> -->
-        </div>
-    </div>
-
-    <script>
-        // بيانات الاختبار
-        const questions = [
-            // البُعد الواقعي (R) - الأسئلة 1-8
-            { id: 1, text: "إصلاح الأجهزة الكهربائية", dimension: "R", section: 1, icon: "🔧" },
-            { id: 2, text: "العمل في ورشة نجارة", dimension: "R", section: 1, icon: "🔧" },
-            { id: 3, text: "قيادة الشاحنات أو المعدات الثقيلة", dimension: "R", section: 1, icon: "🔧" },
-            { id: 4, text: "العمل في مزرعة", dimension: "R", section: 1, icon: "🔧" },
-            { id: 5, text: "بناء الأثاث الخشبي", dimension: "R", section: 1, icon: "🔧" },
-            { id: 6, text: "صيانة السيارات", dimension: "R", section: 2, icon: "🔧" },
-            { id: 7, text: "العمل في البناء والتشييد", dimension: "R", section: 2, icon: "🔧" },
-            { id: 8, text: "تشغيل الآلات الصناعية", dimension: "R", section: 2, icon: "🔧" },
-
-            // البُعد الاستقصائي (I) - الأسئلة 9-16
-            { id: 9, text: "إجراء التجارب العلمية", dimension: "I", section: 2, icon: "🔬" },
-            { id: 10, text: "دراسة الكيمياء أو الفيزياء", dimension: "I", section: 2, icon: "🔬" },
-            { id: 11, text: "البحث في المكتبات أو الإنترنت", dimension: "I", section: 3, icon: "🔬" },
-            { id: 12, text: "حل المسائل الرياضية المعقدة", dimension: "I", section: 3, icon: "🔬" },
-            { id: 13, text: "تحليل البيانات والإحصائيات", dimension: "I", section: 3, icon: "🔬" },
-            { id: 14, text: "كتابة التقارير العلمية", dimension: "I", section: 3, icon: "🔬" },
-            { id: 15, text: "دراسة علم الأحياء", dimension: "I", section: 3, icon: "🔬" },
-            { id: 16, text: "العمل في المختبرات", dimension: "I", section: 4, icon: "🔬" },
-
-            // البُعد الفني (A) - الأسئلة 17-24
-            { id: 17, text: "الرسم أو التصوير", dimension: "A", section: 4, icon: "🎨" },
-            { id: 18, text: "تصميم الشعارات والهويات البصرية", dimension: "A", section: 4, icon: "🎨" },
-            { id: 19, text: "كتابة القصص أو الشعر", dimension: "A", section: 4, icon: "🎨" },
-            { id: 20, text: "تصميم الملابس أو الديكور", dimension: "A", section: 4, icon: "🎨" },
-            { id: 21, text: "التمثيل أو الإخراج", dimension: "A", section: 5, icon: "🎨" },
-            { id: 22, text: "تصميم المواقع الإلكترونية", dimension: "A", section: 5, icon: "🎨" },
-            { id: 23, text: "النحت أو الأعمال اليدوية", dimension: "A", section: 5, icon: "🎨" },
-            { id: 24, text: "التصوير الفوتوغرافي", dimension: "A", section: 5, icon: "🎨" },
-
-            // البُعد الاجتماعي (S) - الأسئلة 25-32
-            { id: 25, text: "تدريس الأطفال", dimension: "S", section: 5, icon: "👥" },
-            { id: 26, text: "مساعدة كبار السن", dimension: "S", section: 6, icon: "👥" },
-            { id: 27, text: "العمل في المستشفيات", dimension: "S", section: 6, icon: "👥" },
-            { id: 28, text: "تقديم المشورة للآخرين", dimension: "S", section: 6, icon: "👥" },
-            { id: 29, text: "تنظيم الفعاليات الاجتماعية", dimension: "S", section: 6, icon: "👥" },
-            { id: 30, text: "العمل مع ذوي الاحتياجات الخاصة", dimension: "S", section: 6, icon: "👥" },
-            { id: 31, text: "التطوع في الجمعيات الخيرية", dimension: "S", section: 7, icon: "👥" },
-            { id: 32, text: "حل النزاعات بين الناس", dimension: "S", section: 7, icon: "👥" },
-
-            // البُعد المغامر (E) - الأسئلة 33-40
-            { id: 33, text: "قيادة فريق العمل", dimension: "E", section: 7, icon: "💼" },
-            { id: 34, text: "بدء مشروع تجاري", dimension: "E", section: 7, icon: "💼" },
-            { id: 35, text: "إقناع الآخرين بأفكارك", dimension: "E", section: 7, icon: "💼" },
-            { id: 36, text: "إدارة الاجتماعات", dimension: "E", section: 8, icon: "💼" },
-            { id: 37, text: "التفاوض في الصفقات", dimension: "E", section: 8, icon: "💼" },
-            { id: 38, text: "العمل في المبيعات", dimension: "E", section: 8, icon: "💼" },
-            { id: 39, text: "تنظيم المؤتمرات", dimension: "E", section: 8, icon: "💼" },
-            { id: 40, text: "إدارة الأعمال", dimension: "E", section: 8, icon: "💼" },
-
-            // البُعد التقليدي (C) - الأسئلة 41-45
-            { id: 41, text: "تنظيم الملفات والوثائق", dimension: "C", section: 9, icon: "📊" },
-            { id: 42, text: "العمل مع الأرقام والحسابات", dimension: "C", section: 9, icon: "📊" },
-            { id: 43, text: "إدخال البيانات في الكمبيوتر", dimension: "C", section: 9, icon: "📊" },
-            { id: 44, text: "مراجعة التقارير المالية", dimension: "C", section: 9, icon: "📊" },
-            { id: 45, text: "العمل في المحاسبة", dimension: "C", section: 9, icon: "📊" }
-        ];
-
-        // معلومات الأبعاد
-        const dimensions = {
-            R: {
-                name: "الواقعي (Realistic)",
-                description: "يفضل الأنشطة العملية والعمل بالأيدي",
-                careers: ["مهندس", "فني", "نجار", "كهربائي", "مزارع"],
-                color: "#ef4444",
-                activities: ["تعلم مهارة يدوية جديدة", "إصلاح شيء في المنزل", "العمل في الحديقة", "بناء نموذج", "تعلم استخدام أدوات جديدة"]
-            },
-            I: {
-                name: "الاستقصائي (Investigative)",
-                description: "يحب البحث والتحليل وحل المشكلات",
-                careers: ["عالم", "باحث", "طبيب", "محلل", "مبرمج"],
-                color: "#3b82f6",
-                activities: ["قراءة المقالات العلمية", "إجراء تجربة بسيطة", "حل الألغاز المعقدة", "تعلم لغة برمجة", "تحليل البيانات"]
-            },
-            A: {
-                name: "الفني (Artistic)",
-                description: "يستمتع بالإبداع والتعبير الفني",
-                careers: ["فنان", "مصمم", "كاتب", "موسيقي", "مخرج"],
-                color: "#8b5cf6",
-                activities: ["الرسم أو التصوير", "كتابة قصة قصيرة", "تعلم آلة موسيقية", "تصميم شعار", "زيارة معرض فني"]
-            },
-            S: {
-                name: "الاجتماعي (Social)",
-                description: "يفضل مساعدة الآخرين والعمل معهم",
-                careers: ["معلم", "مستشار", "ممرض", "أخصائي اجتماعي", "مدرب"],
-                color: "#10b981",
-                activities: ["التطوع في جمعية خيرية", "تدريس شخص مهارة جديدة", "تنظيم فعالية اجتماعية", "مساعدة الجيران", "الانضمام لنادي اجتماعي"]
-            },
-            E: {
-                name: "المغامر (Enterprising)",
-                description: "يحب القيادة وإقناع الآخرين",
-                careers: ["مدير", "رجل أعمال", "مندوب مبيعات", "محامي", "سياسي"],
-                color: "#f59e0b",
-                activities: ["قيادة مشروع صغير", "تنظيم فعالية", "إقناع الأصدقاء بفكرة", "بدء مبادرة", "التطوع في منصب قيادي"]
-            },
-            C: {
-                name: "التقليدي (Conventional)",
-                description: "يفضل العمل المنظم والروتيني",
-                careers: ["محاسب", "سكرتير", "موظف بنك", "مراجع", "كاتب"],
-                color: "#6b7280",
-                activities: ["تنظيم الملفات الشخصية", "إعداد جدول زمني", "تتبع المصروفات", "ترتيب المكتبة", "إنشاء قائمة مهام"]
-            }
-        };
-
-        // قاعدة بيانات المهن الشاملة
-        const careerDatabase = {
-            // مهن تتطلب أبعاد متعددة مع نقاط القوة
-            "مهندس معماري": { dimensions: ["R", "A", "I"], score: 0, icon: "🏗️", description: "تصميم وتخطيط المباني والمساحات" },
-            "طبيب": { dimensions: ["I", "S"], score: 0, icon: "👨‍⚕️", description: "تشخيص وعلاج الأمراض ومساعدة المرضى" },
-            "مصمم جرافيك": { dimensions: ["A", "C"], score: 0, icon: "🎨", description: "إنشاء التصاميم البصرية والهوية البصرية" },
-            "مدير مشروع": { dimensions: ["E", "C", "S"], score: 0, icon: "📊", description: "قيادة وتنسيق المشاريع والفرق" },
-            "مبرمج": { dimensions: ["I", "C"], score: 0, icon: "💻", description: "تطوير البرمجيات والتطبيقات" },
-            "معلم": { dimensions: ["S", "A"], score: 0, icon: "👨‍🏫", description: "تعليم وتوجيه الطلاب" },
-            "محاسب": { dimensions: ["C", "I"], score: 0, icon: "🧮", description: "إدارة الحسابات المالية والضرائب" },
-            "مصور فوتوغرافي": { dimensions: ["A", "E"], score: 0, icon: "📸", description: "التقاط وتحرير الصور الاحترافية" },
-            "مهندس كهربائي": { dimensions: ["R", "I"], score: 0, icon: "⚡", description: "تصميم وصيانة الأنظمة الكهربائية" },
-            "أخصائي تسويق": { dimensions: ["E", "A", "S"], score: 0, icon: "📈", description: "تطوير استراتيجيات التسويق والترويج" },
-            "طبيب نفسي": { dimensions: ["S", "I"], score: 0, icon: "🧠", description: "تشخيص وعلاج الاضطرابات النفسية" },
-            "مهندس برمجيات": { dimensions: ["I", "C", "R"], score: 0, icon: "⚙️", description: "تطوير وصيانة الأنظمة البرمجية" },
-            "مدير مبيعات": { dimensions: ["E", "S"], score: 0, icon: "💼", description: "قيادة فرق المبيعات وتحقيق الأهداف" },
-            "كاتب محتوى": { dimensions: ["A", "I"], score: 0, icon: "✍️", description: "إنشاء المحتوى المكتوب والإبداعي" },
-            "فني صيانة": { dimensions: ["R", "C"], score: 0, icon: "🔧", description: "إصلاح وصيانة الأجهزة والمعدات" },
-            "مستشار إداري": { dimensions: ["E", "I", "S"], score: 0, icon: "🎯", description: "تقديم المشورة لتحسين الأداء التنظيمي" },
-            "مصمم داخلي": { dimensions: ["A", "R"], score: 0, icon: "🏠", description: "تصميم وتنسيق المساحات الداخلية" },
-            "محلل بيانات": { dimensions: ["I", "C"], score: 0, icon: "📊", description: "تحليل البيانات واستخراج الرؤى" },
-            "ممرض": { dimensions: ["S", "C"], score: 0, icon: "👩‍⚕️", description: "رعاية المرضى وتقديم الخدمات الطبية" },
-            "مهندس ميكانيكي": { dimensions: ["R", "I"], score: 0, icon: "⚙️", description: "تصميم وتطوير الآلات والأنظمة الميكانيكية" },
-            "محامي": { dimensions: ["E", "I", "S"], score: 0, icon: "⚖️", description: "تمثيل العملاء في القضايا القانونية" },
-            "موسيقي": { dimensions: ["A"], score: 0, icon: "🎵", description: "العزف والتأليف الموسيقي" },
-            "عالم أحياء": { dimensions: ["I", "R"], score: 0, icon: "🔬", description: "دراسة الكائنات الحية والنظم البيولوجية" },
-            "مدرب رياضي": { dimensions: ["S", "E"], score: 0, icon: "🏃‍♂️", description: "تدريب الرياضيين وتطوير مهاراتهم" },
-            "مهندس مدني": { dimensions: ["R", "I", "C"], score: 0, icon: "🌉", description: "تصميم وإشراف على مشاريع البنية التحتية" },
-            "صحفي": { dimensions: ["A", "I", "S"], score: 0, icon: "📰", description: "جمع الأخبار وكتابة التقارير الإعلامية" },
-            "طبيب أسنان": { dimensions: ["I", "S", "R"], score: 0, icon: "🦷", description: "تشخيص وعلاج مشاكل الأسنان والفم" },
-            "مصمم ويب": { dimensions: ["A", "I", "C"], score: 0, icon: "🌐", description: "تصميم وتطوير المواقع الإلكترونية" },
-            "أخصائي موارد بشرية": { dimensions: ["S", "E", "C"], score: 0, icon: "👥", description: "إدارة شؤون الموظفين والتوظيف" },
-            "مهندس كمبيوتر": { dimensions: ["I", "R", "C"], score: 0, icon: "💻", description: "تطوير وصيانة أنظمة الحاسوب" }
-        };
-
-        let testState = JSON.parse('<%-p1%>')
-        // قاعدة بيانات التخصصات الجامعية
-        const majorDatabase = {
-            "هندسة الحاسوب": { dimensions: ["I", "R", "C"], score: 0, icon: "💻", description: "تطوير وتصميم أنظمة الحاسوب والبرمجيات", category: "هندسة" },
-            "الطب": { dimensions: ["I", "S"], score: 0, icon: "🩺", description: "دراسة جسم الإنسان وعلاج الأمراض", category: "طبية" },
-            "التصميم الجرافيكي": { dimensions: ["A", "C"], score: 0, icon: "🎨", description: "إنشاء التصاميم البصرية والإعلانية", category: "فنون" },
-            "إدارة الأعمال": { dimensions: ["E", "C", "S"], score: 0, icon: "📊", description: "إدارة المؤسسات والمشاريع التجارية", category: "إدارة" },
-            "علوم الحاسوب": { dimensions: ["I", "C"], score: 0, icon: "⚡", description: "البرمجة وتطوير الخوارزميات", category: "تقنية" },
-            "التربية": { dimensions: ["S", "A"], score: 0, icon: "👨‍🏫", description: "تعليم وتربية الأجيال", category: "تعليم" },
-            "المحاسبة": { dimensions: ["C", "I"], score: 0, icon: "🧮", description: "إدارة الحسابات المالية والضرائب", category: "مالية" },
-            "الهندسة المعمارية": { dimensions: ["A", "R", "I"], score: 0, icon: "🏗️", description: "تصميم وتخطيط المباني والمساحات", category: "هندسة" },
-            "الهندسة الكهربائية": { dimensions: ["R", "I"], score: 0, icon: "⚡", description: "تصميم وصيانة الأنظمة الكهربائية", category: "هندسة" },
-            "التسويق": { dimensions: ["E", "A", "S"], score: 0, icon: "📈", description: "ترويج المنتجات والخدمات", category: "إدارة" },
-            "علم النفس": { dimensions: ["S", "I"], score: 0, icon: "🧠", description: "دراسة السلوك البشري والعقل", category: "علوم إنسانية" },
-            "هندسة البرمجيات": { dimensions: ["I", "C", "R"], score: 0, icon: "⚙️", description: "تطوير وصيانة الأنظمة البرمجية", category: "تقنية" },
-            "الإعلام": { dimensions: ["A", "E", "S"], score: 0, icon: "📺", description: "الصحافة والإذاعة والتلفزيون", category: "إعلام" },
-            "الصيدلة": { dimensions: ["I", "S", "C"], score: 0, icon: "💊", description: "دراسة الأدوية وتأثيراتها", category: "طبية" },
-            "الهندسة الميكانيكية": { dimensions: ["R", "I"], score: 0, icon: "⚙️", description: "تصميم وتطوير الآلات والأنظمة الميكانيكية", category: "هندسة" },
-            "القانون": { dimensions: ["E", "I", "S"], score: 0, icon: "⚖️", description: "دراسة القوانين والأنظمة القضائية", category: "قانون" },
-            "الفنون الجميلة": { dimensions: ["A"], score: 0, icon: "🎭", description: "الرسم والنحت والفنون التشكيلية", category: "فنون" },
-            "علم الأحياء": { dimensions: ["I", "R"], score: 0, icon: "🔬", description: "دراسة الكائنات الحية والنظم البيولوجية", category: "علوم" },
-            "التمريض": { dimensions: ["S", "C"], score: 0, icon: "👩‍⚕️", description: "رعاية المرضى وتقديم الخدمات الطبية", category: "طبية" },
-            "الهندسة المدنية": { dimensions: ["R", "I", "C"], score: 0, icon: "🌉", description: "تصميم وإشراف على مشاريع البنية التحتية", category: "هندسة" },
-            "الصحافة": { dimensions: ["A", "I", "S"], score: 0, icon: "📰", description: "جمع الأخبار وكتابة التقارير الإعلامية", category: "إعلام" },
-            "طب الأسنان": { dimensions: ["I", "S", "R"], score: 0, icon: "🦷", description: "تشخيص وعلاج مشاكل الأسنان والفم", category: "طبية" },
-            "تصميم المواقع": { dimensions: ["A", "I", "C"], score: 0, icon: "🌐", description: "تصميم وتطوير المواقع الإلكترونية", category: "تقنية" },
-            "الموارد البشرية": { dimensions: ["S", "E", "C"], score: 0, icon: "👥", description: "إدارة شؤون الموظفين والتوظيف", category: "إدارة" },
-            "هندسة الاتصالات": { dimensions: ["I", "R", "C"], score: 0, icon: "📡", description: "تطوير وصيانة أنظمة الاتصالات", category: "هندسة" },
-            "الاقتصاد": { dimensions: ["I", "C", "E"], score: 0, icon: "💰", description: "دراسة الأسواق والنظم الاقتصادية", category: "اقتصاد" },
-            "العلاج الطبيعي": { dimensions: ["S", "R"], score: 0, icon: "🏃‍♂️", description: "إعادة التأهيل والعلاج الحركي", category: "طبية" },
-            "الأمن السيبراني": { dimensions: ["I", "C", "R"], score: 0, icon: "🔒", description: "حماية الأنظمة والبيانات الرقمية", category: "تقنية" },
-            "إدارة الفنادق": { dimensions: ["E", "S", "C"], score: 0, icon: "🏨", description: "إدارة وتشغيل المنشآت الفندقية", category: "خدمات" },
-            "الترجمة": { dimensions: ["A", "I", "S"], score: 0, icon: "🌍", description: "ترجمة النصوص بين اللغات المختلفة", category: "لغات" }
-        };
-
-
-
-        calculateAndDisplayResults()
-
-        // حساب وعرض النتائج
-        function calculateAndDisplayResults() {
-            // حساب النقاط لكل بُعد
-            const scores = { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 };
-            const counts = { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 };
-
-            questions.forEach(q => {
-                if (testState.answers[q.id] !== undefined) {
-                    scores[q.dimension] += testState.answers[q.id];
-                    counts[q.dimension]++;
-                }
-            });
-
-            // حساب النسب المئوية
-            const percentages = {};
-            Object.keys(scores).forEach(dim => {
-                percentages[dim] = counts[dim] > 0 ? (scores[dim] / (counts[dim] * 2)) * 100 : 0;
-            });
-
-            // ترتيب الأبعاد
-            const sortedDimensions = Object.keys(percentages).sort((a, b) => percentages[b] - percentages[a]);
-
-            // عرض المعلومات الأساسية
-            document.getElementById('result-name').textContent = testState.userName;
-            document.getElementById('total-time').textContent = formatTime(Date.now() - testState.startedAt);
-            document.getElementById('confidence-level').textContent = calculateConfidenceLevel();
-
-            // عرض أعلى 3 أبعاد
-            displayTopDimensions(sortedDimensions.slice(0, 3), percentages);
-
-            // حساب وعرض أفضل المهن
-            const topCareers = calculateTopCareers(percentages);
-            displayTopCareers(topCareers);
-
-            // حساب وعرض أفضل التخصصات الجامعية
-            const topMajors = calculateTopMajors(percentages);
-            displayTopMajors(topMajors);
-
-            // رسم المخططات
-            drawBarChart(sortedDimensions, percentages, scores, counts);
-            drawRadarChart(percentages);
-
-            // عرض بطاقات الأبعاد
-            displayDimensionCards(sortedDimensions, percentages);
-
-            // عرض التوصيات
-            displayRecommendations(sortedDimensions.slice(0, 3), percentages);
-        }
-
-        // حساب أفضل المهن بناءً على النتائج ggggggggggggggggggggggggggggggggggg
-        function calculateTopCareers(percentages) {
-            // إعادة تعيين النقاط
-            Object.keys(careerDatabase).forEach(career => {
-                careerDatabase[career].score = 0;
-            });
-
-            // حساب نقاط كل مهنة
-            Object.keys(careerDatabase).forEach(careerName => {
-                const career = careerDatabase[careerName];
-                career.dimensions.forEach(dim => {
-                    career.score += percentages[dim] || 0;
-                });
-                // حساب المتوسط
-                career.score = career.score / career.dimensions.length;
-            });
-
-            // ترتيب المهن حسب النقاط
-            return Object.keys(careerDatabase)
-                .sort((a, b) => careerDatabase[b].score - careerDatabase[a].score)
-                .slice(0, 5)
-                .map(name => ({
-                    name,
-                    ...careerDatabase[name]
-                }));
-        }
-
-        // حساب أفضل التخصصات الجامعية بناءً على النتائج
-        function calculateTopMajors(percentages) {
-            // إعادة تعيين النقاط
-            Object.keys(majorDatabase).forEach(major => {
-                majorDatabase[major].score = 0;
-            });
-
-            // حساب نقاط كل تخصص بطريقة أكثر دقة
-            Object.keys(majorDatabase).forEach(majorName => {
-                const major = majorDatabase[majorName];
-                let totalScore = 0;
-                let weightedScore = 0;
-
-                // حساب النقاط الأساسية
-                major.dimensions.forEach(dim => {
-                    const dimScore = percentages[dim] || 0;
-                    totalScore += dimScore;
-                });
-
-                // حساب المتوسط الأساسي
-                const averageScore = totalScore / major.dimensions.length;
-
-                // تطبيق معايير إضافية للدقة
-                if (major.dimensions.length === 1) {
-                    // للتخصصات أحادية البُعد: النقاط الكاملة للبُعد الواحد
-                    weightedScore = percentages[major.dimensions[0]] || 0;
-                } else if (major.dimensions.length === 2) {
-                    // للتخصصات ثنائية الأبعاد: متوسط مرجح مع مكافأة للتوازن
-                    const dim1Score = percentages[major.dimensions[0]] || 0;
-                    const dim2Score = percentages[major.dimensions[1]] || 0;
-                    const balance = 1 - Math.abs(dim1Score - dim2Score) / 100;
-                    weightedScore = averageScore * (0.8 + balance * 0.2);
-                } else {
-                    // للتخصصات متعددة الأبعاد: تركيز على الأبعاد القوية
-                    const strongDimensions = major.dimensions.filter(dim => percentages[dim] > 50);
-                    const veryStrongDimensions = major.dimensions.filter(dim => percentages[dim] > 70);
-
-                    weightedScore = averageScore;
-
-                    // مكافآت للأبعاد القوية
-                    if (strongDimensions.length >= 2) {
-                        weightedScore *= 1.1; // مكافأة 10%
-                    }
-                    if (veryStrongDimensions.length >= 1) {
-                        weightedScore *= 1.05; // مكافأة إضافية 5%
-                    }
-
-                    // تقليل النقاط إذا كان هناك بُعد ضعيف جداً
-                    const weakDimensions = major.dimensions.filter(dim => percentages[dim] < 30);
-                    if (weakDimensions.length > 0) {
-                        weightedScore *= (1 - weakDimensions.length * 0.1);
-                    }
-                }
-
-                // تطبيق حد أقصى وأدنى منطقي
-                major.score = Math.max(0, Math.min(100, weightedScore));
-            });
-
-            // ترتيب التخصصات حسب النقاط
-            return Object.keys(majorDatabase)
-                .sort((a, b) => majorDatabase[b].score - majorDatabase[a].score)
-                .slice(0, 5)
-                .map(name => ({
-                    name,
-                    ...majorDatabase[name]
-                }));
-        }
-
-        // عرض أفضل 5 مهن gggggggggggggggggggggggggg
-        function displayTopCareers(topCareers) {
-            const container = document.getElementById('top-careers');
-            container.innerHTML = '';
-
-            topCareers.forEach((career, index) => {
-                const careerCard = document.createElement('div');
-                careerCard.className = 'flex items-center gap-3 p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors cursor-pointer';
-                careerCard.onclick = () => showCareerDetails(career);
-
-                careerCard.innerHTML = `
-                    <div class="flex-shrink-0">
-                        <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                            <span class="text-lg">${career.icon}</span>
-                        </div>
-                    </div>
-                    <div class="flex-1 min-w-0">
-                        <div class="flex items-center gap-2 mb-1">
-                            <span class="font-semibold text-gray-800 text-sm">${career.name}</span>
-                            <span class="bg-blue-500 text-white text-xs px-2 py-1 rounded-full">#${index + 1}</span>
-                        </div>
-                        <div class="text-xs text-gray-600 mb-2">${career.description}</div>
-                        <div class="flex items-center gap-1">
-                            <div class="text-xs font-semibold text-blue-600">${Math.round(career.score)}% مطابقة</div>
-                            <div class="flex-1 bg-gray-200 rounded-full h-1.5">
-                                <div class="bg-blue-500 h-1.5 rounded-full transition-all duration-300" style="width: ${career.score}%"></div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-
-                container.appendChild(careerCard);
-            });
-        }
-
-        // عرض أفضل 5 تخصصات جامعية
-        function displayTopMajors(topMajors) {
-            const container = document.getElementById('top-majors');
-            container.innerHTML = '';
-
-            topMajors.forEach((major, index) => {
-                const majorCard = document.createElement('div');
-                majorCard.className = 'flex items-center gap-3 p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors cursor-pointer';
-                majorCard.onclick = () => showMajorDetails(major);
-
-                majorCard.innerHTML = `
-                    <div class="flex-shrink-0">
-                        <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-                            <span class="text-lg">${major.icon}</span>
-                        </div>
-                    </div>
-                    <div class="flex-1 min-w-0">
-                        <div class="flex items-center gap-2 mb-1">
-                            <span class="font-semibold text-gray-800 text-sm">${major.name}</span>
-                            <span class="bg-purple-500 text-white text-xs px-2 py-1 rounded-full">#${index + 1}</span>
-                        </div>
-                        <div class="text-xs text-gray-600 mb-1">${major.description}</div>
-                        <div class="text-xs text-purple-600 mb-2">التصنيف: ${major.category}</div>
-                        <div class="flex items-center gap-1">
-                            <div class="text-xs font-semibold text-purple-600">${Math.round(major.score)}% مطابقة</div>
-                            <div class="flex-1 bg-gray-200 rounded-full h-1.5">
-                                <div class="bg-purple-500 h-1.5 rounded-full transition-all duration-300" style="width: ${Math.min(major.score, 100)}%"></div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-
-                container.appendChild(majorCard);
-            });
-        }
-
-        // عرض تفاصيل التخصص الجامعي
-        function showMajorDetails(major) {
-            const dimensionNames = major.dimensions.map(dim => dimensions[dim].name.split(' ')[0]).join(' + ');
-            alert(`${major.icon} ${major.name}\n\n${major.description}\n\nالتصنيف: ${major.category}\nالأبعاد المطلوبة: ${dimensionNames}\nنسبة المطابقة: ${Math.round(major.score)}%`);
-        }
-
-        // عرض تفاصيل المهنة
-        function showCareerDetails(career) {
-            const dimensionNames = career.dimensions.map(dim => dimensions[dim].name.split(' ')[0]).join(' + ');
-            alert(`${career.icon} ${career.name}\n\n${career.description}\n\nالأبعاد المطلوبة: ${dimensionNames}\nنسبة المطابقة: ${Math.round(career.score)}%`);
-        }
-
-        // عرض أعلى 3 أبعاد
-        //ggggggggggggggggggggggg
-        function displayTopDimensions(topDims, percentages) {
-            const container = document.getElementById('top-dimensions');
-            container.innerHTML = '';
-
-            // إضافة عنوان "ميولك الأعلى"
-            const title = document.createElement('div');
-            title.className = 'w-full text-center mb-4';
-            title.innerHTML = `<h3 class="text-xl font-bold text-white mb-2">🎯 ميولك الأعلى</h3>`;
-            container.appendChild(title);
-
-            // إنشاء حاوية للأبعاد الثلاثة
-            const dimensionsContainer = document.createElement('div');
-            dimensionsContainer.className = 'flex flex-wrap justify-center gap-4 w-full';
-
-            topDims.forEach((dim, index) => {
-                const badge = document.createElement('div');
-                badge.className = 'bg-white/20 backdrop-blur-sm rounded-2xl px-6 py-4 border border-white/30 flex-1 min-w-[280px] max-w-[320px]';
-
-                // الحصول على الاسم العربي والإنجليزي
-                const arabicName = dimensions[dim].name.split('(')[0].trim();
-                const englishName = dimensions[dim].name.match(/\(([^)]+)\)/)[1];
-
-                badge.innerHTML = `
-                    <div class="flex flex-col items-center text-center gap-3">
-                        <div class="flex items-center gap-3">
-                            <span class="text-4xl">${questions.find(q => q.dimension === dim).icon}</span>
-                            <div class="bg-yellow-400 text-yellow-900 px-4 py-2 rounded-full text-lg font-bold">
-                                #${index + 1}
-                            </div>
-                        </div>
-                        <div>
-                            <div class="font-bold text-xl text-white">${arabicName}</div>
-                            <div class="text-base opacity-90 text-yellow-200">${englishName}</div>
-                            <div class="text-sm opacity-80 text-white mt-2 bg-white/10 px-3 py-1 rounded-full">الرمز: ${dim}</div>
-                        </div>
-                        <div class="text-lg font-bold text-yellow-300 bg-white/10 px-4 py-2 rounded-full">${Math.round(percentages[dim])}% مطابقة</div>
-                    </div>
-                `;
-                dimensionsContainer.appendChild(badge);
-            });
-
-            container.appendChild(dimensionsContainer);
-        }
-
-        // رسم مخطط الأعمدة
-        function drawBarChart(sortedDims, percentages, scores, counts) {
-            const ctx = document.getElementById('barChart').getContext('2d');
-
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: sortedDims.map(dim => dimensions[dim].name),
-                    datasets: [{
-                        label: 'النسبة المئوية',
-                        data: sortedDims.map(dim => percentages[dim]),
-                        backgroundColor: sortedDims.map(dim => dimensions[dim].color),
-                        borderRadius: 8,
-                        borderSkipped: false,
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: { display: false }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            max: 100,
-                            ticks: {
-                                callback: function (value) {
-                                    return value + '%';
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
-        // رسم مخطط الرادار
-        function drawRadarChart(percentages) {
-            const ctx = document.getElementById('radarChart').getContext('2d');
-
-            new Chart(ctx, {
-                type: 'radar',
-                data: {
-                    labels: Object.keys(dimensions).map(dim => dimensions[dim].name.split(' ')[0]),
-                    datasets: [{
-                        label: 'ميولك المهنية',
-                        data: Object.keys(dimensions).map(dim => percentages[dim]),
-                        backgroundColor: 'rgba(59, 130, 246, 0.2)',
-                        borderColor: 'rgb(59, 130, 246)',
-                        pointBackgroundColor: 'rgb(59, 130, 246)',
-                        pointBorderColor: '#fff',
-                        pointHoverBackgroundColor: '#fff',
-                        pointHoverBorderColor: 'rgb(59, 130, 246)'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: { display: false }
-                    },
-                    scales: {
-                        r: {
-                            beginAtZero: true,
-                            max: 100,
-                            ticks: {
-                                stepSize: 20
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
-        // عرض بطاقات الأبعاد
-        function displayDimensionCards(sortedDims, percentages) {
-            const container = document.getElementById('dimension-cards');
-            container.innerHTML = '';
-
-            sortedDims.forEach(dim => {
-                const card = document.createElement('div');
-                card.className = 'bg-white border-2 rounded-xl p-4 hover:shadow-lg transition-shadow';
-                card.style.borderColor = dimensions[dim].color;
-
-                card.innerHTML = `
-                    <div class="text-center mb-3">
-                        <span class="text-3xl">${questions.find(q => q.dimension === dim).icon}</span>
-                        <h4 class="font-bold text-gray-800 text-sm mt-2">${dimensions[dim].name.split(' ')[0]}</h4>
-                        <div class="text-xl font-bold mt-1" style="color: ${dimensions[dim].color}">${Math.round(percentages[dim])}%</div>
-                    </div>
-                    
-                    <p class="text-gray-600 text-xs mb-3 text-center">${dimensions[dim].description}</p>
-                    
-                    <div class="mb-3">
-                        <h5 class="font-semibold text-gray-700 mb-2 text-xs">مهن مناسبة:</h5>
-                        <div class="flex flex-wrap gap-1">
-                            ${dimensions[dim].careers.slice(0, 3).map(career =>
-                    `<span class="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs">${career}</span>`
-                ).join('')}
-                        </div>
-                    </div>
-                    
-                    <button onclick="showActivities('${dim}')" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 py-2 rounded-lg text-xs transition-colors">
-                        أنشطة مقترحة
-                    </button>
-                `;
-
-                container.appendChild(card);
-            });
-        }
-
-        // عرض التوصيات
-        function displayRecommendations(topDims, percentages) {
-            const container = document.getElementById('recommendations');
-            const topDim = topDims[0];
-            const topDimData = dimensions[topDim];
-
-            const recommendations = [
-                {
-                    icon: "🎯",
-                    title: "أنشطة لتقوية مهاراتك",
-                    description: `جرب هذه الأنشطة لتطوير البُعد ${topDimData.name.split(' ')[0]}:`,
-                    content: topDimData.activities.slice(0, 3).map(activity =>
-                        `<div class="flex items-start gap-2 mb-2">
-                            <span class="text-blue-500 mt-1">•</span>
-                            <span class="text-sm text-gray-700">${activity}</span>
-                        </div>`
-                    ).join(''),
-                    type: "activities"
-                },
-                {
-                    icon: "💼",
-                    title: "مهن مناسبة لك",
-                    description: `بناءً على نتائجك، هذه أفضل المهن المناسبة:`,
-                    content: calculateTopCareers(percentages).slice(0, 4).map(career =>
-                        `<div class="flex items-center gap-3 mb-2 p-2 bg-gray-50 rounded-lg">
-                            <span class="text-lg">${career.icon}</span>
-                            <div class="flex-1">
-                                <div class="font-semibold text-sm text-gray-800">${career.name}</div>
-                                <div class="text-xs text-gray-600">${Math.round(career.score)}% مطابقة</div>
-                            </div>
-                        </div>`
-                    ).join(''),
-                    type: "careers"
-                },
-                {
-                    icon: "📈",
-                    title: "خطة التطوير الشخصي",
-                    description: "خطوات عملية لتطوير مهاراتك:",
-                    content: `
-                        <div class="space-y-3">
-                            <div class="flex items-start gap-3">
-                                <div class="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">1</div>
-                                <div class="flex-1">
-                                    <div class="font-semibold text-sm text-gray-800">قيّم مهاراتك الحالية</div>
-                                    <div class="text-xs text-gray-600">حدد نقاط القوة والضعف في البُعد ${topDimData.name.split(' ')[0]}</div>
-                                </div>
-                            </div>
-                            <div class="flex items-start gap-3">
-                                <div class="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">2</div>
-                                <div class="flex-1">
-                                    <div class="font-semibold text-sm text-gray-800">ابحث عن فرص التعلم</div>
-                                    <div class="text-xs text-gray-600">دورات، ورش عمل، أو تجارب عملية</div>
-                                </div>
-                            </div>
-                            <div class="flex items-start gap-3">
-                                <div class="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">3</div>
-                                <div class="flex-1">
-                                    <div class="font-semibold text-sm text-gray-800">طبق ما تعلمته</div>
-                                    <div class="text-xs text-gray-600">ابدأ مشروع صغير أو تطوع في مجالك</div>
-                                </div>
-                            </div>
-                        </div>
-                    `,
-                    type: "plan"
-                }
-            ];
-
-            container.innerHTML = '';
-            recommendations.forEach(rec => {
-                const card = document.createElement('div');
-                card.className = 'bg-gradient-to-br from-blue-50 to-purple-50 border border-blue-200 rounded-xl p-6';
-                card.innerHTML = `
-                    <div class="text-center mb-4">
-                        <div class="text-4xl mb-2">${rec.icon}</div>
-                        <h4 class="font-bold text-gray-800 text-lg">${rec.title}</h4>
-                        <p class="text-gray-600 text-sm mt-2">${rec.description}</p>
-                    </div>
-                    <div class="bg-white rounded-lg p-4 shadow-sm">
-                        ${rec.content}
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        // حساب مستوى الثقة
-        function calculateConfidenceLevel() {
-            const fastAnswers = Object.values(testState.perQuestionTime).filter(time => time < 1200).length;
-            const totalAnswers = Object.keys(testState.answers).length;
-            const fastRatio = fastAnswers / totalAnswers;
-
-            if (fastRatio < 0.2) return "عالي";
-            if (fastRatio < 0.4) return "متوسط";
-            return "منخفض";
-        }
-
-        // تنسيق الوقت
-        function formatTime(ms) {
-            const minutes = Math.floor(ms / 60000);
-            const seconds = Math.floor((ms % 60000) / 1000);
-            return `${minutes}:${seconds.toString().padStart(2, '0')}`;
-        }
-
-        // بدء المؤقت
-        // function startTimer() {
-        //     setInterval(() => {
-        //         if (testState.startedAt) {
-        //             const elapsed = Date.now() - testState.startedAt;
-        //             document.getElementById('timer').textContent = formatTime(elapsed);
-        //         }
-        //     }, 1000);
-        // }
-
-        // إعداد اختصارات لوحة المفاتيح
-        function setupKeyboardShortcuts() {
-            document.addEventListener('keydown', (e) => {
-                if (document.getElementById('test-screen').classList.contains('hidden')) return;
-
-                switch (e.key) {
-                    case '1':
-                        selectAnswer(0);
-                        break;
-                    case '2':
-                        selectAnswer(1);
-                        break;
-                    case '3':
-                        selectAnswer(2);
-                        break;
-                    case 'Backspace':
-                        e.preventDefault();
-                        goBack();
-                        break;
-                }
-            });
-        }
-
-        // تبديل اللغة
-        function toggleLanguage() {
-            alert('سيتم إضافة دعم اللغة الإنجليزية قريباً');
-        }
-
-        // تبديل الوضع الليلي
-        function toggleDarkMode() {
-            testState.isDarkMode = !testState.isDarkMode;
-            document.getElementById('body').classList.toggle('dark-mode');
-        }
-
-        // تبديل الصوت
-        function toggleSound() {
-            testState.isSoundEnabled = !testState.isSoundEnabled;
-        }
-
-        // تشغيل الصوت
-        function playSound(type) {
-            // يمكن إضافة أصوات فعلية هنا
-            console.log(`Playing ${type} sound`);
-        }
-
-        // فتح نافذة القسم
-        function openSectionModal(sectionNum) {
-            alert(`سيتم إضافة نافذة مراجعة القسم ${sectionNum} قريباً`);
-        }
-
-        // إظهار الأنشطة
-        function showActivities(dimension) {
-            const activities = dimensions[dimension].activities;
-            alert(`أنشطة لتقوية البُعد ${dimensions[dimension].name}:\n\n${activities.join('\n• ')}`);
-        }
-
-        // وظائف الحفظ والطباعة
-        function saveAsImage() {
-            // استخدام html2canvas لحفظ النتائج كصورة
-            const resultsElement = document.getElementById('results-screen');
-
-            // إنشاء canvas مؤقت
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = 1200;
-            canvas.height = 1600;
-
-            // رسم خلفية بيضاء
-            ctx.fillStyle = '#ffffff';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            // إضافة النص الأساسي
-            ctx.fillStyle = '#1f2937';
-            ctx.font = 'bold 32px Arial';
-            ctx.textAlign = 'center';
-            ctx.fillText(`نتائج اختبار RIASEC - ${testState.userName}`, canvas.width / 2, 60);
-
-            // رسم الأبعاد الثلاثة الأولى
-            const topDims = Object.keys(dimensions).sort((a, b) => {
-                const scoresA = calculateDimensionScore(a);
-                const scoresB = calculateDimensionScore(b);
-                return scoresB - scoresA;
-            }).slice(0, 3);
-
-            let yPos = 120;
-            topDims.forEach((dim, index) => {
-                const score = calculateDimensionScore(dim);
-                ctx.font = 'bold 24px Arial';
-                ctx.fillText(`${index + 1}. ${dimensions[dim].name}: ${Math.round(score)}%`, canvas.width / 2, yPos);
-                yPos += 40;
-            });
-
-            // تحويل إلى صورة وتحميلها
-            const link = document.createElement('a');
-            link.download = `نتائج-اختبار-RIASEC-${testState.userName}.png`;
-            link.href = canvas.toDataURL();
-            link.click();
-        }
-
-        function printResults() {
-            window.print();
-        }
-
-        // وظائف مساعدة للحفظ
-        function calculateDimensionScore(dimension) {
-            const dimQuestions = questions.filter(q => q.dimension === dimension);
-            let totalScore = 0;
-            let count = 0;
-
-            dimQuestions.forEach(q => {
-                if (testState.answers[q.id] !== undefined) {
-                    totalScore += testState.answers[q.id];
-                    count++;
-                }
-            });
-
-            return count > 0 ? (totalScore / (count * 2)) * 100 : 0;
-        }
-
-        function getPercentages() {
-            const percentages = {};
-            Object.keys(dimensions).forEach(dim => {
-                percentages[dim] = calculateDimensionScore(dim);
-            });
-            return percentages;
-        }
-
-        // الرجوع لصفحة التعليمات
-        function goToInstructions() {
-            const answeredQuestions = Object.keys(testState.answers).length;
-
-            if (answeredQuestions > 0) {
-                // تحديث نص النافذة بعدد الإجابات
-                document.getElementById('instructions-modal-text').textContent =
-                    `لديك ${answeredQuestions} إجابة محفوظة. اختر ما تريد فعله:`;
-
-                // إظهار النافذة
-                document.getElementById('instructions-modal').classList.remove('hidden');
-            } else {
-                // لا توجد إجابات، العودة مباشرة
-                document.getElementById('test-screen').classList.add('hidden');
-                document.getElementById('onboarding-screen').classList.remove('hidden');
-                // document.getElementById('userName').value = testState.userName;
-            }
-        }
-
-        // العودة للتعليمات مع حفظ التقدم
-        function goToInstructionsWithSave() {
-            // حفظ التقدم
-            saveProgress();
-
-            // إخفاء النافذة وشاشة الاختبار
-            document.getElementById('instructions-modal').classList.add('hidden');
-            document.getElementById('test-screen').classList.add('hidden');
-            document.getElementById('onboarding-screen').classList.remove('hidden');
-
-            // تعبئة الاسم مسبقاً
-            // document.getElementById('userName').value = testState.userName;
-
-            // إظهار رسالة تأكيد
-            setTimeout(() => {
-                alert(`تم حفظ تقدمك بنجاح!\n\nيمكنك العودة لاحقاً والمتابعة من السؤال رقم ${testState.currentIndex + 1}.`);
-            }, 500);
-        }
-
-        // العودة للتعليمات بدون حفظ التقدم
-        function goToInstructionsWithoutSave() {
-            // مسح التقدم المحفوظ
-            clearProgress(testState.userName);
-
-            // إخفاء النافذة وشاشة الاختبار
-            document.getElementById('instructions-modal').classList.add('hidden');
-            document.getElementById('test-screen').classList.add('hidden');
-            document.getElementById('onboarding-screen').classList.remove('hidden');
-
-            // تعبئة الاسم مسبقاً
-            // document.getElementById('userName').value = testState.userName;
-
-            // إظهار رسالة تأكيد
-            setTimeout(() => {
-                alert('تم حذف التقدم المحفوظ. يمكنك بدء اختبار جديد.');
-            }, 500);
-        }
-
-        // إغلاق نافذة التعليمات
-        function closeInstructionsModal() {
-            document.getElementById('instructions-modal').classList.add('hidden');
-        }
-
-        // إعادة الاختبار
-        function restartTest() {
-            location.href = "/p2"
-        }
-
-    </script>
-    <!-- <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'98031896f1ed7892',t:'MTc1ODA1NDM1OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script> -->
-</body>
-
-</html>

@@ -211,7 +211,8 @@
                         </svg>
                     </div>
 
-                    <h2 class="text-2xl font-bold text-gray-800 mb-4">مرحباً بك في اختبار تحديد نمطك الشخصي</h2>
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4">مرحباً بك في المقياس الثاني : مقياس تحديد نمطك
+                        الشخصي</h2>
                     <p class="text-gray-600 mb-6">اكتشف نمط شخصيتك من خلال خمسة مسارات متكاملة</p>
 
                     <!-- نبذة تعريفية شاملة -->
@@ -221,7 +222,12 @@
                             <div class="w-10 h-10 bg-indigo-600 rounded-full flex items-center justify-center ml-3">
                                 <span class="text-white font-bold text-lg">🧠</span>
                             </div>
-                            <h3 class="text-xl font-bold text-indigo-800">ما هو اختبار الشخصية هذا؟</h3>
+                            <h3 class="text-xl font-bold text-indigo-800">ما هو مقياس الشخصية هذا؟</h3>
+                            <p class="text-indigo-700 text-sm leading-relaxed">
+                                مقياس بصيرة لتحديد النمط الشخصي مبني على إطار MBTI (Myers–Briggs Type Indicator) الذي
+                                صُمم في أربعينيات القرن العشرين على يد إيزابيل مايرز وكاثرين بريغز، واستند إلى نظرية
+                                عالم النفس كارل يونغ حول “الأنماط النفسية”
+                            </p>
                         </div>
 
                         <div class="grid md:grid-cols-2 gap-6 mb-6">
@@ -229,7 +235,7 @@
                                 <div class="bg-white rounded-lg p-4 border border-indigo-100">
                                     <h4 class="font-semibold text-indigo-800 mb-2 flex items-center">
                                         <span class="text-indigo-600 ml-2">🎯</span>
-                                        الهدف من الاختبار
+                                        الهدف من المقياس
                                     </h4>
                                     <p class="text-indigo-700 text-sm leading-relaxed">
                                         يساعدك على فهم نمط شخصيتك وفقاً لنظرية مايرز-بريجز (MBTI) من خلال تحليل 4 أبعاد
@@ -243,7 +249,7 @@
                                         الأساس العلمي
                                     </h4>
                                     <p class="text-indigo-700 text-sm leading-relaxed">
-                                        مبني على نظرية كارل يونغ النفسية وتطوير إيزابيل مايرز، وهو من أكثر اختبارات
+                                        مبني على نظرية كارل يونغ النفسية وتطوير إيزابيل مايرز، وهو من أكثر مقياسات
                                         الشخصية استخداماً عالمياً
                                     </p>
                                 </div>
@@ -277,7 +283,7 @@
                             class="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg p-5">
                             <h4 class="font-bold text-green-800 mb-3 flex items-center text-lg">
                                 <span class="text-green-600 ml-2">🌟</span>
-                                ماذا ستستفيد من هذا الاختبار؟
+                                ماذا ستستفيد من هذا المقياس؟
                             </h4>
                             <div class="grid md:grid-cols-2 gap-4">
                                 <div class="space-y-2">
@@ -345,7 +351,7 @@
                                 <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center ml-3">
                                     <span class="text-white font-bold">ℹ️</span>
                                 </div>
-                                <h4 class="text-lg font-semibold text-blue-800">كيف يعمل الاختبار الشامل؟</h4>
+                                <h4 class="text-lg font-semibold text-blue-800">كيف يعمل المقياس الشامل؟</h4>
                             </div>
                             <p class="text-blue-700 mb-4">ستجيب على أسئلة من خمسة مسارات مختلفة لضمان الحصول على تحليل
                                 شامل ودقيق لشخصيتك:</p>
@@ -497,7 +503,7 @@
                         </div>
                     </div>
 
-                    <!-- تعليمات الاختبار -->
+                    <!-- تعليمات المقياس -->
                     <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-6 mb-6">
                         <div class="flex items-center mb-4">
                             <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center ml-3">
@@ -539,7 +545,7 @@
 
                     <button onclick="startTest()"
                         class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-lg transition duration-300 transform hover:scale-105">
-                        ابدأ الاختبار الآن
+                        ابدأ المقياس الآن
                     </button>
                 </div>
             </div>
@@ -1793,7 +1799,9 @@
         function showRankingQuestion(question, color) {
             return `
                 <div class="bg-gradient-to-br from-indigo-50 to-purple-50 p-8 rounded-2xl border-2 border-indigo-200 shadow-lg">
-                    <p class="text-lg text-gray-700 mb-6 text-center font-medium bg-white px-4 py-2 rounded-xl shadow-sm">انقر على الأرقام لترتيب العناصر:</p>
+                    <p class="text-lg text-gray-700 mb-6 text-center font-medium bg-white px-4 py-2 rounded-xl shadow-sm">انقر على الأرقام لترتيب العناصر: <span class="text-s text-red-700 mb-2 text-center font-small " style="
+    font-size: x-small;
+">تنبيه : ( اجعل الجوال بالعرض )</span> </p>
                     <div id="rankingItems" class="space-y-4">
                         ${question.items.map((item, index) => `
                             <div class="ranking-item flex items-center bg-white/80 backdrop-blur-sm p-6 rounded-2xl border-2 border-indigo-200 shadow-lg hover:shadow-xl transition-all duration-300" 

@@ -597,42 +597,8 @@
         };
 
         // حفظ التقدم في التخزين المحلي
-        showResults();
-        // إظهار النتائج
-        function showResults() {
-            // document.getElementById('test-screen').classList.add('hidden');
-            // document.getElementById('transition-screen').classList.remove('hidden');
-
-            // مسح التقدم المحفوظ لأن الاختبار اكتمل
-            // clearProgress(testState.userName);
-
-            // إظهار شاشة الانتقال لمدة 3 ثوانٍ ثم الانتقال للنتائج
-            testState.questionEndTime = Date.now();
-            var data = new URLSearchParams();
-            data.append('data', JSON.stringify(testState));
-            data.append('type', 'p1');
-
-            fetch('http://127.0.0.1:3000/saveExam', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-                },
-                body: data
-            }).then(() => {
-                document.getElementById('transition-screen').classList.add('hidden');
-                document.getElementById('results-screen').classList.remove('hidden');
-                calculateAndDisplayResults();
-            }).catch(() => {
-                alert("حصلت مشكلة في حفظ البيانات قد تضطر الى اعادة الاختبار")
-                calculateAndDisplayResults();
-
-            })
-
-
-
-
-        }
-
+        // showResults();
+        calculateAndDisplayResults();
         // حساب وعرض النتائج
         function calculateAndDisplayResults() {
             // حساب النقاط لكل بُعد من المسار الأول

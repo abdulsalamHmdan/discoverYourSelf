@@ -13,6 +13,7 @@ app.use(session({
 const path = require("path");
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
+app.use(express.static(path.join(__dirname, 'public')));
 const { MongoClient } = require('mongodb');
 const url = "mongodb+srv://family:aS0507499583@cluster0.dvljyns.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(url);
@@ -36,7 +37,7 @@ app.get('/p1', isAuthenticated, function (req, res) {
         res.redirect("p2")
         return;
     }
-    res.render("p1", { user: req.session.user });
+    res.render("p1", { name: req.session.user });
 })
 app.get('/p1', function (req, res) {
     res.redirect("/")
