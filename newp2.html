@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>اختبار الشخصية المتقدم - خمسة مسارات مختلفة</title>
+    <title>مقياس الشخصية المتقدم - خمسة مسارات مختلفة</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
@@ -144,7 +144,7 @@
     <!-- Header -->
     <header class="gradient-bg text-white py-6">
         <div class="container mx-auto px-4">
-            <h1 class="text-3xl font-bold text-center mb-2">اختبار تحديد نمطك الشخصي</h1>
+            <h1 class="text-3xl font-bold text-center mb-2">مقياس تحديد نمطك الشخصي</h1>
             <p class="text-center opacity-90">خمسة مسارات مختلفة لاكتشاف شخصيتك الحقيقية</p>
 
         </div>
@@ -199,8 +199,366 @@
 
     <!-- Main Content -->
     <main class="container mx-auto px-4 py-8">
+        <!-- Welcome Screen -->
+        <div id="welcomeScreen" class="fade-in">
+            <div class="max-w-5xl mx-auto">
+                <div class="bg-white rounded-lg card-shadow p-8 text-center">
+                    <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-10 h-10 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z">
+                            </path>
+                        </svg>
+                    </div>
+
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4">مرحباً بك في المقياس الثاني : مقياس تحديد نمطك الشخصي</h2>
+                    <p class="text-gray-600 mb-6">اكتشف نمط شخصيتك من خلال خمسة مسارات متكاملة</p>
+
+                    <!-- نبذة تعريفية شاملة -->
+                    <div
+                        class="bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-200 rounded-xl p-6 mb-8">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 bg-indigo-600 rounded-full flex items-center justify-center ml-3">
+                                <span class="text-white font-bold text-lg">🧠</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-indigo-800">ما هو مقياس الشخصية هذا؟</h3>
+                             <p class="text-indigo-700 text-sm leading-relaxed">
+                                        مقياس بصيرة لتحديد النمط الشخصي مبني على إطار MBTI (Myers–Briggs Type Indicator) الذي صُمم في أربعينيات القرن العشرين على يد إيزابيل مايرز وكاثرين بريغز، واستند إلى نظرية عالم النفس كارل يونغ حول “الأنماط النفسية”
+                                    </p>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-6 mb-6">
+                            <div class="space-y-4">
+                                <div class="bg-white rounded-lg p-4 border border-indigo-100">
+                                    <h4 class="font-semibold text-indigo-800 mb-2 flex items-center">
+                                        <span class="text-indigo-600 ml-2">🎯</span>
+                                        الهدف من المقياس
+                                    </h4>
+                                    <p class="text-indigo-700 text-sm leading-relaxed">
+                                        يساعدك على فهم نمط شخصيتك وفقاً لنظرية مايرز-بريجز (MBTI) من خلال تحليل 4 أبعاد
+                                        أساسية لشخصيتك
+                                    </p>
+                                </div>
+
+                                <div class="bg-white rounded-lg p-4 border border-indigo-100">
+                                    <h4 class="font-semibold text-indigo-800 mb-2 flex items-center">
+                                        <span class="text-indigo-600 ml-2">🔬</span>
+                                        الأساس العلمي
+                                    </h4>
+                                    <p class="text-indigo-700 text-sm leading-relaxed">
+                                        مبني على نظرية كارل يونغ النفسية وتطوير إيزابيل مايرز، وهو من أكثر مقياسات
+                                        الشخصية استخداماً عالمياً
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="space-y-4">
+                                <div class="bg-white rounded-lg p-4 border border-indigo-100">
+                                    <h4 class="font-semibold text-indigo-800 mb-2 flex items-center">
+                                        <span class="text-indigo-600 ml-2">⚡</span>
+                                        الدقة والشمولية
+                                    </h4>
+                                    <p class="text-indigo-700 text-sm leading-relaxed">
+                                        يجمع بين 5 مسارات مختلفة لضمان دقة النتائج، مع تحليل متقدم للتناقضات وأنماط
+                                        الإجابة
+                                    </p>
+                                </div>
+
+                                <div class="bg-white rounded-lg p-4 border border-indigo-100">
+                                    <h4 class="font-semibold text-indigo-800 mb-2 flex items-center">
+                                        <span class="text-indigo-600 ml-2">🎨</span>
+                                        التخصيص الذكي
+                                    </h4>
+                                    <p class="text-indigo-700 text-sm leading-relaxed">
+                                        يتكيف مع سرعة إجابتك ويقدم تحليلاً مخصصاً لكل مجال من مجالات حياتك
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div
+                            class="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg p-5">
+                            <h4 class="font-bold text-green-800 mb-3 flex items-center text-lg">
+                                <span class="text-green-600 ml-2">🌟</span>
+                                ماذا ستستفيد من هذا المقياس؟
+                            </h4>
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div class="space-y-2">
+                                    <div class="flex items-start">
+                                        <span class="text-green-600 font-bold ml-2 mt-1">💼</span>
+                                        <div>
+                                            <div class="font-medium text-green-800">في العمل والمهنة</div>
+                                            <div class="text-green-700 text-sm">اكتشف المهن والبيئات التي تناسب شخصيتك
+                                                وتحقق فيها أفضل أداء</div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start">
+                                        <span class="text-green-600 font-bold ml-2 mt-1">📚</span>
+                                        <div>
+                                            <div class="font-medium text-green-800">في التعلم والدراسة</div>
+                                            <div class="text-green-700 text-sm">تعرف على أساليب التعلم الأنسب لك وكيفية
+                                                تحسين أدائك الأكاديمي</div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start">
+                                        <span class="text-green-600 font-bold ml-2 mt-1">❤️</span>
+                                        <div>
+                                            <div class="font-medium text-green-800">في العلاقات الشخصية</div>
+                                            <div class="text-green-700 text-sm">فهم كيفية تفاعلك مع الآخرين وبناء علاقات
+                                                أقوى وأكثر انسجاماً</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="space-y-2">
+                                    <div class="flex items-start">
+                                        <span class="text-green-600 font-bold ml-2 mt-1">🎯</span>
+                                        <div>
+                                            <div class="font-medium text-green-800">في اتخاذ القرارات</div>
+                                            <div class="text-green-700 text-sm">تعلم كيف تتخذ قرارات أفضل بناءً على نمط
+                                                تفكيرك الطبيعي</div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start">
+                                        <span class="text-green-600 font-bold ml-2 mt-1">🚀</span>
+                                        <div>
+                                            <div class="font-medium text-green-800">في التطوير الذاتي</div>
+                                            <div class="text-green-700 text-sm">حدد نقاط قوتك ومجالات التحسين لتحقيق
+                                                أهدافك بفعالية أكبر</div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start">
+                                        <span class="text-green-600 font-bold ml-2 mt-1">💪</span>
+                                        <div>
+                                            <div class="font-medium text-green-800">في إدارة الضغوط</div>
+                                            <div class="text-green-700 text-sm">اكتشف الطرق الأنسب لك للتعامل مع التوتر
+                                                واستعادة طاقتك</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Paths Overview -->
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">ستقوم بإجراء جميع المسارات الخمسة للحصول
+                            على أدق النتائج</h3>
+                        <div class="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-6">
+                            <div class="flex items-center mb-4">
+                                <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center ml-3">
+                                    <span class="text-white font-bold">ℹ️</span>
+                                </div>
+                                <h4 class="text-lg font-semibold text-blue-800">كيف يعمل المقياس الشامل؟</h4>
+                            </div>
+                            <p class="text-blue-700 mb-4">ستجيب على أسئلة من خمسة مسارات مختلفة لضمان الحصول على تحليل
+                                شامل ودقيق لشخصيتك:</p>
+                            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                <div
+                                    class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-4 border-2 border-blue-200 hover:border-blue-300 transition-all duration-300 hover:shadow-lg">
+                                    <div class="flex items-center mb-3">
+                                        <div
+                                            class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center ml-3">
+                                            <span class="text-white font-bold text-lg">📊</span>
+                                        </div>
+                                        <div>
+                                            <div class="font-bold text-blue-800 text-lg">المسار الشامل</div>
+                                            <div class="text-xs text-blue-600 font-medium">الأساس والعمق</div>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-2">
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-blue-700 text-sm">عدد الأسئلة:</span>
+                                            <span
+                                                class="bg-blue-600 text-white px-2 py-1 rounded-full text-xs font-bold">24</span>
+                                        </div>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-blue-700 text-sm">النوع:</span>
+                                            <span class="text-blue-800 text-xs font-medium">خيارين</span>
+                                        </div>
+                                        <div class="text-blue-600 text-xs leading-relaxed mt-2">
+                                            تحليل شامل للأبعاد الأربعة الأساسية لشخصيتك
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-4 border-2 border-green-200 hover:border-green-300 transition-all duration-300 hover:shadow-lg">
+                                    <div class="flex items-center mb-3">
+                                        <div
+                                            class="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center ml-3">
+                                            <span class="text-white font-bold text-lg">⚡</span>
+                                        </div>
+                                        <div>
+                                            <div class="font-bold text-green-800 text-lg">المسار السريع</div>
+                                            <div class="text-xs text-green-600 font-medium">التقييم المتدرج</div>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-2">
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-green-700 text-sm">عدد الأسئلة:</span>
+                                            <span
+                                                class="bg-green-600 text-white px-2 py-1 rounded-full text-xs font-bold">10</span>
+                                        </div>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-green-700 text-sm">النوع:</span>
+                                            <span class="text-green-800 text-xs font-medium">مقياس 1-5</span>
+                                        </div>
+                                        <div class="text-green-600 text-xs leading-relaxed mt-2">
+                                            تقييم سريع ودقيق لدرجة تفضيلاتك الشخصية
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-4 border-2 border-purple-200 hover:border-purple-300 transition-all duration-300 hover:shadow-lg">
+                                    <div class="flex items-center mb-3">
+                                        <div
+                                            class="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center ml-3">
+                                            <span class="text-white font-bold text-lg">💼</span>
+                                        </div>
+                                        <div>
+                                            <div class="font-bold text-purple-800 text-lg">مسار العمل</div>
+                                            <div class="text-xs text-purple-600 font-medium">البيئة المهنية</div>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-2">
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-purple-700 text-sm">عدد الأسئلة:</span>
+                                            <span
+                                                class="bg-purple-600 text-white px-2 py-1 rounded-full text-xs font-bold">6</span>
+                                        </div>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-purple-700 text-sm">النوع:</span>
+                                            <span class="text-purple-800 text-xs font-medium">مهني</span>
+                                        </div>
+                                        <div class="text-purple-600 text-xs leading-relaxed mt-2">
+                                            تحليل سلوكك وتفضيلاتك في بيئة العمل
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="bg-gradient-to-br from-pink-50 to-pink-100 rounded-xl p-4 border-2 border-pink-200 hover:border-pink-300 transition-all duration-300 hover:shadow-lg">
+                                    <div class="flex items-center mb-3">
+                                        <div
+                                            class="w-10 h-10 bg-pink-600 rounded-full flex items-center justify-center ml-3">
+                                            <span class="text-white font-bold text-lg">❤️</span>
+                                        </div>
+                                        <div>
+                                            <div class="font-bold text-pink-800 text-lg">مسار العلاقات</div>
+                                            <div class="text-xs text-pink-600 font-medium">التفاعل الاجتماعي</div>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-2">
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-pink-700 text-sm">عدد الأسئلة:</span>
+                                            <span
+                                                class="bg-pink-600 text-white px-2 py-1 rounded-full text-xs font-bold">6</span>
+                                        </div>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-pink-700 text-sm">النوع:</span>
+                                            <span class="text-pink-800 text-xs font-medium">تفاعلي</span>
+                                        </div>
+                                        <div class="text-pink-600 text-xs leading-relaxed mt-2">
+                                            كيف تتفاعل وتبني علاقاتك مع الآخرين
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl p-4 border-2 border-orange-200 hover:border-orange-300 transition-all duration-300 hover:shadow-lg">
+                                    <div class="flex items-center mb-3">
+                                        <div
+                                            class="w-10 h-10 bg-orange-600 rounded-full flex items-center justify-center ml-3">
+                                            <span class="text-white font-bold text-lg">✓</span>
+                                        </div>
+                                        <div>
+                                            <div class="font-bold text-orange-800 text-lg">مسار التأكيد</div>
+                                            <div class="text-xs text-orange-600 font-medium">التحقق النهائي</div>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-2">
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-orange-700 text-sm">عدد الأسئلة:</span>
+                                            <span
+                                                class="bg-orange-600 text-white px-2 py-1 rounded-full text-xs font-bold">4</span>
+                                        </div>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-orange-700 text-sm">النوع:</span>
+                                            <span class="text-orange-800 text-xs font-medium">تأكيدي</span>
+                                        </div>
+                                        <div class="text-orange-600 text-xs leading-relaxed mt-2">
+                                            التحقق من دقة النتائج وتأكيد النمط
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4 text-center">
+                                <div class="text-blue-700 font-medium">⏱️ إجمالي الوقت المتوقع: 25-30 دقيقة</div>
+                                <div class="text-blue-600 text-sm mt-1">🎯 دقة استثنائية: 98%+</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- تعليمات المقياس -->
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-6 mb-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center ml-3">
+                                <span class="text-white font-bold">📋</span>
+                            </div>
+                            <h4 class="text-lg font-semibold text-blue-800">تعليمات مهمة قبل البدء</h4>
+                        </div>
+                        <div class="grid md:grid-cols-2 gap-4 text-sm">
+                            <div class="space-y-2">
+                                <div class="flex items-start">
+                                    <span class="text-blue-600 font-bold ml-2">1️⃣</span>
+                                    <span class="text-blue-700">اقرأ كل سؤال بعناية وتمهل في الإجابة</span>
+                                </div>
+                                <div class="flex items-start">
+                                    <span class="text-blue-600 font-bold ml-2">2️⃣</span>
+                                    <span class="text-blue-700">أجب بصدق حسب شخصيتك الحقيقية</span>
+                                </div>
+                                <div class="flex items-start">
+                                    <span class="text-blue-600 font-bold ml-2">3️⃣</span>
+                                    <span class="text-blue-700">يمكنك العودة وتعديل إجاباتك</span>
+                                </div>
+                            </div>
+                            <div class="space-y-2">
+                                <div class="flex items-start">
+                                    <span class="text-green-600 font-bold ml-2">✨</span>
+                                    <span class="text-blue-700">انقر على الإجابة للانتقال التلقائي للسؤال التالي</span>
+                                </div>
+                                <div class="flex items-start">
+                                    <span class="text-purple-600 font-bold ml-2">🔄</span>
+                                    <span class="text-blue-700">ترتيب الإجابات يتغير عشوائياً</span>
+                                </div>
+                                <div class="flex items-start">
+                                    <span class="text-orange-600 font-bold ml-2">⏱️</span>
+                                    <span class="text-blue-700">لا يوجد حد زمني - خذ وقتك</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="startTest()"
+                        class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-lg transition duration-300 transform hover:scale-105">
+                        ابدأ المقياس الآن
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Test Screen -->
+        <div id="testScreen" class="hidden">
+            <div class="max-w-3xl mx-auto">
+                <div class="bg-white rounded-lg card-shadow p-8">
+                    <div id="questionContainer"></div>
+                </div>
+            </div>
+        </div>
+
         <!-- Results Screen -->
-        <div id="resultsScreen" class="fade-in">
+        <div id="resultsScreen" class="hidden fade-in">
             <div class="max-w-4xl mx-auto">
                 <div class="bg-white rounded-lg card-shadow p-8">
                     <div class="text-center mb-8">
@@ -210,7 +568,7 @@
                                     d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
                         </div>
-                        <h2 class="text-3xl font-bold text-gray-800 mb-4">🎉 تهانينا! اكتمل الاختبار</h2>
+                        <h2 class="text-3xl font-bold text-gray-800 mb-4">🎉 تهانينا! اكتمل المقياس</h2>
                         <div id="userNameDisplay" class="text-2xl font-semibold text-blue-600 mb-4"></div>
                         <div id="pathUsed" class="text-lg text-gray-600 mb-4"></div>
                     </div>
@@ -308,7 +666,7 @@
                         </button>
                         <button onclick="restartTest()"
                             class="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300">
-                            الانتقال الى الاختبار الثالث (الذكاءات)
+                            الانتقال الى المقياس الثالث (الذكاءات)
                         </button>
                     </div>
                 </div>
@@ -318,30 +676,29 @@
 
     <script>
         // Test state
-        let testState = <%-p2 %>;
-        let currentQuestion = testState.currentQuestion;
-        let answers = testState.answers;
-        let scores = testState.scores;
-        let userName = testState.userName;
-        let currentPath = testState.currentPath;
-        let completedPaths = testState.completedPaths;
-        let allPathAnswers = testState.allPathAnswers;
-        let currentQuestions = testState.currentQuestions;
-        let questionStartTime = testState.questionStartTime;
-        let timerInterval = testState.timerInterval;
-        let totalStartTime = testState.totalStartTime;
-        let questionTimes = testState.questionTimes;
-        let fastestQuestion = testState.fastestQuestion;
-        let slowestQuestion = testState.slowestQuestion;
-        let warningShown = testState.warningShown;
-        let currentRanking = testState.currentRanking;
-        let selectedCheckboxes = testState.selectedCheckboxes;
-        let quickAnswerCount = testState.quickAnswerCount;
-        let randomAnswerPattern = testState.randomAnswerPattern;
-        let contradictionFlags = testState.contradictionFlags;
-        let lastAnswerTime = testState.lastAnswerTime;
-        let consistencyScore = testState.consistencyScore;
-        let focusBreaksShown = testState.focusBreaksShown;
+        let currentQuestion = 0;
+        let answers = [];
+        let scores = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
+        let userName = '';
+        let currentPath = 0;
+        let completedPaths = [];
+        let allPathAnswers = {};
+        let currentQuestions = [];
+        let questionStartTime = 0;
+        let timerInterval;
+        let totalStartTime = 0;
+        let questionTimes = [];
+        let fastestQuestion = null;
+        let slowestQuestion = null;
+        let warningShown = false;
+        let currentRanking = {};
+        let selectedCheckboxes = [];
+        let quickAnswerCount = 0;
+        let randomAnswerPattern = 0;
+        let contradictionFlags = [];
+        let lastAnswerTime = 0;
+        let consistencyScore = 100;
+        let focusBreaksShown = [];
 
         // Path 1: Comprehensive (24 questions)
         const path1Questions = [
@@ -997,7 +1354,7 @@
                 return;
             }
 
-            // بدء اختبار جديد
+            // بدء مقياس جديد
             startNewTest();
         }
 
@@ -1027,12 +1384,12 @@
                     <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-xl p-4 mb-6">
                         <div class="text-blue-700 text-sm">
                             <div class="font-bold mb-2">مرحباً ${userName}!</div>
-                            <div>لديك اختبار غير مكتمل محفوظ مسبقاً</div>
+                            <div>لديك مقياس غير مكتمل محفوظ مسبقاً</div>
                         </div>
                     </div>
                     
                     <p class="text-gray-600 mb-6 leading-relaxed">
-                        هل تريد المتابعة من حيث توقفت أم بدء اختبار جديد؟
+                        هل تريد المتابعة من حيث توقفت أم بدء مقياس جديد؟
                     </p>
                     
                     <div class="space-y-3">
@@ -1043,7 +1400,7 @@
                         
                         <button onclick="startFreshTest()" 
                                 class="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold py-4 px-6 rounded-xl transition duration-300 transform hover:scale-105 shadow-lg">
-                            🆕 بدء اختبار جديد
+                            🆕 بدء مقياس جديد
                         </button>
                         
                         <button onclick="closeResumeDialog()" 
@@ -1067,7 +1424,7 @@
             const progressLoaded = loadSavedProgress();
 
             if (progressLoaded) {
-                // الانتقال لشاشة الاختبار
+                // الانتقال لشاشة المقياس
                 document.getElementById('welcomeScreen').classList.add('fade-out');
                 setTimeout(() => {
                     document.getElementById('welcomeScreen').classList.add('hidden');
@@ -1091,7 +1448,7 @@
                 // إظهار رسالة تأكيد
                 showResumedMessage();
             } else {
-                // alert('حدث خطأ في تحميل التقدم المحفوظ. سيتم بدء اختبار جديد.');
+                // alert('حدث خطأ في تحميل التقدم المحفوظ. سيتم بدء مقياس جديد.');
                 startFreshTest();
             }
         }
@@ -1102,7 +1459,7 @@
             // حذف التقدم المحفوظ السابق
             clearAllSavedData();
 
-            // بدء اختبار جديد
+            // بدء مقياس جديد
             startNewTest();
         }
 
@@ -1149,7 +1506,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
                     <div>
-                        <div class="font-bold">تم استئناف الاختبار!</div>
+                        <div class="font-bold">تم استئناف المقياس!</div>
                         <div class="text-sm opacity-90">تم تحميل تقدمك المحفوظ</div>
                     </div>
                 </div>
@@ -1747,7 +2104,7 @@
             // Check for focus break after 15 questions
             const totalAnswered = Object.values(allPathAnswers).reduce((sum, pathAnswers) => sum + pathAnswers.length, 0) + answers.length;
             if (totalAnswered === 15 && !focusBreaksShown.includes('mid-test')) {
-                showFocusBreak('mid-test', 'استراحة منتصف الاختبار', 'لقد أجبت على 15 سؤالاً. خذ نفساً عميقاً واسترخ قليلاً قبل المتابعة.');
+                showFocusBreak('mid-test', 'استراحة منتصف المقياس', 'لقد أجبت على 15 سؤالاً. خذ نفساً عميقاً واسترخ قليلاً قبل المتابعة.');
                 return;
             }
 
@@ -1896,7 +2253,7 @@
                     <div class="space-y-3">
                         <button onclick="closeFocusBreak(); nextQuestion();" 
                                 class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition duration-300">
-                            متابعة الاختبار
+                            متابعة المقياس
                         </button>
                         <button onclick="closeFocusBreak(); showQuestion();" 
                                 class="w-full bg-gray-500 hover:bg-gray-600 text-white font-medium py-3 px-4 rounded-lg transition duration-300">
@@ -1954,7 +2311,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
                             </div>
-                            <h3 class="text-2xl font-bold text-gray-800 mb-4">🎉 تم إكمال الاختبار!</h3>
+                            <h3 class="text-2xl font-bold text-gray-800 mb-4">🎉 تم إكمال المقياس!</h3>
                             <p class="text-gray-600 mb-4">جاري تحليل إجاباتك وإعداد النتائج...</p>
                             <div class="flex justify-center">
                                 <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
@@ -1963,14 +2320,63 @@
                     `;
                     document.body.appendChild(completionMessage);
 
-                    setTimeout(() => {
+
+                    // عرض النتائج
+                    let testState = {
+                        currentQuestion: currentQuestion,
+                        answers: answers,
+                        scores: scores,
+                        userName: '',
+                        currentPath: currentPath,
+                        completedPaths: completedPaths,
+                        allPathAnswers: allPathAnswers,
+                        currentQuestions: currentQuestions,
+                        questionStartTime: questionStartTime,
+                        timerInterval: timerInterval,
+                        totalStartTime: totalStartTime,
+                        questionTimes: questionTimes,
+                        fastestQuestion: fastestQuestion,
+                        slowestQuestion: slowestQuestion,
+                        warningShown: warningShown,
+                        currentRanking: currentRanking,
+                        selectedCheckboxes: selectedCheckboxes,
+                        quickAnswerCount: quickAnswerCount,
+                        randomAnswerPattern: randomAnswerPattern,
+                        contradictionFlags: contradictionFlags,
+                        lastAnswerTime: lastAnswerTime,
+                        consistencyScore: consistencyScore,
+                        focusBreaksShown: focusBreaksShown
+                    };
+                    console.log(JSON.stringify(testState))
+                    var data = new URLSearchParams();
+                    data.append('data', JSON.stringify(testState));
+                    data.append('type', 'p2');
+
+                    fetch('http://127.0.0.1:3000/saveExam', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                        },
+                        body: data
+                    }).then(() => {
                         // إزالة رسالة الإكمال
                         if (completionMessage.parentNode) {
                             completionMessage.parentNode.removeChild(completionMessage);
                         }
-                        // console.log(JSON.stringify(testState))
                         showResults();
-                    }, 2000);
+
+                    }).catch(() => {
+                        // إزالة رسالة الإكمال
+                        if (completionMessage.parentNode) {
+                            completionMessage.parentNode.removeChild(completionMessage);
+                        }
+                        alert("حصلت مشكلة في حفظ البيانات قد تضطر الى اعادة المقياس")
+                        showResults();
+
+
+
+                    })
+
                     return;
                 }
 
@@ -2173,7 +2579,7 @@
                         </button>
                         
                         <div class="text-xs text-gray-500 mt-4 leading-relaxed">
-                            ⚠️ <strong>تنبيه:</strong> إذا اخترت "العودة بدون حفظ" سيتم فقدان جميع إجاباتك وستحتاج لبدء الاختبار من جديد
+                            ⚠️ <strong>تنبيه:</strong> إذا اخترت "العودة بدون حفظ" سيتم فقدان جميع إجاباتك وستحتاج لبدء المقياس من جديد
                         </div>
                     </div>
                 </div>
@@ -2360,7 +2766,7 @@
                     </svg>
                     <div>
                         <div class="font-bold">تم حذف التقدم</div>
-                        <div class="text-sm opacity-90">يمكنك بدء اختبار جديد الآن</div>
+                        <div class="text-sm opacity-90">يمكنك بدء مقياس جديد الآن</div>
                     </div>
                 </div>
             `;
@@ -2404,7 +2810,7 @@
                                 </svg>
                                 <h4 class="text-lg font-semibold text-blue-800">استراحة وإعادة تركيز</h4>
                             </div>
-                            <p class="text-blue-700 mb-4">خذ نفساً عميقاً واسترخ قليلاً. لقد أنجزت جزءاً مهماً من الاختبار!</p>
+                            <p class="text-blue-700 mb-4">خذ نفساً عميقاً واسترخ قليلاً. لقد أنجزت جزءاً مهماً من المقياس!</p>
                             <div class="text-sm text-blue-600">
                                 💡 <strong>نصيحة:</strong> في المسار التالي، اقرأ كل سؤال بعناية وأجب بصدق حسب شخصيتك الحقيقية
                             </div>
@@ -2448,7 +2854,7 @@
                     console.warn('⚠️ تحذير: مشاكل في صحة النتائج:', validationResult.issues);
                 }
 
-                // إخفاء شاشة الاختبار وإظهار النتائج
+                // إخفاء شاشة المقياس وإظهار النتائج
                 const testScreen = document.getElementById('testScreen');
                 const progressContainer = document.getElementById('progressContainer');
                 const resultsScreen = document.getElementById('resultsScreen');
@@ -2521,7 +2927,7 @@
                 // alert('حدث خطأ في عرض النتائج. يرجى إعادة تحميل الصفحة.');
             }
         }
-        populateResults()
+
         function populateResults() {
             console.log('📊 populateResults() called');
 
@@ -2554,15 +2960,15 @@
                 console.log('🔍 Elements check:', Object.keys(elements).map(key => `${key}: ${!!elements[key]}`));
 
                 // تحديث العناصر الأساسية
+                  if (elements.pathUsed) {
+                    let timingInfo = `تم إكمال جميع المسارات الخمسة (${totalQuestions} سؤال في ${totalTimeSpent} دقيقة)`;
+                    elements.pathUsed.innerHTML = timingInfo;
+                    console.log('✅ Updated pathUsed');
+
                 if (elements.userNameDisplay) {
                     elements.userNameDisplay.innerHTML = `نمطك الشخصي يا <strong>${userName}</strong> هو:`;
                     console.log('✅ Updated userNameDisplay');
                 }
-
-                if (elements.pathUsed) {
-                    let timingInfo = `تم إكمال جميع المسارات الخمسة (${totalQuestions} سؤال في ${totalTimeSpent} دقيقة)`;
-                    elements.pathUsed.innerHTML = timingInfo;
-                    console.log('✅ Updated pathUsed');
                 }
 
                 if (elements.personalityType) {
@@ -2687,7 +3093,7 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                         </svg>
                                     </div>
-                                    <h2 class="text-3xl font-bold text-gray-800 mb-4">🎉 تهانينا! اكتمل الاختبار</h2>
+                                    <h2 class="text-3xl font-bold text-gray-800 mb-4">🎉 تهانينا! اكتمل المقياس</h2>
                                     <div class="text-2xl font-semibold text-blue-600 mb-4">نمطك الشخصي يا <strong>${userName}</strong> هو:</div>
                                 </div>
 
@@ -2736,7 +3142,7 @@
                                         📄 حفظ كـ PDF
                                     </button>
                                     <button onclick="restartTest()" class="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300">
-                                        الانتقال للاختبار الثالث (الذكاءات) 
+                                        الانتقال للمقياس الثالث (الذكاءات) 
                                     </button>
                                 </div>
                             </div>
@@ -2747,7 +3153,7 @@
                 }
             } catch (error) {
                 console.error('❌ Even basic results failed:', error);
-                // alert('تم إكمال الاختبار بنجاح!\n\nنمط شخصيتك: ' + calculatePersonalityType() + '\n\nيرجى إعادة تحميل الصفحة لعرض التفاصيل الكاملة.');
+                // alert('تم إكمال المقياس بنجاح!\n\nنمط شخصيتك: ' + calculatePersonalityType() + '\n\nيرجى إعادة تحميل الصفحة لعرض التفاصيل الكاملة.');
             }
         }
 
@@ -2925,7 +3331,7 @@
                     <ul class="list-disc list-inside space-y-1">
                         ${issues.map(issue => `<li>${issue}</li>`).join('')}
                     </ul>
-                    <p class="mt-3 font-medium">💡 للحصول على نتائج أكثر دقة، يُنصح بإعادة الاختبار مع قراءة الأسئلة بعناية أكبر.</p>
+                    <p class="mt-3 font-medium">💡 للحصول على نتائج أكثر دقة، يُنصح بإعادة المقياس مع قراءة الأسئلة بعناية أكبر.</p>
                 </div>
             `;
 
@@ -4756,11 +5162,11 @@
         function shareResults() {
             const type = document.getElementById('personalityType').textContent;
             const name = document.getElementById('personalityName').textContent;
-            const text = `لقد أكملت اختبار تحديد نمطي الشخصي! نمط شخصيتي هو ${type} - ${name}`;
+            const text = `لقد أكملت مقياس تحديد نمطي الشخصي! نمط شخصيتي هو ${type} - ${name}`;
 
             if (navigator.share) {
                 navigator.share({
-                    title: 'نتيجة اختبار الشخصية',
+                    title: 'نتيجة مقياس الشخصية',
                     text: text,
                     url: window.location.href
                 });
@@ -4769,6 +5175,37 @@
                     // alert('تم نسخ النتيجة إلى الحافظة!');
                 });
             }
+        }
+
+        async function downloadPDF() {
+            // print()
+            let html = `
+            <!DOCTYPE html>
+            <html lang="ar" dir="rtl">
+            ${document.querySelector("head").innerHTML}
+            <body class="min-h-screen" id="body">
+                <div id="resultsScreen" class="fade-in">
+                    ${document.querySelector("#resultsScreen").innerHTML}
+                </div>
+            </body>
+            </html>
+            `
+            console.log(html)
+            var data = new URLSearchParams();
+            data.append("html", html);
+            const resp = await fetch('/html-to-pdf', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                },
+                body: data
+            });
+            const blob = await resp.blob();
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'تقرير_نتائج_المقياسات_الشاملة.pdf';
+            link.click();
+            URL.revokeObjectURL(link.href);
         }
 
         function restartTest() {
@@ -4813,7 +5250,7 @@
             //             P: scores.P
             //         },
 
-            //         // إحصائيات الاختبار
+            //         // إحصائيات المقياس
             //         testStats: {
             //             totalQuestions: totalQuestions,
             //             completedPaths: completedPaths.length,
@@ -4890,11 +5327,11 @@
             }, 3000);
         }
 
-        // وظيفة اختبار النتائج للتطوير
+        // وظيفة مقياس النتائج للتطوير
         function testResults() {
             console.log('🧪 Testing results display...');
 
-            // تعيين بيانات وهمية للاختبار
+            // تعيين بيانات وهمية للمقياس
             userName = 'أحمد محمد';
             totalStartTime = Date.now() - (25 * 60 * 1000); // 25 دقيقة مضت
 
@@ -4968,14 +5405,14 @@
                 allPathAnswers: Object.keys(allPathAnswers).map(k => `Path ${k}: ${allPathAnswers[k].length} answers`)
             });
 
-            // إظهار رسالة اختبار
+            // إظهار رسالة مقياس
             const testMessage = document.createElement('div');
             testMessage.className = 'fixed top-4 right-4 bg-blue-500 text-white px-6 py-4 rounded-lg shadow-lg z-50 max-w-sm';
             testMessage.innerHTML = `
                 <div class="flex items-center">
                     <span class="text-2xl ml-2">🧪</span>
                     <div>
-                        <div class="font-bold">وضع الاختبار</div>
+                        <div class="font-bold">وضع المقياس</div>
                         <div class="text-sm opacity-90">جاري عرض النتائج التجريبية...</div>
                     </div>
                 </div>
@@ -5000,7 +5437,6 @@
             loadVisitorData();
         });
     </script>
-
     <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'98037c92d5f4e8e2',t:'MTc1ODA1ODQ1My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script>
 </body>
 

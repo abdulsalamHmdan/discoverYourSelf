@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مقياس RIASEC - اكتشف ميولك المهنية</title>
+    <title>اختبار RIASEC - اكتشف ميولك المهنية</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -75,11 +75,22 @@
             max-width: 300px;
             margin: 0 auto;
         }
+
+
+        @media print {
+            .noP {
+                display: none;
+            }
+
+            * {
+                break-inside: avoid;
+            }
+        }
     </style>
 </head>
 
 <body class="min-h-screen transition-all duration-300" id="body">
-    <!-- شاشة البداية -->
+    <!-- شاشة النتائج -->
     <div id="results-screen" class="min-h-screen bg-gray-50 p-6">
         <div class="max-w-6xl mx-auto">
             <!-- هيدر النتيجة -->
@@ -97,12 +108,10 @@
                         <div class="text-sm opacity-80">الوقت الكلي</div>
                         <div id="total-time" class="text-lg font-bold"></div>
                     </div>
-                    <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-4 cursor-pointer"
-                        onclick="showConfidenceExplanation()">
+                    <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-4">
                         <div class="text-2xl mb-2">🎯</div>
                         <div class="text-sm opacity-80">مؤشر الثقة</div>
                         <div id="confidence-level" class="text-lg font-bold"></div>
-                        <div class="text-xs opacity-70 mt-1">اضغط للتفاصيل</div>
                     </div>
                     <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-4">
                         <div class="text-2xl mb-2">📊</div>
@@ -162,7 +171,7 @@
             </div>
 
             <!-- أزرار المشاركة -->
-            <div class="bg-white rounded-2xl shadow-lg p-6 mt-6">
+            <div class="bg-white rounded-2xl shadow-lg p-6 mt-6 noP">
                 <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">احفظ نتيجتك</h3>
                 <div class="flex flex-wrap justify-center gap-3">
                     <button onclick="saveAsPDF()"
@@ -173,23 +182,18 @@
                 </div>
             </div>
 
-            <!-- ملخص المسارين -->
-            <div id="paths-summary" class="bg-white rounded-2xl shadow-lg p-6 mt-6">
-                <!-- سيتم إنشاؤه ديناميكياً -->
-            </div>
-
-            <!-- زر إعادة المقياس -->
-            <div class="text-center mt-8">
+            <!-- زر إعادة الاختبار
+            <div class="text-center mt-8 noP">
                 <button onclick="restartTest()"
                     class="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-200 transform hover:scale-105">
                     الانتقال الى الاختبار الثاني ( MPTI )
                 </button>
-            </div>
+            </div> -->
         </div>
     </div>
 
     <script>
-        // بيانات المقياس
+        // بيانات الاختبار
         const questions = [
             // البُعد الواقعي (R) - الأسئلة 1-8
             { id: 1, text: "إصلاح الأجهزة الكهربائية", dimension: "R", section: 1, icon: "🔧" },
@@ -247,220 +251,6 @@
             { id: 43, text: "إدخال البيانات في الكمبيوتر", dimension: "C", section: 9, icon: "📊" },
             { id: 44, text: "مراجعة التقارير المالية", dimension: "C", section: 9, icon: "📊" },
             { id: 45, text: "العمل في المحاسبة", dimension: "C", section: 9, icon: "📊" }
-        ];
-
-        // المسار الثاني: "لو خيروك للعمل" - أسئلة اختيار متعدد
-        const pathTwoQuestions = [
-            {
-                id: 46,
-                text: "لو خيّروك بين هذه الأعمال للتطوع فيها، أيهم تختار؟",
-                options: [
-                    { text: "التطوع في أعمال تحتاج إلى جهد بدني", dimension: "R" },
-                    { text: "التطوع في أعمال تحتاج إلى جهد ذهني", dimension: "I" },
-                    { text: "التطوع في أعمال تحتاج إلى مشاركة مع ناس", dimension: "S" },
-                    { text: "التطوع في أعمال تحتاج إلى قيادة لمجموعة", dimension: "E" },
-                    { text: "التطوع في أعمال تحتاج إلى كتابة أدبية", dimension: "A" },
-                    { text: "التطوع في أعمال تحتاج إلى تدقيق وتنظيم ملفات", dimension: "C" }
-                ],
-                section: 10,
-                icon: "🧩"
-            },
-            {
-                id: 47,
-                text: "أي نوع من الأعمال التالية يستهوِيك أكثر عند المشاركة في عمل تطوعي؟",
-                options: [
-                    { text: "عمل ميداني بدني", dimension: "R" },
-                    { text: "أعمال تفكير وتحليل", dimension: "I" },
-                    { text: "تواصل وتعاون مع الآخرين", dimension: "S" },
-                    { text: "إدارة فريق", dimension: "E" },
-                    { text: "أعمال إدارية مكتبية", dimension: "C" },
-                    { text: "تنظيم بيانات ومستندات", dimension: "C" }
-                ],
-                section: 10,
-                icon: "🧩"
-            },
-            {
-                id: 48,
-                text: "أيهم يُشعرك بالرضا أكثر بعد العمل التطوعي؟",
-                options: [
-                    { text: "ساعدتُ أشخاصًا وتكلمتُ معهم مباشرة", dimension: "S" },
-                    { text: "فكّرتُ في خطة ممتازة وساهمتُ في نجاح الحملة", dimension: "I" },
-                    { text: "رتّبتُ المكان وجهّزت كل الأدوات", dimension: "R" },
-                    { text: "كتبتُ تقريرًا رائعًا أو أنجزت تصميمًا مميزًا", dimension: "A" },
-                    { text: "نظّمتُ الفريق وتأكدتُ أن كل شخص عرف دوره", dimension: "E" },
-                    { text: "أنهيتُ أرشفة الملفات وتنظيم السجلات بشكل مرتب", dimension: "C" }
-                ],
-                section: 10,
-                icon: "🧩"
-            },
-            {
-                id: 49,
-                text: "لو طُلب منك المساهمة في نشاط تطوعي، ما نوع العمل الذي تفضله؟",
-                options: [
-                    { text: "المساعدة في حمل وتنظيم الأشياء (مثل ترتيب الكراتين أو توزيع الماء)", dimension: "R" },
-                    { text: "المشاركة في التفكير والتخطيط للحملات", dimension: "I" },
-                    { text: "التحدث مع الناس ومساعدتهم مباشرة", dimension: "S" },
-                    { text: "تنظيم المعدات وتوزيع المهام عليهم", dimension: "E" },
-                    { text: "كتابة تقارير أو تصميم مطويات للحملة", dimension: "A" },
-                    { text: "ترتيب الملفات أو تسجيل البيانات في الجداول", dimension: "C" }
-                ],
-                section: 11,
-                icon: "🧩"
-            },
-            {
-                id: 50,
-                text: "بعد ما تنتهي الحملة، أي نوع من العمل تحب تستمر فيه؟",
-                options: [
-                    { text: "المساعدة في فك وتجميع الأدوات", dimension: "R" },
-                    { text: "تقييم النتائج واقتراح تحسينات", dimension: "I" },
-                    { text: "التواصل مع المشاركين وسؤالهم عن رأيهم", dimension: "S" },
-                    { text: "تنظيم تقرير نهائي للفريق", dimension: "E" },
-                    { text: "تصميم منشور يوثق الإنجاز", dimension: "A" },
-                    { text: "أرشفة الصور والبيانات في ملف مرتب", dimension: "C" }
-                ],
-                section: 11,
-                icon: "🧩"
-            },
-            {
-                id: 51,
-                text: "لو قال لك القائد: «ما عندي وقت أشرح… خذ مهمة وسوها على طريقتك»، أي مهمة تختار؟",
-                options: [
-                    { text: "تنظيم الطاولات وترتيب المكان", dimension: "R" },
-                    { text: "إيجاد طريقة أفضل لعرض الفعالية", dimension: "I" },
-                    { text: "التفاعل مع الناس وتعريفهم بالنشاط", dimension: "S" },
-                    { text: "متابعة وقت كل مجموعة وضبط النظام", dimension: "E" },
-                    { text: "تجهيز عرض بوربوينت سريع وجذاب", dimension: "A" },
-                    { text: "إعداد ملف يُسجّل كل بيانات المشاركين", dimension: "C" }
-                ],
-                section: 11,
-                icon: "🧩"
-            },
-            {
-                id: 52,
-                text: "تخيّل أنهم طلبوا منك تمثل دور شخص في مهنة لمدة يوم، أي شخصية تحس أنها تناسبك؟",
-                options: [
-                    { text: "فني صيانة محترف", dimension: "R" },
-                    { text: "باحث يكتب ويحلل البيانات", dimension: "I" },
-                    { text: "فنان يرسم أو يصمم أو يصوّر", dimension: "A" },
-                    { text: "معلم يشرح ويؤثر في الطلاب", dimension: "S" },
-                    { text: "مدير يقود مشروع أو فريق", dimension: "E" },
-                    { text: "موظف ينظم حسابات ويحسب تكاليف بدقة", dimension: "C" }
-                ],
-                section: 12,
-                icon: "🧩"
-            },
-            {
-                id: 53,
-                text: "جاءك خبر بقبولك في تخصص معين، أي خبر من هالخِيارات يخليك تبتسم وتقول «جت صح»؟",
-                options: [
-                    { text: "«مبروك، تم قبولك في كلية الهندسة»", dimension: "R" },
-                    { text: "«أهلاً بك في كلية العلوم وتحليل البيانات»", dimension: "I" },
-                    { text: "«أنت طالب جديد في كلية الفنون والتصميم»", dimension: "A" },
-                    { text: "«مبروك القبول في كلية الطب أو التمريض»", dimension: "S" },
-                    { text: "«تم قبولك في إدارة الأعمال»", dimension: "E" },
-                    { text: "«أنت الآن طالب في المحاسبة أو الأنظمة القانونية»", dimension: "C" }
-                ],
-                section: 12,
-                icon: "🧩"
-            },
-            {
-                id: 54,
-                text: "لو عطوك قناة YouTube وقالوا: «قناتك في اليوتيوب، وش محتواها؟»",
-                options: [
-                    { text: "صيانة واختراعات وتجارب عملية", dimension: "R" },
-                    { text: "تبسيط معلومات علمية دقيقة أو تحليلات", dimension: "I" },
-                    { text: "محتوى فني إبداعي وموّنتاج عن المسرح أو الفنون", dimension: "A" },
-                    { text: "مقاطع فيها فائدة مجتمعية", dimension: "S" },
-                    { text: "توثيق مشاريع ومهارات ريادية", dimension: "E" },
-                    { text: "شروحات لبرامج إدارية أو محاسبية", dimension: "C" }
-                ],
-                section: 12,
-                icon: "🧩"
-            },
-            {
-                id: 55,
-                text: "متى تحس بالفخر بنفسك فعلاً؟",
-                options: [
-                    { text: "لما أصلح شيء خربان بنفسي", dimension: "R" },
-                    { text: "لما أبحث عن فكرة معقدة", dimension: "I" },
-                    { text: "لما أصمم شيء جميل أو أنجز فيديو", dimension: "A" },
-                    { text: "لما أساعد أحد ويشكرني", dimension: "S" },
-                    { text: "لما أقود فريق وننجز هدفنا", dimension: "E" },
-                    { text: "لما أنهي مهمة مهمة ودقيقة بدون أخطاء", dimension: "C" }
-                ],
-                section: 13,
-                icon: "🧩"
-            },
-            {
-                id: 56,
-                text: "عندما تبدأ حملة تطوعية، ما أول شيء تحب تفعله؟",
-                options: [
-                    { text: "أنزل للميدان وأبدأ بالعمل مباشرة", dimension: "R" },
-                    { text: "أجلس مع الفريق ونضع خطة واضحة", dimension: "I" },
-                    { text: "أتعرف على المشاركين وأحمّسهم للعمل", dimension: "S" },
-                    { text: "أوزّع المهام وأتابع التنفيذ", dimension: "E" },
-                    { text: "أصمم شعار أو مطوية جذابة للحملة", dimension: "A" },
-                    { text: "أفتح ملفاً لتنظيم البيانات والسجلات من البداية", dimension: "C" }
-                ],
-                section: 13,
-                icon: "🧩"
-            },
-            {
-                id: 57,
-                text: "إذا واجه الفريق مشكلة أثناء الحملة، وش يكون دورك الطبيعي؟",
-                options: [
-                    { text: "أبحث عن حل عملي سريع بنفسي", dimension: "R" },
-                    { text: "أحلل الأسباب بهدوء وأقترح حلول", dimension: "I" },
-                    { text: "أشجع الفريق وأرفع معنوياتهم", dimension: "S" },
-                    { text: "أنظم اجتماعًا وأقسم المهام من جديد", dimension: "E" },
-                    { text: "أقدّم أفكارًا جديدة مبتكرة للخروج من المشكلة", dimension: "A" },
-                    { text: "أوثّق المشكلة وما تم فعله لحلها", dimension: "C" }
-                ],
-                section: 13,
-                icon: "🧩"
-            },
-            {
-                id: 58,
-                text: "أكثر بيئة تشعر أنك تبدع فيها أثناء العمل التطوعي؟",
-                options: [
-                    { text: "ورشة عمل أو ميدان مفتوح", dimension: "R" },
-                    { text: "غرفة نقاش وتخطيط استراتيجيات", dimension: "I" },
-                    { text: "فعالية جماهيرية مع الناس", dimension: "S" },
-                    { text: "لجنة إشراف وتنظيم فرق", dimension: "E" },
-                    { text: "معرض فني أو نشاط إبداعي", dimension: "A" },
-                    { text: "مكتب هادئ لتنظيم الملفات والبيانات", dimension: "C" }
-                ],
-                section: 14,
-                icon: "🧩"
-            },
-            {
-                id: 59,
-                text: "إذا حصلت على إشادة من القائد، أي عبارة تُسعدك أكثر؟",
-                options: [
-                    { text: "«أنت شغّال وتنجز بسرعة!»", dimension: "R" },
-                    { text: "«أفكارك دائمًا ذكية وتحل المشاكل»", dimension: "I" },
-                    { text: "«وجودك يرفع معنويات الفريق»", dimension: "S" },
-                    { text: "«قيادتك ساعدت في إنجاح المهمة»", dimension: "E" },
-                    { text: "«تصميماتك وأعمالك رائعة جدًا»", dimension: "A" },
-                    { text: "«سجلاتك مرتبة وتوفر وقت الجميع»", dimension: "C" }
-                ],
-                section: 14,
-                icon: "🧩"
-            },
-            {
-                id: 60,
-                text: "لو طلبنا منك تقترح مشروع تطوعي جديد، وش نوعه؟",
-                options: [
-                    { text: "تنظيف وصيانة مواقع عامة", dimension: "R" },
-                    { text: "أبحاث ومسوحات ميدانية للمجتمع", dimension: "I" },
-                    { text: "حملات توعية مجتمعية", dimension: "S" },
-                    { text: "تدريب وتطوير قادة شباب", dimension: "E" },
-                    { text: "ورش فنية وإبداعية للأطفال", dimension: "A" },
-                    { text: "مشروع رقمي لتنظيم البيانات التطوعية", dimension: "C" }
-                ],
-                section: 14,
-                icon: "🧩"
-            }
         ];
 
         // معلومات الأبعاد
@@ -544,24 +334,7 @@
             "مهندس كمبيوتر": { dimensions: ["I", "R", "C"], score: 0, icon: "💻", description: "تطوير وصيانة أنظمة الحاسوب" }
         };
 
-        // حالة المقياس
         let testState = JSON.parse('<%-p1%>')
-
-        // let testState = {
-        //     currentIndex: 0,
-        //     answers: {},
-        //     startedAt: null,
-        //     perQuestionTime: {},
-        //     fastStreakCount: 0,
-        //     sectionsProgress: Array(14).fill(0), // زيادة عدد الأقسام إلى 14
-        //     userName: '',
-        //     isDarkMode: false,
-        //     isSoundEnabled: true,
-        //     questionStartTime: null,
-        //     currentPath: 1, // 1 للمسار الأول، 2 للمسار الثاني
-        //     pathTwoAnswers: {} // إجابات المسار الثاني
-        // };
-
         // قاعدة بيانات التخصصات الجامعية
         const majorDatabase = {
             "هندسة الحاسوب": { dimensions: ["I", "R", "C"], score: 0, icon: "💻", description: "تطوير وتصميم أنظمة الحاسوب والبرمجيات", category: "هندسة" },
@@ -596,66 +369,20 @@
             "الترجمة": { dimensions: ["A", "I", "S"], score: 0, icon: "🌍", description: "ترجمة النصوص بين اللغات المختلفة", category: "لغات" }
         };
 
-        // حفظ التقدم في التخزين المحلي
-        showResults();
-        // إظهار النتائج
-        function showResults() {
-            // document.getElementById('test-screen').classList.add('hidden');
-            // document.getElementById('transition-screen').classList.remove('hidden');
-
-            // مسح التقدم المحفوظ لأن الاختبار اكتمل
-            // clearProgress(testState.userName);
-
-            // إظهار شاشة الانتقال لمدة 3 ثوانٍ ثم الانتقال للنتائج
-            testState.questionEndTime = Date.now();
-            var data = new URLSearchParams();
-            data.append('data', JSON.stringify(testState));
-            data.append('type', 'p1');
-
-            fetch('http://127.0.0.1:3000/saveExam', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-                },
-                body: data
-            }).then(() => {
-                document.getElementById('transition-screen').classList.add('hidden');
-                document.getElementById('results-screen').classList.remove('hidden');
-                calculateAndDisplayResults();
-            }).catch(() => {
-                alert("حصلت مشكلة في حفظ البيانات قد تضطر الى اعادة الاختبار")
-                calculateAndDisplayResults();
-
-            })
 
 
-
-
-        }
+        calculateAndDisplayResults()
 
         // حساب وعرض النتائج
         function calculateAndDisplayResults() {
-            // حساب النقاط لكل بُعد من المسار الأول
+            // حساب النقاط لكل بُعد
             const scores = { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 };
             const counts = { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 };
 
-            // حساب نقاط المسار الأول (التقييم)
             questions.forEach(q => {
                 if (testState.answers[q.id] !== undefined) {
                     scores[q.dimension] += testState.answers[q.id];
                     counts[q.dimension]++;
-                }
-            });
-
-            // حساب نقاط المسار الثاني (الاختيار المتعدد)
-            pathTwoQuestions.forEach(q => {
-                if (testState.pathTwoAnswers[q.id] !== undefined) {
-                    const selectedOptionIndex = testState.pathTwoAnswers[q.id];
-                    const selectedOption = q.options[selectedOptionIndex];
-
-                    // إضافة نقطة واحدة للبُعد المختار
-                    scores[selectedOption.dimension] += 2; // نقطتان لتعادل "أستمتع جداً"
-                    counts[selectedOption.dimension]++;
                 }
             });
 
@@ -693,12 +420,9 @@
 
             // عرض التوصيات
             displayRecommendations(sortedDimensions.slice(0, 3), percentages);
-
-            // عرض ملخص المسارين
-            displayPathsSummary();
         }
 
-        // حساب أفضل المهن بناءً على النتائج
+        // حساب أفضل المهن بناءً على النتائج ggggggggggggggggggggggggggggggggggg
         function calculateTopCareers(percentages) {
             // إعادة تعيين النقاط
             Object.keys(careerDatabase).forEach(career => {
@@ -793,7 +517,7 @@
                 }));
         }
 
-        // عرض أفضل 5 مهن
+        // عرض أفضل 5 مهن gggggggggggggggggggggggggg
         function displayTopCareers(topCareers) {
             const container = document.getElementById('top-careers');
             container.innerHTML = '';
@@ -877,6 +601,7 @@
         }
 
         // عرض أعلى 3 أبعاد
+        //ggggggggggggggggggggggg
         function displayTopDimensions(topDims, percentages) {
             const container = document.getElementById('top-dimensions');
             container.innerHTML = '';
@@ -1127,34 +852,6 @@
             return "منخفض";
         }
 
-        // الحصول على شرح مؤشر الثقة
-        function getConfidenceExplanation() {
-            const fastAnswers = Object.values(testState.perQuestionTime).filter(time => time < 1200).length;
-            const totalAnswers = Object.keys(testState.answers).length;
-            const fastRatio = fastAnswers / totalAnswers;
-            const averageTime = Object.values(testState.perQuestionTime).reduce((a, b) => a + b, 0) / totalAnswers;
-
-            let explanation = "";
-            let icon = "";
-            let color = "";
-
-            if (fastRatio < 0.2) {
-                icon = "🎯";
-                color = "text-green-600";
-                explanation = `مؤشر الثقة عالي لأنك أخذت وقتاً كافياً للتفكير في إجاباتك. متوسط الوقت لكل سؤال: ${Math.round(averageTime / 1000)} ثانية. هذا يعني أن النتائج تعكس ميولك الحقيقية بدقة عالية.`;
-            } else if (fastRatio < 0.4) {
-                icon = "⚖️";
-                color = "text-orange-600";
-                explanation = `مؤشر الثقة متوسط. أجبت على ${Math.round(fastRatio * 100)}% من الأسئلة بسرعة (أقل من ثانية واحدة). متوسط الوقت: ${Math.round(averageTime / 1000)} ثانية. النتائج جيدة لكن قد تحتاج لمراجعة بعض الإجابات للحصول على دقة أكبر.`;
-            } else {
-                icon = "⚠️";
-                color = "text-red-600";
-                explanation = `مؤشر الثقة منخفض لأنك أجبت على ${Math.round(fastRatio * 100)}% من الأسئلة بسرعة كبيرة (أقل من ثانية واحدة). متوسط الوقت: ${Math.round(averageTime / 1000)} ثانية. ننصح بإعادة المقياس مع أخذ وقت أكبر للتفكير في كل سؤال للحصول على نتائج أكثر دقة.`;
-            }
-
-            return { explanation, icon, color };
-        }
-
         // تنسيق الوقت
         function formatTime(ms) {
             const minutes = Math.floor(ms / 60000);
@@ -1163,14 +860,14 @@
         }
 
         // بدء المؤقت
-        function startTimer() {
-            setInterval(() => {
-                if (testState.startedAt) {
-                    const elapsed = Date.now() - testState.startedAt;
-                    document.getElementById('timer').textContent = formatTime(elapsed);
-                }
-            }, 1000);
-        }
+        // function startTimer() {
+        //     setInterval(() => {
+        //         if (testState.startedAt) {
+        //             const elapsed = Date.now() - testState.startedAt;
+        //             document.getElementById('timer').textContent = formatTime(elapsed);
+        //         }
+        //     }, 1000);
+        // }
 
         // إعداد اختصارات لوحة المفاتيح
         function setupKeyboardShortcuts() {
@@ -1247,7 +944,7 @@
             ctx.fillStyle = '#1f2937';
             ctx.font = 'bold 32px Arial';
             ctx.textAlign = 'center';
-            ctx.fillText(`نتائج مقياس RIASEC - ${testState.userName}`, canvas.width / 2, 60);
+            ctx.fillText(`نتائج اختبار RIASEC - ${testState.userName}`, canvas.width / 2, 60);
 
             // رسم الأبعاد الثلاثة الأولى
             const topDims = Object.keys(dimensions).sort((a, b) => {
@@ -1266,12 +963,10 @@
 
             // تحويل إلى صورة وتحميلها
             const link = document.createElement('a');
-            link.download = `نتائج-مقياس-RIASEC-${testState.userName}.png`;
+            link.download = `نتائج-اختبار-RIASEC-${testState.userName}.png`;
             link.href = canvas.toDataURL();
             link.click();
         }
-
-
 
         function printResults() {
             window.print();
@@ -1316,7 +1011,7 @@
                 // لا توجد إجابات، العودة مباشرة
                 document.getElementById('test-screen').classList.add('hidden');
                 document.getElementById('onboarding-screen').classList.remove('hidden');
-                document.getElementById('userName').value = testState.userName;
+                // document.getElementById('userName').value = testState.userName;
             }
         }
 
@@ -1325,13 +1020,13 @@
             // حفظ التقدم
             saveProgress();
 
-            // إخفاء النافذة وشاشة المقياس
+            // إخفاء النافذة وشاشة الاختبار
             document.getElementById('instructions-modal').classList.add('hidden');
             document.getElementById('test-screen').classList.add('hidden');
             document.getElementById('onboarding-screen').classList.remove('hidden');
 
             // تعبئة الاسم مسبقاً
-            document.getElementById('userName').value = testState.userName;
+            // document.getElementById('userName').value = testState.userName;
 
             // إظهار رسالة تأكيد
             setTimeout(() => {
@@ -1344,17 +1039,17 @@
             // مسح التقدم المحفوظ
             clearProgress(testState.userName);
 
-            // إخفاء النافذة وشاشة المقياس
+            // إخفاء النافذة وشاشة الاختبار
             document.getElementById('instructions-modal').classList.add('hidden');
             document.getElementById('test-screen').classList.add('hidden');
             document.getElementById('onboarding-screen').classList.remove('hidden');
 
             // تعبئة الاسم مسبقاً
-            document.getElementById('userName').value = testState.userName;
+            // document.getElementById('userName').value = testState.userName;
 
             // إظهار رسالة تأكيد
             setTimeout(() => {
-                alert('تم حذف التقدم المحفوظ. يمكنك بدء مقياس جديد.');
+                alert('تم حذف التقدم المحفوظ. يمكنك بدء اختبار جديد.');
             }, 500);
         }
 
@@ -1363,187 +1058,13 @@
             document.getElementById('instructions-modal').classList.add('hidden');
         }
 
-        // عرض ملخص المسارين
-        function displayPathsSummary() {
-            const container = document.getElementById('paths-summary');
-
-            // حساب إحصائيات المسار الأول
-            const pathOneAnswered = Object.keys(testState.answers).length;
-            const pathTwoAnswered = Object.keys(testState.pathTwoAnswers).length;
-
-            // حساب النقاط لكل مسار
-            const pathOneScores = { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 };
-            const pathTwoScores = { R: 0, I: 0, A: 0, S: 0, E: 0, C: 0 };
-
-            // المسار الأول
-            questions.forEach(q => {
-                if (testState.answers[q.id] !== undefined) {
-                    pathOneScores[q.dimension] += testState.answers[q.id];
-                }
-            });
-
-            // المسار الثاني
-            pathTwoQuestions.forEach(q => {
-                if (testState.pathTwoAnswers[q.id] !== undefined) {
-                    const selectedOptionIndex = testState.pathTwoAnswers[q.id];
-                    const selectedOption = q.options[selectedOptionIndex];
-                    pathTwoScores[selectedOption.dimension] += 2;
-                }
-            });
-
-            // العثور على أعلى بُعد في كل مسار
-            const topPathOne = Object.keys(pathOneScores).reduce((a, b) => pathOneScores[a] > pathOneScores[b] ? a : b);
-            const topPathTwo = Object.keys(pathTwoScores).reduce((a, b) => pathTwoScores[a] > pathTwoScores[b] ? a : b);
-
-            container.innerHTML = `
-                <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">📊 ملخص المسارين</h3>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                    <!-- المسار الأول -->
-                    <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-6 border border-blue-200">
-                        <div class="flex items-center gap-3 mb-4">
-                            <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center">
-                                <span class="text-white font-bold text-lg">1</span>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-blue-800">المسار الأول</h4>
-                                <p class="text-blue-600 text-sm">تقييم الأنشطة</p>
-                            </div>
-                        </div>
-                        
-                        <div class="space-y-3">
-                            <div class="flex justify-between items-center">
-                                <span class="text-gray-700">عدد الأسئلة:</span>
-                                <span class="font-semibold text-blue-600">${pathOneAnswered} / ${questions.length}</span>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <span class="text-gray-700">البُعد الأقوى:</span>
-                                <span class="font-semibold text-blue-600">${dimensions[topPathOne].name.split(' ')[0]}</span>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <span class="text-gray-700">النقاط:</span>
-                                <span class="font-semibold text-blue-600">${pathOneScores[topPathOne]} نقطة</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- المسار الثاني -->
-                    <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-6 border border-purple-200">
-                        <div class="flex items-center gap-3 mb-4">
-                            <div class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center">
-                                <span class="text-white font-bold text-lg">2</span>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-purple-800">المسار الثاني</h4>
-                                <p class="text-purple-600 text-sm">لو خيروك للعمل</p>
-                            </div>
-                        </div>
-                        
-                        <div class="space-y-3">
-                            <div class="flex justify-between items-center">
-                                <span class="text-gray-700">عدد الأسئلة:</span>
-                                <span class="font-semibold text-purple-600">${pathTwoAnswered} / ${pathTwoQuestions.length}</span>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <span class="text-gray-700">البُعد الأقوى:</span>
-                                <span class="font-semibold text-purple-600">${dimensions[topPathTwo].name.split(' ')[0]}</span>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <span class="text-gray-700">النقاط:</span>
-                                <span class="font-semibold text-purple-600">${pathTwoScores[topPathTwo]} نقطة</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- مقارنة النتائج -->
-                <div class="bg-gradient-to-r from-green-50 to-blue-50 rounded-xl p-6 border border-green-200">
-                    <h4 class="font-bold text-gray-800 mb-4 text-center">🎯 التحليل المقارن</h4>
-                    <div class="text-center">
-                        ${topPathOne === topPathTwo ?
-                    `<div class="text-green-700">
-                                <span class="text-2xl">✅</span>
-                                <p class="font-semibold mt-2">نتائج متسقة!</p>
-                                <p class="text-sm">كلا المسارين يشيران إلى البُعد <strong>${dimensions[topPathOne].name.split(' ')[0]}</strong></p>
-                            </div>` :
-                    `<div class="text-orange-700">
-                                <span class="text-2xl">🔄</span>
-                                <p class="font-semibold mt-2">نتائج متنوعة</p>
-                                <p class="text-sm">المسار الأول يشير إلى <strong>${dimensions[topPathOne].name.split(' ')[0]}</strong> والثاني إلى <strong>${dimensions[topPathTwo].name.split(' ')[0]}</strong></p>
-                                <p class="text-xs mt-2 text-gray-600">هذا يعني أن لديك ميول متعددة ومتوازنة</p>
-                            </div>`
-                }
-                    </div>
-                </div>
-            `;
-        }
-
-        // عرض شرح مؤشر الثقة
-        function showConfidenceExplanation() {
-            const confidenceData = getConfidenceExplanation();
-
-            // إنشاء نافذة منبثقة
-            const modal = document.createElement('div');
-            modal.className = 'fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4';
-            modal.onclick = (e) => {
-                if (e.target === modal) modal.remove();
-            };
-
-            modal.innerHTML = `
-                <div class="bg-white rounded-2xl p-6 max-w-md mx-auto">
-                    <div class="text-center mb-4">
-                        <div class="text-4xl mb-2">${confidenceData.icon}</div>
-                        <h3 class="text-xl font-bold text-gray-800">شرح مؤشر الثقة</h3>
-                    </div>
-                    
-                    <div class="bg-gray-50 rounded-xl p-4 mb-4">
-                        <p class="${confidenceData.color} text-sm leading-relaxed">
-                            ${confidenceData.explanation}
-                        </p>
-                    </div>
-                    
-                    <div class="bg-blue-50 rounded-xl p-4 mb-4">
-                        <h4 class="font-semibold text-blue-800 mb-2">💡 نصائح لتحسين دقة النتائج:</h4>
-                        <ul class="text-sm text-blue-700 space-y-1">
-                            <li>• خذ وقتاً كافياً للتفكير في كل سؤال</li>
-                            <li>• تخيل نفسك تقوم بالنشاط فعلياً</li>
-                            <li>• كن صادقاً مع نفسك في الإجابات</li>
-                            <li>• لا تفكر في "الإجابة الصحيحة" بل في ما تحبه</li>
-                        </ul>
-                    </div>
-                    
-                    <button onclick="this.parentElement.parentElement.remove()" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl transition-colors">
-                        فهمت
-                    </button>
-                </div>
-            `;
-
-            document.body.appendChild(modal);
-        }
-
-        // إعادة المقياس
+        // إعادة الاختبار
         function restartTest() {
             location.href = "/p2"
         }
 
-
-
-        // تشغيل فحص التقدم المحفوظ عند تحميل الصفحة
-        // document.addEventListener('DOMContentLoaded', function () {
-        //     checkForSavedProgress();
-
-        //     // إضافة مراقبات للحقول
-        //     const nameInput = document.getElementById('userName');
-        //     const agreementCheckbox = document.getElementById('agreementCheckbox');
-
-        //     nameInput.addEventListener('input', updateStartButton);
-        //     agreementCheckbox.addEventListener('change', updateStartButton);
-
-        //     // تحديث حالة الزر في البداية
-        //     updateStartButton();
-        // });
     </script>
-    <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'981c519873eaee58',t:'MTc1ODMxODgzNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script>
+    <!-- <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'98031896f1ed7892',t:'MTc1ODA1NDM1OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script> -->
 </body>
 
 </html>

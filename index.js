@@ -32,18 +32,42 @@ app.get('/', function (req, res) {
 })
 
 app.get('/p1', isAuthenticated, function (req, res) {
+    if (req.session.p1 == 'done') {
+        res.redirect("p2")
+        return;
+    }
     res.render("p1", { user: req.session.user });
 })
 app.get('/p1', function (req, res) {
     res.redirect("/")
 })
 app.get('/p2', isAuthenticated, function (req, res) {
+    if (req.session.p1 == 'no') {
+        res.redirect("p1")
+        return;
+    }
+    if (req.session.p2 == 'done') {
+        res.redirect("p3")
+        return;
+    }
     res.render("p2", { user: req.session.user });
 })
 app.get('/p2', function (req, res) {
     res.redirect("/");
 })
 app.get('/p3', isAuthenticated, function (req, res) {
+    if (req.session.p1 == 'no') {
+        res.redirect("p1")
+        return;
+    }
+    if (req.session.p2 == 'no') {
+        res.redirect("p2")
+        return;
+    }
+    if (req.session.p3 == 'done') {
+        res.redirect("rate")
+        return;
+    }
     res.render("p3", { user: req.session.user });
 })
 app.get('/p3', function (req, res) {
@@ -52,32 +76,68 @@ app.get('/p3', function (req, res) {
 
 //end pages
 app.get('/rate', isAuthenticated, function (req, res) {
+    if (req.session.p1 == 'no') {
+        res.redirect("p1")
+        return;
+    }
+    if (req.session.p2 == 'no') {
+        res.redirect("p2")
+        return;
+    }
+    if (req.session.p3 == 'no') {
+        res.redirect("p3")
+        return;
+    }
+    if (req.session.rate == 'done') {
+        res.redirect("end")
+        return;
+    }
     res.render("rate", { user: req.session.user });
 })
 app.get('/rate', function (req, res) {
     res.redirect("/");
 })
-app.get('/end', function (req, res) {
-    res.render("end", { user: req.session.user });
-})
-// app.get('/end', function (req, res) {
-//     res.redirect("/");
-// })
-
-
-// Result-Page
-app.get('/Results/:exam', async function (req, res) {
+app.get('/end', isAuthenticated, async function (req, res) {
+    if (req.session.p1 == 'no') {
+        res.redirect("p1")
+        return;
+    }
+    if (req.session.p2 == 'no') {
+        res.redirect("p2")
+        return;
+    }
+    if (req.session.p3 == 'no') {
+        res.redirect("p3")
+        return;
+    }
     await client.connect();
     const db = client.db("soqy");
     const collection = db.collection('users');
-    const user = await collection.findOne({ name: req.session.user, })
+    const user = await collection.findOne({ name: req.session.user })
+    // client.close()
+    if (user.p1 && user.p2 && user.p3) {
+        res.render("end", { user: req.session.user, p1: user.p1, p2: user.p2, p3: user.p3 });
+        return;
+    }
+})
+app.get('/end', function (req, res) {
+    res.redirect("/");
+})
+
+
+// Result-Page
+app.get('/Results/:exam', isAuthenticated, async function (req, res) {
+    await client.connect();
+    const db = client.db("soqy");
+    const collection = db.collection('users');
+    const user = await collection.findOne({ name: req.session.user })
     console.log(req.params)
     if (user[req.params.exam]) {
-        res.render("p3Result", { exam: user[req.params.exam], user: req.session.user });
-
-    } else {
-        res.send('notFound');
+        res.render(`${req.params.exam}Result`, { [req.params.exam]: user[req.params.exam], user: req.session.user });
+        return;
     }
+    res.send('notFound');
+
 
 
 
@@ -133,10 +193,13 @@ app.post('/saveExam', async function (req, res) {
     const collection = db.collection('users');
     console.log(req.body)
     await collection.updateOne({ name: req.session.user }, { $set: { [req.body.type]: req.body.data } }).then(() => {
+        req.session[req.body.type] = "done"
+        req.session.save(function (err) {
+            if (err) return next(err)
+            res.send('saved')
+        })
 
-        res.send('saved')
     }).catch(err => {
-
         res.send('notFound');
     })
 })
@@ -149,15 +212,16 @@ app.post('/login', express.urlencoded({ extended: false }), async function (req,
     const db = client.db("soqy");
     const collection = db.collection('users');
     const user = await collection.findOne({ name: req.body.user, password: req.body.pass })
-    console.log(req.body)
-    console.log(user)
+    // console.log(req.body)
+    // console.log(user)
     if (user) {
         req.session.regenerate(function (err) {
             if (err) next(err)
             req.session.user = req.body.user
-            req.session.p1 = "no"
-            req.session.p2 = "no"
-            req.session.p3 = "no"
+            req.session.p1 = user.p1 ? "done" : "no"
+            req.session.p2 = user.p2 ? "done" : "no"
+            req.session.p3 = user.p3 ? "done" : "no"
+            req.session.rate = user.rate ? "done" : "no"
             req.session.save(function (err) {
                 if (err) return next(err)
                 // res.redirect('/')
