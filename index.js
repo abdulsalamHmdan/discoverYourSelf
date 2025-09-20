@@ -144,7 +144,7 @@ app.get('/Results/:exam', isAuthenticated, async function (req, res) {
     const db = client.db("soqy");
     const collection = db.collection('users');
     const user = await collection.findOne({ idNumber: req.session.user })
-    console.log(req.params)
+    // console.log(req.params)
     if (user[req.params.exam]) {
         res.render(`${req.params.exam}Result`, { [req.params.exam]: user[req.params.exam], user: req.session.name });
         return;
@@ -204,7 +204,7 @@ app.post('/saveExam', async function (req, res) {
     await client.connect();
     const db = client.db("soqy");
     const collection = db.collection('users');
-    console.log(req.body)
+    // console.log(req.body)
     await collection.updateOne({ idNumber: req.session.user }, { $set: { [req.body.type]: req.body.data } }).then(() => {
         req.session[req.body.type] = "done"
         req.session.save(function (err) {
