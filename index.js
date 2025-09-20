@@ -18,12 +18,24 @@ const { MongoClient } = require('mongodb');
 const url = "mongodb+srv://family:aS0507499583@cluster0.dvljyns.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(url);
 
+// data = data.map(x => { return { idNumber: x.idNumber, name: x.name, email: x.email, phone: x.phone } })
+
 //start routing here;
 
 function isAuthenticated(req, res, next) {
     if (req.session.user) next()
     else next('route')
 }
+
+// app.get('/data', async function (req, res) {
+//     await client.connect();
+//     const db = client.db("soqy");
+//     const collection = db.collection('users');
+//     await collection.insertMany(data)
+//     client.close()
+//     res.send(",jhsaxhg");
+
+// })
 
 app.get('/', isAuthenticated, function (req, res) {
     res.redirect("p1")
@@ -37,7 +49,7 @@ app.get('/p1', isAuthenticated, function (req, res) {
         res.redirect("p2")
         return;
     }
-    res.render("p1", { name: req.session.user });
+    res.render("p1", { name: req.session.name });
 })
 app.get('/p1', function (req, res) {
     res.redirect("/")
@@ -51,7 +63,7 @@ app.get('/p2', isAuthenticated, function (req, res) {
         res.redirect("p3")
         return;
     }
-    res.render("p2", { user: req.session.user });
+    res.render("p2", { user: req.session.name });
 })
 app.get('/p2', function (req, res) {
     res.redirect("/");
@@ -69,7 +81,7 @@ app.get('/p3', isAuthenticated, function (req, res) {
         res.redirect("rate")
         return;
     }
-    res.render("p3", { user: req.session.user });
+    res.render("p3", { name: req.session.name });
 })
 app.get('/p3', function (req, res) {
     res.redirect("/");
@@ -93,7 +105,7 @@ app.get('/rate', isAuthenticated, function (req, res) {
         res.redirect("end")
         return;
     }
-    res.render("rate", { user: req.session.user });
+    res.render("rate", { user: req.session.name });
 })
 app.get('/rate', function (req, res) {
     res.redirect("/");
@@ -114,10 +126,10 @@ app.get('/end', isAuthenticated, async function (req, res) {
     await client.connect();
     const db = client.db("soqy");
     const collection = db.collection('users');
-    const user = await collection.findOne({ name: req.session.user })
+    const user = await collection.findOne({ idNumber: req.session.user })
     // client.close()
     if (user.p1 && user.p2 && user.p3) {
-        res.render("end", { user: req.session.user, p1: user.p1, p2: user.p2, p3: user.p3 });
+        res.render("end", { user: req.session.name, p1: user.p1, p2: user.p2, p3: user.p3 });
         return;
     }
 })
@@ -131,10 +143,10 @@ app.get('/Results/:exam', isAuthenticated, async function (req, res) {
     await client.connect();
     const db = client.db("soqy");
     const collection = db.collection('users');
-    const user = await collection.findOne({ name: req.session.user })
+    const user = await collection.findOne({ idNumber: req.session.user })
     console.log(req.params)
     if (user[req.params.exam]) {
-        res.render(`${req.params.exam}Result`, { [req.params.exam]: user[req.params.exam], user: req.session.user });
+        res.render(`${req.params.exam}Result`, { [req.params.exam]: user[req.params.exam], user: req.session.name });
         return;
     }
     res.send('notFound');
@@ -193,7 +205,7 @@ app.post('/saveExam', async function (req, res) {
     const db = client.db("soqy");
     const collection = db.collection('users');
     console.log(req.body)
-    await collection.updateOne({ name: req.session.user }, { $set: { [req.body.type]: req.body.data } }).then(() => {
+    await collection.updateOne({ idNumber: req.session.user }, { $set: { [req.body.type]: req.body.data } }).then(() => {
         req.session[req.body.type] = "done"
         req.session.save(function (err) {
             if (err) return next(err)
@@ -212,13 +224,14 @@ app.post('/login', express.urlencoded({ extended: false }), async function (req,
     await client.connect();
     const db = client.db("soqy");
     const collection = db.collection('users');
-    const user = await collection.findOne({ name: req.body.user, password: req.body.pass })
+    const user = await collection.findOne({ idNumber: req.body.user, phone: req.body.pass })
     // console.log(req.body)
     // console.log(user)
     if (user) {
         req.session.regenerate(function (err) {
             if (err) next(err)
-            req.session.user = req.body.user
+            req.session.user = user.idNumber
+            req.session.name = user.name
             req.session.p1 = user.p1 ? "done" : "no"
             req.session.p2 = user.p2 ? "done" : "no"
             req.session.p3 = user.p3 ? "done" : "no"
