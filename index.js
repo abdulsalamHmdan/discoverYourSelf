@@ -203,7 +203,7 @@ app.post('/saveExam', async function (req, res) {
     await client.connect();
     const db = client.db("soqy");
     const collection = db.collection('users');
-    // console.log(req.body)
+    console.log(req.body)
     await collection.updateOne({ idNumber: req.session.user }, { $set: { [req.body.type]: req.body.data } }).then(() => {
         req.session[req.body.type] = "done"
         req.session.save(function (err) {
