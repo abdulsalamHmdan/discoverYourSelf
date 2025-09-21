@@ -1705,7 +1705,7 @@
             data.append('data', JSON.stringify(testState));
             data.append('type', 'p1');
 
-            fetch('http://127.0.0.1:3000/saveExam', {
+            fetch('saveExam', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
