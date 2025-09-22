@@ -2672,6 +2672,18 @@
 
             // تحديد النمط العام
             const topThree = sortedIntelligences.slice(0, 3);
+            var data = new URLSearchParams();
+            data.append('data', JSON.stringify({ tops: topThree, time: Date.now() - startTime }));
+            data.append('type', 'stat.p3');
+            fetch('saveExam', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                },
+                body: data
+            }).catch(() => {
+                alert("حصلت مشكلة في حفظ البيانات قد تضطر الى اعادة الاختبار")
+            })
             const averageScore = Object.values(scores).reduce((sum, score) => sum + score, 0) / 8;
 
             let patternDescription = '';
@@ -3181,7 +3193,8 @@
             const downloadBtn = document.getElementById('downloadPdfBtn');
             if (downloadBtn) {
                 downloadBtn.addEventListener('click', function () {
-                    alert('ميزة تحميل PDF ستكون متاحة قريباً!');
+                    // alert('ميزة تحميل PDF ستكون متاحة قريباً!');
+                    print()
                 });
             }
 

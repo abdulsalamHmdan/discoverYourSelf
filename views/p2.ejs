@@ -1348,29 +1348,29 @@
 
         function startTest() {
             // تعيين اسم ثابت شرقي
-            userName = 'أحمد محمد';
+            userName = '<%=name%>';
 
             // التحقق من وجود تقدم محفوظ
-            const hasSavedProgress = checkForSavedProgress();
+            // const hasSavedProgress = checkForSavedProgress();
 
-            if (hasSavedProgress) {
-                showResumeTestDialog();
-                return;
-            }
+            // if (hasSavedProgress) {
+            //     showResumeTestDialog();
+            //     return;
+            // }
 
             // بدء اختبار جديد
             startNewTest();
         }
 
-        function checkForSavedProgress() {
-            try {
-                const storageKey = `personality_test_${userName}_progress`;
-                const savedProgress = localStorage.getItem(storageKey);
-                return savedProgress !== null;
-            } catch (e) {
-                return false;
-            }
-        }
+        // function checkForSavedProgress() {
+        //     try {
+        //         const storageKey = `personality_test_${userName}_progress`;
+        //         const savedProgress = localStorage.getItem(storageKey);
+        //         return savedProgress !== null;
+        //     } catch (e) {
+        //         return false;
+        //     }
+        // }
 
         function showResumeTestDialog() {
             const modal = document.createElement('div');
@@ -1421,41 +1421,41 @@
             document.body.appendChild(modal);
         }
 
-        function resumeSavedTest() {
-            closeResumeDialog();
+        // function resumeSavedTest() {
+        //     closeResumeDialog();
 
-            // تحميل التقدم المحفوظ
-            const progressLoaded = loadSavedProgress();
+        //     // تحميل التقدم المحفوظ
+        //     // const progressLoaded = loadSavedProgress();
 
-            if (progressLoaded) {
-                // الانتقال لشاشة الاختبار
-                document.getElementById('welcomeScreen').classList.add('fade-out');
-                setTimeout(() => {
-                    document.getElementById('welcomeScreen').classList.add('hidden');
-                    document.getElementById('testScreen').classList.remove('hidden');
-                    document.getElementById('testScreen').classList.add('fade-in');
-                    document.getElementById('progressContainer').classList.remove('hidden');
-                }, 400);
+        //     if (progressLoaded) {
+        //         // الانتقال لشاشة الاختبار
+        //         document.getElementById('welcomeScreen').classList.add('fade-out');
+        //         setTimeout(() => {
+        //             document.getElementById('welcomeScreen').classList.add('hidden');
+        //             document.getElementById('testScreen').classList.remove('hidden');
+        //             document.getElementById('testScreen').classList.add('fade-in');
+        //             document.getElementById('progressContainer').classList.remove('hidden');
+        //         }, 400);
 
-                // تعيين الأسئلة الحالية بناءً على المسار
-                switch (currentPath) {
-                    case 1: currentQuestions = path1Questions; break;
-                    case 2: currentQuestions = path2Questions; break;
-                    case 3: currentQuestions = path3Questions; break;
-                    case 4: currentQuestions = path4Questions; break;
-                    case 5: currentQuestions = path5Questions; break;
-                }
+        //         // تعيين الأسئلة الحالية بناءً على المسار
+        //         switch (currentPath) {
+        //             case 1: currentQuestions = path1Questions; break;
+        //             case 2: currentQuestions = path2Questions; break;
+        //             case 3: currentQuestions = path3Questions; break;
+        //             case 4: currentQuestions = path4Questions; break;
+        //             case 5: currentQuestions = path5Questions; break;
+        //         }
 
-                // عرض السؤال الحالي
-                showQuestion();
+        //         // عرض السؤال الحالي
+        //         showQuestion();
 
-                // إظهار رسالة تأكيد
-                showResumedMessage();
-            } else {
-                // alert('حدث خطأ في تحميل التقدم المحفوظ. سيتم بدء اختبار جديد.');
-                startFreshTest();
-            }
-        }
+        //         // إظهار رسالة تأكيد
+        //         showResumedMessage();
+        //     } else {
+        //         // alert('حدث خطأ في تحميل التقدم المحفوظ. سيتم بدء اختبار جديد.');
+        //         startFreshTest();
+        //     }
+        // }
 
         function startFreshTest() {
             closeResumeDialog();
@@ -2650,71 +2650,71 @@
             }
         }
 
-        function saveCurrentProgress() {
-            try {
-                const progressData = {
-                    currentPath: currentPath,
-                    currentQuestion: currentQuestion,
-                    answers: answers,
-                    scores: scores,
-                    completedPaths: completedPaths,
-                    allPathAnswers: allPathAnswers,
-                    totalStartTime: totalStartTime,
-                    questionTimes: questionTimes,
-                    userName: userName,
-                    timestamp: Date.now()
-                };
+        // function saveCurrentProgress() {
+        //     try {
+        //         const progressData = {
+        //             currentPath: currentPath,
+        //             currentQuestion: currentQuestion,
+        //             answers: answers,
+        //             scores: scores,
+        //             completedPaths: completedPaths,
+        //             allPathAnswers: allPathAnswers,
+        //             totalStartTime: totalStartTime,
+        //             questionTimes: questionTimes,
+        //             userName: userName,
+        //             timestamp: Date.now()
+        //         };
 
-                const storageKey = `personality_test_${userName}_progress`;
-                localStorage.setItem(storageKey, JSON.stringify(progressData));
+        //         const storageKey = `personality_test_${userName}_progress`;
+        //         localStorage.setItem(storageKey, JSON.stringify(progressData));
 
-                console.log('تم حفظ التقدم بنجاح');
-            } catch (e) {
-                console.error('خطأ في حفظ التقدم:', e);
-                // alert('حدث خطأ في حفظ التقدم. يرجى المحاولة مرة أخرى.');
-            }
-        }
+        //         console.log('تم حفظ التقدم بنجاح');
+        //     } catch (e) {
+        //         console.error('خطأ في حفظ التقدم:', e);
+        //         // alert('حدث خطأ في حفظ التقدم. يرجى المحاولة مرة أخرى.');
+        //     }
+        // }
 
-        function loadSavedProgress() {
-            try {
-                const storageKey = `personality_test_${userName}_progress`;
-                const savedProgress = localStorage.getItem(storageKey);
+        // function loadSavedProgress() {
+        //     try {
+        //         const storageKey = `personality_test_${userName}_progress`;
+        //         const savedProgress = localStorage.getItem(storageKey);
 
-                if (savedProgress) {
-                    const progressData = JSON.parse(savedProgress);
+        //         if (savedProgress) {
+        //             const progressData = JSON.parse(savedProgress);
 
-                    // استعادة البيانات
-                    currentPath = progressData.currentPath;
-                    currentQuestion = progressData.currentQuestion;
-                    answers = progressData.answers || [];
-                    scores = progressData.scores || { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
-                    completedPaths = progressData.completedPaths || [];
-                    allPathAnswers = progressData.allPathAnswers || {};
-                    totalStartTime = progressData.totalStartTime || Date.now();
-                    questionTimes = progressData.questionTimes || [];
+        //             // استعادة البيانات
+        //             currentPath = progressData.currentPath;
+        //             currentQuestion = progressData.currentQuestion;
+        //             answers = progressData.answers || [];
+        //             scores = progressData.scores || { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
+        //             completedPaths = progressData.completedPaths || [];
+        //             allPathAnswers = progressData.allPathAnswers || {};
+        //             totalStartTime = progressData.totalStartTime || Date.now();
+        //             questionTimes = progressData.questionTimes || [];
 
-                    return true;
-                }
-            } catch (e) {
-                console.error('خطأ في تحميل التقدم المحفوظ:', e);
-            }
+        //             return true;
+        //         }
+        //     } catch (e) {
+        //         console.error('خطأ في تحميل التقدم المحفوظ:', e);
+        //     }
 
-            return false;
-        }
+        //     return false;
+        // }
 
-        function clearAllSavedData() {
-            try {
-                if (userName) {
-                    const progressKey = `personality_test_${userName}_progress`;
-                    const answersKey = `personality_test_${userName}_answers`;
+        // function clearAllSavedData() {
+        //     try {
+        //         if (userName) {
+        //             const progressKey = `personality_test_${userName}_progress`;
+        //             const answersKey = `personality_test_${userName}_answers`;
 
-                    localStorage.removeItem(progressKey);
-                    localStorage.removeItem(answersKey);
-                }
-            } catch (e) {
-                console.error('خطأ في حذف البيانات المحفوظة:', e);
-            }
-        }
+        //             localStorage.removeItem(progressKey);
+        //             localStorage.removeItem(answersKey);
+        //         }
+        //     } catch (e) {
+        //         console.error('خطأ في حذف البيانات المحفوظة:', e);
+        //     }
+        // }
 
         function resetAllTestData() {
             currentQuestion = 0;
@@ -5184,34 +5184,34 @@
         }
 
         async function downloadPDF() {
-            // print()
-            let html = `
-            <!DOCTYPE html>
-            <html lang="ar" dir="rtl">
-            ${document.querySelector("head").innerHTML}
-            <body class="min-h-screen" id="body">
-                <div id="resultsScreen" class="fade-in">
-                    ${document.querySelector("#resultsScreen").innerHTML}
-                </div>
-            </body>
-            </html>
-            `
-            console.log(html)
-            var data = new URLSearchParams();
-            data.append("html", html);
-            const resp = await fetch('/html-to-pdf', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-                },
-                body: data
-            });
-            const blob = await resp.blob();
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = 'تقرير_نتائج_الاختبارات_الشاملة.pdf';
-            link.click();
-            URL.revokeObjectURL(link.href);
+            print()
+            // let html = `
+            // <!DOCTYPE html>
+            // <html lang="ar" dir="rtl">
+            // ${document.querySelector("head").innerHTML}
+            // <body class="min-h-screen" id="body">
+            //     <div id="resultsScreen" class="fade-in">
+            //         ${document.querySelector("#resultsScreen").innerHTML}
+            //     </div>
+            // </body>
+            // </html>
+            // `
+            // console.log(html)
+            // var data = new URLSearchParams();
+            // data.append("html", html);
+            // const resp = await fetch('/html-to-pdf', {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+            //     },
+            //     body: data
+            // });
+            // const blob = await resp.blob();
+            // const link = document.createElement('a');
+            // link.href = URL.createObjectURL(blob);
+            // link.download = 'تقرير_نتائج_الاختبارات_الشاملة.pdf';
+            // link.click();
+            // URL.revokeObjectURL(link.href);
         }
 
         function restartTest() {

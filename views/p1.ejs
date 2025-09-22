@@ -676,7 +676,7 @@
             <div class="bg-white rounded-2xl shadow-lg p-6 mt-6">
                 <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">احفظ نتيجتك</h3>
                 <div class="flex flex-wrap justify-center gap-3">
-                    <button onclick="saveAsPDF()"
+                    <button onclick="printResults()"
                         class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg transition-colors flex items-center gap-2">
                         <span>📄</span>
                         <span>حفظ كـ PDF</span>
@@ -700,6 +700,7 @@
     </div>
 
     <script>
+        let top3 = [];
         // بيانات المقياس
         const userName = '<%=name%>';
         const questions = [
@@ -1140,13 +1141,13 @@
         }
 
         // فحص وجود تقدم محفوظ
-        function checkSavedProgress(userName) {
-            const savedProgress = loadProgress(userName);
-            if (savedProgress && Object.keys(savedProgress.answers).length > 0) {
-                return savedProgress;
-            }
-            return null;
-        }
+        // function checkSavedProgress(userName) {
+        //     const savedProgress = loadProgress(userName);
+        //     if (savedProgress && Object.keys(savedProgress.answers).length > 0) {
+        //         return savedProgress;
+        //     }
+        //     return null;
+        // }
 
         // بدء المقياس
         function startTest() {
@@ -1168,26 +1169,26 @@
 
 
             // فحص وجود تقدم محفوظ
-            const savedProgress = checkSavedProgress(userName);
-            if (savedProgress) {
-                const answeredQuestions = Object.keys(savedProgress.answers).length;
-                const confirmMessage = `مرحباً ${userName}!\n\nوجدت تقدماً محفوظاً لك:\n• أجبت على ${answeredQuestions} سؤال من أصل 45\n• آخر مرة: ${new Date(savedProgress.lastSaved).toLocaleDateString('ar-SA')}\n\nهل تريد المتابعة من حيث توقفت؟`;
+            // const savedProgress = checkSavedProgress(userName);
+            // if (savedProgress) {
+            //     const answeredQuestions = Object.keys(savedProgress.answers).length;
+            //     const confirmMessage = `مرحباً ${userName}!\n\nوجدت تقدماً محفوظاً لك:\n• أجبت على ${answeredQuestions} سؤال من أصل 45\n• آخر مرة: ${new Date(savedProgress.lastSaved).toLocaleDateString('ar-SA')}\n\nهل تريد المتابعة من حيث توقفت؟`;
 
-                if (confirm(confirmMessage)) {
-                    // استعادة التقدم
-                    testState = { ...testState, ...savedProgress };
-                    testState.userName = userName;
-                } else {
-                    // بدء جديد
-                    clearProgress(userName);
-                    testState.userName = userName;
-                    testState.startedAt = Date.now();
-                }
-            } else {
-                // بدء جديد
-                testState.userName = userName;
-                testState.startedAt = Date.now();
-            }
+            //     if (confirm(confirmMessage)) {
+            //         // استعادة التقدم
+            //         testState = { ...testState, ...savedProgress };
+            //         testState.userName = userName;
+            //     } else {
+            //         // بدء جديد
+            //         // clearProgress(userName);
+            //         testState.userName = userName;
+            //         testState.startedAt = Date.now();
+            //     }
+            // } else {
+            // بدء جديد
+            testState.userName = userName;
+            testState.startedAt = Date.now();
+            // }
 
             // إظهار شاشة التحميل
             document.getElementById('onboarding-screen').classList.add('hidden');
@@ -1389,7 +1390,7 @@
             testState.sectionsProgress[question.section - 1]++;
 
             // حفظ التقدم في التخزين المحلي
-            saveProgress();
+            // saveProgress();
 
             // فحص السرعة
             if (responseTime < 1200) {
@@ -1516,7 +1517,7 @@
             testState.sectionsProgress[question.section - 1]++;
 
             // حفظ التقدم في التخزين المحلي
-            saveProgress();
+            // saveProgress();
 
             // فحص السرعة للمسار الثاني
             if (responseTime < 1200) {
@@ -1697,14 +1698,13 @@
             document.getElementById('transition-screen').classList.remove('hidden');
 
             // مسح التقدم المحفوظ لأن الاختبار اكتمل
-            clearProgress(testState.userName);
+            // clearProgress(testState.userName);
 
             // إظهار شاشة الانتقال لمدة 3 ثوانٍ ثم الانتقال للنتائج
-            testState.questionEndTime = Date.now();
+            testState.questionEndTime = Date.now() - testState.startedAt;
             var data = new URLSearchParams();
             data.append('data', JSON.stringify(testState));
             data.append('type', 'p1');
-
             fetch('saveExam', {
                 method: 'POST',
                 headers: {
@@ -1763,7 +1763,7 @@
 
             // عرض المعلومات الأساسية
             document.getElementById('result-name').textContent = testState.userName;
-            document.getElementById('total-time').textContent = formatTime(Date.now() - testState.startedAt);
+            document.getElementById('total-time').textContent = formatTime(testState.questionEndTime);
             document.getElementById('confidence-level').textContent = calculateConfidenceLevel();
 
             // عرض أعلى 3 أبعاد
@@ -2009,8 +2009,24 @@
                     </div>
                 `;
                 dimensionsContainer.appendChild(badge);
+                top3.push({ arabicName, englishName, dim, percentages: percentages[dim] })
             });
+            console.log(top3)
+            var data = new URLSearchParams();
+            data.append('data', JSON.stringify({ tops: top3, time: testState.questionEndTime }));
+            data.append('type', 'stat.p1');
+            fetch('saveExam', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                },
+                body: data
+            }).then(() => {
+                console.log("done")
+            }).catch(() => {
+                console.log("error")
 
+            })
             container.appendChild(dimensionsContainer);
         }
 
@@ -2416,7 +2432,7 @@
         // العودة للتعليمات مع حفظ التقدم
         function goToInstructionsWithSave() {
             // حفظ التقدم
-            saveProgress();
+            // saveProgress();
 
             // إخفاء النافذة وشاشة المقياس
             document.getElementById('instructions-modal').classList.add('hidden');
@@ -2435,7 +2451,7 @@
         // العودة للتعليمات بدون حفظ التقدم
         function goToInstructionsWithoutSave() {
             // مسح التقدم المحفوظ
-            clearProgress(testState.userName);
+            // clearProgress(testState.userName);
 
             // إخفاء النافذة وشاشة المقياس
             document.getElementById('instructions-modal').classList.add('hidden');
@@ -2621,39 +2637,39 @@
 
 
         // إضافة مؤشر للتقدم المحفوظ في الشاشة الرئيسية
-        function checkForSavedProgress() {
-            if (userName && checkSavedProgress(userName)) {
-                const savedProgress = loadProgress(userName);
-                const answeredQuestions = Object.keys(savedProgress.answers).length;
+        // function checkForSavedProgress() {
+        //     if (userName && checkSavedProgress(userName)) {
+        //         const savedProgress = loadProgress(userName);
+        //         const answeredQuestions = Object.keys(savedProgress.answers).length;
 
-                // إظهار مؤشر التقدم المحفوظ
-                let progressIndicator = document.getElementById('progress-indicator');
-                if (!progressIndicator) {
-                    progressIndicator = document.createElement('div');
-                    progressIndicator.id = 'progress-indicator';
-                    progressIndicator.className = 'mt-2 p-3 bg-green-50 border border-green-200 rounded-lg text-center';
-                }
+        //         // إظهار مؤشر التقدم المحفوظ
+        //         let progressIndicator = document.getElementById('progress-indicator');
+        //         if (!progressIndicator) {
+        //             progressIndicator = document.createElement('div');
+        //             progressIndicator.id = 'progress-indicator';
+        //             progressIndicator.className = 'mt-2 p-3 bg-green-50 border border-green-200 rounded-lg text-center';
+        //         }
 
-                progressIndicator.innerHTML = `
-                        <div class="flex items-center justify-center gap-2 text-green-700">
-                            <span class="text-lg">💾</span>
-                            <span class="font-semibold">وجد تقدم محفوظ!</span>
-                        </div>
-                        <div class="text-sm text-green-600 mt-1">
-                            أجبت على ${answeredQuestions} سؤال من أصل 45
-                        </div>
-                        <div class="text-xs text-green-500 mt-1">
-                            آخر مرة: ${new Date(savedProgress.lastSaved).toLocaleDateString('ar-SA')}
-                        </div>
-                    `;
-            } else {
-                // إزالة مؤشر التقدم إذا لم يوجد تقدم محفوظ
-                const progressIndicator = document.getElementById('progress-indicator');
-                if (progressIndicator) {
-                    progressIndicator.remove();
-                }
-            }
-        };
+        //         progressIndicator.innerHTML = `
+        //                 <div class="flex items-center justify-center gap-2 text-green-700">
+        //                     <span class="text-lg">💾</span>
+        //                     <span class="font-semibold">وجد تقدم محفوظ!</span>
+        //                 </div>
+        //                 <div class="text-sm text-green-600 mt-1">
+        //                     أجبت على ${answeredQuestions} سؤال من أصل 45
+        //                 </div>
+        //                 <div class="text-xs text-green-500 mt-1">
+        //                     آخر مرة: ${new Date(savedProgress.lastSaved).toLocaleDateString('ar-SA')}
+        //                 </div>
+        //             `;
+        //     } else {
+        //         // إزالة مؤشر التقدم إذا لم يوجد تقدم محفوظ
+        //         const progressIndicator = document.getElementById('progress-indicator');
+        //         if (progressIndicator) {
+        //             progressIndicator.remove();
+        //         }
+        //     }
+        // };
 
 
         // تفعيل/تعطيل زر البدء حسب الموافقة وإدخال الاسم
@@ -2676,7 +2692,7 @@
 
         // تشغيل فحص التقدم المحفوظ عند تحميل الصفحة
         document.addEventListener('DOMContentLoaded', function () {
-            checkForSavedProgress();
+            // checkForSavedProgress();
 
             // إضافة مراقبات للحقول
             // const nameInput = document.getElementById('userName');
