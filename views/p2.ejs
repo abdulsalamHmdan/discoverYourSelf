@@ -205,9 +205,9 @@
                 <div class="bg-white rounded-lg card-shadow p-8 text-center">
                     <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
                         <svg class="w-10 h-10 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            <!-- <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z">
-                            </path>
+                            </path> -->
                         </svg>
                     </div>
 
@@ -1287,40 +1287,40 @@
         let completedTestsCount = 1;
 
         // Load and update real visitor count
-        function loadVisitorData() {
-            const savedVisitors = localStorage.getItem('realVisitorCount');
-            const savedCompleted = localStorage.getItem('completedTestsCount');
+        // function loadVisitorData() {
+        //     const savedVisitors = localStorage.getItem('realVisitorCount');
+        //     const savedCompleted = localStorage.getItem('completedTestsCount');
 
-            if (savedVisitors) {
-                try {
-                    realVisitorCount = parseInt(savedVisitors) || 1;
-                } catch (e) {
-                    realVisitorCount = 1;
-                }
-            }
+        //     if (savedVisitors) {
+        //         try {
+        //             realVisitorCount = parseInt(savedVisitors) || 1;
+        //         } catch (e) {
+        //             realVisitorCount = 1;
+        //         }
+        //     }
 
-            if (savedCompleted) {
-                try {
-                    completedTestsCount = parseInt(savedCompleted) || 1;
-                } catch (e) {
-                    completedTestsCount = 1;
-                }
-            }
+        //     if (savedCompleted) {
+        //         try {
+        //             completedTestsCount = parseInt(savedCompleted) || 1;
+        //         } catch (e) {
+        //             completedTestsCount = 1;
+        //         }
+        //     }
 
-            // Increment for this session if not already counted
-            if (!sessionStorage.getItem('visitCounted')) {
-                realVisitorCount++;
-                sessionStorage.setItem('visitCounted', 'true');
-                saveVisitorData();
-            }
+        //     // Increment for this session if not already counted
+        //     if (!sessionStorage.getItem('visitCounted')) {
+        //         realVisitorCount++;
+        //         sessionStorage.setItem('visitCounted', 'true');
+        //         saveVisitorData();
+        //     }
 
-            updateVisitorDisplay();
-        }
+        //     updateVisitorDisplay();
+        // }
 
-        function saveVisitorData() {
-            localStorage.setItem('realVisitorCount', realVisitorCount.toString());
-            localStorage.setItem('completedTestsCount', completedTestsCount.toString());
-        }
+        // function saveVisitorData() {
+        //     localStorage.setItem('realVisitorCount', realVisitorCount.toString());
+        //     localStorage.setItem('completedTestsCount', completedTestsCount.toString());
+        // }
 
         function updateVisitorDisplay() {
             document.getElementById('visitorsCount').textContent = realVisitorCount;
@@ -1545,7 +1545,7 @@
             console.log(`Path ${pathNumber} has ${currentQuestions.length} questions`);
 
             // Load any saved answers for this path
-            loadSavedAnswersForPath(pathNumber);
+            // loadSavedAnswersForPath(pathNumber);
 
             updatePathIndicator();
             showQuestion();
@@ -2097,7 +2097,7 @@
             questionTimes.push(questionData);
 
             // Save to persistent storage
-            saveAnswerToStorage(questionData);
+            // saveAnswerToStorage(questionData);
 
             // Update fastest/slowest tracking
             if (!fastestQuestion || timeSpent < fastestQuestion.timeSpent) {
@@ -2172,19 +2172,19 @@
             console.log('النقاط بعد الإزالة:', scores);
         }
 
-        function saveAnswerToStorage(questionData) {
-            try {
-                const storageKey = `personality_test_${userName}_answers`;
-                let savedAnswers = JSON.parse(localStorage.getItem(storageKey) || '{}');
+        // function saveAnswerToStorage(questionData) {
+        //     try {
+        //         const storageKey = `personality_test_${userName}_answers`;
+        //         let savedAnswers = JSON.parse(localStorage.getItem(storageKey) || '{}');
 
-                const answerKey = `path_${questionData.path}_q_${questionData.questionIndex}`;
-                savedAnswers[answerKey] = questionData;
+        //         const answerKey = `path_${questionData.path}_q_${questionData.questionIndex}`;
+        //         savedAnswers[answerKey] = questionData;
 
-                localStorage.setItem(storageKey, JSON.stringify(savedAnswers));
-            } catch (e) {
-                console.log('Could not save answer to storage');
-            }
-        }
+        //         localStorage.setItem(storageKey, JSON.stringify(savedAnswers));
+        //     } catch (e) {
+        //         console.log('Could not save answer to storage');
+        //     }
+        // }
 
         function loadAnswersFromStorage() {
             try {
@@ -4115,11 +4115,11 @@
                 }
             ];
 
+            let sfat = [];
             dimensionsContainer.innerHTML = dimensions.map((dim, index) => {
                 const result = calculateDimensionType(dim.dims, dimensionWeights);
                 const [dim1, dim2] = dim.dims;
                 const [label1, label2] = dim.labels;
-
                 // حساب النسب المئوية بناءً على الأوزان المحسنة
                 const score1 = result.scores[dim1] || 0;
                 const score2 = result.scores[dim2] || 0;
@@ -4137,6 +4137,7 @@
                     dominant = 'غير محدد';
                     dominantPercent = 50;
                 }
+                sfat.push({ name: dominant, persent: dominantPercent })
 
                 // تحديد لون ونص الثقة
                 switch (result.confidence) {
@@ -4222,6 +4223,24 @@
                     </div>
                 `;
             }).join('');
+
+            console.log(sfat)
+            var data = new URLSearchParams();
+            data.append('data', JSON.stringify({ tops: sfat, time: "40000" }));
+            data.append('type', 'stat.p2');
+
+            fetch('saveExam', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                },
+                body: data
+            }).catch(() => {
+                // إزالة رسالة الإكمال
+                alert("حصلت مشكلة في حفظ البيانات قد تضطر الى اعادة الاختبار")
+            })
+
+
         }
 
         function showAdvancedAnalytics() {
@@ -5185,33 +5204,6 @@
 
         async function downloadPDF() {
             print()
-            // let html = `
-            // <!DOCTYPE html>
-            // <html lang="ar" dir="rtl">
-            // ${document.querySelector("head").innerHTML}
-            // <body class="min-h-screen" id="body">
-            //     <div id="resultsScreen" class="fade-in">
-            //         ${document.querySelector("#resultsScreen").innerHTML}
-            //     </div>
-            // </body>
-            // </html>
-            // `
-            // console.log(html)
-            // var data = new URLSearchParams();
-            // data.append("html", html);
-            // const resp = await fetch('/html-to-pdf', {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-            //     },
-            //     body: data
-            // });
-            // const blob = await resp.blob();
-            // const link = document.createElement('a');
-            // link.href = URL.createObjectURL(blob);
-            // link.download = 'تقرير_نتائج_الاختبارات_الشاملة.pdf';
-            // link.click();
-            // URL.revokeObjectURL(link.href);
         }
 
         function restartTest() {
@@ -5440,7 +5432,7 @@
 
         // Initialize when page loads
         document.addEventListener('DOMContentLoaded', function () {
-            loadVisitorData();
+            // loadVisitorData();
         });
     </script>
     <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'98037c92d5f4e8e2',t:'MTc1ODA1ODQ1My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script>

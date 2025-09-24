@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>إدارة بيانات الطالب</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap');
+
+    body {
+      font-family: 'Cairo', sans-serif;
+    }
+  </style>
+</head>
+
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+  <div class="container mx-auto px-6 py-8">
+    <!-- Header -->
+    <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+      <div class="flex items-center justify-between">
+        <div>
+          <h1 class="text-3xl font-bold text-gray-800 mb-2">إدارة بيانات الطالب</h1>
+          <div class="text-gray-600">
+            <p><span class="font-semibold">اسم الطالب:</span>
+              <%= name %>
+            </p>
+            <p><span class="font-semibold">الرقم الهوية:</span>
+              <%= id %>
+            </p>
+            <!-- <p><span class="font-semibold">التخصص:</span> علوم الحاسوب</p> -->
+          </div>
+        </div>
+        <div class="text-left">
+          <div class="bg-green-100 text-green-800 px-4 py-2 rounded-lg font-semibold">
+            نشط
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tests Section -->
+    <div class="mb-8">
+      <h2 class="text-2xl font-bold text-gray-800 mb-6">اختبارات الطالب</h2>
+
+      <!-- Test Cards Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Test Card 1 -->
+        <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
+          <div
+            class="bg-blue-500 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:rotate-12 transition-transform duration-300">
+            <span class="text-3xl">🎯</span>
+          </div>
+          <h3 class="text-2xl text-center font-bold text-gray-800 mb-2">الميول المهنية</h3>
+          <p class="text-xl text-center font-bold text-blue-600 mb-4 tracking-wide">RIASEC</p>
+
+          <!-- Empty div for future data -->
+          <!-- <div class="bg-blue-50 rounded-xl p-6 border border-blue-200"> -->
+          <% if(p1) { %>
+
+            <div class="bg-gray-50 rounded-lg p-4 mb-4 min-h-[100px] border-2 border-dashed border-gray-300">
+              <% p1.forEach(function(item) { %>
+                <div class="space-y-2">
+                  <div class="flex justify-between">
+                    <span class="text-sm">
+                      <%=item.arabicName%> (<%=item.englishName%>)
+                    </span>
+                    <span class="font-bold text-blue-600">
+                      <%=Math.round(item.percentages)%>%
+                    </span>
+                  </div>
+                  <div class="w-full bg-gray-200 rounded-full h-2">
+                    <div class="bg-blue-500 h-2 rounded-full" style="width:<%=Math.round(item.percentages)%>%"></div>
+                  </div>
+
+                </div>
+                <% }); %>
+            </div>
+
+            <div class="flex gap-3">
+              <button onclick="viewTest('p1')"
+                class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
+                  </path>
+                </svg>
+                استعراض
+              </button>
+              <button onclick="deleteTest('P1')"
+                class="flex-1 bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                  </path>
+                </svg>
+                حذف
+              </button>
+            </div>
+            <% }else{ %>
+              <div class="bg-gray-50 rounded-lg p-4 mb-4 min-h-[100px] border-2 border-dashed border-gray-300">
+                <p class="text-center ma">لم يتم الاختبار بعد</p>
+              </div>
+
+
+              <% } %>
+        </div>
+
+        <!-- Test Card 2 -->
+        <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
+          <div
+            class="bg-purple-500 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:rotate-12 transition-transform duration-300">
+            <span class="text-3xl">🧠</span>
+          </div>
+          <h3 class="text-2xl text-center font-bold text-gray-800 mb-2">تحليل الشخصية</h3>
+          <p class="text-xl text-center font-bold text-purple-600 mb-4 tracking-wide">MBTI</p>
+
+
+          <!-- Empty div for future data -->
+          <% if(p2) { %>
+
+            <div class="bg-gray-50 rounded-lg p-4 mb-4 min-h-[100px] border-2 border-dashed border-gray-300">
+
+
+              <div class="text-center">
+                <div class="bg-purple-100 rounded-lg p-4 mb-3">
+                  <div class="personalityType text-sm text-gray-600">المهندس المعماري - INTJ</div>
+                </div>
+                <div class="grid grid-cols-2 gap-2 text-xs">
+                  <% p2.forEach(function(item) { %>
+                    <div class="bg-purple-200 rounded px-2 py-1">
+                      <%=item.name%> - <%=item.persent%>%
+                    </div>
+                    <% }); %>
+
+                </div>
+              </div>
+            </div>
+
+            <div class="flex gap-3">
+              <button onclick="viewTest('p2')"
+                class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
+                  </path>
+                </svg>
+                استعراض
+              </button>
+              <button onclick="deleteTest('p2')"
+                class="flex-1 bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                  </path>
+                </svg>
+                حذف
+              </button>
+            </div>
+            <% }else{ %>
+              <div class="bg-gray-50 rounded-lg p-4 mb-4 min-h-[100px] border-2 border-dashed border-gray-300">
+                <p class="text-center ma">لم يتم الاختبار بعد</p>
+              </div>
+
+              <% } %>
+        </div>
+
+        <!-- Test Card 3 -->
+        <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
+          <div
+            class="bg-orange-500 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:rotate-12 transition-transform duration-300">
+            <span class="text-3xl">🌟</span>
+          </div>
+          <h3 class="text-2xl text-center font-bold text-gray-800 mb-2">الذكاءات المتعددة</h3>
+          <p class="text-xl text-center font-bold text-orange-600 mb-4 tracking-wide">Multiple Intelligences</p>
+
+          <!-- Empty div for future data -->
+          <% if(p3) { %>
+
+            <div class="bg-gray-50 rounded-lg p-4 mb-4 min-h-[100px] border-2 border-dashed border-gray-300">
+              <% p3.forEach(function(item) { %>
+
+                <div class="space-y-2">
+                  <div class="flex justify-between">
+                    <span class="text-sm">
+                      <%= item.name %>
+                    </span>
+                    <span class="font-bold text-orange-600">
+                      <%=Math.round(item.score) %>%
+                    </span>
+                  </div>
+                  <div class="w-full bg-gray-200 rounded-full h-2">
+                    <div class="bg-orange-500 h-2 rounded-full" style="width: <%=Math.round(item.score) %>%"></div>
+                  </div>
+                </div>
+                <% }); %>
+            </div>
+
+
+            <div class="flex gap-3">
+              <button onclick="viewTest('p3')"
+                class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
+                  </path>
+                </svg>
+                استعراض
+              </button>
+              <button onclick="deleteTest('اختبار البرمجة العملي')"
+                class="flex-1 bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                  </path>
+                </svg>
+                حذف
+              </button>
+            </div>
+
+            <% }else{ %>
+              <div class="bg-gray-50 rounded-lg p-4 mb-4 min-h-[100px] border-2 border-dashed border-gray-300">
+                <p class="text-center ma">لم يتم الاختبار بعد</p>
+              </div>
+
+
+              <% } %>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- General Control Buttons -->
+    <div class="bg-white rounded-xl shadow-lg p-6">
+      <h2 class="text-2xl font-bold text-gray-800 mb-6">التحكم العام بالطالب</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <!-- Delete All Data Button -->
+        <button onclick="deleteAllData()"
+          class="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          حذف جميع البيانات
+        </button>
+
+        <!-- Update Password Button -->
+        <button onclick="updatePassword()"
+          class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z">
+            </path>
+          </svg>
+          تحديث كلمة المرور
+        </button>
+
+        <!-- Delete Student Button -->
+        <button onclick="deleteStudent()"
+          class="bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+          </svg>
+          حذف الطالب بالكامل
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirmation Modal -->
+  <div id="confirmModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-xl p-6 max-w-md mx-4">
+      <h3 class="text-xl font-bold text-gray-800 mb-4" id="modalTitle">تأكيد العملية</h3>
+      <p class="text-gray-600 mb-6" id="modalMessage">هل أنت متأكد من هذا الإجراء؟</p>
+      <div class="flex gap-4">
+        <button onclick="confirmAction()"
+          class="flex-1 bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200">
+          تأكيد
+        </button>
+        <button onclick="closeModal()"
+          class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-lg transition-colors duration-200">
+          إلغاء
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const personalityTypes = {
+      "ENFP": {
+        name: "المُلهِم المبدع",
+        strengths: ["متحمس ومبدع", "ممتاز في التواصل", "مرن ومتكيف", "يلهم الآخرين", "متفائل وإيجابي"],
+        improvements: ["قد يفتقر للتركيز", "يحتاج لتطوير المثابرة", "قد يتجنب التفاصيل الروتينية", "يحتاج لتحسين إدارة الوقت"],
+        work: "يزدهر في البيئات الإبداعية والتعاونية، مثل التسويق والإعلام والاستشارات والتدريب",
+        study: "يفضل التعلم التفاعلي والمشاريع الجماعية والمواضيع المتنوعة والنقاشات المفتوحة",
+        relationships: "اجتماعي ومتفهم، يقدر العلاقات العميقة والنقاشات المعنوية ويحب مساعدة الآخرين"
+      },
+      "INTJ": {
+        name: "المهندس المعماري",
+        strengths: ["استراتيجي ومخطط", "مستقل ومركز", "مبدع في حل المشاكل", "يسعى للتميز", "واثق من نفسه"],
+        improvements: ["قد يبدو منعزلاً", "يحتاج لتطوير المرونة", "قد يتجاهل المشاعر أحياناً", "غير صبور مع عدم الكفاءة"],
+        work: "ممتاز في الأدوار الاستراتيجية والتقنية مثل الهندسة والبحث والإدارة العليا والتخطيط",
+        study: "يفضل التعلم المستقل والمواضيع المعقدة والتحليل العميق والتخصص الدقيق",
+        relationships: "يقدر العلاقات القليلة والعميقة، ويحتاج لشريك يحترم استقلاليته وأهدافه"
+      },
+      "ENFJ": {
+        name: "المعلم الملهم",
+        strengths: ["قائد طبيعي", "متفهم ومتعاطف", "ممتاز في التحفيز", "يطور الآخرين", "رؤية واضحة"],
+        improvements: ["قد يهمل احتياجاته الشخصية", "حساس للنقد", "قد يكون مثالياً أكثر من اللازم", "يحتاج لتعلم قول لا"],
+        work: "يتفوق في التعليم والإرشاد والموارد البشرية والعلاقات العامة والقيادة",
+        study: "يحب التعلم التعاوني والمواضيع الإنسانية والنقاشات الجماعية والمشاريع ذات المعنى",
+        relationships: "داعم ومخلص، يستثمر بعمق في علاقاته ويساعد الآخرين على النمو"
+      },
+      "INFP": {
+        name: "الوسيط المثالي",
+        strengths: ["مبدع وأصيل", "متفهم ومتعاطف", "مرن ومنفتح", "يقدر الأصالة", "مدفوع بالقيم"],
+        improvements: ["قد يكون حساساً جداً", "يتجنب الصراعات", "قد يؤجل المهام", "يحتاج للتحفيز الخارجي"],
+        work: "يزدهر في الكتابة والفنون والاستشارة النفسية والعمل الخيري والتصميم",
+        study: "يفضل التعلم الذاتي والمواضيع التي تتماشى مع قيمه والتعبير الإبداعي",
+        relationships: "مخلص وداعم، يقدر العمق والأصالة في العلاقات ويحترم استقلالية الآخرين"
+      },
+      "ESTJ": {
+        name: "المدير التنفيذي",
+        strengths: ["منظم وكفء", "قائد طبيعي", "عملي وواقعي", "موثوق ومسؤول", "يحقق النتائج"],
+        improvements: ["قد يكون صارماً جداً", "يقاوم التغيير أحياناً", "قد يتجاهل المشاعر", "يحتاج لتطوير المرونة"],
+        work: "يتفوق في الإدارة والأعمال والقانون والهندسة والخدمات المالية",
+        study: "يفضل التعلم المنظم والمواضيع العملية والأهداف الواضحة والتطبيق المباشر",
+        relationships: "مخلص ومسؤول، يقدر الاستقرار والتقاليد ويعمل بجد لدعم أحبائه"
+      },
+      "ISTP": {
+        name: "الحرفي المبدع",
+        strengths: ["عملي ومهاري", "مرن ومتكيف", "مستقل وهادئ", "يحل المشاكل بكفاءة", "واقعي"],
+        improvements: ["قد يكون منعزلاً", "يتجنب الالتزامات طويلة المدى", "قد يبدو غير مبالٍ", "يحتاج لتطوير التواصل"],
+        work: "يزدهر في الهندسة والحرف والرياضة والطب والتكنولوجيا",
+        study: "يفضل التعلم العملي والتجريب المباشر والمواضيع التقنية والعمل الفردي",
+        relationships: "مخلص وداعم بطريقة عملية، يقدر الحرية والاستقلالية في العلاقات"
+      },
+      "ESFP": {
+        name: "المؤدي المتحمس",
+        strengths: ["متحمس ومرح", "اجتماعي ودود", "مرن وعفوي", "يلهم الآخرين", "متفائل"],
+        improvements: ["قد يفتقر للتخطيط", "حساس للنقد", "قد يتجنب الصراعات", "يحتاج للتركيز"],
+        work: "يتفوق في الترفيه والتعليم والمبيعات والخدمات والفنون",
+        study: "يحب التعلم التفاعلي والمواضيع الممتعة والعمل الجماعي والأنشطة العملية",
+        relationships: "دافئ ومحب، يجلب الفرح والحيوية للعلاقات ويقدر اللحظات الجميلة"
+      },
+      "INFJ": {
+        name: "المدافع الحكيم",
+        strengths: ["بصيرة عميقة", "مثالي ومبدئي", "مبدع ومتفهم", "مصمم ومثابر", "يلهم التغيير"],
+        improvements: ["قد يكون مثالياً جداً", "حساس للنقد", "يحتاج لوقت وحده", "قد يتجنب الصراعات"],
+        work: "يزدهر في الاستشارة والكتابة والتعليم والعمل الخيري والفنون",
+        study: "يفضل التعلم العميق والمواضيع ذات المعنى والتأمل والبحث المستقل",
+        relationships: "مخلص وعميق، يسعى لعلاقات ذات معنى ويدعم نمو الآخرين"
+      },
+      "ESTP": {
+        name: "المقاول المغامر",
+        strengths: ["عملي ونشط", "مرن وقابل للتكيف", "اجتماعي وودود", "يحل المشاكل بسرعة", "متفائل"],
+        improvements: ["قد يفتقر للتخطيط طويل المدى", "يمل من الروتين", "قد يتخذ قرارات متسرعة", "يحتاج للصبر"],
+        work: "يتفوق في المبيعات والرياضة والطوارئ والأعمال والترفيه",
+        study: "يفضل التعلم العملي والتفاعلي والمواضيع التطبيقية والأنشطة الجماعية",
+        relationships: "مرح وعفوي، يجلب الحيوية والمتعة للعلاقات ويقدر اللحظة الحالية"
+      },
+      "ISFP": {
+        name: "المغامر الفنان",
+        strengths: ["مبدع وحساس", "مرن ومنفتح", "متفهم ومتعاطف", "يقدر الجمال", "هادئ ومتواضع"],
+        improvements: ["قد يكون حساساً جداً", "يتجنب الصراعات", "قد يؤجل القرارات", "يحتاج للتحفيز"],
+        work: "يزدهر في الفنون والتصميم والصحة والتعليم والخدمات الاجتماعية",
+        study: "يفضل التعلم الذاتي والمواضيع الإبداعية والبيئة الداعمة والتعبير الشخصي",
+        relationships: "مخلص ومتفهم، يقدر الأصالة والعمق في العلاقات ويدعم أحلام الآخرين"
+      },
+      "ENTJ": {
+        name: "القائد الطموح",
+        strengths: ["قائد طبيعي", "استراتيجي وحاسم", "واثق ومصمم", "يحفز الآخرين", "كفء ومنظم"],
+        improvements: ["قد يكون صارماً جداً", "غير صبور مع عدم الكفاءة", "قد يتجاهل المشاعر", "يحتاج للاستماع أكثر"],
+        work: "يتفوق في القيادة والإدارة والأعمال والاستشارات والسياسة",
+        study: "يفضل التحدي الفكري والمواضيع المعقدة والقيادة في المشاريع والأهداف الطموحة",
+        relationships: "مخلص وداعم، يشجع النمو والتطور ويقدر الشراكة القوية"
+      },
+      "INTP": {
+        name: "المفكر المنطقي",
+        strengths: ["مفكر عميق", "مبدع ومبتكر", "مستقل ومرن", "يحب التعلم", "موضوعي ومنطقي"],
+        improvements: ["قد يكون منعزلاً", "يؤجل القرارات أحياناً", "قد يتجاهل المشاعر", "يحتاج للتحفيز العملي"],
+        work: "يزدهر في البحث والتطوير والتكنولوجيا والأكاديميا والتحليل",
+        study: "يفضل التعلم المستقل والمواضيع المعقدة والنظريات والاستكشاف الفكري",
+        relationships: "مخلص وداعم فكرياً، يقدر الاستقلالية والعمق في النقاشات"
+      },
+      "ESFJ": {
+        name: "المساعد المخلص",
+        strengths: ["متعاطف ومهتم", "منظم وموثوق", "اجتماعي ودود", "يدعم الآخرين", "عملي ومسؤول"],
+        improvements: ["قد يهمل احتياجاته الشخصية", "حساس للنقد", "يقاوم التغيير أحياناً", "يحتاج للتقدير"],
+        work: "يتفوق في التعليم والصحة والخدمات والموارد البشرية والعمل الاجتماعي",
+        study: "يفضل التعلم التعاوني والمواضيع العملية والبيئة الداعمة والتطبيق المباشر",
+        relationships: "مخلص ومتفاني، يهتم بسعادة الآخرين ويخلق بيئة دافئة ومرحبة"
+      },
+      "ISFJ": {
+        name: "المدافع المخلص",
+        strengths: ["مخلص ومتفاني", "متعاطف ومتفهم", "عملي وموثوق", "صبور ومثابر", "متواضع ومتعاون"],
+        improvements: ["قد يهمل احتياجاته الشخصية", "يتجنب الصراعات", "حساس للنقد", "يقاوم التغيير"],
+        work: "يزدهر في الصحة والتعليم والخدمات والإدارة والعمل الاجتماعي",
+        study: "يفضل التعلم المنظم والمواضيع العملية والبيئة الهادئة والدعم الشخصي",
+        relationships: "مخلص وداعم، يهتم بتفاصيل حياة الآخرين ويقدم الدعم العملي والعاطفي"
+      },
+      "ENTP": {
+        name: "المناقش المبدع",
+        strengths: ["مبدع ومبتكر", "ذكي وسريع البديهة", "متحمس ومتفائل", "مرن ومتكيف", "يحب التحدي"],
+        improvements: ["قد يفتقر للمتابعة", "يمل من الروتين", "قد يتجاهل التفاصيل", "يحتاج للتركيز"],
+        work: "يتفوق في ريادة الأعمال والاستشارات والتسويق والإعلام والابتكار",
+        study: "يفضل التعلم التفاعلي والمواضيع المتنوعة والنقاشات والمشاريع الإبداعية",
+        relationships: "مثير ومحفز، يجلب الأفكار الجديدة والطاقة الإيجابية للعلاقات"
+      },
+      "ISTJ": {
+        name: "المنطقي المسؤول",
+        strengths: ["موثوق ومسؤول", "منظم ومنهجي", "عملي وواقعي", "مثابر ومصمم", "مخلص ومتفاني"],
+        improvements: ["قد يقاوم التغيير", "يحتاج لتطوير المرونة", "قد يتجاهل الإمكانيات الجديدة", "يحتاج للانفتاح"],
+        work: "يتفوق في المحاسبة والإدارة والقانون والطب والخدمات الحكومية",
+        study: "يفضل التعلم المنظم والمواضيع العملية والطرق التقليدية والأهداف الواضحة",
+        relationships: "مخلص وموثوق، يقدر الاستقرار والتقاليد ويدعم أحبائه بطريقة عملية"
+      }
+    };
+  <% if (p2) { %>
+
+      let personalityType = (<%-JSON.stringify(p2) %>);
+      personalityType = personalityType.map(x => x.name.match(/\((.)\)/)[1]).join("");
+      document.querySelector(".personalityType").innerHTML = `${personalityTypes[personalityType].name} - ${personalityType}`
+      console.log(`${personalityTypes[personalityType].name} - ${personalityType}`)
+  <%}%>;
+
+
+    let currentAction = null;
+    let currentTestName = null;
+
+    function showModal(title, message, action, testName = null) {
+      document.getElementById('modalTitle').textContent = title;
+      document.getElementById('modalMessage').textContent = message;
+      document.getElementById('confirmModal').classList.remove('hidden');
+      document.getElementById('confirmModal').classList.add('flex');
+      currentAction = action;
+      currentTestName = testName;
+    }
+
+    function closeModal() {
+      document.getElementById('confirmModal').classList.add('hidden');
+      document.getElementById('confirmModal').classList.remove('flex');
+      currentAction = null;
+      currentTestName = null;
+    }
+
+    function confirmAction() {
+      if (currentAction === 'deleteTest' && currentTestName) {
+
+        alert(`تم حذف "${currentTestName}" بنجاح من قاعدة البيانات`);
+      } else if (currentAction === 'deleteAllData') {
+        alert('تم حذف جميع بيانات الطالب بنجاح');
+      } else if (currentAction === 'updatePassword') {
+        alert('تم تحديث كلمة المرور بنجاح');
+      } else if (currentAction === 'deleteStudent') {
+        alert('تم حذف الطالب بالكامل من النظام');
+        // Simulate redirect to students list
+        setTimeout(() => {
+          document.body.innerHTML = '<div class="flex items-center justify-center min-h-screen bg-gray-100"><div class="text-center"><h1 class="text-2xl font-bold text-gray-800 mb-4">تم حذف الطالب بنجاح</h1><p class="text-gray-600">سيتم توجيهك إلى قائمة الطلاب...</p></div></div>';
+        }, 1000);
+      }
+      closeModal();
+    }
+
+    function deleteTest(testName) {
+      showModal(
+        'حذف الاختبار',
+        `هل أنت متأكد من حذف "${testName}" من قاعدة البيانات؟ هذا الإجراء لا يمكن التراجع عنه.`,
+        'deleteTest',
+        testName
+      );
+    }
+
+    function deleteAllData() {
+      showModal(
+        'حذف جميع البيانات',
+        'هل أنت متأكد من حذف جميع بيانات الطالب؟ سيتم حذف جميع الاختبارات والدرجات. هذا الإجراء لا يمكن التراجع عنه.',
+        'deleteAllData'
+      );
+    }
+
+    function updatePassword() {
+      showModal(
+        'تحديث كلمة المرور',
+        'هل تريد إنشاء كلمة مرور جديدة للطالب؟ سيتم إرسال كلمة المرور الجديدة عبر البريد الإلكتروني.',
+        'updatePassword'
+      );
+    }
+
+    function deleteStudent() {
+      showModal(
+        'حذف الطالب',
+        'هل أنت متأكد من حذف الطالب بالكامل من النظام؟ سيتم حذف جميع البيانات والاختبارات والحساب. هذا الإجراء لا يمكن التراجع عنه.',
+        'deleteStudent'
+      );
+    }
+
+    function viewTest(testName) {
+      location.href = `/admin/Results/<%=id%>/${testName}`
+
+    }
+  </script>
+  <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'983b2c4d45070dfc',t:'MTc1ODY0MjM2Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script>
+</body>
+
+</html>

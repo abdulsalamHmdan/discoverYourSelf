@@ -239,8 +239,10 @@
                 })
                 .then((data) => {
                     if (data == "exist") {
-                        location.href = "/p1"
-                    } else {
+                    } else if (data == "admin") {
+                        location.href = "/admin"
+                    }
+                    else {
                         loginBtn.disabled = false;
                         loginBtn.classList.remove('btn-loading');
                         loginBtnText.textContent = 'دخول';

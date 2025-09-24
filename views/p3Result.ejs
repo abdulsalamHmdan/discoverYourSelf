@@ -117,11 +117,11 @@
     <!-- شاشة النتائج -->
     <div id="results-screen" class="container mx-auto px-4 py-8 max-w-6xl">
         <div class="text-center mb-8">
+            <p class="text-xl text-gray-600">مرحبًا <span id="resultUserName"
+                    class="font-semibold text-indigo-600"></span>!</p>
             <h2 class="text-4xl font-bold text-indigo-800 mb-4">
                 نتيجتك في الذكاءات المتعددة
             </h2>
-            <p class="text-xl text-gray-600">مرحبًا <span id="resultUserName"
-                    class="font-semibold text-indigo-600"></span>!</p>
         </div>
 
         <!-- ملخص نمط الذكاءات -->
@@ -202,10 +202,10 @@
                 class="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition-colors flex items-center gap-2">
                 📄 تحميل PDF
             </button>
-            <button id="retakeBtn"
+            <!-- <button id="retakeBtn"
                 class="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition-colors">
                 الانتقال الى التقييم
-            </button>
+            </button> -->
         </div>
     </div>
 
@@ -961,7 +961,7 @@
         ];
 
         // متغيرات الحالة
-        let currentUser = '';
+        let currentUser = '<%=name%>';
         let currentQuestionIndex = 0;
         let answers = {};
         let startTime = Date.now();

@@ -691,6 +691,25 @@
                 particle.remove();
             }, 30000);
         }
+        function generatePDF() {
+            ["p1", "p2", "p3"].forEach(async x => {
+                var data = new URLSearchParams();
+                data.append("url", `http://127.0.0.1:3000/Results/admin/${x}`);
+                const resp = await fetch('/html-to-pdf', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                    },
+                    body: data
+                });
+                const blob = await resp.blob();
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = 'تقرير_نتائج_الاختبارات_الشاملة.pdf';
+                link.click();
+                URL.revokeObjectURL(link.href);
+            })
+        };
 
         // Generate effects continuously
         // setInterval(createSparkle, 200);
@@ -733,8 +752,9 @@
                     showResultsModal();
                 } else if (buttonText.includes('تحميل')) {
                     // Generate and download PDF
-                    // generatePDF();
-                    alert("جاري العمل على هذه الخاصية")
+                    generatePDF();
+
+                    // alert("جاري العمل على هذه الخاصية")
                 }
             });
         });
