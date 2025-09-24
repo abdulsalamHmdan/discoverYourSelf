@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مقياس بصيرة - اكتشف ذاتك</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap');
+
+        body {
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.8s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header Section -->
+    <div class="gradient-bg text-white py-16 px-4">
+        <div class="max-w-4xl mx-auto text-center fade-in">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">
+                <span id="typing-text"></span><span id="cursor" class="animate-pulse">|</span>
+            </h1>
+            <h2 class="text-2xl md:text-3xl font-semibold mb-6 text-blue-100">
+                أهلاً بك في (مقياس بصيرة) ✨
+            </h2>
+            <p class="text-lg md:text-xl text-blue-100 max-w-2xl mx-auto leading-relaxed">
+                مقياس بصيرة يساعدك على التعرّف على نفسك بشكل أعمق وتحديد مسارك بثقة
+            </p>
+        </div>
+    </div>
+
+    <!-- شريط المراحل -->
+    <div class="bg-white shadow-sm py-2 sticky top-0 z-50 border-b">
+        <div class="max-w-4xl mx-auto px-4">
+            <div class="flex items-center justify-center space-x-6 space-x-reverse">
+                <!-- المرحلة الأولى -->
+                <div class="flex items-center">
+                    <div
+                        class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-xs">
+                        ✓
+                    </div>
+                    <div class="mr-1.5">
+                        <span class="block text-xs font-semibold text-green-600">المقاييس الثلاث</span>
+                        <span class="block text-xs text-green-500">40-50 دقيقة</span>
+                    </div>
+                </div>
+
+                <!-- خط فاصل -->
+                <div class="w-8 h-0.5 bg-gray-300"></div>
+
+                <!-- المرحلة الثانية -->
+                <div class="flex items-center opacity-60">
+                    <div
+                        class="w-6 h-6 bg-gray-300 rounded-full flex items-center justify-center text-gray-600 font-bold text-xs">
+                        2
+                    </div>
+                    <div class="mr-1.5">
+                        <span class="block text-xs font-semibold text-gray-500">التقييم السريع</span>
+                        <span class="block text-xs text-gray-400">1-2 دقيقة</span>
+                    </div>
+                </div>
+
+                <!-- خط فاصل -->
+                <div class="w-8 h-0.5 bg-gray-300"></div>
+
+                <!-- المرحلة الثالثة -->
+                <div class="flex items-center opacity-60">
+                    <div
+                        class="w-6 h-6 bg-gray-300 rounded-full flex items-center justify-center text-gray-600 font-bold text-xs">
+                        3
+                    </div>
+                    <div class="mr-1.5">
+                        <span class="block text-xs font-semibold text-gray-500">النتائج النهائية</span>
+                        <span class="block text-xs text-gray-400">فوري</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-6xl mx-auto px-4 py-12">
+
+        <!-- المرحلة الأولى -->
+        <div class="mb-16 fade-in">
+            <div class="bg-gradient-to-r from-slate-600 to-slate-700 rounded-xl p-6 mb-6 shadow-lg">
+                <div class="text-center text-white">
+                    <div class="text-4xl mb-4">🟢</div>
+                    <h2 class="text-lg font-semibold mb-2">المرحلة الأولى</h2>
+                    <p class="text-4xl font-bold text-white">المقاييس الثلاث</p>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- المقياس الأول -->
+                <div class="bg-white rounded-xl shadow-md p-6 card-hover border-l-4 border-slate-400">
+                    <div class="text-center mb-4">
+                        <div class="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <span class="text-xl">📊</span>
+                        </div>
+                        <div
+                            class="bg-slate-500 text-white rounded-full w-6 h-6 flex items-center justify-center mx-auto mb-3 font-bold text-sm">
+                            1</div>
+                        <h3 class="text-lg font-bold text-gray-800 mb-2">الميول المهنية – RIASEC</h3>
+                    </div>
+                    <p class="text-gray-600 text-center mb-3 leading-relaxed text-sm">
+                        يكشف الميول (اجتماعي، فني، تقليدي، ريادي… إلخ)
+                    </p>
+                    <div class="bg-slate-50 rounded-lg p-2 text-center">
+                        <span class="text-slate-600 font-semibold text-sm">⏱️ الوقت: 8–10 دقائق</span>
+                    </div>
+                </div>
+
+                <!-- المقياس الثاني -->
+                <div class="bg-white rounded-xl shadow-md p-6 card-hover border-l-4 border-indigo-400">
+                    <div class="text-center mb-4">
+                        <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <span class="text-xl">🧠</span>
+                        </div>
+                        <div
+                            class="bg-indigo-500 text-white rounded-full w-6 h-6 flex items-center justify-center mx-auto mb-3 font-bold text-sm">
+                            2</div>
+                        <h3 class="text-lg font-bold text-gray-800 mb-2">تحليل الشخصية – MBTI</h3>
+                    </div>
+                    <p class="text-gray-600 text-center mb-3 leading-relaxed text-sm">
+                        يساعد على فهم الشخصية والتعامل مع الآخرين
+                    </p>
+                    <div class="bg-indigo-50 rounded-lg p-2 text-center">
+                        <span class="text-indigo-600 font-semibold text-sm">⏱️ الوقت: 20–25 دقيقة</span>
+                    </div>
+                </div>
+
+                <!-- المقياس الثالث -->
+                <div class="bg-white rounded-xl shadow-md p-6 card-hover border-l-4 border-emerald-400">
+                    <div class="text-center mb-4">
+                        <div
+                            class="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <span class="text-xl">🌟</span>
+                        </div>
+                        <div
+                            class="bg-emerald-500 text-white rounded-full w-6 h-6 flex items-center justify-center mx-auto mb-3 font-bold text-sm">
+                            3</div>
+                        <h3 class="text-lg font-bold text-gray-800 mb-2">الذكاءات المتعددة</h3>
+                    </div>
+                    <p class="text-gray-600 text-center mb-3 leading-relaxed text-sm">
+                        يحدّد أنماط الذكاء (لغوي، منطقي، بصري، اجتماعي… إلخ)
+                    </p>
+                    <div class="bg-emerald-50 rounded-lg p-2 text-center">
+                        <span class="text-emerald-600 font-semibold text-sm">⏱️ الوقت: 10–15 دقيقة</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- المرحلة الثانية -->
+        <div class="mb-16 fade-in">
+            <div class="bg-gradient-to-r from-amber-600 to-amber-700 rounded-xl p-6 mb-6 shadow-lg">
+                <div class="text-center text-white">
+                    <div class="text-4xl mb-4">🟡</div>
+                    <h2 class="text-lg font-semibold mb-2">المرحلة الثانية</h2>
+                    <p class="text-4xl font-bold text-white">التقييم السريع</p>
+                </div>
+            </div>
+
+            <div class="max-w-2xl mx-auto">
+                <div class="bg-white rounded-xl shadow-md p-6 card-hover border-l-4 border-amber-400">
+                    <div class="text-center">
+                        <div class="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="text-xl">⚡</span>
+                        </div>
+                        <p class="text-gray-700 leading-relaxed">
+                            سيظهر تقييم بسيط للمقياس (تقييم مستوى الرضا)
+                        </p>
+                        <div class="bg-amber-50 rounded-lg p-2 mt-3">
+                            <span class="text-amber-600 font-semibold text-sm">⏱️ الوقت: 2 دقيقة</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- المرحلة الثالثة -->
+        <div class="mb-16 fade-in">
+            <div class="bg-gradient-to-r from-sky-600 to-sky-700 rounded-xl p-6 mb-6 shadow-lg">
+                <div class="text-center text-white">
+                    <div class="text-4xl mb-4">🔵</div>
+                    <h2 class="text-lg font-semibold mb-2">المرحلة الثالثة</h2>
+                    <p class="text-4xl font-bold text-white">النتائج النهائية</p>
+                </div>
+            </div>
+
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-white rounded-xl shadow-md p-6 card-hover border-l-4 border-sky-400">
+                    <div class="text-center mb-6">
+                        <div class="w-12 h-12 bg-sky-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="text-xl">📋</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3">ما ستحصل عليه:</h3>
+                    </div>
+
+                    <div class="grid md:grid-cols-3 gap-4">
+                        <div class="text-center p-3 bg-sky-50 rounded-lg">
+                            <div class="text-2xl mb-2">📊</div>
+                            <h4 class="font-semibold text-gray-800 mb-1 text-sm">تقرير شامل</h4>
+                            <p class="text-gray-600 text-xs">مع رسومات بيانية تفصيلية</p>
+                        </div>
+
+                        <div class="text-center p-3 bg-sky-50 rounded-lg">
+                            <div class="text-2xl mb-2">✨</div>
+                            <h4 class="font-semibold text-gray-800 mb-1 text-sm">خلاصة الرحلة</h4>
+                            <p class="text-gray-600 text-xs">بشكل أنيق يمكن حفظه أو طباعته</p>
+                        </div>
+
+                        <div class="text-center p-3 bg-sky-50 rounded-lg">
+                            <div class="text-2xl mb-2">📥</div>
+                            <h4 class="font-semibold text-gray-800 mb-1 text-sm">تحميل ومشاركة</h4>
+                            <p class="text-gray-600 text-xs">PDF أو مشاركة مع المعلّم</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- العبارة الملهمة -->
+        <div class="text-center mb-12 fade-in">
+            <div
+                class="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl p-6 max-w-3xl mx-auto border border-indigo-100">
+                <h3 class="text-2xl md:text-3xl font-bold text-gray-800 mb-4">
+                    💡 بصيرة معك… لتكتشف ذاتك وتحقق أهدافك
+                </h3>
+            </div>
+        </div>
+
+        <!-- زر البداية -->
+        <div class="text-center fade-in">
+            <button onclick="startJourney()"
+                class="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-4 px-12 rounded-full text-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 pulse-animation">
+                🚀 ابدأ رحلتك مع بصيرة
+            </button>
+            <p class="text-gray-500 mt-4 text-sm">
+                الوقت الإجمالي المتوقع: 40-50 دقيقة
+            </p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 mt-16">
+        <div class="max-w-4xl mx-auto text-center px-4">
+            <p class="text-gray-300">
+                © 2024 مقياس بصيرة - رحلتك لاكتشاف الذات تبدأ هنا
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // تأثير الكتابة للعنوان الرئيسي
+        const text = "👋 مرحبًا بك في رحلتك لاكتشاف الذات";
+        const typingElement = document.getElementById('typing-text');
+        const cursor = document.getElementById('cursor');
+        let index = 0;
+
+        function typeWriter() {
+            if (index < text.length) {
+                typingElement.textContent += text.charAt(index);
+                index++;
+                setTimeout(typeWriter, 100);
+            } else {
+                // إخفاء المؤشر بعد انتهاء الكتابة
+                setTimeout(() => {
+                    cursor.style.display = 'none';
+                }, 1000);
+            }
+        }
+
+        // بدء تأثير الكتابة عند تحميل الصفحة
+        window.addEventListener('load', () => {
+            setTimeout(typeWriter, 500);
+        });
+
+        function startJourney() {
+            // إضافة تأثير بصري عند الضغط
+            const button = event.target;
+            button.innerHTML = '⏳ جاري التحضير...';
+            button.disabled = true;
+            // محاكاة بداية الرحلة
+            location.href = "/p1"
+
+        }
+
+        // إضافة تأثيرات الحركة عند التمرير
+        window.addEventListener('scroll', () => {
+            const elements = document.querySelectorAll('.fade-in');
+            elements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+
+                if (elementTop < window.innerHeight - elementVisible) {
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }
+            });
+        });
+    </script>
+    <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'983f9e12f0748bf9',t:'MTc1ODY4ODk3MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script>
+</body>
+
+</html>
