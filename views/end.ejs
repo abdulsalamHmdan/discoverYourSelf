@@ -752,7 +752,7 @@
             spinner.classList.remove('hidden');
 
             var data = new URLSearchParams();
-            data.append("url", `http://127.0.0.1:3000/Results/admin/${x}`);
+            data.append("url", `${location.host == '127.0.0.1:3000' ? "http://127.0.0.1:3000" : "https://discoveryourself.onrender.com"}/Results/admin/${x}`);
             const resp = await fetch('/html-to-pdf', {
                 method: 'POST',
                 headers: {
