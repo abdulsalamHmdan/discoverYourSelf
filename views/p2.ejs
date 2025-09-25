@@ -664,10 +664,10 @@
                     </div>
 
                     <div class="text-center space-x-4 space-x-reverse">
-                        <button onclick="downloadPDF()"
+                        <!-- <button onclick="downloadPDF()"
                             class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 transform hover:scale-105">
                             📄 حفظ كـ PDF
-                        </button>
+                        </button> -->
                         <button onclick="restartTest()"
                             class="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300">
                             الانتقال الى الاختبار الثالث (الذكاءات)
@@ -2110,7 +2110,7 @@
             // Check for focus break after 15 questions
             const totalAnswered = Object.values(allPathAnswers).reduce((sum, pathAnswers) => sum + pathAnswers.length, 0) + answers.length;
             if (totalAnswered === 15 && !focusBreaksShown.includes('mid-test')) {
-                showFocusBreak('mid-test', 'استراحة منتصف الاختبار', 'لقد أجبت على 15 سؤالاً. خذ نفساً عميقاً واسترخ قليلاً قبل المتابعة.');
+                // showFocusBreak('mid-test', 'استراحة منتصف الاختبار', 'لقد أجبت على 15 سؤالاً. خذ نفساً عميقاً واسترخ قليلاً قبل المتابعة.');
                 return;
             }
 

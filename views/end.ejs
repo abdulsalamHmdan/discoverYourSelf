@@ -652,6 +652,47 @@
             </button>
         </div>
 
+        <!-- الرسالة -->
+        <div id="messageModal"
+            class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+            <div class="bg-white rounded-xl shadow-2xl p-8 max-w-md w-full mx-4">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">رسالة تأكيد</h2>
+                <p class="text-gray-600 mb-8 text-center leading-relaxed">
+                    اختر أحد الخيارات التالية للمتابعة
+                </p>
+                <!-- الأزرار الثلاثة -->
+                <div class="flex flex-col gap-3 butts">
+                    <button id="option1" onclick="generatePDF('p1')"
+                        class="bg-green-500 hover:bg-green-600 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200">
+                        طباعة الاختبار الاول
+                    </button>
+
+                    <button id="option2" onclick="generatePDF('p2')"
+                        class="bg-orange-500 hover:bg-orange-600 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200">
+                        طباعة الاختبار الثاني
+                    </button>
+
+                    <button id="option3" onclick="generatePDF('p3')"
+                        class="bg-red-500 hover:bg-red-600 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-200">
+                        طباعة الاختبار الثالث
+                    </button>
+                </div>
+
+                <div class="loading-spinner  hidden">
+                    <svg style="margin-inline: auto;" class="animate-spin h-40 w-40 text-red"
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="#9ab5eb" stroke-width="4">
+                        </circle>
+                        <path class="opacity-75" fill="blue"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                        </path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+
+
         <!-- Footer -->
         <footer class="text-center text-white opacity-75 fade-in">
             <div class="border-t border-white border-opacity-20 pt-6">
@@ -691,24 +732,44 @@
                 particle.remove();
             }, 30000);
         }
-        function generatePDF() {
-            ["p1", "p2", "p3"].forEach(async x => {
-                var data = new URLSearchParams();
-                data.append("url", `http://127.0.0.1:3000/Results/admin/${x}`);
-                const resp = await fetch('/html-to-pdf', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-                    },
-                    body: data
-                });
-                const blob = await resp.blob();
-                const link = document.createElement('a');
-                link.href = URL.createObjectURL(blob);
-                link.download = 'تقرير_نتائج_الاختبارات_الشاملة.pdf';
-                link.click();
-                URL.revokeObjectURL(link.href);
-            })
+        const messageModal = document.getElementById('messageModal');
+        function hideMessage() {
+            messageModal.classList.add('hidden');
+        }
+        messageModal.addEventListener('click', function (e) {
+            if (e.target === messageModal) {
+                hideMessage();
+            }
+        });
+        function printResult() {
+            messageModal.classList.remove('hidden');
+
+        }
+        async function generatePDF(x) {
+            const butts = document.querySelector('.butts');
+            const spinner = document.querySelector('.loading-spinner');
+            butts.classList.add('hidden');
+            spinner.classList.remove('hidden');
+
+            var data = new URLSearchParams();
+            data.append("url", `http://127.0.0.1:3000/Results/admin/${x}`);
+            const resp = await fetch('/html-to-pdf', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                },
+                body: data
+            });
+            const blob = await resp.blob();
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'تقرير_نتائج_الاختبارات_الشاملة.pdf';
+            link.click();
+            URL.revokeObjectURL(link.href);
+            butts.classList.remove('hidden');
+            spinner.classList.add('hidden');
+
+
         };
 
         // Generate effects continuously
@@ -752,7 +813,8 @@
                     showResultsModal();
                 } else if (buttonText.includes('تحميل')) {
                     // Generate and download PDF
-                    generatePDF();
+                    // generatePDF();
+                    printResult();
 
                     // alert("جاري العمل على هذه الخاصية")
                 }
@@ -811,7 +873,7 @@
 
                                 <div class="flex justify-between">
                                     <span class="text-sm">${p1.tops[2].arabicName} (${p1.tops[2].englishName})</span>
-                                    <span class="font-bold text-blue-600">${Math.round(p1.tops[0].percentages)}%</span>
+                                    <span class="font-bold text-blue-600">${Math.round(p1.tops[2].percentages)}%</span>
                                 </div>
                                 <div class="w-full bg-gray-200 rounded-full h-2">
                                     <div class="bg-blue-500 h-2 rounded-full" style="width: ${Math.round(+p1.tops[2].percentages)}%"></div>
@@ -831,14 +893,16 @@
                             </div>
                             <div class="text-center">
                                 <div class="bg-purple-100 rounded-lg p-4 mb-3">
-                                    <div class="text-3xl font-bold text-purple-600 mb-2">INTJ</div>
-                                    <div class="text-sm text-gray-600">المهندس المعماري</div>
+                                <div class="personalityType text-sm text-gray-600">
+                                    تحليل المحاور الاربعة
+                                </div>
                                 </div>
                                 <div class="grid grid-cols-2 gap-2 text-xs">
-                                    <div class="bg-purple-200 rounded px-2 py-1">انطوائي 78%</div>
-                                    <div class="bg-purple-200 rounded px-2 py-1">حدسي 82%</div>
-                                    <div class="bg-purple-200 rounded px-2 py-1">مفكر 75%</div>
-                                    <div class="bg-purple-200 rounded px-2 py-1">حاكم 88%</div>
+                  <% p2.forEach(function(item) { %>
+                    <div class="bg-purple-200 rounded px-2 py-1">
+                      <%=item.name%> - <%=item.persent%>%
+                    </div>
+                    <% }); %>
                                 </div>
                             </div>
                         </div>

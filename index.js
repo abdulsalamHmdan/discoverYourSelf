@@ -262,7 +262,10 @@ app.get('/end', isAuthenticated, async function (req, res) {
     const collection = db.collection('users');
     const user = await collection.findOne({ idNumber: req.session.user })
     client.close()
-    res.render("end", { user: req.session.name, p1: user.stat.p1, p3: user.stat.p3 });
+    // const p1 = user.stat?.p1 ? JSON.parse(user.stat.p1).tops : null;
+    const p2 = user.stat?.p2 ? JSON.parse(user.stat.p2).tops : null;
+    // const p3 = user.stat?.p3 ? JSON.parse(user.stat.p3).tops : null;
+    res.render("end", { user: req.session.name, p1: user.stat.p1, p3: user.stat.p3, p2 });
 })
 
 app.get('/end', function (req, res) {
@@ -336,10 +339,16 @@ app.get('/admin/end/:id', async function (req, res) {
     const collection = db.collection('users');
     const user = await collection.findOne({ idNumber: req.params.id })
     client.close()
-    const p1 = user.stat?.p1 ? JSON.parse(user.stat.p1).tops : null;
-    const p2 = user.stat?.p2 ? JSON.parse(user.stat.p2).tops : null;
-    const p3 = user.stat?.p3 ? JSON.parse(user.stat.p3).tops : null;
-    res.render("studentPage", { id: user.idNumber, name: user.name, p1, p2, p3 });
+    if (user) {
+        const p1 = user.stat?.p1 ? JSON.parse(user.stat.p1).tops : null;
+        const p2 = user.stat?.p2 ? JSON.parse(user.stat.p2).tops : null;
+        const p3 = user.stat?.p3 ? JSON.parse(user.stat.p3).tops : null;
+        res.render("studentPage", { id: user.idNumber, name: user.name, p1, p2, p3 });
+    } else {
+        res.redirect('admin');
+    }
+
+
 })
 
 app.get('/admin/end/:id', function (req, res) {
@@ -365,7 +374,7 @@ app.get('/Results/:id/:exam', async function (req, res) {
     const collection = db.collection('users');
     const user = await collection.findOne({ idNumber: req.params.id })
     if (user[req.params.exam]) {
-        res.render(`${req.params.exam}Result`, { [req.params.exam]: user[req.params.exam], user: user.name });
+        res.render(`${req.params.exam}Result`, { [req.params.exam]: user[req.params.exam], name: user.name });
         return;
     }
     res.send('notFound');
@@ -439,6 +448,38 @@ app.post('/deleteExam', async function (req, res) {
             [`stat.${req.body.type}`]: ""
         }
     }).then(() => {
+        res.send("deleted")
+
+    }).catch(err => {
+        res.send('notFound');
+    })
+})
+app.post('/deleteAll', async function (req, res) {
+    await client.connect();
+    const db = client.db("soqy");
+    const collection = db.collection('users');
+    console.log(req.body.user)
+    await collection.updateOne({ idNumber: req.body.user }, {
+        $unset: {
+            ["p1"]: "",
+            ["p2"]: "",
+            ["p3"]: "",
+            ["stat"]: "",
+        }
+    }).then(() => {
+        res.send("deleted")
+
+    }).catch(err => {
+        res.send('notFound');
+    })
+})
+
+app.post('/deleteStudent', async function (req, res) {
+    await client.connect();
+    const db = client.db("soqy");
+    const collection = db.collection('users');
+    console.log(req.body.user)
+    await collection.deleteOne({ idNumber: req.body.user }).then(() => {
         res.send("deleted")
 
     }).catch(err => {

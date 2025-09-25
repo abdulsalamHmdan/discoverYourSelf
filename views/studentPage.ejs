@@ -127,7 +127,10 @@
 
               <div class="text-center">
                 <div class="bg-purple-100 rounded-lg p-4 mb-3">
-                  <div class="personalityType text-sm text-gray-600">المهندس المعماري - INTJ</div>
+                  <!-- <div class="personalityType text-sm text-gray-600">المهندس المعماري - INTJ</div> -->
+                  <div class="personalityType text-sm text-gray-600">
+                    تحليل المحاور الاربعة
+                  </div>
                 </div>
                 <div class="grid grid-cols-2 gap-2 text-xs">
                   <% p2.forEach(function(item) { %>
@@ -298,6 +301,7 @@
     let currentAction = null;
     let currentTestName = null;
 
+
     function showModal(title, message, action, testName = null) {
       document.getElementById('modalTitle').textContent = title;
       document.getElementById('modalMessage').textContent = message;
@@ -335,15 +339,45 @@
 
 
       } else if (currentAction === 'deleteAllData') {
-        alert('تم حذف جميع بيانات الطالب بنجاح');
+        var data = new URLSearchParams();
+        data.append('user', '<%=id%>');
+        fetch('/deleteAll', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+          },
+          body: data
+        }).then(() => {
+          location.reload()
+        }).catch(() => {
+          alert(`حدث خطأ في حذف البيانات`);
+
+        })
+
+
+        // alert('تم حذف جميع بيانات الطالب بنجاح');
       } else if (currentAction === 'updatePassword') {
         alert('تم تحديث كلمة المرور بنجاح');
       } else if (currentAction === 'deleteStudent') {
-        alert('تم حذف الطالب بالكامل من النظام');
-        // Simulate redirect to students list
-        setTimeout(() => {
+
+        var data = new URLSearchParams();
+        data.append('user', '<%=id%>');
+        fetch('/deleteStudent', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+          },
+          body: data
+        }).then(() => {
           document.body.innerHTML = '<div class="flex items-center justify-center min-h-screen bg-gray-100"><div class="text-center"><h1 class="text-2xl font-bold text-gray-800 mb-4">تم حذف الطالب بنجاح</h1><p class="text-gray-600">سيتم توجيهك إلى قائمة الطلاب...</p></div></div>';
-        }, 1000);
+          setTimeout(() => {
+            location.href = "/admin"
+          }, 2000);
+        }).catch(() => {
+          alert(`حدث خطأ في حذف البيانات`);
+
+        })
+        // Simulate redirect to students list
       }
       closeModal();
     }
