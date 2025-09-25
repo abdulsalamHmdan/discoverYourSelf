@@ -383,6 +383,7 @@ app.get('/Results/:id/:exam', async function (req, res) {
 app.post('/html-to-pdf', async (req, res) => {
     try {
         const url = req.body?.url;
+        console.log(url);
 
         if (!url) {
             return res.status(400).send('يرجى تزويد رابط الصفحة في body');
