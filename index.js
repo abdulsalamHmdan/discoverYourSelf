@@ -2,6 +2,8 @@ var express = require('express')
 var session = require('express-session')
 var session = require('express-session')
 const puppeteer = require('puppeteer');
+const pdf = require("html-pdf-node");
+
 
 var app = express()
 app.use(express.urlencoded({ extended: true }));
@@ -15,7 +17,7 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join(__dirname, 'public')));
 const { MongoClient, Admin } = require('mongodb');
-const { name } = require('ejs');
+const ejs = require('ejs');
 const url = "mongodb+srv://family:aS0507499583@cluster0.dvljyns.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(url);
 
@@ -382,30 +384,17 @@ app.get('/Results/:id/:exam', async function (req, res) {
 
 app.post('/html-to-pdf', async (req, res) => {
     try {
-        const url = req.body?.url;
-        console.log(url);
+        const html = await ejs.renderFile("views/login.ejs");
 
-        if (!url) {
-            return res.status(400).send('يرجى تزويد رابط الصفحة في body');
-        }
+        // 2. إعدادات PDF
+        const options = { format: "A4" };
+        const file = { content: html };
 
-        // شغّل كروميوم
-        const browser = await puppeteer.launch({
-            args: ['--no-sandbox', '--disable-setuid-sandbox']
-        });
-        const page = await browser.newPage();
-
-        // فتح الصفحة من الرابط المحدد
-        await page.goto(url, { waitUntil: 'networkidle0' });
-
-        // إعدادات PDF
-        const pdfBuffer = await page.pdf({
-            format: 'A4',
-            printBackground: true,
-            // margin: { top: '10mm', bottom: '10mm', left: '10mm', right: '10mm' }
-        });
-
-        await browser.close();
+        // 3. توليد PDF وإرساله كـ response
+        const pdfBuffer = await pdf.generatePdf(file, options);
+        // res.setHeader("Content-Type", "application/pdf");
+        // res.setHeader("Content-Disposition", "inline; filename=report.pdf");
+        // res.send(pdfBuffer);
 
         // ترجع الملف مباشرة
         res.set({
