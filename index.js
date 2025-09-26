@@ -267,7 +267,7 @@ app.get('/end', isAuthenticated, async function (req, res) {
     // const p1 = user.stat?.p1 ? JSON.parse(user.stat.p1).tops : null;
     const p2 = user.stat?.p2 ? JSON.parse(user.stat.p2).tops : null;
     // const p3 = user.stat?.p3 ? JSON.parse(user.stat.p3).tops : null;
-    res.render("end", { user: req.session.name, p1: user.stat.p1, p3: user.stat.p3, p2 });
+    res.render("end", { user: req.session, p1: user.stat.p1, p3: user.stat.p3, p2 });
 })
 
 app.get('/end', function (req, res) {
@@ -383,30 +383,35 @@ app.get('/Results/:id/:exam', async function (req, res) {
 })
 
 app.post('/html-to-pdf', async (req, res) => {
-    try {
-        const html = await ejs.renderFile("views/login.ejs");
+    await client.connect();
+    const db = client.db("soqy");
+    const collection = db.collection('users');
+    const user = await collection.findOne({ idNumber: req.body.id })
+    if (user[req.body.exam]) {
+        try {
+            const html = await ejs.renderFile(`views/${req.body.exam}Result.ejs`, { [req.body.exam]: user[req.body.exam], name: user.name });
+            // 2. إعدادات PDF
+            const options = { format: "A4", printBackground: true };
+            const file = { content: html };
 
-        // 2. إعدادات PDF
-        const options = { format: "A4" };
-        const file = { content: html };
+            // 3. توليد PDF وإرساله كـ response
+            const pdfBuffer = await pdf.generatePdf(file, options);
+            // ترجع الملف مباشرة
+            res.set({
+                'Content-Type': 'application/pdf',
+                'Content-Disposition': 'attachment; filename="report.pdf"',
+                'Content-Length': pdfBuffer.length
+            });
+            res.send(pdfBuffer);
 
-        // 3. توليد PDF وإرساله كـ response
-        const pdfBuffer = await pdf.generatePdf(file, options);
-        // res.setHeader("Content-Type", "application/pdf");
-        // res.setHeader("Content-Disposition", "inline; filename=report.pdf");
-        // res.send(pdfBuffer);
+        } catch (err) {
+            console.error("خطأ أثناء إنشاء PDF:", err);
+            res.status(500).send('حدث خطأ أثناء إنشاء ملف PDF');
+        }
 
-        // ترجع الملف مباشرة
-        res.set({
-            'Content-Type': 'application/pdf',
-            'Content-Disposition': 'attachment; filename="report.pdf"',
-            'Content-Length': pdfBuffer.length
-        });
-        res.send(pdfBuffer);
+    } else {
+        res.status(500).send('الاختبار غير محفوظ');
 
-    } catch (err) {
-        console.error("خطأ أثناء إنشاء PDF:", err);
-        res.status(500).send('حدث خطأ أثناء إنشاء ملف PDF');
     }
 });
 

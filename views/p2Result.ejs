@@ -301,7 +301,7 @@
                         <div class="text-xs text-red-600 font-mono" id="contradictionDetails"></div>
                     </div>
 
-                    <div class="text-center space-x-4 space-x-reverse">
+                    <div class="text-center space-x-4 space-x-reverse noP">
                         <button onclick="downloadPDF()"
                             class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 transform hover:scale-105">
                             📄 حفظ كـ PDF
@@ -318,7 +318,7 @@
 
     <script>
         // Test state
-        let testState = <%-p2 %>;
+        let testState = <% -p2 %>;
         let currentQuestion = testState.currentQuestion;
         let answers = testState.answers;
         let scores = testState.scores;
@@ -2657,7 +2657,7 @@
                 console.log('🎉 Results populated successfully!');
 
                 // إظهار رسالة نجاح للمستخدم
-                showResultsSuccessMessage();
+                // showResultsSuccessMessage();
 
             } catch (error) {
                 console.error('❌ Critical error in populateResults:', error);
