@@ -166,10 +166,14 @@ app.get('/', isAuthenticated, function (req, res) {
     res.redirect("welcome")
 })
 app.get('/', function (req, res) {
-    res.render("login", { msg: "يجب عليك تسجيل الدخول" });
+    res.render("login");
 })
 
 app.get('/welcome', isAuthenticated, function (req, res) {
+    if (req.session.p1 == 'done' || req.session.p2 == 'done' || req.session.p3 == 'done') {
+        res.redirect("p1")
+        return;
+    }
     res.render("welcome");
 })
 app.get('/welcome', function (req, res) {
@@ -392,7 +396,7 @@ app.post('/html-to-pdf', async (req, res) => {
         try {
             const html = await ejs.renderFile(`views/${req.body.exam}Result.ejs`, { [req.body.exam]: user[req.body.exam], name: user.name, from: "print" });
             // 2. إعدادات PDF
-            const options = { format: "A4", printBackground: true,  timeout: 300000 };
+            const options = { format: "A4", printBackground: true };
             const file = { content: html };
             await new Promise(resolve => setTimeout(resolve, 1000));
             // 3. توليد PDF وإرساله كـ response
