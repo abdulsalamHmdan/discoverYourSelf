@@ -392,7 +392,7 @@ app.post('/html-to-pdf', async (req, res) => {
         try {
             const html = await ejs.renderFile(`views/${req.body.exam}Result.ejs`, { [req.body.exam]: user[req.body.exam], name: user.name, from: "print" });
             // 2. إعدادات PDF
-            const options = { format: "A4", printBackground: true };
+            const options = { format: "A4", printBackground: true,  timeout: 300000 };
             const file = { content: html };
             await new Promise(resolve => setTimeout(resolve, 1000));
             // 3. توليد PDF وإرساله كـ response
