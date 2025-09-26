@@ -243,7 +243,7 @@ app.get('/rate', function (req, res) {
     res.redirect("/");
 })
 app.get('/end', isAuthenticated, async function (req, res) {
-    console.log(req.session)
+    // console.log(req.session)
     if (req.session.p1 == 'no') {
         res.redirect("p1")
         return;
@@ -395,7 +395,6 @@ app.post('/html-to-pdf', async (req, res) => {
             const options = { format: "A4", printBackground: true };
             const file = { content: html };
             await new Promise(resolve => setTimeout(resolve, 1000));
-
             // 3. توليد PDF وإرساله كـ response
             const pdfBuffer = await pdf.generatePdf(file, options);
             // ترجع الملف مباشرة
@@ -405,6 +404,7 @@ app.post('/html-to-pdf', async (req, res) => {
                 'Content-Length': pdfBuffer.length
             });
             res.send(pdfBuffer);
+
 
         } catch (err) {
             console.error("خطأ أثناء إنشاء PDF:", err);
@@ -438,7 +438,7 @@ app.post('/deleteExam', async function (req, res) {
     await client.connect();
     const db = client.db("soqy");
     const collection = db.collection('users');
-    console.log(req.body.user)
+    // console.log(req.body.user)
     await collection.updateOne({ idNumber: req.body.user }, {
         $unset: {
             [req.body.type]: "",
@@ -455,7 +455,7 @@ app.post('/deleteAll', async function (req, res) {
     await client.connect();
     const db = client.db("soqy");
     const collection = db.collection('users');
-    console.log(req.body.user)
+    // console.log(req.body.user)
     await collection.updateOne({ idNumber: req.body.user }, {
         $unset: {
             ["p1"]: "",
@@ -475,7 +475,7 @@ app.post('/deleteStudent', async function (req, res) {
     await client.connect();
     const db = client.db("soqy");
     const collection = db.collection('users');
-    console.log(req.body.user)
+    // console.log(req.body.user)
     await collection.deleteOne({ idNumber: req.body.user }).then(() => {
         res.send("deleted")
 
@@ -493,7 +493,7 @@ app.post('/login', express.urlencoded({ extended: false }), async function (req,
     const db = client.db("soqy");
     const collection = db.collection('users');
     const user = await collection.findOne({ idNumber: req.body.user, phone: req.body.pass })
-    console.log(user)
+    // console.log(user)
 
     if (user) {
         req.session.regenerate(function (err) {
