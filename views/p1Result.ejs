@@ -170,29 +170,26 @@
             </div>
 
             <!-- أزرار المشاركة -->
-            <div class="bg-white rounded-2xl shadow-lg p-6 mt-6 noP">
-                <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">احفظ نتيجتك</h3>
-                <div class="flex flex-wrap justify-center gap-3">
-                    <button onclick="printResults()"
-                        class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg transition-colors flex items-center gap-2">
-                        <span>📄</span>
-                        <span>حفظ كـ PDF</span>
-                    </button>
+            <% if(from=="show" ) { %>
+
+                <div class="bg-white rounded-2xl shadow-lg p-6 mt-6 noP">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">احفظ نتيجتك</h3>
+                    <div class="flex flex-wrap justify-center gap-3">
+                        <button onclick="printResults()"
+                            class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg transition-colors flex items-center gap-2">
+                            <span>📄</span>
+                            <span>حفظ كـ PDF</span>
+                        </button>
+                    </div>
                 </div>
-            </div>
+                <% } %>
 
-            <!-- ملخص المسارين -->
-            <div id="paths-summary" class="bg-white rounded-2xl shadow-lg p-6 mt-6">
-                <!-- سيتم إنشاؤه ديناميكياً -->
-            </div>
 
-            <!-- زر إعادة المقياس -->
-            <!-- <div class="text-center mt-8">
-                <button onclick="restartTest()"
-                    class="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-200 transform hover:scale-105">
-                    الانتقال الى الاختبار الثاني ( MPTI )
-                </button>
-            </div> -->
+                    <!-- ملخص المسارين -->
+                    <div id="paths-summary" class="bg-white rounded-2xl shadow-lg p-6 mt-6">
+                        <!-- سيتم إنشاؤه ديناميكياً -->
+                    </div>
+
         </div>
     </div>
 

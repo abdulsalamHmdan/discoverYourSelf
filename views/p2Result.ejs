@@ -300,17 +300,19 @@
                     <div id="contradictionMarkers" class="hidden bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
                         <div class="text-xs text-red-600 font-mono" id="contradictionDetails"></div>
                     </div>
-
-                    <div class="text-center space-x-4 space-x-reverse noP">
-                        <button onclick="downloadPDF()"
-                            class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 transform hover:scale-105">
-                            📄 حفظ كـ PDF
-                        </button>
-                        <!-- <button onclick="restartTest()"
+                    <% if(from == "show") { %>
+                        <div class="text-center space-x-4 space-x-reverse noP">
+                            <button onclick="downloadPDF()"
+                                class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 transform hover:scale-105">
+                                📄 حفظ كـ PDF
+                            </button>
+                            <!-- <button onclick="restartTest()"
                             class="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300">
                             الانتقال الى الاختبار الثالث (الذكاءات)
                         </button> -->
-                    </div>
+                        </div>
+                        <% }  %>
+
                 </div>
             </div>
         </div>
@@ -318,7 +320,7 @@
 
     <script>
         // Test state
-        let testState = <% -p2 %>;
+        let testState = <%-p2 %>;
         let currentQuestion = testState.currentQuestion;
         let answers = testState.answers;
         let scores = testState.scores;

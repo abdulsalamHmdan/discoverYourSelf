@@ -680,6 +680,7 @@
 
     <script>
         // Test state
+        let startTheTime;
         let currentQuestion = 0;
         let answers = [];
         let scores = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
@@ -1349,6 +1350,7 @@
         function startTest() {
             // تعيين اسم ثابت شرقي
             userName = '<%=name%>';
+            startTheTime = Date.now();
 
             // التحقق من وجود تقدم محفوظ
             // const hasSavedProgress = checkForSavedProgress();
@@ -3073,7 +3075,6 @@
 
             } catch (error) {
                 console.error('❌ Critical error in populateResults:', error);
-
                 // Fallback: show basic results
                 showBasicResults();
             }
@@ -4226,7 +4227,7 @@
 
             console.log(sfat)
             var data = new URLSearchParams();
-            data.append('data', JSON.stringify({ tops: sfat, time: "40000" }));
+            data.append('data', JSON.stringify({ tops: sfat, time: Date.now() - startTheTime }));
             data.append('type', 'stat.p2');
 
             fetch('saveExam', {

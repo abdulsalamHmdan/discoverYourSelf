@@ -243,6 +243,7 @@ app.get('/rate', function (req, res) {
     res.redirect("/");
 })
 app.get('/end', isAuthenticated, async function (req, res) {
+    console.log(req.session)
     if (req.session.p1 == 'no') {
         res.redirect("p1")
         return;
@@ -265,9 +266,9 @@ app.get('/end', isAuthenticated, async function (req, res) {
     const user = await collection.findOne({ idNumber: req.session.user })
     client.close()
     // const p1 = user.stat?.p1 ? JSON.parse(user.stat.p1).tops : null;
-    const p2 = user.stat?.p2 ? JSON.parse(user.stat.p2).tops : null;
+    const tops = user.stat?.p2 ? JSON.parse(user.stat.p2).tops : null;
     // const p3 = user.stat?.p3 ? JSON.parse(user.stat.p3).tops : null;
-    res.render("end", { user: req.session, p1: user.stat.p1, p3: user.stat.p3, p2 });
+    res.render("end", { user: req.session, p1: user.stat.p1, p3: user.stat.p3, p2: user.stat.p3, tops });
 })
 
 app.get('/end', function (req, res) {
@@ -324,7 +325,7 @@ app.get('/admin/Results/:id/:exam', isAdmin, async function (req, res) {
     const collection = db.collection('users');
     const user = await collection.findOne({ idNumber: req.params.id })
     if (user[req.params.exam]) {
-        res.render(`${req.params.exam}Result`, { [req.params.exam]: user[req.params.exam], name: user.name });
+        res.render(`${req.params.exam}Result`, { [req.params.exam]: user[req.params.exam], name: user.name, from: "show" });
         return;
     }
     res.send('notFound');
@@ -364,7 +365,7 @@ app.get('/Results/:exam', isAuthenticated, async function (req, res) {
     const collection = db.collection('users');
     const user = await collection.findOne({ idNumber: req.session.user })
     if (user[req.params.exam]) {
-        res.render(`${req.params.exam}Result`, { [req.params.exam]: user[req.params.exam], name: req.session.name });
+        res.render(`${req.params.exam}Result`, { [req.params.exam]: user[req.params.exam], name: req.session.name, from: "show" });
         return;
     }
     res.send('notFound');
@@ -376,7 +377,7 @@ app.get('/Results/:id/:exam', async function (req, res) {
     const collection = db.collection('users');
     const user = await collection.findOne({ idNumber: req.params.id })
     if (user[req.params.exam]) {
-        res.render(`${req.params.exam}Result`, { [req.params.exam]: user[req.params.exam], name: user.name });
+        res.render(`${req.params.exam}Result`, { [req.params.exam]: user[req.params.exam], name: user.name, from: "show" });
         return;
     }
     res.send('notFound');
@@ -389,10 +390,11 @@ app.post('/html-to-pdf', async (req, res) => {
     const user = await collection.findOne({ idNumber: req.body.id })
     if (user[req.body.exam]) {
         try {
-            const html = await ejs.renderFile(`views/${req.body.exam}Result.ejs`, { [req.body.exam]: user[req.body.exam], name: user.name });
+            const html = await ejs.renderFile(`views/${req.body.exam}Result.ejs`, { [req.body.exam]: user[req.body.exam], name: user.name, from: "print" });
             // 2. إعدادات PDF
             const options = { format: "A4", printBackground: true };
             const file = { content: html };
+            await new Promise(resolve => setTimeout(resolve, 1000));
 
             // 3. توليد PDF وإرساله كـ response
             const pdfBuffer = await pdf.generatePdf(file, options);
@@ -491,6 +493,7 @@ app.post('/login', express.urlencoded({ extended: false }), async function (req,
     const db = client.db("soqy");
     const collection = db.collection('users');
     const user = await collection.findOne({ idNumber: req.body.user, phone: req.body.pass })
+    console.log(user)
 
     if (user) {
         req.session.regenerate(function (err) {
