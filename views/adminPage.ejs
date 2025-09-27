@@ -593,6 +593,10 @@
                                 class="px-6 py-4 text-right text-xs font-medium text-gray-500 uppercase tracking-wider mobile-hidden">
                                 🧠 نوع MBTI
                             </th>
+                            <th
+                                class="px-6 py-4 text-right text-xs font-medium text-gray-500 uppercase tracking-wider mobile-hidden">
+                                🧠 نوع MBTI
+                            </th>
                             <th class="px-6 py-4 text-right text-xs font-medium text-gray-500 uppercase tracking-wider mobile-hidden cursor-pointer hover:bg-gray-200 transition-colors"
                                 onclick="sortBy('startTime')">
                                 <div class="flex items-center gap-2">
@@ -724,8 +728,8 @@
                 filteredData = filteredData.filter(student =>
                     student.name.includes(searchQuery) ||
                     student.studentId.includes(searchQuery) ||
-                    student.mbti.includes(searchQuery) ||
-                    student.riasec.some(r => r.includes(searchQuery))
+                    student.mbti?.includes(searchQuery) ||
+                    student.riasec?.some(r => r.includes(searchQuery))
                 );
             }
 
@@ -736,11 +740,11 @@
 
             // فلتر نوع النتائج
             if (resultTypeFilter === 'riasec-only') {
-                filteredData = filteredData.filter(student => student.riasec.length > 0 && !student.mbti);
+                filteredData = filteredData.filter(student => student.riasec?.length > 0 && !student.mbti);
             } else if (resultTypeFilter === 'mbti-only') {
-                filteredData = filteredData.filter(student => student.mbti && student.riasec.length === 0);
+                filteredData = filteredData.filter(student => student.mbti && !student.riasec?.length);
             } else if (resultTypeFilter === 'both') {
-                filteredData = filteredData.filter(student => student.riasec.length > 0 && student.mbti);
+                filteredData = filteredData.filter(student => student.riasec?.length > 0 && student.mbti);
             }
 
             // الترتيب
@@ -831,14 +835,14 @@
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap mobile-hidden">
                         <div class="flex gap-1 flex-wrap">
-                            ${student.riasec.map(dim => `
+                            ${student.riasec?.map(dim => `
                                 <span class="tooltip-trigger bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium border border-blue-200 hover:shadow-sm transition-all">
                                     ${dim}
                                     <div class="tooltip absolute bg-black text-white text-xs rounded py-1 px-2 -mt-8 mr-4 z-20 whitespace-nowrap">
                                         ${getRiasecMeaning(dim)}
                                     </div>
                                 </span>
-                            `).join('')}
+                            `).join('') || "-"}
                         </div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap mobile-hidden">
@@ -849,7 +853,17 @@
                                     ${getMbtiMeaning(student.mbti)}
                                 </div>
                             </span>
-                        ` : '<span class="text-gray-400 text-sm">غير متوفر</span>'}
+                        ` : '-'}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap mobile-hidden">
+                        ${student.mbti ? `
+                            <span class="tooltip-trigger bg-gradient-to-r from-purple-100 to-pink-100 text-purple-800 px-3 py-1 rounded-full text-sm font-bold border border-purple-200 hover:shadow-sm transition-all">
+                                ${student.mbti}
+                                <div class="tooltip absolute bg-black text-white text-xs rounded py-1 px-2 -mt-8 mr-4 z-20 whitespace-nowrap">
+                                    ${getMbtiMeaning(student.mbti)}
+                                </div>
+                            </span>
+                        ` : '-'}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 mobile-hidden">
                         ${student.startTime ? `
@@ -1102,7 +1116,7 @@
                 const matches = studentsData.filter(student =>
                     student.name.includes(searchValue) ||
                     student.studentId.includes(searchValue) ||
-                    student.mbti.includes(searchValue)
+                    student.mbti?.includes(searchValue)
                 ).slice(0, 5);
 
                 if (matches.length > 0) {
@@ -1277,7 +1291,7 @@
 
         function sendReminder(num) {
             // showAlert('تم إرسال التذكير بنجاح', 'success');
-            location.href=`https://wa.me/966${num}`
+            location.href = `https://wa.me/966${num}`
         }
 
         function refreshData() {

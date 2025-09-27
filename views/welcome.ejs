@@ -333,7 +333,23 @@
             button.innerHTML = '⏳ جاري التحضير...';
             button.disabled = true;
             // محاكاة بداية الرحلة
-            location.href = "/p1"
+            var data = new URLSearchParams();
+            data.append('data', Date.now());
+            data.append('type', 'stat.start');
+            data.append('ob', '0');
+            fetch('saveExam', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                },
+                body: data
+            }).then(() => {
+                location.href = "/p1"
+            }).catch(() => {
+                console.log("error")
+                alert("هناك مشكلة")
+            })
+
 
         }
 

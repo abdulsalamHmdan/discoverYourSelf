@@ -683,12 +683,14 @@
             document.getElementById('notesSection').classList.add('hidden');
             document.getElementById('testsContainer').scrollIntoView({ behavior: 'smooth' });
         }
-
+        let notes;
+        let suggestions;
+        let selectedGoals;
         function proceedToResults() {
             // Get user notes, goals, and suggestions
-            const notes = document.getElementById('personalNotes').value.trim();
-            const suggestions = document.getElementById('suggestions').value.trim();
-            const selectedGoals = Array.from(document.querySelectorAll('input[name="goals"]:checked'))
+            notes = document.getElementById('personalNotes').value.trim();
+            suggestions = document.getElementById('suggestions').value.trim();
+            selectedGoals = Array.from(document.querySelectorAll('input[name="goals"]:checked'))
                 .map(checkbox => checkbox.nextElementSibling.textContent);
 
             // Store notes for display in results
@@ -734,7 +736,7 @@
 
         function showResults() {
             // Calculate scores
-            console.log(testScores);
+            // console.log(testScores);
             const hollandScore = calculateTestScore(testScores.holland);
             const mbtiScore = calculateTestScore(testScores.mbti);
             const miScore = calculateTestScore(testScores.mi);
@@ -751,10 +753,14 @@
             const mbtiLevel = getConfidenceLevel(mbtiScore);
             const miLevel = getConfidenceLevel(miScore);
             const overallLevel = getConfidenceLevel(overallScore);
-
+            // console.log({ hollandLevel, mbtiLevel, miLevel, overallLevel })
+            console.log(notes, selectedGoals, suggestions)
+            const qus = [...document.querySelectorAll(".question-group")].map(x => { return { name: x.querySelector("h3").innerText, val: x.querySelector("div.selected").dataset.value } })
             var data = new URLSearchParams();
-            data.append('data', JSON.stringify({ hollandLevel, mbtiLevel, miLevel, overallLevel }));
+            data.append('data', JSON.stringify({ qus, notes, selectedGoals, suggestions }));
             data.append('type', 'rate');
+            data.append('ob', '1');
+
             fetch('saveExam', {
                 method: 'POST',
                 headers: {

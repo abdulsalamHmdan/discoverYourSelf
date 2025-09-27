@@ -641,7 +641,7 @@
 
             // عرض المعلومات الأساسية
             document.getElementById('result-name').textContent = testState.userName;
-            document.getElementById('total-time').textContent = formatTime(Date.now() - testState.startedAt);
+            document.getElementById('total-time').textContent = formatTime(testState.questionEndTime);
             document.getElementById('confidence-level').textContent = calculateConfidenceLevel();
 
             // عرض أعلى 3 أبعاد

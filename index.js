@@ -143,6 +143,7 @@ const client = new MongoClient(url);
 //     "email": "test1@gmail.com"
 //   }
 // ]
+
 function isAuthenticated(req, res, next) {
     if (req.session.user) next()
     else next('route')
@@ -159,7 +160,14 @@ function isAdmin(req, res, next) {
 //     await collection.insertMany(data)
 //     client.close()
 //     res.send(",jhsaxhg");
-
+// })
+// app.get('/data', async function (req, res) {
+//     await client.connect();
+//     const db = client.db("soqy");
+//     const collection = db.collection('users');
+//     await collection.deleteMany()
+//     client.close()
+//     res.send(",jhsaxhg");
 // })
 
 app.get('/', isAuthenticated, function (req, res) {
@@ -269,10 +277,11 @@ app.get('/end', isAuthenticated, async function (req, res) {
     const collection = db.collection('users');
     const user = await collection.findOne({ idNumber: req.session.user })
     client.close()
-    // const p1 = user.stat?.p1 ? JSON.parse(user.stat.p1).tops : null;
-    const tops = user.stat?.p2 ? JSON.parse(user.stat.p2).tops : null;
-    // const p3 = user.stat?.p3 ? JSON.parse(user.stat.p3).tops : null;
-    res.render("end", { user: req.session, p1: user.stat.p1, p3: user.stat.p3, p2: user.stat.p3, tops });
+    const p1 = user.stat?.p1 ? user.stat.p1.tops : null;
+    const p2 = user.stat?.p2 ? user.stat.p2 : null;
+    const p3 = user.stat?.p3 ? user.stat.p3.tops : null;
+    const time = new Date(+user.stat.end) - new Date(+user.stat.start)
+    res.render("end", { user: req.session, time: time, p1, p2, p3 });
 })
 
 app.get('/end', function (req, res) {
@@ -311,10 +320,10 @@ app.get('/admin', isAdmin, async function (req, res) {
             studentId: x.idNumber,
             status: prog,
             completion: completion,
-            riasec: ["A", "S", "E"],
-            mbti: "ENFP",
-            startTime: "2024-01-13 11:15",
-            endTime: "2024-01-13 12:00"
+            riasec: x?.stat?.p1?.tops?.map(l => l.dim),
+            mbti: x?.stat?.p2?.type,
+            startTime: +x?.stat?.start,
+            endTime: +x?.stat?.end
         }
     })
     res.render("adminPage", { data: JSON.stringify(user) });
@@ -329,7 +338,7 @@ app.get('/admin/Results/:id/:exam', isAdmin, async function (req, res) {
     const collection = db.collection('users');
     const user = await collection.findOne({ idNumber: req.params.id })
     if (user[req.params.exam]) {
-        res.render(`${req.params.exam}Result`, { [req.params.exam]: user[req.params.exam], name: user.name, from: "show" });
+        res.render(`${req.params.exam}Result`, { [req.params.exam]: JSON.stringify(user[req.params.exam]), name: user.name, from: "show" });
         return;
     }
     res.send('notFound');
@@ -347,9 +356,9 @@ app.get('/admin/end/:id', async function (req, res) {
     const user = await collection.findOne({ idNumber: req.params.id })
     client.close()
     if (user) {
-        const p1 = user.stat?.p1 ? JSON.parse(user.stat.p1).tops : null;
-        const p2 = user.stat?.p2 ? JSON.parse(user.stat.p2).tops : null;
-        const p3 = user.stat?.p3 ? JSON.parse(user.stat.p3).tops : null;
+        const p1 = user.stat?.p1 ? user.stat.p1.tops : null;
+        const p2 = user.stat?.p2 ? user.stat.p2 : null;
+        const p3 = user.stat?.p3 ? user.stat.p3.tops : null;
         res.render("studentPage", { id: user.idNumber, name: user.name, p1, p2, p3 });
     } else {
         res.redirect('admin');
@@ -369,7 +378,7 @@ app.get('/Results/:exam', isAuthenticated, async function (req, res) {
     const collection = db.collection('users');
     const user = await collection.findOne({ idNumber: req.session.user })
     if (user[req.params.exam]) {
-        res.render(`${req.params.exam}Result`, { [req.params.exam]: user[req.params.exam], name: req.session.name, from: "show" });
+        res.render(`${req.params.exam}Result`, { [req.params.exam]: JSON.stringify(user[req.params.exam]), name: req.session.name, from: "show" });
         return;
     }
     res.send('notFound');
@@ -381,7 +390,7 @@ app.get('/Results/:id/:exam', async function (req, res) {
     const collection = db.collection('users');
     const user = await collection.findOne({ idNumber: req.params.id })
     if (user[req.params.exam]) {
-        res.render(`${req.params.exam}Result`, { [req.params.exam]: user[req.params.exam], name: user.name, from: "show" });
+        res.render(`${req.params.exam}Result`, { [req.params.exam]: JSON.stringify(user[req.params.exam]), name: user.name, from: "show" });
         return;
     }
     res.send('notFound');
@@ -425,8 +434,9 @@ app.post('/saveExam', async function (req, res) {
     await client.connect();
     const db = client.db("soqy");
     const collection = db.collection('users');
-    // console.log(req.body)
-    await collection.updateOne({ idNumber: req.session.user }, { $set: { [req.body.type]: req.body.data } }).then(() => {
+    console.log(req.body.type.startsWith("p"))
+    let object = { [req.body.type]: req.body.ob == "1" ? JSON.parse(req.body.data) : req.body.data, ["stat.end"]: `${Date.now()}` }
+    await collection.updateOne({ idNumber: req.session.user }, { $set: object }).then(() => {
         req.session[req.body.type] = "done"
         req.session.save(function (err) {
             if (err) return next(err)

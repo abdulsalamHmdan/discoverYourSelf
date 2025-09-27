@@ -2642,6 +2642,7 @@
             var data = new URLSearchParams();
             data.append('data', JSON.stringify(scores));
             data.append('type', 'p3');
+            data.append('ob', '1');
             fetch('saveExam', {
                 method: 'POST',
                 headers: {
@@ -2675,6 +2676,7 @@
             var data = new URLSearchParams();
             data.append('data', JSON.stringify({ tops: topThree, time: Date.now() - startTime }));
             data.append('type', 'stat.p3');
+            data.append('ob', '1');
             fetch('saveExam', {
                 method: 'POST',
                 headers: {

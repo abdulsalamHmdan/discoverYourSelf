@@ -703,9 +703,7 @@
     </div>
 
     <script>
-        const p1 = JSON.parse('<%-p1%>');
-        const p2 = JSON.parse('<%-p2%>');
-        const p3 = JSON.parse('<%-p3%>');
+
         function formatTime(ms) {
             const minutes = Math.floor(ms / 60000);
             const seconds = Math.floor((ms % 60000) / 1000);
@@ -717,8 +715,8 @@
                 location.href = `results/${x.id}`
             })
         })
-        console.log(formatTime(p1.time) , formatTime(p2.time) , formatTime(p3.time))
-        document.querySelector(".totalTime").innerText = formatTime(p1.time + p2.time + p3.time)
+        // console.log(formatTime(p1.time) , formatTime(p2.time) , formatTime(p3.time))
+        document.querySelector(".totalTime").innerText = formatTime('<%=time%>')
         console.log(p3)
         // Create floating particles
         function createParticle() {
@@ -859,31 +857,24 @@
                             </div>
 
                             <div class="space-y-2">
+
+                            <% p1.forEach(function(item) { %>
+                                <div class="space-y-2">
                                 <div class="flex justify-between">
-                                    <span class="text-sm">${p1.tops[0].arabicName} (${p1.tops[0].englishName})</span>
-                                    <span class="font-bold text-blue-600">${Math.round(p1.tops[0].percentages)}%</span>
+                                    <span class="text-sm">
+                                    <%=item.arabicName%> (<%=item.englishName%>)
+                                    </span>
+                                    <span class="font-bold text-blue-600">
+                                    <%=Math.round(item.percentages)%>%
+                                    </span>
                                 </div>
                                 <div class="w-full bg-gray-200 rounded-full h-2">
-                                    <div class="bg-blue-500 h-2 rounded-full" style="width: ${Math.round(p1.tops[0].percentages)}%"></div>
+                                    <div class="bg-blue-500 h-2 rounded-full" style="width:<%=Math.round(item.percentages)%>%"></div>
                                 </div>
+
+                                </div>
+                            <% }); %>
                                 
-                                <div class="flex justify-between">
-                                    <span class="text-sm">${p1.tops[1].arabicName} (${p1.tops[1].englishName})</span>
-                                    <span class="font-bold text-blue-600">${Math.round(p1.tops[1].percentages)}%</span>
-                                </div>
-                                <div class="w-full bg-gray-200 rounded-full h-2">
-                                    <div class="bg-blue-500 h-2 rounded-full" style="width: ${Math.round(p1.tops[1].percentages)}%"></div>
-                                </div>
-
-                                <div class="flex justify-between">
-                                    <span class="text-sm">${p1.tops[2].arabicName} (${p1.tops[2].englishName})</span>
-                                    <span class="font-bold text-blue-600">${Math.round(p1.tops[2].percentages)}%</span>
-                                </div>
-                                <div class="w-full bg-gray-200 rounded-full h-2">
-                                    <div class="bg-blue-500 h-2 rounded-full" style="width: ${Math.round(+p1.tops[2].percentages)}%"></div>
-                                </div>
-
-
                             </div>
                         </div>
                         
@@ -898,11 +889,11 @@
                             <div class="text-center">
                                 <div class="bg-purple-100 rounded-lg p-4 mb-3">
                                 <div class="personalityType text-sm text-gray-600">
-                                    تحليل المحاور الاربعة
+                                    <%=p2.pers%> - <%=p2.type%>
                                 </div>
                                 </div>
                                 <div class="grid grid-cols-2 gap-2 text-xs">
-                  <% tops.forEach(function(item) { %>
+                  <% p2.tops.forEach(function(item) { %>
                     <div class="bg-purple-200 rounded px-2 py-1">
                       <%=item.name%> - <%=item.persent%>%
                     </div>
@@ -920,34 +911,24 @@
                                 <h3 class="text-xl font-bold text-gray-800">الذكاءات المتعددة</h3>
                             </div>
 
-                            <div class="space-y-2">
+                            <% p3.forEach(function(item) { %>
+                                <div class="space-y-2">
                                 <div class="flex justify-between">
-                                    <span class="text-sm">${p3.tops[0].name}</span>
-                                    <span class="font-bold text-orange-600">${p3.tops[0].score}%</span>
+                                    <span class="text-sm">
+                                    <%= item.name %>
+                                    </span>
+                                    <span class="font-bold text-orange-600">
+                                    <%=Math.round(item.score) %>%
+                                    </span>
                                 </div>
                                 <div class="w-full bg-gray-200 rounded-full h-2">
-                                    <div class="bg-orange-500 h-2 rounded-full" style="width: ${p3.tops[0].score}%"></div>
+                                    <div class="bg-orange-500 h-2 rounded-full" style="width: <%=Math.round(item.score) %>%"></div>
                                 </div>
-                            </div>
-                            <div class="space-y-2">
-                                <div class="flex justify-between">
-                                    <span class="text-sm">${p3.tops[1].name}</span>
-                                    <span class="font-bold text-orange-600">${p3.tops[1].score}%</span>
                                 </div>
-                                <div class="w-full bg-gray-200 rounded-full h-2">
-                                    <div class="bg-orange-500 h-2 rounded-full" style="width: ${p3.tops[1].score}%"></div>
-                                </div>
-                            </div>
+                            <% }); %>
 
-                            <div class="space-y-2">
-                                <div class="flex justify-between">
-                                    <span class="text-sm">${p3.tops[2].name}</span>
-                                    <span class="font-bold text-orange-600">${p3.tops[2].score}%</span>
-                                </div>
-                                <div class="w-full bg-gray-200 rounded-full h-2">
-                                    <div class="bg-orange-500 h-2 rounded-full" style="width: ${p3.tops[2].score}%"></div>
-                                </div>
-                            </div>
+
+
 
 
                         </div>

@@ -704,6 +704,7 @@
         let lastAnswerTime = 0;
         let consistencyScore = 100;
         let focusBreaksShown = [];
+        let testState;
 
         // Path 1: Comprehensive (24 questions)
         const path1Questions = [
@@ -2330,7 +2331,7 @@
 
 
                     // عرض النتائج
-                    let testState = {
+                    testState = {
                         currentQuestion: currentQuestion,
                         answers: answers,
                         scores: scores,
@@ -2355,11 +2356,11 @@
                         consistencyScore: consistencyScore,
                         focusBreaksShown: focusBreaksShown
                     };
-                    console.log(JSON.stringify(testState))
+                    testState.endTime = Date.now() - startTheTime;
                     var data = new URLSearchParams();
                     data.append('data', JSON.stringify(testState));
                     data.append('type', 'p2');
-
+                    data.append('ob', '1');
                     fetch('saveExam', {
                         method: 'POST',
                         headers: {
@@ -2935,15 +2936,16 @@
                 // alert('حدث خطأ في عرض النتائج. يرجى إعادة تحميل الصفحة.');
             }
         }
-
+        let personality;
+        let type;
         function populateResults() {
             console.log('📊 populateResults() called');
 
             try {
-                const type = calculatePersonalityType();
+                type = calculatePersonalityType();
                 console.log('✅ Calculated personality type:', type);
 
-                const personality = personalityTypes[type] || personalityTypes['ENFP'];
+                personality = personalityTypes[type] || personalityTypes['ENFP'];
                 console.log('✅ Personality data:', personality);
 
                 const totalQuestions = Object.values(allPathAnswers).reduce((sum, pathAnswers) => sum + pathAnswers.length, 0);
@@ -4225,11 +4227,11 @@
                 `;
             }).join('');
 
-            console.log(sfat)
+            // console.log("aaaaaaaaaaaaaaaaaaaaa", testState.endTime)
             var data = new URLSearchParams();
-            data.append('data', JSON.stringify({ tops: sfat, time: Date.now() - startTheTime }));
+            data.append('data', JSON.stringify({ tops: sfat, time: testState.endTime, pers: personality.name, type }));
             data.append('type', 'stat.p2');
-
+            data.append('ob', '1');
             fetch('saveExam', {
                 method: 'POST',
                 headers: {
