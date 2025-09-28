@@ -120,17 +120,12 @@
 
 
           <!-- Empty div for future data -->
-          <% if(p2.tops) { %>
+          <% if(p2?.tops) { %>
 
             <div class="bg-gray-50 rounded-lg p-4 mb-4 min-h-[100px] border-2 border-dashed border-gray-300">
-
-
               <div class="text-center">
                 <div class="bg-purple-100 rounded-lg p-4 mb-3">
                   <div class="personalityType text-sm text-gray-600"><%=p2.pers%> - <%=p2.type%></div>
-                  <!-- <div class="personalityType text-sm text-gray-600">
-                    تحليل المحاور الاربعة
-                  </div> -->
                 </div>
                 <div class="grid grid-cols-2 gap-2 text-xs">
                   <% p2.tops.forEach(function(item) { %>
@@ -138,7 +133,6 @@
                       <%=item.name%> - <%=item.persent%>%
                     </div>
                     <% }); %>
-
                 </div>
               </div>
             </div>
