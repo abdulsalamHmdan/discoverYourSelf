@@ -518,7 +518,7 @@ app.post('/saveExam', async function (req, res) {
     await client.connect();
     const db = client.db("soqy");
     const collection = db.collection('users');
-    console.log(req.body.type.startsWith("p"))
+    // console.log(req.body.type.startsWith("p"))
     let object = { [req.body.type]: req.body.ob == "1" ? JSON.parse(req.body.data) : req.body.data, ["stat.end"]: `${Date.now()}` }
     await collection.updateOne({ idNumber: req.session.user }, { $set: object }).then(() => {
         req.session[req.body.type] = "done"

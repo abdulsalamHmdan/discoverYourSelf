@@ -759,10 +759,10 @@
                     </div>
 
                     <div class="flex gap-3">
-                        <button id="finishTestBtn"
+                        <!-- <button id="finishTestBtn"
                             class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors font-semibold hidden">
                             🏁 إنهاء الاختبار
-                        </button>
+                        </button> -->
                         <button id="nextBtn"
                             class="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
                             التالي
@@ -1903,10 +1903,6 @@
                 // إضافة مستمعي الأحداث
                 addQuestionEventListeners(question, index);
 
-                // استراحة منتصف الطريق
-                if (index === 20) {
-                    showMidwayBreak();
-                }
             }, 200);
         }
 
@@ -2312,7 +2308,7 @@
         function updateNavigationButtons() {
             const prevBtn = document.getElementById('prevBtn');
             const nextBtn = document.getElementById('nextBtn');
-            const finishBtn = document.getElementById('finishTestBtn');
+            // const finishBtn = document.getElementById('finishTestBtn');
 
             prevBtn.disabled = currentQuestionIndex === 0;
             nextBtn.disabled = !answers[currentQuestionIndex];
@@ -2321,11 +2317,11 @@
             const answeredCount = Object.keys(answers).length;
             const completionPercentage = (answeredCount / questions.length) * 100;
 
-            if (completionPercentage >= 75) {
-                finishBtn.classList.remove('hidden');
-            } else {
-                finishBtn.classList.add('hidden');
-            }
+            // if (completionPercentage >= 75) {
+            //     finishBtn.classList.remove('hidden');
+            // } else {
+            //     finishBtn.classList.add('hidden');
+            // }
 
             // تحديث نص زر التالي في السؤال الأخير
             if (currentQuestionIndex === questions.length - 1) {
@@ -2357,9 +2353,9 @@
         });
 
         // زر إنهاء الاختبار
-        document.getElementById('finishTestBtn').addEventListener('click', function () {
-            showReviewModal();
-        });
+        // document.getElementById('finishTestBtn').addEventListener('click', function () {
+        //     showReviewModal();
+        // });
 
         // زر الأسئلة غير المجابة
         document.getElementById('goToUnansweredBtn').addEventListener('click', function () {
@@ -2577,10 +2573,6 @@
             return -1;
         }
 
-        // عرض النتائج (الوظيفة القديمة محدثة)
-        function showResults() {
-            showReviewModal();
-        }
 
         // إظهار نافذة الاختبار غير المكتمل
         function showIncompleteTestModal(answeredQuestions, totalQuestions) {
