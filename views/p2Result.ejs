@@ -303,13 +303,15 @@
                     <% if(from=="show" ) { %>
                         <div class="text-center space-x-4 space-x-reverse noP">
                             <button onclick="downloadPDF()"
-                                class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 transform hover:scale-105">
+                                class="bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300 transform hover:scale-105">
                                 📄 حفظ كـ PDF
                             </button>
-                            <!-- <button onclick="restartTest()"
-                            class="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300">
-                            الانتقال الى الاختبار الثالث (الذكاءات)
-                        </button> -->
+                            <button onclick="(()=>{history.back()})()"
+                                class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition-colors">
+                                <span>↪️</span>
+                                <span>عودة</span>
+                            </button>
+
                         </div>
                         <% } %>
 
@@ -320,7 +322,7 @@
 
     <script>
         // Test state
-        let testState = <%-p2 %>;
+        let testState = <% -p2 %>;
         let currentQuestion = testState.currentQuestion;
         let answers = testState.answers;
         let scores = testState.scores;

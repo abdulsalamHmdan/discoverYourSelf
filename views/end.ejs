@@ -349,6 +349,18 @@
             background: linear-gradient(45deg, #ffd700, #ffed4e);
             box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
         }
+
+        .showResults {
+            cursor: pointer;
+        }
+
+        @media print {
+            .noP {
+                display: none;
+            }
+
+
+        }
     </style>
     <style>
         .whatsapp-float {
@@ -375,6 +387,7 @@
             box-shadow: 0 10px 24px rgba(0, 0, 0, .3);
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 </head>
 
 <body class="overflow-x-hidden">
@@ -414,6 +427,8 @@
             <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">
                 مبروك! <%=user.name%> لقد أنهيت جميع اختباراتك الثلاث بنجاح
             </h1>
+            <p class="text-white">للاطّلاع على نسخة المقياس بصيغة PDF، انقر على زر (تحميل/طباعة المقياس). ستجد خيار الطباعة متاحًا أسفل صفحة كل مقياس." ✅
+</p>
         </div>
 
         <!-- Tests Completed Cards -->
@@ -441,8 +456,9 @@
                                     </span>
                                 </div>
                                 <div class="w-full bg-gray-200 rounded-full h-2">
-                                    <div class="bg-blue-500 h-2 rounded-full"
-                                        style="width:<%=Math.round(item.percentages)%>%"></div>
+                                    <div class="bg-blue-500 h-2 rounded-full" style=<%="width:"
+                                        +Math.round(item.percentages)+"%" %>>
+                                    </div>
                                 </div>
 
                             </div>
@@ -454,7 +470,6 @@
                         class="showResults bg-gradient-to-r from-green-400 to-green-500 text-white px-6 py-2 rounded-full text-sm font-bold shadow-lg">
                         استعراض النتائج
                     </div>
-
                 </div>
 
             </div>
@@ -492,7 +507,7 @@
             </div>
 
             <!-- Multiple Intelligences Test -->
-            <div id="p3"
+            <div
                 class="group relative bg-gradient-to-br from-orange-50 to-orange-100 rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 border border-orange-200 overflow-hidden">
 
                 <div class="relative text-center">
@@ -515,15 +530,15 @@
                                     </span>
                                 </div>
                                 <div class="w-full bg-gray-200 rounded-full h-2">
-                                    <div class="bg-orange-500 h-2 rounded-full"
-                                        style="width: <%=Math.round(item.score) %>%"></div>
+                                    <div class="bg-orange-500 h-2 rounded-full" style=<%="width:"
+                                        +Math.round(item.score)+"%" %>></div>
                                 </div>
                             </div>
                             <% }); %>
                     </div>
 
-                    <div
-                        class="bg-gradient-to-r from-green-400 to-green-500 text-white px-6 py-2 rounded-full text-sm font-bold shadow-lg">
+                    <div id="p3"
+                        class="showResults bg-gradient-to-r from-green-400 to-green-500 text-white px-6 py-2 rounded-full text-sm font-bold shadow-lg">
                         استعراض النتائج
                     </div>
                 </div>
@@ -551,11 +566,16 @@
                     <div class="text-sm text-gray-600 mb-1">نسبة التقدّم الكلي</div>
                     <div class="text-2xl font-bold text-purple-600">100%</div>
                 </div>
+                <!-- <div class="bg-purple-50 rounded-lg p-4">
+                    <div class="text-3xl text-purple-600 mb-2">📊</div>
+                    <div class="text-sm text-gray-600 mb-1">تنزيل صورة من النتائج</div>
+                    <div class="text-2xl font-bold text-purple-600">100%</div>
+                </div> -->
             </div>
         </div>
 
         <!-- Motivational Message -->
-        <div class="text-center mb-12 fade-in">
+        <div class="noP text-center mb-12 fade-in">
             <div
                 class="relative bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-600 text-white rounded-xl p-6 shadow-xl overflow-hidden border border-emerald-300 max-w-4xl mx-auto">
                 <!-- Floating Elements -->
@@ -575,7 +595,7 @@
         </div>
 
         <!-- Footer -->
-        <footer class="text-center text-white opacity-75 fade-in">
+        <footer class="noP text-center text-white opacity-75 fade-in">
             <div class="border-t border-white border-opacity-20 pt-6">
                 <p class="mb-2">👨‍💻 تم التطوير بواسطة: حمد السليم & عبدالسلام الشرقي — فريق Spark_HA</p>
                 <p class="text-sm">©️ 2025 جميع الحقوق محفوظة — All Rights Reserved 🌟</p>
@@ -632,6 +652,28 @@
             }
         `;
         document.head.appendChild(style);
+
+
+        document.querySelector(".saveImg").addEventListener("click", function () {
+            let cont = document.createElement("div");
+            cont.className = "testCards grid md:grid-cols-3 gap-8 mb-12 bg-white";
+            cont.innerHTML = document.querySelector(".testCards").innerHTML;
+            // نخفيه عن المستخدم
+            cont.style.position = "fixed";
+            cont.style.left = "-9999px";
+            cont.style.padding = "15px";
+            document.body.appendChild(cont);
+            html2canvas(cont, { scale: 2 }).then(canvas => {
+                // تحويل الصورة base64
+                let image = canvas.toDataURL("image/png");
+                // إنشاء رابط تنزيل
+                let link = document.createElement("a");
+                link.href = image;
+                link.download = "screenshot.png"; // اسم الملف
+                link.click(); // تشغيل التحميل تلقائي
+                document.body.removeChild(cont);
+            });
+        });
 
 
         // Celebration sound effect simulation (visual feedback)

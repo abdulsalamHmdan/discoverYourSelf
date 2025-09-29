@@ -208,13 +208,14 @@
         <% if(from=="show" ) { %>
             <div class="flex flex-wrap justify-center gap-4 noP">
                 <button id="downloadPdfBtn"
-                    class="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition-colors flex items-center gap-2">
-                    📄 تحميل PDF
+                    class="bg-red-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-red-700 transition-colors flex items-center gap-2">
+                    📄 حفظ كـ PDF
                 </button>
-                <!-- <button id="retakeBtn"
-                class="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition-colors">
-                الانتقال الى التقييم
-            </button> -->
+                <button onclick="(()=>{history.back()})()"
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition-colors flex items-center gap-2">
+                    <span>↪️</span>
+                    <span>عودة</span>
+                </button>
             </div>
             <% } %>
 

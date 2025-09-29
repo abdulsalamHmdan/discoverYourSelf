@@ -1,6 +1,5 @@
 var express = require('express')
 var session = require('express-session')
-var session = require('express-session')
 const puppeteer = require('puppeteer');
 const pdf = require("html-pdf-node");
 
@@ -16,7 +15,7 @@ const path = require("path");
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join(__dirname, 'public')));
-const { MongoClient, Admin } = require('mongodb');
+const { MongoClient} = require('mongodb');
 const ejs = require('ejs');
 const url = "mongodb+srv://family:aS0507499583@cluster0.dvljyns.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(url);
