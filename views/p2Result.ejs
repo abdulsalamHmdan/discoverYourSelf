@@ -322,7 +322,7 @@
 
     <script>
         // Test state
-        let testState = <% -p2 %>;
+        let testState = <%-p2 %>;
         let currentQuestion = testState.currentQuestion;
         let answers = testState.answers;
         let scores = testState.scores;
@@ -2448,10 +2448,10 @@
                 incrementCompletedTests();
 
                 // التحقق من صحة النتائج قبل العرض
-                const validationResult = validateResults();
-                if (!validationResult.isValid) {
-                    console.warn('⚠️ تحذير: مشاكل في صحة النتائج:', validationResult.issues);
-                }
+                // const validationResult = validateResults();
+                // if (!validationResult.isValid) {
+                //     console.warn('⚠️ تحذير: مشاكل في صحة النتائج:', validationResult.issues);
+                // }
 
                 // إخفاء شاشة الاختبار وإظهار النتائج
                 const testScreen = document.getElementById('testScreen');
@@ -2644,11 +2644,11 @@
 
                 // عرض تحذيرات الصحة إذا لزم الأمر
                 try {
-                    const validationResult = validateResults();
-                    if (!validationResult.isValid) {
-                        showValidationWarnings(validationResult.issues);
-                        console.log('⚠️ Validation warnings shown');
-                    }
+                    // const validationResult = validateResults();
+                    // if (!validationResult.isValid) {
+                    //     showValidationWarnings(validationResult.issues);
+                    //     console.log('⚠️ Validation warnings shown');
+                    // }
                 } catch (error) {
                     console.error('❌ Error in validation:', error);
                 }
@@ -4031,16 +4031,12 @@
                                                             <!-- النقاط والنسب -->
                                                             <div class="flex justify-center items-center space-x-4 space-x-reverse mb-4">
                                                                 <div class="text-center">
-                                                                    <div class="text-2xl font-bold text-${pair.color}-700">${dim.value}</div>
+                                                                    <div class="text-2xl font-bold text-${pair.color}-700">${dim.value || 'متوازن'}</div>
                                                                     <div class="text-xs text-gray-500">نقطة</div>
                                                                 </div>
                                                                 <div class="text-center">
                                                                     <div class="text-xl font-bold text-${pair.color}-600">${percentage}%</div>
                                                                     <div class="text-xs text-gray-500">من البُعد</div>
-                                                                </div>
-                                                                <div class="text-center">
-                                                                    <div class="text-lg font-bold text-gray-600">${globalPercentage}%</div>
-                                                                    <div class="text-xs text-gray-500">من الإجمالي</div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -4052,7 +4048,7 @@
                                                                 <div class="w-16 bg-gray-200 rounded-full relative overflow-hidden shadow-inner" style="height: ${maxHeight}px;">
                                                                     <!-- العمود المملوء -->
                                                                     <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t ${dim.gradient} rounded-full transition-all duration-1500 shadow-lg group-hover:shadow-xl" 
-                                                                         style="height: ${barHeight}px; animation: fillUp 1.5s ease-out ${animationDelay}ms both;">
+                                                                         style="height: ${barHeight}px;">
                                                                         
                                                                         <!-- تأثيرات بصرية -->
                                                                         <div class="absolute inset-0 bg-gradient-to-t from-transparent via-white/20 to-white/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
@@ -4121,9 +4117,9 @@
                                                 <div class="w-full bg-gray-200 rounded-full h-4 overflow-hidden shadow-inner">
                                                     <div class="flex h-full">
                                                         <div class="bg-gradient-to-r ${dim1.gradient} transition-all duration-1500" 
-                                                             style="width: ${dim1Percentage}%; animation: expandWidth 1.5s ease-out ${pairIndex * 300 + 500}ms both;"></div>
+                                                             style="width: ${dim1Percentage}%;"></div>
                                                         <div class="bg-gradient-to-r ${dim2.gradient} transition-all duration-1500" 
-                                                             style="width: ${dim2Percentage}%; animation: expandWidth 1.5s ease-out ${pairIndex * 300 + 700}ms both;"></div>
+                                                             style="width: ${dim2Percentage}%;"></div>
                                                     </div>
                                                 </div>
                                                 <div class="flex justify-between text-xs text-gray-600 mt-1">

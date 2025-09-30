@@ -1528,7 +1528,7 @@
         }
 
         function startPath(pathNumber) {
-            console.log(`Starting path ${pathNumber}. Completed paths: [${completedPaths.join(', ')}]`);
+            // console.log(`Starting path ${pathNumber}. Completed paths: [${completedPaths.join(', ')}]`);
 
             currentPath = pathNumber;
             currentQuestion = 0;
@@ -1545,7 +1545,7 @@
                 case 5: currentQuestions = path5Questions; break;
             }
 
-            console.log(`Path ${pathNumber} has ${currentQuestions.length} questions`);
+            // console.log(`Path ${pathNumber} has ${currentQuestions.length} questions`);
 
             // Load any saved answers for this path
             // loadSavedAnswersForPath(pathNumber);
@@ -1586,7 +1586,7 @@
                                     scores[dim] += dimensionScores[dim];
                                 });
                             } catch (e) {
-                                console.log('Could not restore scores');
+                                // console.log('Could not restore scores');
                             }
                         }
                     }
@@ -1751,7 +1751,7 @@
                             setRank(parseInt(itemIndex), rank);
                         });
                     } catch (e) {
-                        console.log('Could not restore ranking');
+                        // console.log('Could not restore ranking');
                     }
                 } else if (question.type === 'checkbox' && previousAnswer.answer) {
                     const selectedAnswers = previousAnswer.answer.split(', ');
@@ -2129,13 +2129,13 @@
                 return; // لا توجد إجابة سابقة
             }
 
-            console.log(`إزالة النقاط السابقة للسؤال ${questionIndex} في المسار ${pathNum}:`, existingAnswer.dimension);
+            // console.log(`إزالة النقاط السابقة للسؤال ${questionIndex} في المسار ${pathNum}:`, existingAnswer.dimension);
 
             if (typeof existingAnswer.dimension === 'string') {
                 // إجابة بسيطة (بُعد واحد)
                 if (scores[existingAnswer.dimension] > 0) {
                     scores[existingAnswer.dimension]--;
-                    console.log(`تم خصم نقطة من ${existingAnswer.dimension}: ${scores[existingAnswer.dimension] + 1} → ${scores[existingAnswer.dimension]}`);
+                    // console.log(`تم خصم نقطة من ${existingAnswer.dimension}: ${scores[existingAnswer.dimension] + 1} → ${scores[existingAnswer.dimension]}`);
                 }
             } else if (existingAnswer.dimension.includes(':') || typeof existingAnswer.dimension === 'object') {
                 // إجابة معقدة (مقياس، ترتيب، خيارات متعددة)
@@ -2162,17 +2162,18 @@
                         if (scores.hasOwnProperty(dim)) {
                             const previousScore = scores[dim];
                             scores[dim] = Math.max(0, scores[dim] - dimensionScores[dim]);
-                            console.log(`تم خصم ${dimensionScores[dim]} نقطة من ${dim}: ${previousScore} → ${scores[dim]}`);
+                            // console.log(`تم خصم ${dimensionScores[dim]} نقطة من ${dim}: ${previousScore} → ${scores[dim]}`);
                         }
                     });
+                    console.log("lllllll",scores)
 
                 } catch (e) {
                     console.error('خطأ في إزالة النقاط السابقة:', e);
-                    console.log('البيانات المشكلة:', existingAnswer.dimension);
+                    // console.log('البيانات المشكلة:', existingAnswer.dimension);
                 }
             }
 
-            console.log('النقاط بعد الإزالة:', scores);
+            // console.log('النقاط بعد الإزالة:', scores);
         }
 
         // function saveAnswerToStorage(questionData) {
@@ -2300,15 +2301,15 @@
                 completedPaths.push(currentPath);
                 allPathAnswers[currentPath] = [...answers];
 
-                console.log(`Path ${currentPath} completed. Total completed paths: ${completedPaths.length}`);
-                console.log('Completed paths:', completedPaths);
+                // console.log(`Path ${currentPath} completed. Total completed paths: ${completedPaths.length}`);
+                // console.log('Completed paths:', completedPaths);
 
                 // Check if all 5 paths are completed
                 if (completedPaths.length >= 5) {
                     // All paths completed - show results directly
-                    console.log('🎉 All 5 paths completed! Showing results directly...');
-                    console.log('Final scores before results:', scores);
-                    console.log('All path answers:', Object.keys(allPathAnswers).map(k => `Path ${k}: ${allPathAnswers[k].length} answers`));
+                    // console.log('🎉 All 5 paths completed! Showing results directly...');
+                    // console.log('Final scores before results:', scores);
+                    // console.log('All path answers:', Object.keys(allPathAnswers).map(k => `Path ${k}: ${allPathAnswers[k].length} answers`));
 
                     // إظهار رسالة إكمال سريعة
                     const completionMessage = document.createElement('div');
@@ -2402,11 +2403,11 @@
             // البحث عن أول مسار غير مكتمل
             for (let i = 1; i <= 5; i++) {
                 if (!completedPaths.includes(i)) {
-                    console.log(`Found next path: ${i}`);
+                    // console.log(`Found next path: ${i}`);
                     return i;
                 }
             }
-            console.log('No more paths available');
+            // console.log('No more paths available');
             return null;
         }
 
@@ -2495,14 +2496,14 @@
 
             const nextPath = getNextPath();
             if (nextPath) {
-                console.log(`Moving to next path: ${nextPath}`);
+                // console.log(`Moving to next path: ${nextPath}`);
                 // Reset for next path and start immediately
                 currentQuestion = 0;
                 answers = [];
                 startPath(nextPath);
             } else {
                 // No more paths - show results directly
-                console.log('No more paths, showing results directly...');
+                // console.log('No more paths, showing results directly...');
                 showResults();
             }
         }
@@ -2846,11 +2847,6 @@
         }
 
         function showResults() {
-            console.log('🎯 showResults() called');
-            console.log('Current scores:', scores);
-            console.log('All path answers:', allPathAnswers);
-            console.log('Completed paths:', completedPaths);
-
             try {
                 stopTimer();
 
@@ -2858,21 +2854,15 @@
                 incrementCompletedTests();
 
                 // التحقق من صحة النتائج قبل العرض
-                const validationResult = validateResults();
-                if (!validationResult.isValid) {
-                    console.warn('⚠️ تحذير: مشاكل في صحة النتائج:', validationResult.issues);
-                }
+                // const validationResult = validateResults();
+                // if (!validationResult.isValid) {
+                //     console.warn('⚠️ تحذير: مشاكل في صحة النتائج:', validationResult.issues);
+                // }
 
                 // إخفاء شاشة الاختبار وإظهار النتائج
                 const testScreen = document.getElementById('testScreen');
                 const progressContainer = document.getElementById('progressContainer');
                 const resultsScreen = document.getElementById('resultsScreen');
-
-                console.log('🔍 Elements found:', {
-                    testScreen: !!testScreen,
-                    progressContainer: !!progressContainer,
-                    resultsScreen: !!resultsScreen
-                });
 
                 if (testScreen) testScreen.classList.add('fade-out');
 
@@ -2888,9 +2878,7 @@
                             resultsScreen.classList.add('fade-in');
                         }
 
-                        console.log('✅ Screen transition completed, calling populateResults...');
 
-                        // ملء البيانات
                         populateResults();
 
                     } catch (error) {
@@ -2909,7 +2897,7 @@
 
         // وظيفة احتياطية لعرض النتائج مباشرة
         function forceShowResults() {
-            console.log('🚨 Force showing results...');
+            // console.log('🚨 Force showing results...');
 
             // إخفاء جميع الشاشات الأخرى
             const allScreens = ['welcomeScreen', 'testScreen', 'progressContainer'];
@@ -2939,19 +2927,19 @@
         let personality;
         let type;
         function populateResults() {
-            console.log('📊 populateResults() called');
+            // console.log('📊 populateResults() called');
 
             try {
                 type = calculatePersonalityType();
-                console.log('✅ Calculated personality type:', type);
+                // console.log('✅ Calculated personality type:', type);
 
                 personality = personalityTypes[type] || personalityTypes['ENFP'];
-                console.log('✅ Personality data:', personality);
+                // console.log('✅ Personality data:', personality);
 
                 const totalQuestions = Object.values(allPathAnswers).reduce((sum, pathAnswers) => sum + pathAnswers.length, 0);
                 const totalTimeSpent = Math.round((Date.now() - totalStartTime) / 1000 / 60);
 
-                console.log('📈 Stats:', { totalQuestions, totalTimeSpent, type });
+                // console.log('📈 Stats:', { totalQuestions, totalTimeSpent, type });
 
                 // تحديث العناصر مع فحص وجودها
                 const elements = {
@@ -2967,110 +2955,110 @@
                     relationshipAdvice: document.getElementById('relationshipAdvice')
                 };
 
-                console.log('🔍 Elements check:', Object.keys(elements).map(key => `${key}: ${!!elements[key]}`));
+                // console.log('🔍 Elements check:', Object.keys(elements).map(key => `${key}: ${!!elements[key]}`));
 
                 // تحديث العناصر الأساسية
                 if (elements.userNameDisplay) {
                     elements.userNameDisplay.innerHTML = `نمطك الشخصي يا <strong>${userName}</strong> هو:`;
-                    console.log('✅ Updated userNameDisplay');
+                    // console.log('✅ Updated userNameDisplay');
                 }
 
                 if (elements.pathUsed) {
                     let timingInfo = `تم إكمال جميع المسارات الخمسة (${totalQuestions} سؤال في ${totalTimeSpent} دقيقة)`;
                     elements.pathUsed.innerHTML = timingInfo;
-                    console.log('✅ Updated pathUsed');
+                    // console.log('✅ Updated pathUsed');
                 }
 
                 if (elements.personalityType) {
                     elements.personalityType.textContent = type;
-                    console.log('✅ Updated personalityType:', type);
+                    // console.log('✅ Updated personalityType:', type);
                 }
 
                 if (elements.personalityName) {
                     elements.personalityName.textContent = personality.name;
-                    console.log('✅ Updated personalityName:', personality.name);
+                    // console.log('✅ Updated personalityName:', personality.name);
                 }
 
                 const confidenceLevel = calculateConfidenceLevel();
                 if (elements.confidenceLevel) {
                     elements.confidenceLevel.textContent = confidenceLevel;
-                    console.log('✅ Updated confidenceLevel:', confidenceLevel);
+                    // console.log('✅ Updated confidenceLevel:', confidenceLevel);
                 }
 
                 if (elements.strengths) {
                     elements.strengths.innerHTML = personality.strengths.map(strength =>
                         `<li class="flex items-center"><span class="text-green-600 ml-2">✓</span>${strength}</li>`
                     ).join('');
-                    console.log('✅ Updated strengths');
+                    // console.log('✅ Updated strengths');
                 }
 
                 if (elements.improvements) {
                     elements.improvements.innerHTML = personality.improvements.map(improvement =>
                         `<li class="flex items-center"><span class="text-orange-600 ml-2">→</span>${improvement}</li>`
                     ).join('');
-                    console.log('✅ Updated improvements');
+                    // console.log('✅ Updated improvements');
                 }
 
                 if (elements.workAdvice) {
                     elements.workAdvice.textContent = personality.work;
-                    console.log('✅ Updated workAdvice');
+                    // console.log('✅ Updated workAdvice');
                 }
 
                 if (elements.studyAdvice) {
                     elements.studyAdvice.textContent = personality.study;
-                    console.log('✅ Updated studyAdvice');
+                    // console.log('✅ Updated studyAdvice');
                 }
 
                 if (elements.relationshipAdvice) {
                     elements.relationshipAdvice.textContent = personality.relationships;
-                    console.log('✅ Updated relationshipAdvice');
+                    // console.log('✅ Updated relationshipAdvice');
                 }
 
                 // عرض التحليلات المتقدمة
-                console.log('🔄 Starting advanced analytics...');
+                // console.log('🔄 Starting advanced analytics...');
                 try {
                     showPersonalityExplanation(type);
-                    console.log('✅ showPersonalityExplanation completed');
+                    // console.log('✅ showPersonalityExplanation completed');
 
                     showDimensionsAnalysis();
-                    console.log('✅ showDimensionsAnalysis completed');
+                    // console.log('✅ showDimensionsAnalysis completed');
 
                     showAdvancedAnalytics();
-                    console.log('✅ showAdvancedAnalytics completed');
+                    // console.log('✅ showAdvancedAnalytics completed');
 
                     showPathPerformance();
-                    console.log('✅ showPathPerformance completed');
+                    // console.log('✅ showPathPerformance completed');
 
                     showTimingStatistics();
-                    console.log('✅ showTimingStatistics completed');
+                    // console.log('✅ showTimingStatistics completed');
 
                     showContradictionMarkers();
-                    console.log('✅ showContradictionMarkers completed');
+                    // console.log('✅ showContradictionMarkers completed');
                 } catch (error) {
-                    console.error('❌ Error in advanced analytics:', error);
+                    // console.error('❌ Error in advanced analytics:', error);
                     // Continue even if advanced analytics fail
                 }
 
                 // عرض تحذيرات الصحة إذا لزم الأمر
-                try {
-                    const validationResult = validateResults();
-                    if (!validationResult.isValid) {
-                        showValidationWarnings(validationResult.issues);
-                        console.log('⚠️ Validation warnings shown');
-                    }
-                } catch (error) {
-                    console.error('❌ Error in validation:', error);
-                }
+                // try {
+                //     const validationResult = validateResults();
+                //     if (!validationResult.isValid) {
+                //         showValidationWarnings(validationResult.issues);
+                //         // console.log('⚠️ Validation warnings shown');
+                //     }
+                // } catch (error) {
+                //     // console.error('❌ Error in validation:', error);
+                // }
 
                 // إرسال البيانات إلى قاعدة البيانات
                 try {
                     sendResultsToDatabase(type, personality, confidenceLevel, totalQuestions, totalTimeSpent);
-                    console.log('📤 Database submission initiated');
+                    // console.log('📤 Database submission initiated');
                 } catch (error) {
                     console.error('❌ Error sending data to database:', error);
                 }
 
-                console.log('🎉 Results populated successfully!');
+                // console.log('🎉 Results populated successfully!');
 
                 // إظهار رسالة نجاح للمستخدم
                 showResultsSuccessMessage();
@@ -3084,7 +3072,7 @@
 
         // وظيفة احتياطية لعرض النتائج الأساسية
         function showBasicResults() {
-            console.log('🚨 Showing basic results as fallback...');
+            // console.log('🚨 Showing basic results as fallback...');
 
             try {
                 const type = calculatePersonalityType();
@@ -3158,7 +3146,7 @@
                         </div>
                     `;
 
-                    console.log('✅ Basic results displayed successfully');
+                    // console.log('✅ Basic results displayed successfully');
                 }
             } catch (error) {
                 console.error('❌ Even basic results failed:', error);
@@ -3313,15 +3301,15 @@
                 issues.push(`نقاط الجودة الإجمالية منخفضة: ${qualityScore.toFixed(1)}/100`);
             }
 
-            console.log('نتائج التحقق المحسن:', {
-                isValid,
-                issues,
-                totalAnswers,
-                avgClarity: avgClarity.toFixed(1),
-                consistencyScore,
-                qualityScore: qualityScore.toFixed(1),
-                fastRatio: (fastRatio * 100).toFixed(1) + '%'
-            });
+            // console.log('نتائج التحقق المحسن:', {
+            //     isValid,
+            //     issues,
+            //     totalAnswers,
+            //     avgClarity: avgClarity.toFixed(1),
+            //     consistencyScore,
+            //     qualityScore: qualityScore.toFixed(1),
+            //     fastRatio: (fastRatio * 100).toFixed(1) + '%'
+            // });
 
             return { isValid, issues, qualityScore: Math.round(qualityScore) };
         }
@@ -3590,7 +3578,7 @@
             let type = '';
 
             // حساب النمط بناءً على النقاط مع نظام موثوقية محسن
-            console.log('النقاط النهائية:', scores);
+            // console.log('النقاط النهائية:', scores);
 
             // جمع جميع الإجابات لتحليل أعمق
             const allAnswers = getAllAnswers();
@@ -3612,13 +3600,13 @@
             const jpResult = calculateDimensionType(['J', 'P'], dimensionWeights);
             type += jpResult.type;
 
-            console.log('النمط المحسوب:', type);
-            console.log('تفاصيل الحساب:', {
-                EI: eiResult,
-                SN: snResult,
-                TF: tfResult,
-                JP: jpResult
-            });
+            // console.log('النمط المحسوب:', type);
+            // console.log('تفاصيل الحساب:', {
+            //     EI: eiResult,
+            //     SN: snResult,
+            //     TF: tfResult,
+            //     JP: jpResult
+            // });
 
             return type;
         }
@@ -3680,7 +3668,7 @@
                             }
                         });
                     } catch (e) {
-                        console.log('Could not parse complex dimension for weighting');
+                        // console.log('Could not parse complex dimension for weighting');
                     }
                 }
             });
@@ -3704,7 +3692,7 @@
                     reason: 'no_data_default'
                 };
             }
-
+            //مهم   total !== 0 ? :0
             const percentage1 = Math.round((score1 / total) * 100);
             const percentage2 = 100 - percentage1;
             const difference = Math.abs(percentage1 - percentage2);
@@ -3780,7 +3768,7 @@
                             }
                         });
                     } catch (e) {
-                        console.log('Could not parse complex dimension');
+                        // console.log('Could not parse complex dimension');
                     }
                 }
             });
@@ -3824,13 +3812,13 @@
                             confidence: result.confidence,
                             total: total
                         });
-                        console.log(`${dim.name}: وضوح ${result.difference}%, ثقة: ${result.confidence}`);
+                        // console.log(`${dim.name}: وضوح ${result.difference}%, ثقة: ${result.confidence}`);
                     }
                 }
             });
 
             const avgClarity = validDimensions > 0 ? totalClarity / validDimensions : 0;
-            console.log('متوسط الوضوح المحسن:', avgClarity.toFixed(1) + '%');
+            // console.log('متوسط الوضوح المحسن:', avgClarity.toFixed(1) + '%');
 
             // حساب مستوى الثقة المحسن بناءً على عوامل متعددة
             let baseConfidence = 70; // قاعدة أكثر واقعية
@@ -3897,22 +3885,22 @@
 
             confidence = Math.min(98, Math.max(55, confidence)); // حدود نهائية واقعية
 
-            console.log('تفاصيل حساب الثقة المحسن:', {
-                baseConfidence,
-                clarityBonus: clarityBonus.toFixed(1),
-                questionBonus: questionBonus.toFixed(1),
-                pathCompletionBonus: pathCompletionBonus.toFixed(1),
-                qualityBonus: qualityBonus.toFixed(1),
-                pathDiversityBonus,
-                quickAnswerPenalty: quickAnswerPenalty.toFixed(1),
-                randomPatternPenalty: randomPatternPenalty.toFixed(1),
-                contradictionPenalty: contradictionPenalty.toFixed(1),
-                consistencyPenalty: consistencyPenalty.toFixed(1),
-                unclearPenalty,
-                finalConfidence: confidence,
-                avgClarity: avgClarity.toFixed(1),
-                quickRatio: (quickRatio * 100).toFixed(1) + '%'
-            });
+            // console.log('تفاصيل حساب الثقة المحسن:', {
+            //     baseConfidence,
+            //     clarityBonus: clarityBonus.toFixed(1),
+            //     questionBonus: questionBonus.toFixed(1),
+            //     pathCompletionBonus: pathCompletionBonus.toFixed(1),
+            //     qualityBonus: qualityBonus.toFixed(1),
+            //     pathDiversityBonus,
+            //     quickAnswerPenalty: quickAnswerPenalty.toFixed(1),
+            //     randomPatternPenalty: randomPatternPenalty.toFixed(1),
+            //     contradictionPenalty: contradictionPenalty.toFixed(1),
+            //     consistencyPenalty: consistencyPenalty.toFixed(1),
+            //     unclearPenalty,
+            //     finalConfidence: confidence,
+            //     avgClarity: avgClarity.toFixed(1),
+            //     quickRatio: (quickRatio * 100).toFixed(1) + '%'
+            // });
 
             return confidence;
         }
@@ -3963,7 +3951,7 @@
                             }
                         });
                     } catch (e) {
-                        console.log('Could not parse complex dimension for contradiction detection');
+                        // console.log('Could not parse complex dimension for contradiction detection');
                     }
                 }
             });
@@ -4076,12 +4064,12 @@
 
             consistencyScore = Math.max(30, Math.min(100, consistencyScore));
 
-            console.log('تحليل التناقضات:', {
-                contradictionFlags,
-                quickRatio: (quickRatio * 100).toFixed(1) + '%',
-                randomPatterns: randomAnswerPattern,
-                consistencyScore
-            });
+            // console.log('تحليل التناقضات:', {
+            //     contradictionFlags,
+            //     quickRatio: (quickRatio * 100).toFixed(1) + '%',
+            //     randomPatterns: randomAnswerPattern,
+            //     consistencyScore
+            // });
         }
 
         function showDimensionsAnalysis() {
@@ -4227,7 +4215,6 @@
                 `;
             }).join('');
 
-            // console.log("aaaaaaaaaaaaaaaaaaaaa", testState.endTime)
             var data = new URLSearchParams();
             data.append('data', JSON.stringify({ tops: sfat, time: testState.endTime, pers: personality.name, type }));
             data.append('type', 'stat.p2');
@@ -4382,6 +4369,7 @@
                             ${dimensionPairs.map((pair, pairIndex) => {
                 const dim1 = pair.dimensions[0];
                 const dim2 = pair.dimensions[1];
+                console.log(pair) //مهم
                 const pairTotal = dim1.value + dim2.value;
                 const dim1Percentage = pairTotal > 0 ? Math.round((dim1.value / pairTotal) * 100) : 50;
                 const dim2Percentage = 100 - dim1Percentage;
@@ -4454,16 +4442,12 @@
                                                             <!-- النقاط والنسب -->
                                                             <div class="flex justify-center items-center space-x-4 space-x-reverse mb-4">
                                                                 <div class="text-center">
-                                                                    <div class="text-2xl font-bold text-${pair.color}-700">${dim.value}</div>
+                                                                    <div class="text-2xl font-bold text-${pair.color}-700">${dim.value || 'متوازن'}</div>
                                                                     <div class="text-xs text-gray-500">نقطة</div>
                                                                 </div>
                                                                 <div class="text-center">
                                                                     <div class="text-xl font-bold text-${pair.color}-600">${percentage}%</div>
                                                                     <div class="text-xs text-gray-500">من البُعد</div>
-                                                                </div>
-                                                                <div class="text-center">
-                                                                    <div class="text-lg font-bold text-gray-600">${globalPercentage}%</div>
-                                                                    <div class="text-xs text-gray-500">من الإجمالي</div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -4475,7 +4459,7 @@
                                                                 <div class="w-16 bg-gray-200 rounded-full relative overflow-hidden shadow-inner" style="height: ${maxHeight}px;">
                                                                     <!-- العمود المملوء -->
                                                                     <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t ${dim.gradient} rounded-full transition-all duration-1500 shadow-lg group-hover:shadow-xl" 
-                                                                         style="height: ${barHeight}px; animation: fillUp 1.5s ease-out ${animationDelay}ms both;">
+                                                                         style="height: ${barHeight}px;">
                                                                         
                                                                         <!-- تأثيرات بصرية -->
                                                                         <div class="absolute inset-0 bg-gradient-to-t from-transparent via-white/20 to-white/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
@@ -4544,9 +4528,9 @@
                                                 <div class="w-full bg-gray-200 rounded-full h-4 overflow-hidden shadow-inner">
                                                     <div class="flex h-full">
                                                         <div class="bg-gradient-to-r ${dim1.gradient} transition-all duration-1500" 
-                                                             style="width: ${dim1Percentage}%; animation: expandWidth 1.5s ease-out ${pairIndex * 300 + 500}ms both;"></div>
+                                                             style="width: ${dim1Percentage}%;"></div>
                                                         <div class="bg-gradient-to-r ${dim2.gradient} transition-all duration-1500" 
-                                                             style="width: ${dim2Percentage}%; animation: expandWidth 1.5s ease-out ${pairIndex * 300 + 700}ms both;"></div>
+                                                             style="width: ${dim2Percentage}%;"></div>
                                                     </div>
                                                 </div>
                                                 <div class="flex justify-between text-xs text-gray-600 mt-1">
@@ -5330,7 +5314,7 @@
 
         // وظيفة اختبار النتائج للتطوير
         function testResults() {
-            console.log('🧪 Testing results display...');
+            // console.log('🧪 Testing results display...');
 
             // تعيين بيانات وهمية للاختبار
             userName = 'أحمد محمد';
@@ -5398,13 +5382,13 @@
             consistencyScore = 85;
             focusBreaksShown = [];
 
-            console.log('✅ Test data set successfully:', {
-                userName,
-                scores,
-                completedPaths,
-                totalAnswers: Object.values(allPathAnswers).reduce((sum, pathAnswers) => sum + pathAnswers.length, 0),
-                allPathAnswers: Object.keys(allPathAnswers).map(k => `Path ${k}: ${allPathAnswers[k].length} answers`)
-            });
+            // console.log('✅ Test data set successfully:', {
+            //     userName,
+            //     scores,
+            //     completedPaths,
+            //     totalAnswers: Object.values(allPathAnswers).reduce((sum, pathAnswers) => sum + pathAnswers.length, 0),
+            //     allPathAnswers: Object.keys(allPathAnswers).map(k => `Path ${k}: ${allPathAnswers[k].length} answers`)
+            // });
 
             // إظهار رسالة اختبار
             const testMessage = document.createElement('div');
@@ -5428,7 +5412,7 @@
 
             // عرض النتائج مباشرة
             setTimeout(() => {
-                console.log('🚀 Calling showResults() for testing...');
+                // console.log('🚀 Calling showResults() for testing...');
                 showResults();
             }, 500);
         }
