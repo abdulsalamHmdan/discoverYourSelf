@@ -2165,7 +2165,7 @@
                             // console.log(`تم خصم ${dimensionScores[dim]} نقطة من ${dim}: ${previousScore} → ${scores[dim]}`);
                         }
                     });
-                    console.log("lllllll",scores)
+                    console.log("lllllll", scores)
 
                 } catch (e) {
                     console.error('خطأ في إزالة النقاط السابقة:', e);
@@ -3434,7 +3434,7 @@
                             <div class="flex-1">
                                 <h4 class="text-lg font-bold ${headerColor}">${dim.name}</h4>
                                 <div class="text-sm text-gray-600">
-                                    ${dim.e_letter}: ${dim.e_score} نقطة | ${dim.i_letter}: ${dim.i_score} نقطة
+                                    ${dim.e_letter}: ${dim.e_score || 0} نقطة | ${dim.i_letter}: ${dim.i_score || 0} نقطة
                                 </div>
                             </div>
                             ${isDominant ? `
@@ -4534,8 +4534,8 @@
                                                     </div>
                                                 </div>
                                                 <div class="flex justify-between text-xs text-gray-600 mt-1">
-                                                    <span>${dim1.key}: ${dim1.value} نقطة</span>
-                                                    <span>${dim2.key}: ${dim2.value} نقطة</span>
+                                                    <span>${dim1.key}: ${dim1.value || 0} نقطة</span>
+                                                    <span>${dim2.key}: ${dim2.value || 0} نقطة</span>
                                                 </div>
                                             </div>
                                             
