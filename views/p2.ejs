@@ -1583,7 +1583,7 @@
                                     dimensionScores = JSON.parse(answer.dimension);
                                 }
                                 Object.keys(dimensionScores).forEach(dim => {
-                                    scores[dim] += dimensionScores[dim];
+                                    scores[dim] += dimensionScores[dim] || 0;
                                 });
                             } catch (e) {
                                 // console.log('Could not restore scores');
@@ -1882,8 +1882,8 @@
             const score1 = 6 - value;
             const score2 = value - 1;
 
-            scores[dimension1] += score1;
-            scores[dimension2] += score2;
+            scores[dimension1] += score1 || 0;
+            scores[dimension2] += score2 || 0;
             console.log(scores)
 
             recordAnswer(timeSpent, `${dimension1}:${score1},${dimension2}:${score2}`, value, `مقياس ${value}/5`);
@@ -2024,7 +2024,7 @@
             });
 
             Object.keys(dimensionScores).forEach(dim => {
-                scores[dim] += dimensionScores[dim];
+                scores[dim] += dimensionScores[dim] || 0;
             });
             // console.log(scores)
 
@@ -2168,7 +2168,7 @@
                     Object.keys(dimensionScores).forEach(dim => {
                         if (scores.hasOwnProperty(dim)) {
                             const previousScore = scores[dim];
-                            scores[dim] = Math.max(0, scores[dim] - dimensionScores[dim]);
+                            scores[dim] = Math.max(0, scores[dim] - dimensionScores[dim]) || scores[dim];
                             // console.log(`تم خصم ${dimensionScores[dim]} نقطة من ${dim}: ${previousScore} → ${scores[dim]}`);
                         }
                     });
@@ -3771,7 +3771,7 @@
 
                         Object.keys(dimensionScores).forEach(dim => {
                             if (dimensions.includes(dim)) {
-                                counts[dim] += dimensionScores[dim];
+                                counts[dim] += dimensionScores[dim] || 0;
                             }
                         });
                     } catch (e) {
@@ -5071,7 +5071,7 @@
                                 const parts = lastAnswer.dimension.split(',');
                                 parts.forEach(part => {
                                     const [dim, score] = part.split(':');
-                                    scores[dim] = Math.max(0, scores[dim] - parseInt(score));
+                                    scores[dim] = Math.max(0, scores[dim] - parseInt(score)) || scores[dim];
                                 });
                             }
                         }
