@@ -1884,6 +1884,7 @@
 
             scores[dimension1] += score1;
             scores[dimension2] += score2;
+            console.log(scores)
 
             recordAnswer(timeSpent, `${dimension1}:${score1},${dimension2}:${score2}`, value, `مقياس ${value}/5`);
 
@@ -1946,8 +1947,10 @@
             });
 
             Object.keys(dimensionScores).forEach(dim => {
-                scores[dim] += dimensionScores[dim];
+                scores[dim] += dimensionScores[dim] || 0;
             });
+            console.log(scores)
+
 
             recordAnswer(timeSpent, JSON.stringify(dimensionScores), JSON.stringify(currentRanking), 'ترتيب مخصص');
             currentRanking = {};
@@ -2023,6 +2026,8 @@
             Object.keys(dimensionScores).forEach(dim => {
                 scores[dim] += dimensionScores[dim];
             });
+            // console.log(scores)
+
 
             recordAnswer(timeSpent, JSON.stringify(dimensionScores), selectedAnswers.length, selectedAnswers.join(', '));
         }
@@ -2057,6 +2062,8 @@
             buttonElement.classList.remove('border-indigo-200', 'bg-gradient-to-r', 'from-white', 'to-indigo-50', 'text-gray-700', 'hover:border-indigo-400', 'hover:from-indigo-50', 'hover:to-indigo-100', 'hover:shadow-xl');
 
             scores[dimension]++;
+            // console.log(scores)
+
 
             const currentQ = currentQuestions[currentQuestion];
             recordAnswer(timeSpent, dimension, optionIndex, currentQ.options[optionIndex].text);
