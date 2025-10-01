@@ -944,12 +944,6 @@
                 // Increment completed tests counter
                 incrementCompletedTests();
 
-                // التحقق من صحة النتائج قبل العرض
-                // const validationResult = validateResults();
-                // if (!validationResult.isValid) {
-                //     console.warn('⚠️ تحذير: مشاكل في صحة النتائج:', validationResult.issues);
-                // }
-
                 // إخفاء شاشة الاختبار وإظهار النتائج
                 const testScreen = document.getElementById('testScreen');
                 const progressContainer = document.getElementById('progressContainer');
@@ -1024,7 +1018,33 @@
         }
         let personality;
         let type;
-        populateResults()
+        calcS()
+        function calcS() {
+            // console.log(scores)
+            scores = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
+            let allAnswers = getAllAnswers();
+            allAnswers = allAnswers.map(x => {
+                if (x.path == 4) {
+                    return JSON.parse(x["dimension"]);
+                } else if (x.path == 2) {
+                    return Object.fromEntries(x.dimension.split(',').map(s => s.split(':')));;
+                } else {
+                    return x["dimension"]
+                }
+            })
+            allAnswers.forEach(x => {
+                if (typeof (x) == "string") {
+                    scores[x]++
+                } else {
+                    Object.keys(x).forEach(dim => {
+                        scores[dim] += +x[dim];
+                    })
+                }
+            })
+            
+            // console.log(scores)
+            populateResults()
+        }
         function populateResults() {
             try {
                 type = calculatePersonalityType();
@@ -1034,7 +1054,7 @@
                 console.log('✅ Personality data:', personality);
 
                 const totalQuestions = Object.values(allPathAnswers).reduce((sum, pathAnswers) => sum + pathAnswers.length, 0);
-                const totalTimeSpent = Math.round((Date.now() - totalStartTime) / 1000 / 60);
+                const totalTimeSpent = Math.floor(endTime / 1000 / 60);
 
                 console.log('📈 Stats:', { totalQuestions, totalTimeSpent, type });
 
@@ -3059,9 +3079,9 @@
             }
         }
 
-        
 
-      
+
+
     </script>
 
     <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'98037c92d5f4e8e2',t:'MTc1ODA1ODQ1My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script>

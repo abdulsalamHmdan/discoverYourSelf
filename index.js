@@ -451,6 +451,13 @@ app.get('/admin/end/:id', async function (req, res) {
 
 })
 
+app.get('/hh', async function (req, res) {
+    await client.connect();
+    const db = client.db("soqy");
+    const collection = db.collection('users');
+    const user = await collection.findOne({ idNumber: "test8" })
+    res.json(user.p2);
+})
 app.get('/admin/end/:id', function (req, res) {
     res.send("not allowd");
 })
