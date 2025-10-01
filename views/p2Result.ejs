@@ -1020,7 +1020,12 @@
         let type;
         calcS()
         function calcS() {
-            // console.log(scores)
+            if (scores.E) {
+                populateResults();
+                return;
+
+            }
+
             scores = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
             let allAnswers = getAllAnswers();
             allAnswers = allAnswers.map(x => {
@@ -1041,8 +1046,6 @@
                     })
                 }
             })
-            
-            // console.log(scores)
             populateResults()
         }
         function populateResults() {
