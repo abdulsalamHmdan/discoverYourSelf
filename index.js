@@ -15,249 +15,260 @@ const path = require("path");
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join(__dirname, 'public')));
-const { MongoClient} = require('mongodb');
+const { MongoClient } = require('mongodb');
 const ejs = require('ejs');
 const url = "mongodb+srv://family:aS0507499583@cluster0.dvljyns.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(url);
 
-let data = [
-    {
-        "idNumber": "a100",
-        "name": "زياد بن منصور الرسيني",
-        "phone": "554690669",
-        "email": "z.alresaini@gmail.com"
-    },
-    {
-        "idNumber": "a101",
-        "name": "سليمان بن محمد المجلي",
-        "phone": "565385664",
-        "email": "sm.almujalli@gmail.com"
-    },
-    {
-        "idNumber": "a102",
-        "name": "عبدالعزيز عبدالرحمن العبدان",
-        "phone": "530976215",
-        "email": "bb0427045@gmail.com"
-    },
-    {
-        "idNumber": "a103",
-        "name": "مؤيد بن محمد بن علي العجاجي",
-        "phone": "507720908",
-        "email": "moi.alajaji@gmail.com"
-    },
-    {
-        "idNumber": "a104",
-        "name": "صالح حمد السبر ",
-        "phone": "544233020",
-        "email": "saleh27hss@gmail.com"
-    },
-    {
-        "idNumber": "a105",
-        "name": "عبدالسلام سليمان الجلنداني ",
-        "phone": "581749759",
-        "email": "slloooome5@gmail.com"
-    },
-    {
-        "idNumber": "a106",
-        "name": "محمد بن عبدالله الطلحة",
-        "phone": "560633582",
-        "email": "mo.altalhah@gmail.com"
-    },
-    {
-        "idNumber": "a107",
-        "name": "محمد بن فهد العبدالمنعم",
-        "phone": "530880727",
-        "email": "m.alabdmn2m@gmail.com"
-    },
-    {
-        "idNumber": "a108",
-        "name": "ناصر محمد الجليل",
-        "phone": "539179198",
-        "email": "kkssaa569@gmail.com"
-    },
-    {
-        "idNumber": "a109",
-        "name": "يوسف زيد الدكان",
-        "phone": "564289708",
-        "email": "yousef056.428.9708@gmail.com"
-    },
-    {
-        "idNumber": "a110",
-        "name": "الوليد بن عبدالملك خياط ",
-        "phone": "538469699",
-        "email": "alwaleedkhiat1@gmail.com"
-    },
-    {
-        "idNumber": "a111",
-        "name": "خالد حسين الأشدق",
-        "phone": "531348213",
-        "email": "psdk5555@gmail.com"
-    },
-    {
-        "idNumber": "a112",
-        "name": "سعيد خالد الضعيان",
-        "phone": "538134592",
-        "email": "sydaldyan7@gmail.com"
-    },
-    {
-        "idNumber": "a113",
-        "name": "عبدالحكيم بن عبدالعزيز السالم",
-        "phone": "534721163",
-        "email": "77keem@gmail.com"
-    },
-    {
-        "idNumber": "a114",
-        "name": "عبدالعزيز بن عبدالله بن غشيان ",
-        "phone": "546465565",
-        "email": "az.ghashyan@gmail.com"
-    },
-    {
-        "idNumber": "a115",
-        "name": "عبدالله سليمان الهمش",
-        "phone": "555280684",
-        "email": "abdullahsalhemsh@gmail.com"
-    },
-    {
-        "idNumber": "a116",
-        "name": "عبدالملك بن حسن الخنبشي",
-        "phone": "539493988",
-        "email": "saduzi87@gmail.com"
-    },
-    {
-        "idNumber": "a117",
-        "name": "محمد عبد اللطيف العجلان",
-        "phone": "555090957",
-        "email": "mohammedpppp49@gmail.com"
-    },
-    {
-        "idNumber": "a118",
-        "name": "محمد علي الزبيري",
-        "phone": "505116485",
-        "email": "masnzalzubairi@gmail.com"
-    },
-    {
-        "idNumber": "a119",
-        "name": "يوسف بن عبدالكريم احمد ادريس",
-        "phone": "599153625",
-        "email": "yosefedres1417@gmail.com"
-    },
-    {
-        "idNumber": "a120",
-        "name": "يوسف بن موسى الوادي",
-        "phone": "548984040",
-        "email": "y.s.f.wade@gmail.com"
-    },
-    {
-        "idNumber": "a121",
-        "name": "محمد إبراهيم السيف",
-        "phone": "501699538",
-        "email": "Mohammedalsif@icloud.com"
-    },
-    {
-        "idNumber": "a122",
-        "name": "معاذ بن سعود النقيثان",
-        "phone": "599192800",
-        "email": "moa2800h@gmail.com"
-    },
-    {
-        "idNumber": "a123",
-        "name": "ابراهيم بن محمد الدكان",
-        "phone": "568702756",
-        "email": "bindakkan@gmail.com"
-    },
-    {
-        "idNumber": "a124",
-        "name": "أحمد حسين العبداللطيف",
-        "phone": "599071110",
-        "email": "alabdullateef@abanumay.sa"
-    },
-    {
-        "idNumber": "a125",
-        "name": "أحمد لافي الأحمدي",
-        "phone": "566775700",
-        "email": "eng.ahmed.alahmadi@gmail.com"
-    },
-    {
-        "idNumber": "a126",
-        "name": "حسن عبدالمنعم الشبعان ",
-        "phone": "545496170",
-        "email": "geniushassan7@gmail.com"
-    },
-    {
-        "idNumber": "a127",
-        "name": "عادل فهيد سعيد بامطرف",
-        "phone": "535505755",
-        "email": "murafi1440@gmail.com"
-    },
-    {
-        "idNumber": "a128",
-        "name": "عبدالله عمر بافارع",
-        "phone": "562176550",
-        "email": "aobafara@gmail.com"
-    },
-    {
-        "idNumber": "a129",
-        "name": "عبدالله محمد القفاري",
-        "phone": "505748373",
-        "email": "alqfarybdallh506@gmail.com"
-    },
-    {
-        "idNumber": "a130",
-        "name": "عبدالله يوسف الصغير ",
-        "phone": "550544880",
-        "email": "abdallahalsugeer@gmail.com"
-    },
-    {
-        "idNumber": "a131",
-        "name": "فيصل صالح الشقحاء",
-        "phone": "566023047",
-        "email": "ggggx321@gmail.com"
-    },
-    {
-        "idNumber": "a132",
-        "name": "محسن هزاع الزهراني",
-        "phone": "505698535",
-        "email": "Mzahrani@rf.org.sa"
-    },
-    {
-        "idNumber": "a133",
-        "name": "نايف بدر المطيري",
-        "phone": "543752335",
-        "email": "naifalmutiri1646@gmail.com"
-    }
-]
+// let data = [
+//     {
+//         "idNumber": "a100",
+//         "name": "زياد بن منصور الرسيني",
+//         "phone": "554690669",
+//         "email": "z.alresaini@gmail.com"
+//     },
+//     {
+//         "idNumber": "a101",
+//         "name": "سليمان بن محمد المجلي",
+//         "phone": "565385664",
+//         "email": "sm.almujalli@gmail.com"
+//     },
+//     {
+//         "idNumber": "a102",
+//         "name": "عبدالعزيز عبدالرحمن العبدان",
+//         "phone": "530976215",
+//         "email": "bb0427045@gmail.com"
+//     },
+//     {
+//         "idNumber": "a103",
+//         "name": "مؤيد بن محمد بن علي العجاجي",
+//         "phone": "507720908",
+//         "email": "moi.alajaji@gmail.com"
+//     },
+//     {
+//         "idNumber": "a104",
+//         "name": "صالح حمد السبر ",
+//         "phone": "544233020",
+//         "email": "saleh27hss@gmail.com"
+//     },
+//     {
+//         "idNumber": "a105",
+//         "name": "عبدالسلام سليمان الجلنداني ",
+//         "phone": "581749759",
+//         "email": "slloooome5@gmail.com"
+//     },
+//     {
+//         "idNumber": "a106",
+//         "name": "محمد بن عبدالله الطلحة",
+//         "phone": "560633582",
+//         "email": "mo.altalhah@gmail.com"
+//     },
+//     {
+//         "idNumber": "a107",
+//         "name": "محمد بن فهد العبدالمنعم",
+//         "phone": "530880727",
+//         "email": "m.alabdmn2m@gmail.com"
+//     },
+//     {
+//         "idNumber": "a108",
+//         "name": "ناصر محمد الجليل",
+//         "phone": "539179198",
+//         "email": "kkssaa569@gmail.com"
+//     },
+//     {
+//         "idNumber": "a109",
+//         "name": "يوسف زيد الدكان",
+//         "phone": "564289708",
+//         "email": "yousef056.428.9708@gmail.com"
+//     },
+//     {
+//         "idNumber": "a110",
+//         "name": "الوليد بن عبدالملك خياط ",
+//         "phone": "538469699",
+//         "email": "alwaleedkhiat1@gmail.com"
+//     },
+//     {
+//         "idNumber": "a111",
+//         "name": "خالد حسين الأشدق",
+//         "phone": "531348213",
+//         "email": "psdk5555@gmail.com"
+//     },
+//     {
+//         "idNumber": "a112",
+//         "name": "سعيد خالد الضعيان",
+//         "phone": "538134592",
+//         "email": "sydaldyan7@gmail.com"
+//     },
+//     {
+//         "idNumber": "a113",
+//         "name": "عبدالحكيم بن عبدالعزيز السالم",
+//         "phone": "534721163",
+//         "email": "77keem@gmail.com"
+//     },
+//     {
+//         "idNumber": "a114",
+//         "name": "عبدالعزيز بن عبدالله بن غشيان ",
+//         "phone": "546465565",
+//         "email": "az.ghashyan@gmail.com"
+//     },
+//     {
+//         "idNumber": "a115",
+//         "name": "عبدالله سليمان الهمش",
+//         "phone": "555280684",
+//         "email": "abdullahsalhemsh@gmail.com"
+//     },
+//     {
+//         "idNumber": "a116",
+//         "name": "عبدالملك بن حسن الخنبشي",
+//         "phone": "539493988",
+//         "email": "saduzi87@gmail.com"
+//     },
+//     {
+//         "idNumber": "a117",
+//         "name": "محمد عبد اللطيف العجلان",
+//         "phone": "555090957",
+//         "email": "mohammedpppp49@gmail.com"
+//     },
+//     {
+//         "idNumber": "a118",
+//         "name": "محمد علي الزبيري",
+//         "phone": "505116485",
+//         "email": "masnzalzubairi@gmail.com"
+//     },
+//     {
+//         "idNumber": "a119",
+//         "name": "يوسف بن عبدالكريم احمد ادريس",
+//         "phone": "599153625",
+//         "email": "yosefedres1417@gmail.com"
+//     },
+//     {
+//         "idNumber": "a120",
+//         "name": "يوسف بن موسى الوادي",
+//         "phone": "548984040",
+//         "email": "y.s.f.wade@gmail.com"
+//     },
+//     {
+//         "idNumber": "a121",
+//         "name": "محمد إبراهيم السيف",
+//         "phone": "501699538",
+//         "email": "Mohammedalsif@icloud.com"
+//     },
+//     {
+//         "idNumber": "a122",
+//         "name": "معاذ بن سعود النقيثان",
+//         "phone": "599192800",
+//         "email": "moa2800h@gmail.com"
+//     },
+//     {
+//         "idNumber": "a123",
+//         "name": "ابراهيم بن محمد الدكان",
+//         "phone": "568702756",
+//         "email": "bindakkan@gmail.com"
+//     },
+//     {
+//         "idNumber": "a124",
+//         "name": "أحمد حسين العبداللطيف",
+//         "phone": "599071110",
+//         "email": "alabdullateef@abanumay.sa"
+//     },
+//     {
+//         "idNumber": "a125",
+//         "name": "أحمد لافي الأحمدي",
+//         "phone": "566775700",
+//         "email": "eng.ahmed.alahmadi@gmail.com"
+//     },
+//     {
+//         "idNumber": "a126",
+//         "name": "حسن عبدالمنعم الشبعان ",
+//         "phone": "545496170",
+//         "email": "geniushassan7@gmail.com"
+//     },
+//     {
+//         "idNumber": "a127",
+//         "name": "عادل فهيد سعيد بامطرف",
+//         "phone": "535505755",
+//         "email": "murafi1440@gmail.com"
+//     },
+//     {
+//         "idNumber": "a128",
+//         "name": "عبدالله عمر بافارع",
+//         "phone": "562176550",
+//         "email": "aobafara@gmail.com"
+//     },
+//     {
+//         "idNumber": "a129",
+//         "name": "عبدالله محمد القفاري",
+//         "phone": "505748373",
+//         "email": "alqfarybdallh506@gmail.com"
+//     },
+//     {
+//         "idNumber": "a130",
+//         "name": "عبدالله يوسف الصغير ",
+//         "phone": "550544880",
+//         "email": "abdallahalsugeer@gmail.com"
+//     },
+//     {
+//         "idNumber": "a131",
+//         "name": "فيصل صالح الشقحاء",
+//         "phone": "566023047",
+//         "email": "ggggx321@gmail.com"
+//     },
+//     {
+//         "idNumber": "a132",
+//         "name": "محسن هزاع الزهراني",
+//         "phone": "505698535",
+//         "email": "Mzahrani@rf.org.sa"
+//     },
+//     {
+//         "idNumber": "a133",
+//         "name": "نايف بدر المطيري",
+//         "phone": "543752335",
+//         "email": "naifalmutiri1646@gmail.com"
+//     }
+// ]
 
 function isAuthenticated(req, res, next) {
-    if (req.session.user) next()
+    if (req.session.permissions == "student") next()
     else next('route')
 }
 function isAdmin(req, res, next) {
-    if (req.session.user == "admin") next()
+    if (req.session.permissions == "admin") next()
     else next('route')
 }
-
+function isTeacher(req, res, next) {
+    if (req.session.permissions == "teacher") next()
+    else next('route')
+}
+/*
 app.get('/data', async function (req, res) {
     await client.connect();
     const db = client.db("soqy");
     const collection = db.collection('users');
-    await collection.insertMany(data)
+    await collection.updateMany({}, // يفلتر اللي ما عندهم pass
+        [
+            { $set: { user: "$idNumber", pass: "$phone" } },
+
+        ]
+    )
     client.close()
-    res.send(",jhsaxhg");
+    res.send("done");
+
+    // await collection.insertMany(admins)
+    // await collection.deleteMany()
 })
-// app.get('/data', async function (req, res) {
-//     await client.connect();
-//     const db = client.db("soqy");
-//     const collection = db.collection('users');
-//     await collection.deleteMany()
-//     client.close()
-//     res.send(",jhsaxhg");
-// })
+    */
 
 app.get('/', isAuthenticated, function (req, res) {
-    res.redirect("welcome")
+    res.redirect("welcome");
+})
+app.get('/', isAdmin, function (req, res) {
+    res.redirect("admin");
+})
+app.get('/', isTeacher, function (req, res) {
+    res.redirect("admin");
 })
 app.get('/', function (req, res) {
-    res.render("login");
+    res.render("login", { collection: "users" });
 })
 
 app.get('/welcome', isAuthenticated, function (req, res) {
@@ -412,8 +423,46 @@ app.get('/admin', isAdmin, async function (req, res) {
     })
     res.render("adminPage", { data: JSON.stringify(user) });
 })
+app.get('/admin', isTeacher, async function (req, res) {
+    await client.connect();
+    const db = client.db("soqy");
+    const collection = db.collection('users');
+    let user = await collection.find({ techer: req.session.name }).toArray();
+    client.close()
+    user = user.map(x => {
+        let completion = 0;
+        let prog = "";
+        if (x["p1"]) {
+            completion += 33
+        }
+        if (x["p2"]) {
+            completion += 33
+        }
+        if (x["p3"]) {
+            completion += 34
+        }
+        prog = completion == 100 ? "completed" : completion > 0 ? "in-progress" : "not-started";
+
+
+        return {
+            id: x.idNumber,
+            name: x.name,
+            phone: x.phone,
+            studentId: x.idNumber,
+            status: prog,
+            completion: completion,
+            riasec: x?.stat?.p1?.tops?.map(l => l.dim),
+            mbti: x?.stat?.p2?.type,
+            thk: x?.stat?.p3?.tops?.map(l => l.name),
+            startTime: +x?.stat?.start,
+            endTime: +x?.stat?.end
+        }
+    })
+    res.render("adminPage", { data: JSON.stringify(user) });
+})
+
 app.get('/admin', function (req, res) {
-    res.render("login");
+    res.render("login", { collection: "admin" });
 })
 
 app.get('/admin/Results/:id/:exam', isAdmin, async function (req, res) {
@@ -427,13 +476,24 @@ app.get('/admin/Results/:id/:exam', isAdmin, async function (req, res) {
     }
     res.send('notFound');
 })
+app.get('/admin/Results/:id/:exam', isTeacher, async function (req, res) {
+    await client.connect();
+    const db = client.db("soqy");
+    const collection = db.collection('users');
+    const user = await collection.findOne({ idNumber: req.params.id })
+    if (user[req.params.exam]) {
+        res.render(`${req.params.exam}Result`, { [req.params.exam]: JSON.stringify(user[req.params.exam]), name: user.name, from: "show" });
+        return;
+    }
+    res.send('notFound');
+})
 app.get('/admin/Results/:id/:exam', function (req, res) {
-    res.send('غير مصرح لك بالدخول');
+   res.redirect("/admin")
 
 });
 
 
-app.get('/admin/end/:id', async function (req, res) {
+app.get('/admin/end/:id', isAdmin, async function (req, res) {
     await client.connect();
     const db = client.db("soqy");
     const collection = db.collection('users');
@@ -447,20 +507,36 @@ app.get('/admin/end/:id', async function (req, res) {
     } else {
         res.redirect('admin');
     }
-
-
 })
-
-app.get('/hh', async function (req, res) {
+app.get('/admin/end/:id', isTeacher, async function (req, res) {
     await client.connect();
     const db = client.db("soqy");
     const collection = db.collection('users');
-    const user = await collection.findOne({ idNumber: "test8" })
-    res.json(user.p2);
+    const user = await collection.findOne({ idNumber: req.params.id })
+    client.close()
+    if (user) {
+        const p1 = user.stat?.p1 ? user.stat.p1.tops : null;
+        const p2 = user.stat?.p2 ? user.stat.p2 : null;
+        const p3 = user.stat?.p3 ? user.stat.p3.tops : null;
+        res.render("studentPage", { id: user.idNumber, name: user.name, p1, p2, p3 });
+    } else {
+        res.redirect('admin');
+    }
 })
-app.get('/admin/end/:id', function (req, res) {
-    res.send("not allowd");
+app.get('/admin/end/:id', async function (req, res) {
+    res.redirect("/admin")
 })
+
+// app.get('/hh', async function (req, res) {
+//     await client.connect();
+//     const db = client.db("soqy");
+//     const collection = db.collection('users');
+//     const user = await collection.findOne({ idNumber: "test8" })
+//     res.json(user.p2);
+// })
+// app.get('/admin/end/:id', function (req, res) {
+//     res.send("not allowd");
+// })
 
 // Result-Page
 app.get('/Results/:exam', isAuthenticated, async function (req, res) {
@@ -475,17 +551,17 @@ app.get('/Results/:exam', isAuthenticated, async function (req, res) {
     res.send('notFound');
 })
 
-app.get('/Results/:id/:exam', async function (req, res) {
-    await client.connect();
-    const db = client.db("soqy");
-    const collection = db.collection('users');
-    const user = await collection.findOne({ idNumber: req.params.id })
-    if (user[req.params.exam]) {
-        res.render(`${req.params.exam}Result`, { [req.params.exam]: JSON.stringify(user[req.params.exam]), name: user.name, from: "show" });
-        return;
-    }
-    res.send('notFound');
-})
+// app.get('/Results/:id/:exam', async function (req, res) {
+//     await client.connect();
+//     const db = client.db("soqy");
+//     const collection = db.collection('users');
+//     const user = await collection.findOne({ idNumber: req.params.id })
+//     if (user[req.params.exam]) {
+//         res.render(`${req.params.exam}Result`, { [req.params.exam]: JSON.stringify(user[req.params.exam]), name: user.name, from: "show" });
+//         return;
+//     }
+//     res.send('notFound');
+// })
 
 app.post('/html-to-pdf', async (req, res) => {
     await client.connect();
@@ -596,14 +672,15 @@ app.post('/deleteStudent', async function (req, res) {
 app.post('/login', express.urlencoded({ extended: false }), async function (req, res) {
     await client.connect();
     const db = client.db("soqy");
-    const collection = db.collection('users');
+    const collection = db.collection(req.body.collection);
     // {projection:{ email: 1, }}
-    const user = await collection.findOne({ idNumber: req.body.user, phone: req.body.pass })
+    const user = await collection.findOne({ user: req.body.user, pass: req.body.pass })
     if (user) {
         req.session.regenerate(function (err) {
             if (err) next(err)
-            req.session.user = user.idNumber
+            req.session.user = user.user
             req.session.name = user.name
+            req.session.permissions = user.permissions
             req.session.p1 = user.p1 ? "done" : "no"
             req.session.p2 = user.p2 ? "done" : "no"
             req.session.p3 = user.p3 ? "done" : "no"

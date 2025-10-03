@@ -79,15 +79,21 @@
         <div class="text-center mb-8">
             <!-- <h1 class="text-2xl font-bold text-red-800 mb-4"> "مقياس بصيرة" </h1> -->
             <img style="width: 166px;margin-inline: auto;margin-bottom: 0;" src="logo.svg" alt="" srcset="">
-            <h1 class="text-3xl font-bold text-gray-800 mb-4">تسجيل الدخول</h1>
-            <div class="bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg p-4 text-right">
-                <p class="text-gray-700 text-sm leading-relaxed">
-                    مرحبًا بك في رحلتك لاكتشاف نفسك!<br>
-                    في هذا الاختبار ستتعرف على ميولك المهنية (RIASEC) و نمط شخصيتك (MBTI) واختبار ( الذكاءات المتعددة )
-                    لمساعدتك في استكشاف المسارات
-                    الأنسب لك ✨
-                </p>
-            </div>
+            <% if (collection=="users" ) { %>
+                <h1 class="text-3xl font-bold text-gray-800 mb-4">تسجيل الدخول</h1>
+                <div class="bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg p-4 text-right">
+                    <p class="text-gray-700 text-sm leading-relaxed">
+                        مرحبًا بك في رحلتك لاكتشاف نفسك!<br>
+                        في هذا الاختبار ستتعرف على ميولك المهنية (RIASEC) و نمط شخصيتك (MBTI) واختبار ( الذكاءات
+                        المتعددة )
+                        لمساعدتك في استكشاف المسارات
+                        الأنسب لك ✨
+                    </p>
+                </div>
+                <% }else{ %>
+                    <h1 class="text-3xl font-bold text-gray-800 mb-4">صفحة دخول المشرفين</h1>
+
+                    <% } %>
         </div>
 
         <!-- Login Form -->
@@ -140,6 +146,14 @@
                     <a href="https://wa.me/966581334216" id="signUpLink"
                         class="text-purple-600 hover:text-purple-800 font-medium transition-colors">تواصل معنا عبر
                         الواتس أب</a>
+                </p>
+            </div>
+
+            <div class="text-center">
+                <p class="text-sm text-gray-600">
+                    للذهاب لصفحة دخول <%= collection !=='users' ?"الطلاب":"المشرفين"%>
+                        <a href=<%=collection !=='users' ?"/":"/admin"%> id=""
+                            class="text-purple-600 hover:text-purple-800 font-medium transition-colors">اضغط هنا</a>
                 </p>
             </div>
         </form>
@@ -225,6 +239,7 @@
                 pass = pass.slice(3, 12)
             }
             var data = new URLSearchParams();
+            data.append('collection', '<%=collection%>');
             data.append('user', usernameInput.value);
             data.append("pass", pass);
             fetch("login", {
@@ -239,9 +254,7 @@
                 })
                 .then((data) => {
                     if (data == "exist") {
-                        location.href = "/welcome"
-                    } else if (data == "admin") {
-                        location.href = "/admin"
+                        location.reload();
                     }
                     else {
                         loginBtn.disabled = false;
