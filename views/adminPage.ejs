@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>لوحة الإدارة - المختبِرون</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -325,10 +326,12 @@
                         <div class="text-gray-600 text-sm">المكتملون</div>
                         <div class="mt-2">
                             <div class="w-full bg-gray-200 rounded-full h-2">
-                                <div class="bg-green-500 h-2 rounded-full" style="width: <%-Math.ceil(comp/all)%>%">
+                                <div class="bg-green-500 h-2 rounded-full" style=<%="width:" +Math.ceil(comp /all
+                                    *100)+"%"%>
+                                    >
                                 </div>
                             </div>
-                            <div class="text-xs text-gray-500 mt-1"><%-Math.ceil(comp /all)%>% من الإجمالي</div>
+                            <div class="text-xs text-gray-500 mt-1"><%-Math.ceil(comp /all *100)%>% من الإجمالي</div>
                         </div>
                     </div>
                     <div class="stat-card p-6 rounded-xl text-center card-hover cursor-pointer"
@@ -342,10 +345,14 @@
                         <div class="text-gray-600 text-sm">قيد التقدّم</div>
                         <div class="mt-2">
                             <div class="w-full bg-gray-200 rounded-full h-2">
-                                <div class="bg-yellow-500 h-2 rounded-full" style="width: <%-Math.ceil(inP/all)%>%">
+                                <div class="bg-yellow-500 h-2 rounded-full" style=<%="width:" +Math.ceil(inP
+                                    /all*100)+"%"%>
+                                    >
                                 </div>
                             </div>
-                            <div class="text-xs text-gray-500 mt-1"><%-Math.ceil(inP /all)%>% من الإجمالي</div>
+                            <div class="text-xs text-gray-500 mt-1">
+                                <%=Math.ceil(inP*100 /all)%>% من الإجمالي
+                            </div>
                         </div>
                     </div>
                     <div class="stat-card p-6 rounded-xl text-center card-hover cursor-pointer"
@@ -359,17 +366,19 @@
                         <div class="text-gray-600 text-sm">لم يبدأوا</div>
                         <div class="mt-2">
                             <div class="w-full bg-gray-200 rounded-full h-2">
-                                <div class="bg-gray-500 h-2 rounded-full" style="width: <%-Math.ceil(notS/all)%>%">
+                                <div class="bg-gray-500 h-2 rounded-full" style=<%="width:" + (Math.ceil(notS
+                                    /all*100))+"%"%>
+                                    >
                                 </div>
                             </div>
-                            <div class="text-xs text-gray-500 mt-1"><%-Math.ceil(notS /all)%>% من الإجمالي</div>
+                            <div class="text-xs text-gray-500 mt-1"><%-Math.ceil(notS /all*100)%>% من الإجمالي</div>
                         </div>
                     </div>
                 </div>
         </div>
 
         <!-- شريط الإحصاءات السريعة -->
-        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+        <!--<div class="bg-white rounded-lg shadow-sm p-6 mb-6">
             <h3 class="text-lg font-semibold text-gray-800 mb-4">إحصاءات سريعة</h3>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div>
@@ -392,7 +401,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>-->
 
         <!-- شريط البحث والتصفية المحسن -->
         <div class="bg-white rounded-xl shadow-sm p-6 mb-6 border border-gray-100">
@@ -863,9 +872,9 @@
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap mobile-hidden">
                         <div class="flex gap-1 flex-wrap">
-                            ${student.thk?.map((x,i) => `
+                            ${student.thk?.map((x, i) => `
                                 <span class="tooltip-trigger bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium border border-blue-200 hover:shadow-sm transition-all">
-                                    ${i+1}
+                                    ${i + 1}
                                     <div class="tooltip absolute bg-black text-white text-xs rounded py-1 px-2 -mt-8 mr-4 z-20 whitespace-nowrap">
                                         ${x}
                                     </div>
@@ -1104,14 +1113,71 @@
         }
 
         function exportExcel() {
-            showAlert('تم تصدير ملف Excel بنجاح 📊', 'success');
+            const columnsMap = {
+                studentId: "الهوية",
+                name: "الاسم",
+                phone: "الجوال",
+                status: "الحالة",
+                completion: "نسبة التقدم",
+                riasec: "الأبعاد المهنية",
+                mbti: "mbti",
+                thk: "الذكاءات",
+            };
+            const ss = {}
+            // نحول البيانات حسب الأسماء العربية
+            const translatedData = filteredData.map((item, i) => {
+                const newItem = {};
+                newItem["م"] = i + 1;
+                for (const key in columnsMap) {
+                    if (key == "status") {
+                        newItem[columnsMap[key]] = getStatusText(item[key]) ?? "-";
+                    }
+                    else if (key == "completion") {
+                        newItem[columnsMap[key]] = `${item[key]}%`;
+                    }
+                    else if (key == "riasec") {
+                        newItem[columnsMap[key]] = item[key]?.map(x =>getRiasecMeaning(x).split("-")[0].trim()).join(' - ') || "-";
+                        // newItem[columnsMap[key]] = item[key]?.length;
+                    }
+                    else if (key == "thk") {
+                        newItem[columnsMap[key]] = item[key]?.map(x =>`(${x.trim()})`).join('-') || "-";
+                    } else {
+                        newItem[columnsMap[key]] = item[key] ?? "-";
+                    }
+                }
+                return newItem;
+            });
+
+            const ws = XLSX.utils.json_to_sheet(translatedData);
+
+            // توسيط النصوص في جميع الخلايا
+            const range = XLSX.utils.decode_range(ws['!ref']);
+            for (let R = range.s.r; R <= range.e.r; ++R) {
+                for (let C = range.s.c; C <= range.e.c; ++C) {
+                    const cell_address = XLSX.utils.encode_cell({ r: R, c: C });
+                    if (!ws[cell_address]) continue;
+                    if (!ws[cell_address].s) ws[cell_address].s = {};
+                    ws[cell_address].s.alignment = { horizontal: "center", vertical: "center" };
+                }
+            }
+
+            // إعدادات الاتجاه (من اليمين لليسار)
+            ws['!rtl'] = true;
+
+            // إنشاء ملف Excel
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, nowStatus?nowStatus:"اجمالي الطلاب");
+
+            // حفظ الملف
+            XLSX.writeFile(wb, "بيانات الطلاب.xlsx");
         }
 
         function openSettings() {
             showAlert('فتح إعدادات النظام ⚙️', 'info');
         }
-
+        let nowStatus;
         function filterByStatus(status) {
+            nowStatus = status;
             document.getElementById('statusFilter').value = status;
             applyFilters();
         }

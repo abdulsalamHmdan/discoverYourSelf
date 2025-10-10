@@ -405,7 +405,10 @@ app.get('/admin', isAdmin, async function (req, res) {
             completion += 34
         }
         prog = completion == 100 ? "completed" : completion > 0 ? "in-progress" : "not-started";
-
+        if (x.name.trim() == "عبدالاله علي دعاس الحازمي") {
+            console.log(x["p1"],x["p2"],x["p3"])
+            
+        }
 
         return {
             id: x.idNumber,
