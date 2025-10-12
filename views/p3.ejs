@@ -121,16 +121,8 @@
             <div class="relative">
                 <h1
                     class="text-5xl md:text-7xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-600 bg-clip-text text-transparent mb-6 leading-tight">
-                    🧠 اكتشف ذكاءاتك المتعددة!</h1>
-                <p class="text-xl md:text-4xl text-gray-700 leading-relaxed mb-6 font-medium">
-                    👋 مرحبًا <%=name%> في المقياس الثالث: مقياس بصيرة للذكاءات المتعددة
-                </p>
-                <p class="text-xl md:text-2xl text-gray-700 leading-relaxed mb-6 font-medium">
-                    هذا المقياس مبني على أبحاث علمية للعالم النفسي هوارد غاردنر، والتي أثبتت أن الذكاء ليس واحدًا، بل
-                    مجموعة من القدرات المتنوعة التي يمتلكها كل شخص بدرجات مختلفة. </p>
-                <p class="text-xl md:text-2xl text-gray-700 leading-relaxed mb-6 font-medium">
-                    🎯 الغرض من المقياس: مساعدتك على اكتشاف مواطن قوتك وأساليب التعلم التي تناسبك، ليكون لديك وعي أوسع
-                    بذاتك وإمكاناتك </p>
+                    🧠 اكتشف ذكاءاتك المتعددة!
+                </h1>
                 <div class="absolute -top-4 -right-4 w-20 h-20 bg-yellow-200 rounded-full opacity-20 animate-pulse">
                 </div>
                 <div
@@ -554,6 +546,46 @@
         </div>
     </div>
 
+    <!-- نافذة استكمال الاختبار المحفوظ -->
+    <div id="resumeTestModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-2xl p-8 max-w-lg mx-4">
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span class="text-3xl">💾</span>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-2">اختبار محفوظ</h3>
+                <p class="text-gray-600" id="resumeMessage">
+                    <!-- سيتم إدراج الرسالة هنا -->
+                </p>
+            </div>
+
+            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                <div class="flex items-start gap-3">
+                    <span class="text-blue-600 text-xl">💡</span>
+                    <div class="text-sm text-blue-800">
+                        <p class="font-semibold mb-1">يمكنك:</p>
+                        <p>• استكمال الاختبار من حيث توقفت</p>
+                        <p>• البدء من جديد (ستفقد التقدم المحفوظ)</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-3">
+                <button id="resumeTestBtn"
+                    class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors font-semibold">
+                    📝 استكمال الاختبار
+                </button>
+                <button id="startFreshBtn"
+                    class="bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600 transition-colors">
+                    🔄 بدء جديد
+                </button>
+                <button id="closeResumeModal" class="text-gray-600 hover:text-gray-800 underline text-sm">
+                    إلغاء
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- نافذة مراجعة الاختبار قبل التسليم -->
     <div id="reviewTestModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
         <div class="bg-white rounded-2xl p-8 max-w-2xl mx-4 max-h-96 overflow-y-auto">
@@ -702,11 +734,12 @@
         <!-- محتوى السؤال -->
         <div class="container mx-auto px-4 py-8 max-w-4xl">
             <div class="bg-white rounded-2xl shadow-lg p-8">
-                <!-- عنوان الذكاء الحالي -->
+                <!-- عنوان الاختبار -->
                 <div class="text-center mb-6">
                     <div class="inline-flex items-center gap-3 bg-indigo-100 px-4 py-2 rounded-full">
-                        <span id="currentIntelligenceIcon" class="text-2xl">📚</span>
-                        <span id="currentIntelligenceName" class="font-semibold text-indigo-800">لغوي/لفظي</span>
+                        <span id="currentIntelligenceIcon" class="text-2xl">🧠</span>
+                        <span id="currentIntelligenceName" class="font-semibold text-indigo-800">اختبار الذكاءات
+                            المتعددة</span>
                     </div>
                 </div>
 
@@ -759,10 +792,10 @@
                     </div>
 
                     <div class="flex gap-3">
-                        <!-- <button id="finishTestBtn"
+                        <button id="finishTestBtn"
                             class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors font-semibold hidden">
                             🏁 إنهاء الاختبار
-                        </button> -->
+                        </button>
                         <button id="nextBtn"
                             class="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
                             التالي
@@ -793,6 +826,76 @@
         </div>
     </div>
 
+    <!-- نافذة إعدادات عرض الكونسل -->
+    <div id="consoleSettingsModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-2xl p-8 max-w-lg mx-4">
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span class="text-3xl">🖥️</span>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-2">إعدادات عرض الكونسل</h3>
+                <p class="text-gray-600">اختر ما تريد عرضه في الكونسل</p>
+            </div>
+
+            <div class="space-y-4 mb-6">
+                <label
+                    class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                    <input type="checkbox" id="showDetailedScoring" class="w-5 h-5" checked>
+                    <div>
+                        <div class="font-semibold text-gray-800">تفاصيل حساب النقاط</div>
+                        <div class="text-sm text-gray-600">عرض كيفية حساب النقاط لكل ذكاء</div>
+                    </div>
+                </label>
+
+                <label
+                    class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                    <input type="checkbox" id="showQuestionAnalysis" class="w-5 h-5" checked>
+                    <div>
+                        <div class="font-semibold text-gray-800">تحليل الأسئلة</div>
+                        <div class="text-sm text-gray-600">تحليل تفصيلي لكل سؤال وإجابة</div>
+                    </div>
+                </label>
+
+                <label
+                    class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                    <input type="checkbox" id="showRecommendations" class="w-5 h-5" checked>
+                    <div>
+                        <div class="font-semibold text-gray-800">التوصيات والنصائح</div>
+                        <div class="text-sm text-gray-600">طرق التعلم والأنشطة المقترحة</div>
+                    </div>
+                </label>
+
+                <label
+                    class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                    <input type="checkbox" id="showStatistics" class="w-5 h-5" checked>
+                    <div>
+                        <div class="font-semibold text-gray-800">الإحصائيات المتقدمة</div>
+                        <div class="text-sm text-gray-600">المتوسطات والانحراف المعياري</div>
+                    </div>
+                </label>
+
+                <label
+                    class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                    <input type="checkbox" id="enablePerformanceMetrics" class="w-5 h-5" checked>
+                    <div>
+                        <div class="font-semibold text-gray-800">مقاييس الأداء</div>
+                        <div class="text-sm text-gray-600">وقت الاختبار ومعدل الإجابة</div>
+                    </div>
+                </label>
+            </div>
+
+            <div class="flex flex-col gap-3">
+                <button id="applyConsoleSettings"
+                    class="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition-colors font-semibold">
+                    🖥️ عرض في الكونسل
+                </button>
+                <button id="closeConsoleModal" class="text-gray-600 hover:text-gray-800 underline text-sm">
+                    إلغاء
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- شاشة النتائج -->
     <div id="results-screen" class="hidden container mx-auto px-4 py-8 max-w-6xl">
         <div class="text-center mb-8">
@@ -812,6 +915,18 @@
             </h3>
             <div id="intelligencePattern" class="text-center">
                 <!-- سيتم إدراج نمط الذكاءات هنا -->
+            </div>
+        </div>
+
+        <!-- مقارنة مع المتوسط العام -->
+        <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl shadow-lg p-6 mb-8 border border-blue-200">
+            <h3 class="text-2xl font-semibold text-center mb-6 flex items-center justify-center gap-3">
+                <span class="text-3xl">📊</span>
+                مقارنة نتائجك مع المتوسط العام
+            </h3>
+            <p class="text-center text-gray-600 mb-6">كيف تقارن نتائجك مع متوسط الأشخاص الآخرين؟</p>
+            <div id="averageComparison" class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <!-- سيتم إدراج المقارنات هنا -->
             </div>
         </div>
 
@@ -873,18 +988,6 @@
             <div id="detailedResults" class="space-y-6">
                 <!-- سيتم إدراجها بـ JavaScript -->
             </div>
-        </div>
-
-        <!-- أزرار الإجراءات -->
-        <div class="flex flex-wrap justify-center gap-4">
-            <!-- <button id="downloadPdfBtn"
-                class="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition-colors flex items-center gap-2">
-                📄 تحميل PDF
-            </button> -->
-            <button id="retakeBtn"
-                class="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition-colors">
-                الانتقال الى صفحة التقييم
-            </button>
         </div>
     </div>
 
@@ -1185,12 +1288,25 @@
             }
         };
 
-        const questions = [
-            // الذكاء اللغوي والمنطقي - اختيار من متعدد (single)
+        // خلط الأسئلة بشكل عشوائي
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        const originalQuestions = [
+            // أسئلة الذكاء اللغوي
             {
                 type: 'linguistic',
                 questionType: 'single',
                 question: 'عندما تذاكر، أي أسلوب تفضّل؟',
+                weight: 1.2,
+                difficulty: 'easy',
+                reliability: 0.9,
                 options: [
                     { text: 'قراءة ملخّصات وكتب', value: 4 },
                     { text: 'مشاهدة فيديو تعليمي', value: 1 },
@@ -1202,6 +1318,9 @@
                 type: 'linguistic',
                 questionType: 'single',
                 question: 'إذا طُلب منك شرح فكرة، ماذا تفعل أولاً؟',
+                weight: 1.5,
+                difficulty: 'medium',
+                reliability: 0.95,
                 options: [
                     { text: 'أكتب النقاط الرئيسية', value: 4 },
                     { text: 'أرسم مخططاً', value: 1 },
@@ -1213,6 +1332,9 @@
                 type: 'linguistic',
                 questionType: 'single',
                 question: 'أي من هذه الأنشطة تفضل في وقت فراغك؟',
+                weight: 1.0,
+                difficulty: 'easy',
+                reliability: 0.8,
                 options: [
                     { text: 'قراءة الروايات والكتب', value: 4 },
                     { text: 'مشاهدة الأفلام', value: 2 },
@@ -1224,6 +1346,9 @@
                 type: 'linguistic',
                 questionType: 'single',
                 question: 'عند تعلم معلومة جديدة، كيف تحفظها؟',
+                weight: 1.3,
+                difficulty: 'medium',
+                reliability: 0.9,
                 options: [
                     { text: 'أكررها بصوت عالٍ', value: 4 },
                     { text: 'أرسم مخططاً لها', value: 1 },
@@ -1235,6 +1360,9 @@
                 type: 'linguistic',
                 questionType: 'single',
                 question: 'ما الذي يجذبك أكثر في الكتب؟',
+                weight: 1.1,
+                difficulty: 'medium',
+                reliability: 0.85,
                 options: [
                     { text: 'أسلوب الكاتب وجمال اللغة', value: 4 },
                     { text: 'المعلومات والحقائق', value: 2 },
@@ -1242,11 +1370,14 @@
                     { text: 'القصص والأحداث', value: 3 }
                 ]
             },
-
+            // أسئلة الذكاء المنطقي
             {
                 type: 'logical',
                 questionType: 'single',
                 question: 'ما النمط التالي في هذه السلسلة: 2، 4، 8، 16، ؟',
+                weight: 1.6,
+                difficulty: 'hard',
+                reliability: 0.95,
                 options: [
                     { text: '24', value: 1 },
                     { text: '32', value: 4 },
@@ -1258,6 +1389,9 @@
                 type: 'logical',
                 questionType: 'single',
                 question: 'عند حل مشكلة، أي طريقة تفضل؟',
+                weight: 1.4,
+                difficulty: 'medium',
+                reliability: 0.9,
                 options: [
                     { text: 'تحليل الأسباب والنتائج', value: 4 },
                     { text: 'الاعتماد على الحدس', value: 1 },
@@ -1269,6 +1403,9 @@
                 type: 'logical',
                 questionType: 'single',
                 question: 'إذا كان كل A هو B، وكل B هو C، فإن:',
+                weight: 1.7,
+                difficulty: 'hard',
+                reliability: 0.98,
                 options: [
                     { text: 'كل A هو C', value: 4 },
                     { text: 'كل C هو A', value: 1 },
@@ -1280,6 +1417,9 @@
                 type: 'logical',
                 questionType: 'single',
                 question: 'أي من هذه المواد الدراسية تستمتع بها أكثر؟',
+                weight: 1.0,
+                difficulty: 'easy',
+                reliability: 0.75,
                 options: [
                     { text: 'الرياضيات والفيزياء', value: 4 },
                     { text: 'اللغة والأدب', value: 1 },
@@ -1291,6 +1431,9 @@
                 type: 'logical',
                 questionType: 'single',
                 question: 'عند اتخاذ قرار مهم، ما أول ما تفعله؟',
+                weight: 1.3,
+                difficulty: 'medium',
+                reliability: 0.88,
                 options: [
                     { text: 'أجمع المعلومات وأحللها', value: 4 },
                     { text: 'أستشير الآخرين', value: 1 },
@@ -1298,12 +1441,14 @@
                     { text: 'أفكر في النتائج المحتملة', value: 3 }
                 ]
             },
-
-            // الذكاء البصري والحركي - اختيار متعدد (multiple)
+            // أسئلة الذكاء البصري
             {
                 type: 'spatial',
                 questionType: 'multiple',
                 question: 'أي من هذه الأنشطة تجذبك؟ (اختر كل ما ينطبق)',
+                weight: 1.3,
+                difficulty: 'easy',
+                reliability: 0.85,
                 options: [
                     { text: 'الرسم والتصميم', value: 4 },
                     { text: 'التصوير الفوتوغرافي', value: 3 },
@@ -1315,6 +1460,9 @@
                 type: 'spatial',
                 questionType: 'multiple',
                 question: 'ما الذي يساعدك في التعلم؟ (اختر كل ما ينطبق)',
+                weight: 1.5,
+                difficulty: 'medium',
+                reliability: 0.92,
                 options: [
                     { text: 'الرسوم التوضيحية والمخططات', value: 4 },
                     { text: 'الخرائط الذهنية', value: 4 },
@@ -1326,6 +1474,9 @@
                 type: 'spatial',
                 questionType: 'multiple',
                 question: 'أي من هذه المهارات تجيدها؟ (اختر كل ما ينطبق)',
+                weight: 1.4,
+                difficulty: 'medium',
+                reliability: 0.88,
                 options: [
                     { text: 'تذكر الوجوه والأماكن', value: 3 },
                     { text: 'قراءة الخرائط بسهولة', value: 4 },
@@ -1337,6 +1488,9 @@
                 type: 'spatial',
                 questionType: 'multiple',
                 question: 'ما الذي تلاحظه أولاً في مكان جديد؟ (اختر كل ما ينطبق)',
+                weight: 1.2,
+                difficulty: 'easy',
+                reliability: 0.8,
                 options: [
                     { text: 'الألوان والديكور', value: 4 },
                     { text: 'ترتيب الأثاث والمساحات', value: 4 },
@@ -1348,6 +1502,9 @@
                 type: 'spatial',
                 questionType: 'multiple',
                 question: 'أي من هذه الأدوات تستخدمها كثيراً؟ (اختر كل ما ينطبق)',
+                weight: 1.1,
+                difficulty: 'easy',
+                reliability: 0.75,
                 options: [
                     { text: 'برامج التصميم والرسم', value: 4 },
                     { text: 'الكاميرا للتصوير', value: 3 },
@@ -1355,11 +1512,14 @@
                     { text: 'تطبيقات التصميم على الهاتف', value: 3 }
                 ]
             },
-
+            // أسئلة الذكاء الحركي
             {
                 type: 'bodily',
                 questionType: 'multiple',
                 question: 'أي من هذه الأنشطة تستمتع بها؟ (اختر كل ما ينطبق)',
+                weight: 1.3,
+                difficulty: 'easy',
+                reliability: 0.85,
                 options: [
                     { text: 'الرياضة والألعاب', value: 4 },
                     { text: 'الأعمال اليدوية', value: 4 },
@@ -1371,6 +1531,9 @@
                 type: 'bodily',
                 questionType: 'multiple',
                 question: 'كيف تفضل التعلم؟ (اختر كل ما ينطبق)',
+                weight: 1.4,
+                difficulty: 'medium',
+                reliability: 0.9,
                 options: [
                     { text: 'التجربة العملية والممارسة', value: 4 },
                     { text: 'الحركة أثناء الدراسة', value: 4 },
@@ -1382,6 +1545,9 @@
                 type: 'bodily',
                 questionType: 'multiple',
                 question: 'أي من هذه المهارات تجيدها؟ (اختر كل ما ينطبق)',
+                weight: 1.2,
+                difficulty: 'medium',
+                reliability: 0.8,
                 options: [
                     { text: 'التوازن والتناسق الحركي', value: 4 },
                     { text: 'استخدام الأدوات بمهارة', value: 4 },
@@ -1393,6 +1559,9 @@
                 type: 'bodily',
                 questionType: 'multiple',
                 question: 'متى تشعر بالراحة أكثر؟ (اختر كل ما ينطبق)',
+                weight: 1.1,
+                difficulty: 'easy',
+                reliability: 0.75,
                 options: [
                     { text: 'عند الحركة والنشاط', value: 4 },
                     { text: 'أثناء العمل بيديك', value: 4 },
@@ -1404,6 +1573,9 @@
                 type: 'bodily',
                 questionType: 'multiple',
                 question: 'أي بيئة عمل تفضل؟ (اختر كل ما ينطبق)',
+                weight: 1.0,
+                difficulty: 'easy',
+                reliability: 0.7,
                 options: [
                     { text: 'ورشة عمل أو مختبر', value: 4 },
                     { text: 'في الهواء الطلق', value: 4 },
@@ -1411,12 +1583,14 @@
                     { text: 'مكان يسمح بالحركة', value: 4 }
                 ]
             },
-
-            // الذكاء الإيقاعي والاجتماعي - ترتيب (ranking)
+            // أسئلة الذكاء الإيقاعي
             {
                 type: 'musical',
                 questionType: 'ranking',
                 question: 'رتّب هذه الأنشطة الإيقاعية حسب استمتاعك بها (الأول الأكثر تفضيلاً):',
+                weight: 1.2,
+                difficulty: 'medium',
+                reliability: 0.8,
                 options: [
                     { text: 'التصفيق على الإيقاع', value: 0 },
                     { text: 'المشي بخطوات منتظمة', value: 0 },
@@ -1428,6 +1602,9 @@
                 type: 'musical',
                 questionType: 'ranking',
                 question: 'رتّب هذه طرق التعلم حسب فعاليتها معك:',
+                weight: 1.3,
+                difficulty: 'medium',
+                reliability: 0.85,
                 options: [
                     { text: 'التكرار المنتظم', value: 0 },
                     { text: 'الجداول الزمنية المحددة', value: 0 },
@@ -1439,6 +1616,9 @@
                 type: 'musical',
                 questionType: 'ranking',
                 question: 'رتّب هذه البيئات حسب تركيزك فيها:',
+                weight: 1.1,
+                difficulty: 'easy',
+                reliability: 0.75,
                 options: [
                     { text: 'مكان هادئ ومنتظم', value: 0 },
                     { text: 'بيئة بها أصوات طبيعية منتظمة', value: 0 },
@@ -1450,6 +1630,9 @@
                 type: 'musical',
                 questionType: 'ranking',
                 question: 'رتّب هذه الأنشطة حسب قدرتك على ملاحظة الأنماط فيها:',
+                weight: 1.4,
+                difficulty: 'hard',
+                reliability: 0.9,
                 options: [
                     { text: 'الأرقام والتسلسلات', value: 0 },
                     { text: 'الحركات المتكررة', value: 0 },
@@ -1461,6 +1644,9 @@
                 type: 'musical',
                 questionType: 'ranking',
                 question: 'رتّب هذه المهارات حسب قوتك فيها:',
+                weight: 1.2,
+                difficulty: 'medium',
+                reliability: 0.8,
                 options: [
                     { text: 'تذكر التسلسلات والخطوات', value: 0 },
                     { text: 'الالتزام بالمواعيد والجداول', value: 0 },
@@ -1468,11 +1654,14 @@
                     { text: 'تنظيم الأعمال بطريقة منهجية', value: 0 }
                 ]
             },
-
+            // أسئلة الذكاء الاجتماعي
             {
                 type: 'interpersonal',
                 questionType: 'ranking',
                 question: 'رتّب هذه الأنشطة الاجتماعية حسب استمتاعك بها:',
+                weight: 1.3,
+                difficulty: 'medium',
+                reliability: 0.85,
                 options: [
                     { text: 'العمل التطوعي', value: 0 },
                     { text: 'تنظيم الفعاليات', value: 0 },
@@ -1484,6 +1673,9 @@
                 type: 'interpersonal',
                 questionType: 'ranking',
                 question: 'رتّب هذه المهارات حسب قوتك فيها:',
+                weight: 1.5,
+                difficulty: 'hard',
+                reliability: 0.95,
                 options: [
                     { text: 'فهم مشاعر الآخرين', value: 0 },
                     { text: 'التواصل الفعال', value: 0 },
@@ -1495,6 +1687,9 @@
                 type: 'interpersonal',
                 questionType: 'ranking',
                 question: 'رتّب هذه البيئات حسب راحتك فيها:',
+                weight: 1.2,
+                difficulty: 'medium',
+                reliability: 0.8,
                 options: [
                     { text: 'الاجتماعات الكبيرة', value: 0 },
                     { text: 'المجموعات الصغيرة', value: 0 },
@@ -1506,6 +1701,9 @@
                 type: 'interpersonal',
                 questionType: 'ranking',
                 question: 'رتّب هذه الأدوار حسب تفضيلك في العمل الجماعي:',
+                weight: 1.4,
+                difficulty: 'medium',
+                reliability: 0.9,
                 options: [
                     { text: 'قائد الفريق', value: 0 },
                     { text: 'منسق المشروع', value: 0 },
@@ -1517,6 +1715,9 @@
                 type: 'interpersonal',
                 questionType: 'ranking',
                 question: 'رتّب هذه الطرق حسب تفضيلك لحل المشاكل:',
+                weight: 1.1,
+                difficulty: 'easy',
+                reliability: 0.75,
                 options: [
                     { text: 'النقاش الجماعي', value: 0 },
                     { text: 'استشارة الخبراء', value: 0 },
@@ -1524,12 +1725,14 @@
                     { text: 'التفكير المنفرد', value: 0 }
                 ]
             },
-
-            // الذكاء الذاتي والطبيعي - تقييم بالنجوم (rating)
+            // أسئلة الذكاء الذاتي
             {
                 type: 'intrapersonal',
                 questionType: 'rating',
                 question: 'قيّم مدى انطباق هذه العبارات عليك (1-5 نجوم):',
+                weight: 1.4,
+                difficulty: 'medium',
+                reliability: 0.9,
                 statements: [
                     { text: 'أعرف نقاط قوتي وضعفي جيداً', value: 0 },
                     { text: 'أحتاج وقتاً وحيداً للتفكير', value: 0 },
@@ -1541,6 +1744,9 @@
                 type: 'intrapersonal',
                 questionType: 'rating',
                 question: 'قيّم مدى ممارستك لهذه الأنشطة (1-5 نجوم):',
+                weight: 1.2,
+                difficulty: 'easy',
+                reliability: 0.8,
                 statements: [
                     { text: 'كتابة اليوميات والتأملات', value: 0 },
                     { text: 'وضع أهداف شخصية', value: 0 },
@@ -1552,6 +1758,9 @@
                 type: 'intrapersonal',
                 questionType: 'rating',
                 question: 'قيّم مدى صحة هذه الصفات عنك (1-5 نجوم):',
+                weight: 1.3,
+                difficulty: 'medium',
+                reliability: 0.85,
                 statements: [
                     { text: 'أحب العمل بمفردي', value: 0 },
                     { text: 'أحلل تصرفاتي باستمرار', value: 0 },
@@ -1563,6 +1772,9 @@
                 type: 'intrapersonal',
                 questionType: 'rating',
                 question: 'قيّم مدى راحتك في هذه المواقف (1-5 نجوم):',
+                weight: 1.1,
+                difficulty: 'easy',
+                reliability: 0.75,
                 statements: [
                     { text: 'قضاء يوم كامل وحيداً', value: 0 },
                     { text: 'التفكير في معنى الحياة', value: 0 },
@@ -1574,6 +1786,9 @@
                 type: 'intrapersonal',
                 questionType: 'rating',
                 question: 'قيّم قوتك في هذه المهارات الذاتية (1-5 نجوم):',
+                weight: 1.5,
+                difficulty: 'hard',
+                reliability: 0.95,
                 statements: [
                     { text: 'معرفة ما يحفزني ويثبطني', value: 0 },
                     { text: 'إدارة وقتي وأولوياتي', value: 0 },
@@ -1581,11 +1796,14 @@
                     { text: 'تطوير نفسي باستمرار', value: 0 }
                 ]
             },
-
+            // أسئلة الذكاء الطبيعي
             {
                 type: 'naturalist',
                 questionType: 'rating',
                 question: 'قيّم مدى استمتاعك بهذه الأنشطة الطبيعية (1-5 نجوم):',
+                weight: 1.3,
+                difficulty: 'easy',
+                reliability: 0.85,
                 statements: [
                     { text: 'زراعة النباتات والعناية بها', value: 0 },
                     { text: 'مراقبة الطيور والحيوانات', value: 0 },
@@ -1597,6 +1815,9 @@
                 type: 'naturalist',
                 questionType: 'rating',
                 question: 'قيّم مدى راحتك في هذه البيئات (1-5 نجوم):',
+                weight: 1.2,
+                difficulty: 'easy',
+                reliability: 0.8,
                 statements: [
                     { text: 'الغابات والحدائق الطبيعية', value: 0 },
                     { text: 'الشواطئ والبحيرات', value: 0 },
@@ -1608,6 +1829,9 @@
                 type: 'naturalist',
                 questionType: 'rating',
                 question: 'قيّم قوتك في هذه المهارات الطبيعية (1-5 نجوم):',
+                weight: 1.4,
+                difficulty: 'medium',
+                reliability: 0.9,
                 statements: [
                     { text: 'تمييز أنواع النباتات', value: 0 },
                     { text: 'ملاحظة التغيرات في الطقس', value: 0 },
@@ -1619,6 +1843,9 @@
                 type: 'naturalist',
                 questionType: 'rating',
                 question: 'قيّم أهمية هذه القضايا بالنسبة لك (1-5 نجوم):',
+                weight: 1.1,
+                difficulty: 'easy',
+                reliability: 0.75,
                 statements: [
                     { text: 'حماية البيئة والطبيعة', value: 0 },
                     { text: 'دراسة الكائنات الحية', value: 0 },
@@ -1630,6 +1857,9 @@
                 type: 'naturalist',
                 questionType: 'rating',
                 question: 'قيّم مدى انطباق هذه العبارات عليك (1-5 نجوم):',
+                weight: 1.2,
+                difficulty: 'medium',
+                reliability: 0.8,
                 statements: [
                     { text: 'أشعر بالسلام في الطبيعة', value: 0 },
                     { text: 'ألاحظ تفاصيل البيئة حولي', value: 0 },
@@ -1638,6 +1868,9 @@
                 ]
             }
         ];
+
+        // خلط الأسئلة عشوائياً
+        const questions = shuffleArray(originalQuestions);
 
         // متغيرات الحالة
         let currentUser = '';
@@ -1662,8 +1895,51 @@
 
         // أحداث الأزرار
         startBtn.addEventListener('click', function () {
-            currentUser = '<%=name%>'; // اسم ثابت
+            currentUser = 'مستخدم الاختبار'; // اسم ثابت
+
+            // التحقق من وجود اختبار محفوظ
+            const savedData = loadSavedData();
+            if (savedData.canResume) {
+                showResumeModal(savedData);
+            } else {
+                showOnboarding();
+            }
+        });
+
+        // أحداث نافذة استكمال الاختبار
+        document.getElementById('resumeTestBtn').addEventListener('click', function () {
+            const savedData = loadSavedData();
+            if (savedData.canResume) {
+                // استرداد البيانات
+                answers = savedData.answers;
+                currentQuestionIndex = savedData.progress.currentQuestionIndex;
+                startTime = savedData.progress.startTime;
+                currentUser = savedData.progress.userName;
+
+                // إخفاء النافذة وبدء الاختبار
+                document.getElementById('resumeTestModal').classList.add('hidden');
+                welcomeScreen.classList.add('hidden');
+                testScreen.classList.remove('hidden');
+
+                // إنشاء شريط التقدم وبدء المؤقت
+                createProgressTimeline();
+                startTimer();
+                showQuestion(currentQuestionIndex);
+            }
+        });
+
+        document.getElementById('startFreshBtn').addEventListener('click', function () {
+            // مسح البيانات المحفوظة
+            localStorage.removeItem('multipleIntelligenceAnswers');
+            localStorage.removeItem('multipleIntelligenceProgress');
+
+            // إخفاء النافذة والبدء من جديد
+            document.getElementById('resumeTestModal').classList.add('hidden');
             showOnboarding();
+        });
+
+        document.getElementById('closeResumeModal').addEventListener('click', function () {
+            document.getElementById('resumeTestModal').classList.add('hidden');
         });
 
         howItWorksBtn.addEventListener('click', function () {
@@ -1722,6 +1998,21 @@
             midwayBreak.classList.add('hidden');
         });
 
+        // إظهار نافذة استكمال الاختبار
+        function showResumeModal(savedData) {
+            const answeredCount = Object.keys(savedData.answers).length;
+            const progress = Math.round((answeredCount / questions.length) * 100);
+            const timeElapsed = Math.round((Date.now() - savedData.progress.startTime) / (1000 * 60));
+
+            document.getElementById('resumeMessage').innerHTML = `
+                لديك اختبار محفوظ من ${timeElapsed} دقيقة مضت<br>
+                <span class="text-sm text-gray-500">تمت الإجابة على ${answeredCount} من ${questions.length} سؤالاً (${progress}%)</span>
+            `;
+
+            document.getElementById('resumeTestModal').classList.remove('hidden');
+            document.getElementById('resumeTestModal').classList.add('flex');
+        }
+
         // إظهار شاشة الدليل السريع
         function showOnboarding() {
             welcomeScreen.classList.add('hidden');
@@ -1766,7 +2057,7 @@
                 dot.className = className;
                 dot.textContent = i;
                 dot.title = isAnswered ? 'تمت الإجابة' : (isCurrent ? 'السؤال الحالي' : 'لم تتم الإجابة');
-                dot.addEventListener('click', () => goToQuestion(i - 1));
+                // dot.addEventListener('click', () => goToQuestion(i - 1));
                 timeline.appendChild(dot);
             }
         }
@@ -1826,7 +2117,7 @@
                             <span class="text-2xl">📊</span>
                             <div>
                                 <h4 class="font-semibold text-blue-800">ترتيب حسب التفضيل</h4>
-                                <p class="text-sm text-blue-600">اسحب العناصر لترتيبها من الأكثر تفضيلاً إلى الأقل</p>
+                                <p class="text-sm text-blue-600">استخدم الأزرار ↑ ↓ لترتيب العناصر من الأكثر تفضيلاً إلى الأقل</p>
                             </div>
                         </div>
                     `;
@@ -1858,9 +2149,9 @@
             container.classList.add('question-transition', 'question-exit');
 
             setTimeout(() => {
-                // تحديث معلومات الذكاء الحالي
-                document.getElementById('currentIntelligenceIcon').textContent = intelligence.icon;
-                document.getElementById('currentIntelligenceName').textContent = intelligence.name;
+                // إخفاء معلومات الذكاء الحالي لجعل الاختبار أكثر حيادية
+                document.getElementById('currentIntelligenceIcon').textContent = '🧠';
+                document.getElementById('currentIntelligenceName').textContent = 'اختبار الذكاءات المتعددة';
 
                 // تحديث رقم السؤال والتقدم
                 document.getElementById('currentQuestion').textContent = index + 1;
@@ -1903,6 +2194,10 @@
                 // إضافة مستمعي الأحداث
                 addQuestionEventListeners(question, index);
 
+                // استراحة منتصف الطريق
+                if (index === 20) {
+                    showMidwayBreak();
+                }
             }, 200);
         }
 
@@ -2138,7 +2433,7 @@
             }
         }
 
-        // تهيئة الترتيب بالسحب
+        // تهيئة الترتيب بالأزرار
         function initializeSortable(index) {
             const container = document.getElementById('rankingContainer');
 
@@ -2208,15 +2503,6 @@
             });
         }
 
-        // تحديث أرقام الترتيب
-        function updateRankingNumbers() {
-            const items = document.querySelectorAll('.ranking-item');
-            items.forEach((item, i) => {
-                const numberSpan = item.querySelector('span');
-                numberSpan.textContent = i + 1;
-            });
-        }
-
         // حفظ إجابة الترتيب
         function saveRankingAnswer(index) {
             const items = document.querySelectorAll('.ranking-item');
@@ -2224,6 +2510,8 @@
             saveAnswer();
             updateNavigationButtons();
         }
+
+        // حفظ الترتيب الافتراضي عند تحميل السؤال
         function saveDefaultRanking(index) {
             if (!answers[index]) {
                 // إذا لم تكن هناك إجابة محفوظة، احفظ الترتيب الافتراضي
@@ -2285,11 +2573,41 @@
 
         // حفظ الإجابة وإظهار رسالة
         function saveAnswer() {
+            // حفظ في التخزين المحلي
+            // localStorage.setItem('multipleIntelligenceAnswers', JSON.stringify(answers));
+            // localStorage.setItem('multipleIntelligenceProgress', JSON.stringify({
+            //     currentQuestionIndex: currentQuestionIndex,
+            //     startTime: startTime,
+            //     userName: currentUser
+            // }));
+
             const message = document.getElementById('autoSaveMessage');
             message.style.opacity = '1';
             setTimeout(() => {
                 message.style.opacity = '0';
             }, 2000);
+        }
+
+        // استرداد البيانات المحفوظة
+        function loadSavedData() {
+            const savedAnswers = localStorage.getItem('multipleIntelligenceAnswers');
+            const savedProgress = localStorage.getItem('multipleIntelligenceProgress');
+
+            if (savedAnswers && savedProgress) {
+                const progress = JSON.parse(savedProgress);
+                const timeDiff = Date.now() - progress.startTime;
+
+                // إذا مر أقل من 24 ساعة، اعرض خيار الاستكمال
+                if (timeDiff < 24 * 60 * 60 * 1000) {
+                    return {
+                        answers: JSON.parse(savedAnswers),
+                        progress: progress,
+                        canResume: true
+                    };
+                }
+            }
+
+            return { canResume: false };
         }
 
         // إظهار مؤشر الانتقال التلقائي
@@ -2308,16 +2626,16 @@
         function updateNavigationButtons() {
             const prevBtn = document.getElementById('prevBtn');
             const nextBtn = document.getElementById('nextBtn');
-            // const finishBtn = document.getElementById('finishTestBtn');
+            const finishBtn = document.getElementById('finishTestBtn');
 
             prevBtn.disabled = currentQuestionIndex === 0;
             nextBtn.disabled = !answers[currentQuestionIndex];
 
-            // إظهار زر الإنهاء إذا تم الإجابة على 75% من الأسئلة على الأقل
+            // إظهار زر الإنهاء إذا تم الإجابة على 90% من الأسئلة على الأقل
             const answeredCount = Object.keys(answers).length;
             const completionPercentage = (answeredCount / questions.length) * 100;
 
-            // if (completionPercentage >= 75) {
+            // if (completionPercentage >= 90) { // 90% أو أكثر    
             //     finishBtn.classList.remove('hidden');
             // } else {
             //     finishBtn.classList.add('hidden');
@@ -2352,10 +2670,36 @@
             }
         });
 
+        // زر حفظ لاحقاً
+        document.getElementById('saveLaterBtn').addEventListener('click', function () {
+            // حفظ التقدم الحالي
+            saveAnswer();
+
+            // إظهار رسالة تأكيد مع معلومات التقدم
+            const answeredCount = Object.keys(answers).length;
+            const progress = Math.round((answeredCount / questions.length) * 100);
+
+            if (confirm(`تم حفظ تقدمك!\n\nالتقدم الحالي: ${answeredCount} من ${questions.length} سؤالاً (${progress}%)\n\nيمكنك العودة لاحقاً لإكمال الاختبار من حيث توقفت.\n\nهل تريد الخروج الآن؟`)) {
+                // العودة للشاشة الرئيسية
+                testScreen.classList.add('hidden');
+                welcomeScreen.classList.remove('hidden');
+
+                // إيقاف المؤقت
+                if (timerInterval) {
+                    clearInterval(timerInterval);
+                }
+
+                // إظهار رسالة نجاح الحفظ
+                setTimeout(() => {
+                    alert('✅ تم حفظ تقدمك بنجاح!\n\nعند العودة، اضغط "ابدأ الاختبار" وستجد خيار "استكمال الاختبار" للمتابعة من حيث توقفت.');
+                }, 500);
+            }
+        });
+
         // زر إنهاء الاختبار
-        // document.getElementById('finishTestBtn').addEventListener('click', function () {
-        //     showReviewModal();
-        // });
+        document.getElementById('finishTestBtn').addEventListener('click', function () {
+            showReviewModal();
+        });
 
         // زر الأسئلة غير المجابة
         document.getElementById('goToUnansweredBtn').addEventListener('click', function () {
@@ -2396,94 +2740,415 @@
             }, 1000);
         }
 
-        // حساب النتائج
+        // حساب النتائج مع نظام الأوزان والموثوقية المحسن
         function calculateResults() {
             const scores = {};
             const maxScores = {};
+            const actualScores = {};
+            const weightedMaxScores = {};
+            const weightedActualScores = {};
+            const questionCounts = {};
+            const detailedBreakdown = {};
+            const reliabilityScores = {};
 
             // تهيئة النقاط والحد الأقصى لكل نوع ذكاء
             Object.keys(intelligences).forEach(type => {
                 scores[type] = 0;
                 maxScores[type] = 0;
+                actualScores[type] = 0;
+                weightedMaxScores[type] = 0;
+                weightedActualScores[type] = 0;
+                questionCounts[type] = 0;
+                reliabilityScores[type] = 0;
+                detailedBreakdown[type] = {
+                    questions: [],
+                    totalPossible: 0,
+                    totalAchieved: 0,
+                    answeredQuestions: 0,
+                    weightedPossible: 0,
+                    weightedAchieved: 0,
+                    averageReliability: 0,
+                    difficultyBreakdown: { easy: 0, medium: 0, hard: 0 }
+                };
             });
 
-            // حساب النقاط والحد الأقصى لكل سؤال
+            // حساب النقاط والحد الأقصى لكل سؤال مع نظام الأوزان المحسن
             questions.forEach((question, index) => {
                 const questionType = question.type;
+                const weight = question.weight || 1.0; // الوزن الافتراضي 1.0
+                const reliability = question.reliability || 0.8; // الموثوقية الافتراضية 80%
+                const difficulty = question.difficulty || 'medium';
 
-                // حساب الحد الأقصى للسؤال
+                questionCounts[questionType]++;
+
+                // حساب الحد الأقصى للسؤال مع التحقق المتقدم
+                let questionMaxScore = 0;
+                let questionActualScore = 0;
+                let isAnswered = false;
+
                 switch (question.questionType) {
                     case 'single':
-                        const maxSingleValue = Math.max(...question.options.map(opt => opt.value));
-                        maxScores[questionType] += maxSingleValue;
+                        // التأكد من وجود قيم صحيحة في الخيارات
+                        const validSingleOptions = question.options.filter(opt =>
+                            typeof opt.value === 'number' &&
+                            opt.value >= 0 &&
+                            opt.value <= 5 // حد أقصى منطقي
+                        );
+
+                        if (validSingleOptions.length > 0) {
+                            questionMaxScore = Math.max(...validSingleOptions.map(opt => opt.value));
+
+                            // حساب النقاط الفعلية
+                            if (answers[index] !== undefined && answers[index] !== null) {
+                                const answerIndex = answers[index];
+                                if (typeof answerIndex === 'number' &&
+                                    answerIndex >= 0 &&
+                                    answerIndex < question.options.length) {
+                                    const selectedOption = question.options[answerIndex];
+                                    if (selectedOption && typeof selectedOption.value === 'number') {
+                                        questionActualScore = Math.max(0, selectedOption.value);
+                                        isAnswered = true;
+                                    }
+                                }
+                            }
+                        }
                         break;
 
                     case 'multiple':
-                        const totalMultipleValue = question.options.reduce((sum, opt) => sum + opt.value, 0);
-                        maxScores[questionType] += totalMultipleValue;
+                        // حساب مجموع جميع الخيارات للاختيار المتعدد مع التحقق
+                        const validMultipleOptions = question.options.filter(opt =>
+                            typeof opt.value === 'number' &&
+                            opt.value >= 0 &&
+                            opt.value <= 5
+                        );
+
+                        if (validMultipleOptions.length > 0) {
+                            questionMaxScore = validMultipleOptions.reduce((sum, opt) => sum + opt.value, 0);
+
+                            // حساب النقاط الفعلية
+                            if (answers[index] !== undefined &&
+                                answers[index] !== null &&
+                                Array.isArray(answers[index]) &&
+                                answers[index].length > 0) {
+
+                                const selectedIndices = [...new Set(answers[index])]; // إزالة التكرارات
+                                selectedIndices.forEach(optionIndex => {
+                                    if (typeof optionIndex === 'number' &&
+                                        optionIndex >= 0 &&
+                                        optionIndex < question.options.length) {
+                                        const selectedOption = question.options[optionIndex];
+                                        if (selectedOption && typeof selectedOption.value === 'number') {
+                                            questionActualScore += Math.max(0, selectedOption.value);
+                                        }
+                                    }
+                                });
+                                isAnswered = selectedIndices.length > 0;
+                            }
+                        }
                         break;
 
                     case 'ranking':
-                        maxScores[questionType] += 10; // 4+3+2+1 = 10 نقاط كحد أقصى
+                        // نظام الترتيب: الأول=4، الثاني=3، الثالث=2، الرابع=1
+                        questionMaxScore = 4 + 3 + 2 + 1; // = 10 نقاط
+
+                        // حساب النقاط الفعلية مع التحقق الصارم
+                        if (answers[index] !== undefined &&
+                            answers[index] !== null &&
+                            Array.isArray(answers[index]) &&
+                            answers[index].length === 4) {
+
+                            const ranking = answers[index];
+                            const uniqueItems = [...new Set(ranking)];
+
+                            // التأكد من أن جميع العناصر موجودة ولا تتكرر وفي النطاق الصحيح
+                            if (uniqueItems.length === 4 &&
+                                uniqueItems.every(item =>
+                                    typeof item === 'number' &&
+                                    item >= 0 &&
+                                    item < 4
+                                ) &&
+                                uniqueItems.sort().join(',') === '0,1,2,3') {
+
+                                ranking.forEach((optionIndex, rank) => {
+                                    questionActualScore += (4 - rank); // الأول=4، الثاني=3، إلخ
+                                });
+                                isAnswered = true;
+                            } else {
+                                // إذا كان الترتيب غير صحيح، أعطي نقاط جزئية
+                                console.warn(`ترتيب غير صحيح في السؤال ${index + 1}:`, ranking);
+                                questionActualScore = questionMaxScore * 0.5; // 50% من النقاط
+                                isAnswered = true;
+                            }
+                        }
                         break;
 
                     case 'rating':
-                        maxScores[questionType] += question.statements.length * 5; // 5 نجوم لكل عبارة
+                        // التأكد من وجود عبارات صحيحة
+                        if (question.statements &&
+                            Array.isArray(question.statements) &&
+                            question.statements.length > 0) {
+
+                            questionMaxScore = question.statements.length * 5; // 5 نجوم لكل عبارة
+
+                            // حساب النقاط الفعلية
+                            if (answers[index] !== undefined &&
+                                answers[index] !== null &&
+                                Array.isArray(answers[index]) &&
+                                answers[index].length === question.statements.length) {
+
+                                let validRatings = 0;
+                                answers[index].forEach(rating => {
+                                    if (typeof rating === 'number' && rating >= 1 && rating <= 5) {
+                                        questionActualScore += rating;
+                                        validRatings++;
+                                    }
+                                });
+
+                                // اعتبر السؤال مُجاب عليه إذا تم تقييم 80% من العبارات على الأقل
+                                isAnswered = validRatings >= Math.ceil(question.statements.length * 0.8);
+
+                                if (!isAnswered && validRatings > 0) {
+                                    // إعطاء نقاط جزئية للتقييمات الناقصة
+                                    questionActualScore = (questionActualScore / validRatings) * question.statements.length * 0.7;
+                                    isAnswered = true;
+                                }
+                            }
+                        }
                         break;
                 }
 
-                // حساب النقاط الفعلية إذا تم الإجابة على السؤال
-                if (answers[index] !== undefined) {
-                    const answer = answers[index];
+                // التأكد من أن النقاط في النطاق المنطقي
+                questionActualScore = Math.max(0, Math.min(questionMaxScore, questionActualScore));
 
-                    switch (question.questionType) {
-                        case 'single':
-                            if (question.options[answer]) {
-                                scores[questionType] += question.options[answer].value;
-                            }
-                            break;
+                // تطبيق عامل الموثوقية على النقاط
+                const reliableActualScore = questionActualScore * reliability;
+                const reliableMaxScore = questionMaxScore * reliability;
 
-                        case 'multiple':
-                            if (Array.isArray(answer)) {
-                                answer.forEach(optionIndex => {
-                                    if (question.options[optionIndex]) {
-                                        scores[questionType] += question.options[optionIndex].value;
-                                    }
-                                });
-                            }
-                            break;
+                // إضافة النقاط للمجاميع (العادية والموزونة)
+                maxScores[questionType] += questionMaxScore;
+                actualScores[questionType] += questionActualScore;
+                weightedMaxScores[questionType] += questionMaxScore * weight;
+                weightedActualScores[questionType] += reliableActualScore * weight;
+                reliabilityScores[questionType] += reliability;
 
-                        case 'ranking':
-                            if (Array.isArray(answer)) {
-                                answer.forEach((optionIndex, rank) => {
-                                    scores[questionType] += (4 - rank); // الأول يحصل على 4، الثاني على 3، إلخ
-                                });
-                            }
-                            break;
+                // حفظ تفاصيل السؤال للتشخيص المحسن
+                detailedBreakdown[questionType].questions.push({
+                    questionIndex: index + 1,
+                    questionType: question.questionType,
+                    maxScore: questionMaxScore,
+                    actualScore: questionActualScore,
+                    weight: weight,
+                    reliability: reliability,
+                    difficulty: difficulty,
+                    weightedMaxScore: questionMaxScore * weight,
+                    weightedActualScore: reliableActualScore * weight,
+                    isAnswered: isAnswered,
+                    answer: answers[index]
+                });
 
-                        case 'rating':
-                            if (Array.isArray(answer)) {
-                                answer.forEach(rating => {
-                                    scores[questionType] += rating; // إضافة التقييم مباشرة (1-5)
-                                });
-                            }
-                            break;
-                    }
+                if (isAnswered) {
+                    detailedBreakdown[questionType].answeredQuestions++;
+                    detailedBreakdown[questionType].difficultyBreakdown[difficulty]++;
                 }
+
+                detailedBreakdown[questionType].totalPossible += questionMaxScore;
+                detailedBreakdown[questionType].totalAchieved += questionActualScore;
+                detailedBreakdown[questionType].weightedPossible += questionMaxScore * weight;
+                detailedBreakdown[questionType].weightedAchieved += reliableActualScore * weight;
             });
 
-            // تحويل النقاط إلى نسب مئوية دقيقة
-            Object.keys(scores).forEach(type => {
-                if (maxScores[type] > 0) {
-                    scores[type] = Math.round((scores[type] / maxScores[type]) * 100);
+            // تحويل النقاط إلى نسب مئوية مع نظام الأوزان المحسن
+            Object.keys(actualScores).forEach(type => {
+                // حساب متوسط الموثوقية لهذا النوع من الذكاء
+                const avgReliability = questionCounts[type] > 0 ?
+                    reliabilityScores[type] / questionCounts[type] : 0;
+                detailedBreakdown[type].averageReliability = Math.round(avgReliability * 100) / 100;
+
+                if (weightedMaxScores[type] > 0 && detailedBreakdown[type].answeredQuestions > 0) {
+                    // حساب النسبة المئوية الموزونة بدقة عالية
+                    const weightedPercentage = (weightedActualScores[type] / weightedMaxScores[type]) * 100;
+
+                    // تطبيق عامل تصحيح الصعوبة
+                    const difficultyFactor = calculateDifficultyFactor(detailedBreakdown[type].difficultyBreakdown, detailedBreakdown[type].answeredQuestions);
+
+                    // تطبيق عامل تصحيح الموثوقية
+                    const reliabilityFactor = Math.min(1.0, avgReliability + 0.1); // مكافأة صغيرة للموثوقية العالية
+
+                    // حساب النتيجة النهائية
+                    let finalScore = weightedPercentage * difficultyFactor * reliabilityFactor;
+
+                    // تقريب لأقرب عُشر مع ضمان الدقة
+                    scores[type] = Math.round(finalScore * 10) / 10;
+
+                    // التأكد من أن النسبة في النطاق الصحيح
+                    scores[type] = Math.max(0, Math.min(100, scores[type]));
+
+                    // تطبيق تعديل للأسئلة غير المجابة (أقل قسوة مع النظام الجديد)
+                    const answerRate = detailedBreakdown[type].answeredQuestions / questionCounts[type];
+                    if (answerRate < 1.0 && answerRate >= 0.6) {
+                        // تقليل النتيجة بناءً على نسبة الأسئلة غير المجابة (أقل عقوبة)
+                        const penalty = (1 - answerRate) * 0.2; // عقوبة 20% كحد أقصى
+                        scores[type] = Math.round((scores[type] * (1 - penalty)) * 10) / 10;
+                    } else if (answerRate < 0.6) {
+                        // إذا أُجيب على أقل من 60% من الأسئلة، تطبيق عقوبة أكبر
+                        const penalty = Math.min(0.5, (1 - answerRate) * 0.8);
+                        scores[type] = Math.round((scores[type] * (1 - penalty)) * 10) / 10;
+                    }
                 } else {
                     scores[type] = 0;
                 }
-                // التأكد من أن النسبة لا تتجاوز 100%
-                scores[type] = Math.min(scores[type], 100);
             });
 
-            return scores;
+            // دالة حساب عامل الصعوبة
+            function calculateDifficultyFactor(difficultyBreakdown, totalAnswered) {
+                if (totalAnswered === 0) return 1.0;
+
+                const easyWeight = 0.9;   // الأسئلة السهلة تحصل على وزن أقل قليلاً
+                const mediumWeight = 1.0; // الأسئلة المتوسطة وزن عادي
+                const hardWeight = 1.2;   // الأسئلة الصعبة تحصل على مكافأة
+
+                const weightedTotal = (difficultyBreakdown.easy * easyWeight) +
+                    (difficultyBreakdown.medium * mediumWeight) +
+                    (difficultyBreakdown.hard * hardWeight);
+
+                return Math.min(1.15, weightedTotal / totalAnswered); // حد أقصى 15% مكافأة
+            }
+
+            // إنشاء تقرير تشخيصي شامل
+            const diagnostics = {
+                summary: {
+                    totalQuestions: questions.length,
+                    answeredQuestions: Object.keys(answers).length,
+                    completionRate: Math.round((Object.keys(answers).length / questions.length) * 100)
+                },
+                byIntelligenceType: {},
+                validation: {
+                    errors: [],
+                    warnings: [],
+                    isReliable: true
+                },
+                statistics: {}
+            };
+
+            // متوسطات عامة مرجعية لكل نوع ذكاء (بناءً على دراسات سابقة)
+            const generalAverages = {
+                linguistic: 62,
+                logical: 58,
+                spatial: 55,
+                bodily: 60,
+                musical: 45,
+                interpersonal: 68,
+                intrapersonal: 52,
+                naturalist: 48
+            };
+
+            // تفاصيل كل نوع ذكاء مع المقارنات
+            Object.keys(intelligences).forEach(type => {
+                const breakdown = detailedBreakdown[type];
+                const generalAvg = generalAverages[type];
+                const scoreDifference = scores[type] - generalAvg;
+
+                diagnostics.byIntelligenceType[type] = {
+                    name: intelligences[type].name,
+                    totalQuestions: questionCounts[type],
+                    answeredQuestions: breakdown.answeredQuestions,
+                    completionRate: Math.round((breakdown.answeredQuestions / questionCounts[type]) * 100),
+                    maxPossibleScore: maxScores[type],
+                    actualScore: actualScores[type],
+                    weightedMaxScore: weightedMaxScores[type],
+                    weightedActualScore: weightedActualScores[type],
+                    finalPercentage: scores[type],
+                    efficiency: maxScores[type] > 0 ? Math.round((actualScores[type] / maxScores[type]) * 100) : 0,
+                    averageReliability: breakdown.averageReliability,
+                    difficultyBreakdown: breakdown.difficultyBreakdown,
+                    // مقارنة مع المتوسط العام
+                    generalAverage: generalAvg,
+                    differenceFromAverage: Math.round(scoreDifference * 10) / 10,
+                    performanceLevel: scoreDifference > 15 ? 'ممتاز' :
+                        scoreDifference > 5 ? 'جيد جداً' :
+                            scoreDifference > -5 ? 'متوسط' :
+                                scoreDifference > -15 ? 'أقل من المتوسط' : 'يحتاج تطوير'
+                };
+            });
+
+            // حساب الإحصائيات العامة
+            const allScores = Object.values(scores);
+            const validScores = allScores.filter(score => score > 0);
+
+            if (validScores.length > 0) {
+                const sum = validScores.reduce((a, b) => a + b, 0);
+                const mean = sum / validScores.length;
+                const variance = validScores.reduce((acc, score) => acc + Math.pow(score - mean, 2), 0) / validScores.length;
+                const standardDeviation = Math.sqrt(variance);
+
+                diagnostics.statistics = {
+                    mean: Math.round(mean * 10) / 10,
+                    median: validScores.sort((a, b) => a - b)[Math.floor(validScores.length / 2)],
+                    standardDeviation: Math.round(standardDeviation * 10) / 10,
+                    min: Math.min(...validScores),
+                    max: Math.max(...validScores),
+                    range: Math.max(...validScores) - Math.min(...validScores)
+                };
+            }
+
+            // التحقق من صحة النتائج
+            Object.keys(scores).forEach(type => {
+                const typeData = diagnostics.byIntelligenceType[type];
+
+                // تحقق من اكتمال البيانات
+                if (typeData.completionRate < 50) {
+                    diagnostics.validation.warnings.push(`نسبة إكمال منخفضة للذكاء ${intelligences[type].name}: ${typeData.completionRate}%`);
+                }
+
+                // تحقق من منطقية النتائج
+                if (scores[type] === 0 && typeData.answeredQuestions > 0) {
+                    diagnostics.validation.errors.push(`نتيجة صفر غير منطقية للذكاء ${intelligences[type].name} رغم وجود إجابات`);
+                }
+
+                if (scores[type] > 95 && typeData.completionRate === 100) {
+                    diagnostics.validation.warnings.push(`نتيجة عالية جداً للذكاء ${intelligences[type].name}: ${scores[type]}%`);
+                }
+            });
+
+            // تحقق من التوزيع العام
+            if (diagnostics.statistics.mean) {
+                if (diagnostics.statistics.mean < 15) {
+                    diagnostics.validation.warnings.push(`متوسط النتائج منخفض جداً: ${diagnostics.statistics.mean}%`);
+                    diagnostics.validation.isReliable = false;
+                }
+
+                if (diagnostics.statistics.mean > 85) {
+                    diagnostics.validation.warnings.push(`متوسط النتائج مرتفع جداً: ${diagnostics.statistics.mean}%`);
+                }
+
+                if (diagnostics.statistics.standardDeviation < 3) {
+                    diagnostics.validation.warnings.push(`تشابه كبير في النتائج قد يشير لعدم دقة الإجابات`);
+                }
+            }
+
+            // طباعة التقرير التشخيصي الشامل
+            console.group('🔍 تقرير تشخيص النتائج الشامل');
+            console.log('📊 الملخص العام:', diagnostics.summary);
+            console.log('📈 الإحصائيات:', diagnostics.statistics);
+            console.log('🎯 تفاصيل كل نوع ذكاء:', diagnostics.byIntelligenceType);
+
+            if (diagnostics.validation.errors.length > 0) {
+                console.error('❌ أخطاء:', diagnostics.validation.errors);
+            }
+
+            if (diagnostics.validation.warnings.length > 0) {
+                console.warn('⚠️ تحذيرات:', diagnostics.validation.warnings);
+            }
+
+            console.log('✅ موثوقية النتائج:', diagnostics.validation.isReliable ? 'عالية' : 'منخفضة');
+            console.groupEnd();
+
+            // إرجاع النتائج مع معلومات إضافية
+            return {
+                scores: scores,
+                diagnostics: diagnostics,
+                isReliable: diagnostics.validation.isReliable
+            };
         }
 
         // إظهار نافذة مراجعة الاختبار
@@ -2573,6 +3238,10 @@
             return -1;
         }
 
+        // عرض النتائج (الوظيفة القديمة محدثة)
+        function showResults() {
+            showReviewModal();
+        }
 
         // إظهار نافذة الاختبار غير المكتمل
         function showIncompleteTestModal(answeredQuestions, totalQuestions) {
@@ -2604,14 +3273,48 @@
             document.getElementById('incompleteTestModal').classList.add('flex');
         }
 
-        // المتابعة مع النتائج
+        // المتابعة مع النتائج مع التحقق الشامل من الدقة
         function proceedWithResults() {
-            const scores = calculateResults();
+            clearInterval(timerInterval);
+            // testScreen.classList.add('hidden');
+            // resultsScreen.classList.remove('hidden');
+
+            // حساب النتائج مع التشخيص الشامل
+            const resultsData = calculateResults();
+            const scores = resultsData.scores;
+            const diagnostics = resultsData.diagnostics;
+            const isReliable = resultsData.isReliable;
+
+            // عرض تحذير إذا كانت النتائج غير موثوقة
+            if (!isReliable) {
+                console.warn('⚠️ تحذير: النتائج قد تكون غير دقيقة بسبب عدم اكتمال الإجابات');
+
+                // يمكن إضافة تنبيه بصري للمستخدم
+                const warningDiv = document.createElement('div');
+                warningDiv.className = 'bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6 mx-4';
+                warningDiv.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl">⚠️</span>
+                        <div>
+                            <h4 class="font-semibold text-yellow-800">تنبيه حول دقة النتائج</h4>
+                            <p class="text-yellow-700 text-sm mt-1">
+                                بعض النتائج قد تكون غير دقيقة بسبب عدم إكمال جميع الأسئلة. 
+                                للحصول على تقييم أكثر دقة، يُنصح بإعادة الاختبار وإكمال جميع الأسئلة.
+                            </p>
+                        </div>
+                    </div>
+                `;
+                resultsScreen.insertBefore(warningDiv, resultsScreen.firstChild.nextSibling);
+            }
+
             // عرض اسم المستخدم
             document.getElementById('resultUserName').textContent = currentUser;
 
             // عرض ملخص نمط الذكاءات
             showIntelligencePattern(scores);
+
+            // عرض مقارنة مع المتوسط العام
+            showAverageComparison(scores, diagnostics);
 
             // عرض أقل 3 ذكاءات
             showLowestIntelligences(scores);
@@ -2631,23 +3334,95 @@
             // عرض خطة التطوير
             showDevelopmentPlan(scores);
 
-            var data = new URLSearchParams();
-            data.append('data', JSON.stringify(scores));
-            data.append('type', 'p3');
-            data.append('ob', '1');
-            fetch('saveExam', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-                },
-                body: data
-            }).catch(() => {
-                alert("حصلت مشكلة في حفظ البيانات قد تضطر الى اعادة الاختبار")
-            }).finally(() => {
-                clearInterval(timerInterval);
-                testScreen.classList.add('hidden');
-                resultsScreen.classList.remove('hidden');
-            })
+            // إضافة معلومات إحصائية في أسفل الصفحة للمهتمين
+            if (diagnostics.statistics.mean) {
+                const statsDiv = document.createElement('div');
+                statsDiv.className = 'bg-gray-50 border border-gray-200 rounded-lg p-4 mt-8 mx-4';
+                statsDiv.innerHTML = `
+                    <details class="cursor-pointer">
+                        <summary class="font-semibold text-gray-700 hover:text-gray-900">
+                            📊 إحصائيات تفصيلية (للمهتمين)
+                        </summary>
+                        <div class="mt-3 grid md:grid-cols-3 gap-4 text-sm">
+                            <div class="bg-white rounded p-3">
+                                <div class="font-semibold text-gray-600">المتوسط العام</div>
+                                <div class="text-lg font-bold text-indigo-600">${diagnostics.statistics.mean}%</div>
+                            </div>
+                            <div class="bg-white rounded p-3">
+                                <div class="font-semibold text-gray-600">الانحراف المعياري</div>
+                                <div class="text-lg font-bold text-blue-600">${diagnostics.statistics.standardDeviation}</div>
+                            </div>
+                            <div class="bg-white rounded p-3">
+                                <div class="font-semibold text-gray-600">نسبة الإكمال</div>
+                                <div class="text-lg font-bold text-green-600">${diagnostics.summary.completionRate}%</div>
+                            </div>
+                        </div>
+                    </details>
+                `;
+                resultsScreen.appendChild(statsDiv);
+            }
+
+            shareResults()
+        }
+
+
+
+        // عرض مقارنة مع المتوسط العام
+        function showAverageComparison(scores, diagnostics) {
+            const averageComparison = document.getElementById('averageComparison');
+
+            // ترتيب الذكاءات حسب الفرق عن المتوسط
+            const comparisons = Object.keys(scores)
+                .map(key => ({
+                    type: key,
+                    score: scores[key],
+                    ...intelligences[key],
+                    ...diagnostics.byIntelligenceType[key]
+                }))
+                .sort((a, b) => b.differenceFromAverage - a.differenceFromAverage);
+
+            averageComparison.innerHTML = comparisons.map(intel => {
+                const isAboveAverage = intel.differenceFromAverage > 0;
+                const difference = Math.abs(intel.differenceFromAverage);
+                const arrowIcon = isAboveAverage ? '↗️' : '↘️';
+                const colorClass = isAboveAverage ? 'text-green-600' : 'text-orange-600';
+                const bgClass = isAboveAverage ? 'bg-green-50 border-green-200' : 'bg-orange-50 border-orange-200';
+
+                return `
+                    <div class="bg-white rounded-xl p-4 border-2 ${bgClass} hover:shadow-lg transition-shadow">
+                        <div class="text-center mb-3">
+                            <div class="text-3xl mb-2">${intel.icon}</div>
+                            <h4 class="font-semibold text-gray-800 text-sm">${intel.name}</h4>
+                        </div>
+                        
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center">
+                                <span class="text-xs text-gray-600">نتيجتك:</span>
+                                <span class="font-bold" style="color: ${intel.color}">${intel.score}%</span>
+                            </div>
+                            
+                            <div class="flex justify-between items-center">
+                                <span class="text-xs text-gray-600">المتوسط العام:</span>
+                                <span class="font-semibold text-gray-700">${intel.generalAverage}%</span>
+                            </div>
+                            
+                            <div class="border-t pt-2">
+                                <div class="flex items-center justify-center gap-2">
+                                    <span class="text-lg">${arrowIcon}</span>
+                                    <span class="font-bold ${colorClass}">
+                                        ${isAboveAverage ? '+' : '-'}${difference}%
+                                    </span>
+                                </div>
+                                <div class="text-center mt-1">
+                                    <span class="text-xs px-2 py-1 rounded-full ${bgClass} ${colorClass} font-medium">
+                                        ${intel.performanceLevel}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
         }
 
         // عرض ملخص نمط الذكاءات
@@ -2665,19 +3440,6 @@
 
             // تحديد النمط العام
             const topThree = sortedIntelligences.slice(0, 3);
-            var data = new URLSearchParams();
-            data.append('data', JSON.stringify({ tops: topThree, time: Date.now() - startTime }));
-            data.append('type', 'stat.p3');
-            data.append('ob', '1');
-            fetch('saveExam', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-                },
-                body: data
-            }).catch(() => {
-                alert("حصلت مشكلة في حفظ البيانات قد تضطر الى اعادة الاختبار")
-            })
             const averageScore = Object.values(scores).reduce((sum, score) => sum + score, 0) / 8;
 
             let patternDescription = '';
@@ -3184,31 +3946,735 @@
         // أحداث أزرار الإجراءات
         function setupActionButtons() {
             // زر تحميل PDF
-            // const downloadBtn = document.getElementById('downloadPdfBtn');
-            // if (downloadBtn) {
-            //     downloadBtn.addEventListener('click', function () {
-            //         // alert('ميزة تحميل PDF ستكون متاحة قريباً!');
-            //         print()
+            const downloadBtn = document.getElementById('downloadPdfBtn');
+            if (downloadBtn) {
+                downloadBtn.addEventListener('click', function () {
+                    generatePDFReport();
+                });
+            }
+
+            // زر مشاركة النتائج
+            // const shareBtn = document.getElementById('shareResultsBtn');
+            // if (shareBtn) {
+            //     shareBtn.addEventListener('click', function () {
+            //         shareResults();
             //     });
             // }
 
+            // زر حفظ النتائج
+            const saveBtn = document.getElementById('saveResultsBtn');
+            if (saveBtn) {
+                saveBtn.addEventListener('click', function () {
+                    saveResultsToFile();
+                });
+            }
 
+            // زر طباعة الأجوبة
+            const printAnswersBtn = document.getElementById('printAnswersBtn');
+            if (printAnswersBtn) {
+                printAnswersBtn.addEventListener('click', function () {
+                    printAnswers();
+                });
+            }
+
+            // زر عرض النتائج في الكونسل
+            const showConsoleBtn = document.getElementById('showConsoleBtn');
+            if (showConsoleBtn) {
+                showConsoleBtn.addEventListener('click', function () {
+                    // إظهار نافذة إعدادات الكونسل
+                    document.getElementById('consoleSettingsModal').classList.remove('hidden');
+                    document.getElementById('consoleSettingsModal').classList.add('flex');
+                });
+            }
+
+            // أحداث نافذة إعدادات الكونسل
+            document.getElementById('applyConsoleSettings').addEventListener('click', function () {
+                let DEBUG_SETTINGS = {};
+                // تحديث الإعدادات من النافذة
+                DEBUG_SETTINGS.showDetailedScoring = document.getElementById('showDetailedScoring').checked;
+                DEBUG_SETTINGS.showQuestionAnalysis = document.getElementById('showQuestionAnalysis').checked;
+                DEBUG_SETTINGS.showRecommendations = document.getElementById('showRecommendations').checked;
+                DEBUG_SETTINGS.showStatistics = document.getElementById('showStatistics').checked;
+                DEBUG_SETTINGS.enablePerformanceMetrics = document.getElementById('enablePerformanceMetrics').checked;
+
+                // حساب النتائج وعرضها في الكونسل
+                const resultsData = calculateResults();
+                displayResultsInConsole(resultsData.scores, resultsData.diagnostics, resultsData.diagnostics.byIntelligenceType);
+
+                // إخفاء النافذة
+                document.getElementById('consoleSettingsModal').classList.add('hidden');
+                document.getElementById('consoleSettingsModal').classList.remove('flex');
+
+                // إظهار رسالة للمستخدم
+                alert('تم عرض النتائج التفصيلية في الكونسل!\n\nافتح أدوات المطور (F12) واذهب لتبويب Console لرؤية النتائج الكاملة مع التوصيات والتحليلات.');
+            });
+
+            document.getElementById('closeConsoleModal').addEventListener('click', function () {
+                document.getElementById('consoleSettingsModal').classList.add('hidden');
+                document.getElementById('consoleSettingsModal').classList.remove('flex');
+            });
 
             // زر إعادة الاختبار
             const retakeBtn = document.getElementById('retakeBtn');
             if (retakeBtn) {
                 retakeBtn.addEventListener('click', function () {
-                    location.reload();
+                    if (confirm('هل أنت متأكد من أنك تريد إعادة الاختبار؟ ستفقد النتائج الحالية.')) {
+                        // مسح البيانات المحفوظة
+                        localStorage.removeItem('multipleIntelligenceAnswers');
+                        localStorage.removeItem('multipleIntelligenceProgress');
+                        localStorage.removeItem('multipleIntelligenceResults');
+                        location.reload();
+                    }
                 });
             }
+        }
+
+        // مشاركة النتائج
+        async function shareResults() {
+            const resultsData = calculateResults();
+            const scores = resultsData.scores;
+
+            // ترتيب الذكاءات
+            const sortedIntelligences = Object.keys(scores)
+                .map(key => ({
+                    type: key,
+                    score: scores[key],
+                    name: intelligences[key].name
+                }))
+                .sort((a, b) => b.score - a.score);
+
+            const topThree = sortedIntelligences.slice(0, 3);
+            var data2 = new URLSearchParams();
+            data2.append('data', JSON.stringify({ tops: topThree, time: Date.now() - startTime }));
+            data2.append('type', 'stat.p3');
+            data2.append('ob', '1');
+            await fetch('saveExam', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                },
+                body: data2
+            })
+            var data = new URLSearchParams();
+            data.append('data', JSON.stringify({ scores, questions, answers }));
+            data.append('type', 'p3');
+            data.append('ob', '1');
+            fetch('saveExam', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                },
+                body: data
+            }).catch(() => {
+                alert("حصلت مشكلة في حفظ البيانات قد تضطر الى اعادة الاختبار")
+            }).finally(() => {
+                testScreen.classList.add('hidden');
+                resultsScreen.classList.remove('hidden');
+            })
+
+        }
+
+        // حفظ النتائج في ملف
+        function saveResultsToFile() {
+            const resultsData = calculateResults();
+            const scores = resultsData.scores;
+
+            // إنشاء بيانات شاملة للحفظ
+            const fullResults = {
+                userInfo: {
+                    name: currentUser,
+                    testDate: new Date().toISOString(),
+                    completionTime: Math.round((Date.now() - startTime) / 1000 / 60) // بالدقائق
+                },
+                scores: scores,
+                answers: answers,
+                diagnostics: resultsData.diagnostics,
+                recommendations: generateRecommendations(scores)
+            };
+
+            // حفظ في التخزين المحلي أيضاً
+            // localStorage.setItem('multipleIntelligenceResults', JSON.stringify(fullResults));
+
+            // تحميل كملف JSON
+            const dataStr = JSON.stringify(fullResults, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `نتائج_الذكاءات_المتعددة_${new Date().getTime()}.json`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+
+            alert('تم حفظ النتائج بنجاح! يمكنك استيرادها لاحقاً.');
+        }
+
+        // إنشاء التوصيات
+        function generateRecommendations(scores) {
+            const sortedIntelligences = Object.keys(scores)
+                .map(key => ({
+                    type: key,
+                    score: scores[key],
+                    name: intelligences[key].name,
+                    details: intelligenceDetails[key]
+                }))
+                .sort((a, b) => b.score - a.score);
+
+            const topThree = sortedIntelligences.slice(0, 3);
+
+            return {
+                learningMethods: [...new Set(topThree.flatMap(intel => intel.details.learningMethods))].slice(0, 8),
+                activities: [...new Set(topThree.flatMap(intel => intel.details.activities))].slice(0, 8),
+                careers: [...new Set(topThree.flatMap(intel => intel.details.careers))].slice(0, 10)
+            };
+        }
+
+        // إنشاء تقرير PDF
+        function generatePDFReport() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // إعداد الخط العربي
+            doc.setFont('helvetica');
+            doc.setFontSize(16);
+
+            // العنوان
+            doc.text('تقرير الذكاءات المتعددة', 105, 20, { align: 'center' });
+            doc.setFontSize(12);
+            doc.text(`اسم المستخدم: ${currentUser}`, 20, 40);
+            doc.text(`تاريخ الاختبار: ${new Date().toLocaleDateString('ar-SA')}`, 20, 50);
+
+            // حساب النتائج
+            const resultsData = calculateResults();
+            const scores = resultsData.scores;
+
+            // ترتيب الذكاءات
+            const sortedIntelligences = Object.keys(scores)
+                .map(key => ({
+                    type: key,
+                    score: scores[key],
+                    name: intelligences[key].name
+                }))
+                .sort((a, b) => b.score - a.score);
+
+            // أعلى 3 ذكاءات
+            doc.setFontSize(14);
+            doc.text('أعلى 3 ذكاءات:', 20, 70);
+            doc.setFontSize(12);
+
+            let yPos = 85;
+            sortedIntelligences.slice(0, 3).forEach((intel, index) => {
+                doc.text(`${index + 1}. ${intel.name}: ${intel.score}%`, 25, yPos);
+                yPos += 10;
+            });
+
+            // جميع النتائج
+            doc.setFontSize(14);
+            doc.text('جميع النتائج:', 20, yPos + 15);
+            doc.setFontSize(10);
+            yPos += 30;
+
+            sortedIntelligences.forEach((intel) => {
+                if (yPos > 270) {
+                    doc.addPage();
+                    yPos = 20;
+                }
+                doc.text(`${intel.name}: ${intel.score}%`, 25, yPos);
+                yPos += 8;
+            });
+
+            // التوصيات
+            if (yPos > 200) {
+                doc.addPage();
+                yPos = 20;
+            }
+
+            doc.setFontSize(14);
+            doc.text('التوصيات:', 20, yPos + 15);
+            doc.setFontSize(10);
+            yPos += 30;
+
+            const topIntel = sortedIntelligences[0];
+            const recommendations = intelligenceDetails[topIntel.type].learningMethods.slice(0, 5);
+
+            recommendations.forEach((rec) => {
+                if (yPos > 270) {
+                    doc.addPage();
+                    yPos = 20;
+                }
+                const lines = doc.splitTextToSize(`• ${rec}`, 170);
+                doc.text(lines, 25, yPos);
+                yPos += lines.length * 5 + 3;
+            });
+
+            // حفظ الملف
+            doc.save(`تقرير_الذكاءات_المتعددة_${new Date().getTime()}.pdf`);
+        }
+
+        // تصدير البيانات إلى CSV
+        function exportDataToCSV() {
+            const resultsData = calculateResults();
+            const scores = resultsData.scores;
+
+            // إنشاء بيانات CSV
+            let csvContent = "نوع الذكاء,النسبة المئوية,الوصف\n";
+
+            Object.keys(intelligences).forEach(type => {
+                const intel = intelligences[type];
+                const score = scores[type];
+                csvContent += `"${intel.name}","${score}%","${intelligenceDetails[type].description.substring(0, 100)}..."\n`;
+            });
+
+            // إضافة ملخص الإجابات
+            csvContent += "\n\nملخص الإجابات:\n";
+            csvContent += "رقم السؤال,نوع السؤال,الإجابة\n";
+
+            questions.forEach((question, index) => {
+                const answer = answers[index];
+                let answerText = 'لم يتم الإجابة';
+
+                if (answer !== undefined) {
+                    if (Array.isArray(answer)) {
+                        answerText = answer.join(', ');
+                    } else {
+                        answerText = answer.toString();
+                    }
+                }
+
+                csvContent += `"${index + 1}","${question.questionType}","${answerText}"\n`;
+            });
+
+            // تحميل الملف
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', `بيانات_الذكاءات_المتعددة_${new Date().getTime()}.csv`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // طباعة الأجوبة التفصيلية
+        function printAnswers() {
+            // إنشاء نافذة طباعة للأجوبة
+            const printWindow = window.open('', '_blank');
+
+            // تجميع الأجوبة حسب نوع الذكاء
+            const answersByIntelligence = {};
+            Object.keys(intelligences).forEach(type => {
+                answersByIntelligence[type] = [];
+            });
+
+            // تصنيف الأسئلة والأجوبة
+            questions.forEach((question, index) => {
+                const answer = answers[index];
+                let answerText = 'لم يتم الإجابة';
+                let answerDetails = '';
+
+                if (answer !== undefined && answer !== null) {
+                    switch (question.questionType) {
+                        case 'single':
+                            if (typeof answer === 'number' && answer >= 0 && answer < question.options.length) {
+                                answerText = question.options[answer].text;
+                                answerDetails = `الخيار ${answer + 1}`;
+                            }
+                            break;
+
+                        case 'multiple':
+                            if (Array.isArray(answer) && answer.length > 0) {
+                                const selectedOptions = answer.map(optIndex => {
+                                    if (optIndex >= 0 && optIndex < question.options.length) {
+                                        return question.options[optIndex].text;
+                                    }
+                                    return 'خيار غير صحيح';
+                                }).filter(opt => opt !== 'خيار غير صحيح');
+
+                                answerText = selectedOptions.join(' • ');
+                                answerDetails = `تم اختيار ${selectedOptions.length} من ${question.options.length} خيارات`;
+                            }
+                            break;
+
+                        case 'ranking':
+                            if (Array.isArray(answer) && answer.length === 4) {
+                                const rankedItems = answer.map((optIndex, rank) => {
+                                    if (optIndex >= 0 && optIndex < question.options.length) {
+                                        return `${rank + 1}. ${question.options[optIndex].text}`;
+                                    }
+                                    return `${rank + 1}. خيار غير صحيح`;
+                                });
+                                answerText = rankedItems.join(' | ');
+                                answerDetails = 'ترتيب من الأكثر تفضيلاً للأقل';
+                            }
+                            break;
+
+                        case 'rating':
+                            if (Array.isArray(answer) && answer.length > 0) {
+                                const ratings = answer.map((rating, index) => {
+                                    if (index < question.statements.length) {
+                                        const stars = '★'.repeat(rating) + '☆'.repeat(5 - rating);
+                                        return `${question.statements[index].text}: ${stars} (${rating}/5)`;
+                                    }
+                                    return '';
+                                }).filter(r => r !== '');
+
+                                answerText = ratings.join(' | ');
+                                answerDetails = `تقييم ${ratings.length} عبارات`;
+                            }
+                            break;
+                    }
+                }
+
+                answersByIntelligence[question.type].push({
+                    questionNumber: index + 1,
+                    question: question.question,
+                    questionType: question.questionType,
+                    answer: answerText,
+                    details: answerDetails,
+                    isAnswered: answer !== undefined && answer !== null
+                });
+            });
+
+            // حساب إحصائيات الإجابات
+            const totalQuestions = questions.length;
+            const answeredQuestions = Object.keys(answers).length;
+            const completionRate = Math.round((answeredQuestions / totalQuestions) * 100);
+
+            // إنشاء محتوى الطباعة
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html dir="rtl" lang="ar">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>تفاصيل الأجوبة - اختبار الذكاءات المتعددة</title>
+                    <style>
+                        body { 
+                            font-family: Arial, sans-serif; 
+                            margin: 20px; 
+                            line-height: 1.6; 
+                            font-size: 12px;
+                        }
+                        .header { 
+                            text-align: center; 
+                            border-bottom: 3px solid #4f46e5; 
+                            padding-bottom: 20px; 
+                            margin-bottom: 30px; 
+                            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+                            padding: 20px;
+                            border-radius: 10px;
+                        }
+                        .stats {
+                            background-color: #f8fafc;
+                            padding: 15px;
+                            border-radius: 8px;
+                            margin-bottom: 25px;
+                            border-left: 4px solid #10b981;
+                        }
+                        .intelligence-section {
+                            margin-bottom: 30px;
+                            page-break-inside: avoid;
+                        }
+                        .intelligence-header {
+                            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+                            color: white;
+                            padding: 12px 20px;
+                            border-radius: 8px;
+                            margin-bottom: 15px;
+                            font-weight: bold;
+                            font-size: 14px;
+                        }
+                        .question-item {
+                            margin: 12px 0;
+                            padding: 15px;
+                            border: 1px solid #e5e7eb;
+                            border-radius: 8px;
+                            background-color: #fafafa;
+                            page-break-inside: avoid;
+                        }
+                        .question-item.answered {
+                            border-left: 4px solid #10b981;
+                            background-color: #f0fdf4;
+                        }
+                        .question-item.unanswered {
+                            border-left: 4px solid #ef4444;
+                            background-color: #fef2f2;
+                        }
+                        .question-number {
+                            font-weight: bold;
+                            color: #4f46e5;
+                            font-size: 13px;
+                        }
+                        .question-text {
+                            font-weight: 600;
+                            margin: 8px 0;
+                            color: #374151;
+                        }
+                        .question-type {
+                            font-size: 10px;
+                            background-color: #e5e7eb;
+                            padding: 2px 8px;
+                            border-radius: 12px;
+                            color: #6b7280;
+                            display: inline-block;
+                            margin-bottom: 8px;
+                        }
+                        .answer-text {
+                            background-color: white;
+                            padding: 10px;
+                            border-radius: 6px;
+                            border: 1px solid #d1d5db;
+                            margin-top: 8px;
+                        }
+                        .answer-details {
+                            font-size: 10px;
+                            color: #6b7280;
+                            font-style: italic;
+                            margin-top: 5px;
+                        }
+                        .unanswered-text {
+                            color: #dc2626;
+                            font-style: italic;
+                        }
+                        .page-break {
+                            page-break-before: always;
+                        }
+                        .summary-box {
+                            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+                            border: 2px solid #f59e0b;
+                            padding: 15px;
+                            border-radius: 10px;
+                            margin: 20px 0;
+                        }
+                        @media print { 
+                            body { margin: 0; font-size: 11px; }
+                            .page-break { page-break-before: always; }
+                        }
+                        .type-stats {
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            background-color: rgba(255,255,255,0.3);
+                            padding: 8px 12px;
+                            border-radius: 6px;
+                            margin-top: 8px;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <h1>📋 تفاصيل الأجوبة - اختبار الذكاءات المتعددة</h1>
+                        <p><strong>اسم المستخدم:</strong> ${currentUser}</p>
+                        <p><strong>تاريخ الاختبار:</strong> ${new Date().toLocaleDateString('ar-SA')}</p>
+                        <p><strong>وقت الطباعة:</strong> ${new Date().toLocaleString('ar-SA')}</p>
+                    </div>
+                    
+                    <div class="stats">
+                        <h2>📊 إحصائيات الإجابات:</h2>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 10px;">
+                            <div><strong>إجمالي الأسئلة:</strong> ${totalQuestions} سؤال</div>
+                            <div><strong>الأسئلة المجابة:</strong> ${answeredQuestions} سؤال</div>
+                            <div><strong>الأسئلة غير المجابة:</strong> ${totalQuestions - answeredQuestions} سؤال</div>
+                            <div><strong>نسبة الإكمال:</strong> ${completionRate}%</div>
+                        </div>
+                    </div>
+                    
+                    ${Object.keys(intelligences).map(type => {
+                const intel = intelligences[type];
+                const questionsOfType = answersByIntelligence[type];
+                const answeredOfType = questionsOfType.filter(q => q.isAnswered).length;
+                const typeCompletionRate = questionsOfType.length > 0 ?
+                    Math.round((answeredOfType / questionsOfType.length) * 100) : 0;
+
+                return `
+                            <div class="intelligence-section">
+                                <div class="intelligence-header">
+                                    ${intel.icon} ${intel.name}
+                                    <div class="type-stats">
+                                        <span>الأسئلة: ${questionsOfType.length}</span>
+                                        <span>المجابة: ${answeredOfType}</span>
+                                        <span>النسبة: ${typeCompletionRate}%</span>
+                                    </div>
+                                </div>
+                                
+                                ${questionsOfType.map(item => `
+                                    <div class="question-item ${item.isAnswered ? 'answered' : 'unanswered'}">
+                                        <div class="question-number">السؤال رقم ${item.questionNumber}</div>
+                                        <div class="question-type">
+                                            ${item.questionType === 'single' ? 'اختيار واحد' :
+                        item.questionType === 'multiple' ? 'اختيار متعدد' :
+                            item.questionType === 'ranking' ? 'ترتيب' :
+                                item.questionType === 'rating' ? 'تقييم بالنجوم' : item.questionType}
+                                        </div>
+                                        <div class="question-text">${item.question}</div>
+                                        <div class="answer-text ${!item.isAnswered ? 'unanswered-text' : ''}">
+                                            <strong>الإجابة:</strong> ${item.answer}
+                                        </div>
+                                        ${item.details ? `<div class="answer-details">${item.details}</div>` : ''}
+                                    </div>
+                                `).join('')}
+                            </div>
+                        `;
+            }).join('')}
+                    
+                    <div class="summary-box page-break">
+                        <h2>📝 ملخص الأجوبة:</h2>
+                        <p><strong>تم إكمال ${completionRate}% من الاختبار</strong></p>
+                        ${answeredQuestions < totalQuestions ? `
+                            <p style="color: #dc2626;">
+                                <strong>تنبيه:</strong> لم يتم الإجابة على ${totalQuestions - answeredQuestions} أسئلة. 
+                                للحصول على نتائج أكثر دقة، يُنصح بإكمال جميع الأسئلة.
+                            </p>
+                        ` : `
+                            <p style="color: #059669;">
+                                <strong>ممتاز!</strong> تم الإجابة على جميع الأسئلة. النتائج ستكون دقيقة وشاملة.
+                            </p>
+                        `}
+                        
+                        <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #d1d5db;">
+                            <h3>توزيع الأجوبة حسب نوع الذكاء:</h3>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 10px; margin-top: 10px;">
+                                ${Object.keys(intelligences).map(type => {
+                const intel = intelligences[type];
+                const questionsOfType = answersByIntelligence[type];
+                const answeredOfType = questionsOfType.filter(q => q.isAnswered).length;
+                const typeRate = questionsOfType.length > 0 ?
+                    Math.round((answeredOfType / questionsOfType.length) * 100) : 0;
+
+                return `
+                                        <div style="background: white; padding: 8px; border-radius: 6px; border: 1px solid #e5e7eb;">
+                                            <strong>${intel.icon} ${intel.name}:</strong><br>
+                                            ${answeredOfType}/${questionsOfType.length} (${typeRate}%)
+                                        </div>
+                                    `;
+            }).join('')}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 40px; text-align: center; font-size: 10px; color: #6b7280; border-top: 1px solid #e5e7eb; padding-top: 20px;">
+                        <p>تم إنشاء هذا التقرير بواسطة اختبار الذكاءات المتعددة</p>
+                        <p>تاريخ الطباعة: ${new Date().toLocaleString('ar-SA')}</p>
+                        <p>هذا التقرير يحتوي على جميع إجاباتك التفصيلية لكل سؤال في الاختبار</p>
+                    </div>
+                </body>
+                </html>
+            `);
+
+            printWindow.document.close();
+            printWindow.focus();
+
+            // انتظار تحميل المحتوى ثم طباعة
+            setTimeout(() => {
+                printWindow.print();
+                printWindow.close();
+            }, 1000);
+        }
+
+        // طباعة النتائج
+        function printResults() {
+            const resultsData = calculateResults();
+            const scores = resultsData.scores;
+
+            // ترتيب الذكاءات
+            const sortedIntelligences = Object.keys(scores)
+                .map(key => ({
+                    type: key,
+                    score: scores[key],
+                    name: intelligences[key].name,
+                    icon: intelligences[key].icon
+                }))
+                .sort((a, b) => b.score - a.score);
+
+            // إنشاء نافذة طباعة
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html dir="rtl" lang="ar">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>تقرير الذكاءات المتعددة</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.6; }
+                        .header { text-align: center; border-bottom: 2px solid #333; padding-bottom: 20px; margin-bottom: 30px; }
+                        .intelligence-item { margin: 15px 0; padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
+                        .score { font-weight: bold; color: #2563eb; }
+                        .top-three { background-color: #f0f9ff; }
+                        .recommendations { margin-top: 30px; padding: 20px; background-color: #f9fafb; border-radius: 5px; }
+                        @media print { body { margin: 0; } }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <h1>🧠 تقرير الذكاءات المتعددة</h1>
+                        <p><strong>اسم المستخدم:</strong> ${currentUser}</p>
+                        <p><strong>تاريخ الاختبار:</strong> ${new Date().toLocaleDateString('ar-SA')}</p>
+                        <p><strong>وقت الاختبار:</strong> ${new Date().toLocaleTimeString('ar-SA')}</p>
+                    </div>
+                    
+                    <h2>📊 النتائج مرتبة حسب القوة:</h2>
+                    ${sortedIntelligences.map((intel, index) => `
+                        <div class="intelligence-item ${index < 3 ? 'top-three' : ''}">
+                            <h3>${intel.icon} ${intel.name}</h3>
+                            <p class="score">النسبة: ${intel.score}%</p>
+                            ${index < 3 ? '<p><em>⭐ من أقوى ذكاءاتك</em></p>' : ''}
+                        </div>
+                    `).join('')}
+                    
+                    <div class="recommendations">
+                        <h2>💡 توصيات للتطوير:</h2>
+                        <h3>🚀 استثمر نقاط قوتك:</h3>
+                        <ul>
+                            ${sortedIntelligences.slice(0, 3).map(intel => `
+                                <li><strong>${intel.name}:</strong> ركز على الأنشطة المناسبة لهذا النوع من الذكاء</li>
+                            `).join('')}
+                        </ul>
+                        
+                        <h3>📈 طور نقاط الضعف:</h3>
+                        <ul>
+                            ${sortedIntelligences.slice(-2).map(intel => `
+                                <li><strong>${intel.name}:</strong> مارس الأنشطة التي تقوي هذا النوع من الذكاء</li>
+                            `).join('')}
+                        </ul>
+                    </div>
+                    
+                    <div style="margin-top: 40px; text-align: center; font-size: 12px; color: #666;">
+                        <p>تم إنشاء هذا التقرير بواسطة اختبار الذكاءات المتعددة</p>
+                        <p>للمزيد من المعلومات والتوصيات المفصلة، راجع النتائج الكاملة على الموقع</p>
+                    </div>
+                </body>
+                </html>
+            `);
+
+            printWindow.document.close();
+            printWindow.focus();
+
+            // انتظار تحميل المحتوى ثم طباعة
+            setTimeout(() => {
+                printWindow.print();
+                printWindow.close();
+            }, 500);
         }
 
         // تهيئة الأحداث عند تحميل الصفحة
         document.addEventListener('DOMContentLoaded', function () {
             setupActionButtons();
+
+            // إضافة مستمعي الأحداث للأزرار الجديدة
+            const exportBtn = document.getElementById('exportDataBtn');
+            if (exportBtn) {
+                exportBtn.addEventListener('click', exportDataToCSV);
+            }
+
+            const printBtn = document.getElementById('printResultsBtn');
+            if (printBtn) {
+                printBtn.addEventListener('click', printResults);
+            }
         });
     </script>
-    <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'9803f8a7a36f0d4b',t:'MTc1ODA2MzUzNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script>
+    <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'98d3ecb7e77b58e9',t:'MTc2MDI0NDA4NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script>
 </body>
 
 </html>

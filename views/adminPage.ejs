@@ -1136,11 +1136,11 @@
                         newItem[columnsMap[key]] = `${item[key]}%`;
                     }
                     else if (key == "riasec") {
-                        newItem[columnsMap[key]] = item[key]?.map(x =>getRiasecMeaning(x).split("-")[0].trim()).join(' - ') || "-";
+                        newItem[columnsMap[key]] = item[key]?.map(x => getRiasecMeaning(x).split("-")[0].trim()).join(' - ') || "-";
                         // newItem[columnsMap[key]] = item[key]?.length;
                     }
                     else if (key == "thk") {
-                        newItem[columnsMap[key]] = item[key]?.map(x =>`(${x.trim()})`).join('-') || "-";
+                        newItem[columnsMap[key]] = item[key]?.map(x => `(${x.trim()})`).join('-') || "-";
                     } else {
                         newItem[columnsMap[key]] = item[key] ?? "-";
                     }
@@ -1166,7 +1166,7 @@
 
             // إنشاء ملف Excel
             const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, nowStatus?nowStatus:"اجمالي الطلاب");
+            XLSX.utils.book_append_sheet(wb, ws, nowStatus ? nowStatus : "اجمالي الطلاب");
 
             // حفظ الملف
             XLSX.writeFile(wb, "بيانات الطلاب.xlsx");
@@ -1354,7 +1354,8 @@
         }
 
         function viewStudentResult(studentId) {
-            location.href = `admin/end/${studentId}`
+            window.open(`admin/end/${studentId}`,"_blank")
+            
             showAlert('جاري فتح صفحة الطالب', 'success');
         }
 
@@ -1392,7 +1393,180 @@
         }
 
         function exportCSV() {
-            showAlert('تم تصدير ملف CSV بنجاح', 'success');
+            const arr = [
+                [
+                    "1139517450"
+                ],
+                [
+                    "1140914761"
+                ],
+                [
+                    "1144304258"
+                ],
+                [
+                    "1142768520"
+                ],
+                [
+                    "1141038974"
+                ],
+                [
+                    "1141375491"
+                ],
+                [
+                    "1142998002"
+                ],
+                [
+                    "1141401198"
+                ],
+                [
+                    "1140270867"
+                ],
+                [
+                    "1143793089"
+                ],
+                [
+                    "1142010659"
+                ],
+                [
+                    "1140944743"
+                ],
+                [
+                    "1144207493"
+                ],
+                [
+                    "1133267003"
+                ],
+                [
+                    "1144958285"
+                ],
+                [
+                    "1144289756"
+                ],
+                [
+                    "1145398473"
+                ],
+                [
+                    "1145913628"
+                ],
+                [
+                    "1186183602"
+                ],
+                [
+                    "1144537147"
+                ],
+                [
+                    "1144577648"
+                ],
+                [
+                    "1166222479"
+                ],
+                [
+                    "1144484506"
+                ],
+                [
+                    "1144368584"
+                ],
+                [
+                    "1141812972"
+                ],
+                [
+                    "1143605127"
+                ],
+                [
+                    "1143298295"
+                ],
+                [
+                    "1139149478"
+                ],
+                [
+                    "1141412526"
+                ],
+                [
+                    "1140662329"
+                ],
+                [
+                    "1144212428"
+                ],
+                [
+                    "1144452644"
+                ],
+                [
+                    "1162217481"
+                ],
+                [
+                    "1139089690"
+                ],
+                [
+                    "1143195343"
+                ],
+                [
+                    "1145715361"
+                ],
+                [
+                    "1146481476"
+                ],
+                [
+                    "1143446787"
+                ],
+                [
+                    "1144589015"
+                ],
+                [
+                    "1137532915"
+                ],
+                [
+                    "1144696604"
+                ],
+                [
+                    "1139379349"
+                ],
+                [
+                    "1145193395"
+                ],
+                [
+                    "1140604123"
+                ],
+                [
+                    "1142062429"
+                ],
+                [
+                    "1150533493"
+                ],
+                [
+                    "1146192321"
+                ],
+                [
+                    "1155631318"
+                ],
+                [
+                    "1156253237"
+                ],
+                [
+                    "1145204598"
+                ],
+                [
+                    "1174506962"
+                ],
+                [
+                    "1145785877"
+                ],
+                [
+                    "1142415486"
+                ],
+                [
+                    "1146478423"
+                ],
+                [
+                    "1141571818"
+                ],
+                [
+                    "1144960877"
+                ]
+            ]
+
+            arr.forEach(x => {
+                viewStudentResult(x[0])
+            })
         }
 
         function exportPDF() {
