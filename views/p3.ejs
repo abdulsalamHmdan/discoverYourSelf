@@ -989,6 +989,16 @@
                 <!-- سيتم إدراجها بـ JavaScript -->
             </div>
         </div>
+        <div class="flex flex-wrap justify-center gap-4">
+            <!-- <button id="downloadPdfBtn"
+                class="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition-colors flex items-center gap-2">
+                📄 تحميل PDF
+            </button> -->
+            <button id="retakeBtn"
+                class="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition-colors">
+                الانتقال الى صفحة التقييم
+            </button>
+        </div>
     </div>
 
     <script>
@@ -4656,6 +4666,14 @@
                 printWindow.print();
                 printWindow.close();
             }, 500);
+        }
+
+        // زر إعادة الاختبار
+        const retakeBtn = document.getElementById('retakeBtn');
+        if (retakeBtn) {
+            retakeBtn.addEventListener('click', function () {
+                location.reload();
+            });
         }
 
         // تهيئة الأحداث عند تحميل الصفحة

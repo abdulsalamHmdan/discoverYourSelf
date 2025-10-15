@@ -1181,7 +1181,7 @@
             // testScreen.classList.add('hidden');
             resultsScreen.classList.remove('hidden');
 
-            const scores = JSON.parse('<%-p3%>').scores
+            const scores = JSON.parse('<%-p3%>')?.scores || JSON.parse('<%-p3%>');
 
             // عرض اسم المستخدم
             document.getElementById('resultUserName').textContent = currentUser;
