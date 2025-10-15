@@ -24,9 +24,9 @@ function isAuthenticated(req, res, next) {
     else next('route')
 }
 function isAdmin(req, res, next) {
-    next()
-    // if (req.session.permissions == "admin") next()
-    // else next('route')
+    // next()
+    if (req.session.permissions == "admin") next()
+    else next('route')
 }
 function isTeacher(req, res, next) {
     if (req.session.permissions == "teacher") next()
