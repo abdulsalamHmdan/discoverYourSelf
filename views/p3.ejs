@@ -111,6 +111,137 @@
             border-color: #0284c7;
         }
     </style>
+    <style>
+        .option-item {
+            background: #f7fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .option-item:hover {
+            border-color: #667eea;
+            background: #edf2f7;
+            transform: translateY(-2px);
+        }
+
+        .option-text {
+            font-size: 1.1em;
+            color: #4a5568;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .rating-scale {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .rating-label {
+            font-size: 0.9em;
+            color: #718096;
+            text-align: center;
+            flex: 1;
+        }
+
+        .rating-buttons {
+            display: flex;
+            gap: 8px;
+            flex: 2;
+            justify-content: center;
+        }
+
+        .rating-btn {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #e2e8f0;
+            border-radius: 50%;
+            background: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #718096;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .rating-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* تدرج الألوان من الأحمر إلى الأخضر */
+        .rating-btn[data-rating="1"] {
+            background: #fed7d7;
+            border-color: #e53e3e;
+            color: #c53030;
+        }
+
+        .rating-btn[data-rating="1"].selected {
+            background: #e53e3e;
+            border-color: #c53030;
+            color: white;
+            box-shadow: 0 4px 15px rgba(229, 62, 62, 0.4);
+        }
+
+        .rating-btn[data-rating="2"] {
+            background: #feebc8;
+            border-color: #ed8936;
+            color: #dd6b20;
+        }
+
+        .rating-btn[data-rating="2"].selected {
+            background: #ed8936;
+            border-color: #dd6b20;
+            color: white;
+            box-shadow: 0 4px 15px rgba(237, 137, 54, 0.4);
+        }
+
+        .rating-btn[data-rating="3"] {
+            background: #fefcbf;
+            border-color: #ecc94b;
+            color: #d69e2e;
+        }
+
+        .rating-btn[data-rating="3"].selected {
+            background: #ecc94b;
+            border-color: #d69e2e;
+            color: white;
+            box-shadow: 0 4px 15px rgba(236, 201, 75, 0.4);
+        }
+
+        .rating-btn[data-rating="4"] {
+            background: #c6f6d5;
+            border-color: #68d391;
+            color: #38a169;
+        }
+
+        .rating-btn[data-rating="4"].selected {
+            background: #68d391;
+            border-color: #38a169;
+            color: white;
+            box-shadow: 0 4px 15px rgba(104, 211, 145, 0.4);
+        }
+
+        .rating-btn[data-rating="5"] {
+            background: #9ae6b4;
+            border-color: #48bb78;
+            color: #2f855a;
+        }
+
+        .rating-btn[data-rating="5"].selected {
+            background: #48bb78;
+            border-color: #2f855a;
+            color: white;
+            box-shadow: 0 4px 15px rgba(72, 187, 120, 0.4);
+        }
+    </style>
 </head>
 
 <body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
@@ -379,7 +510,6 @@
                     </ul>
                 </div>
             </div>
-
             <!-- تنبيهات مهمة -->
             <div class="bg-gradient-to-r from-red-50 to-pink-50 rounded-2xl p-6 border-2 border-red-200 mb-6">
                 <h4 class="text-xl font-bold text-red-700 mb-4 flex items-center gap-2">
@@ -744,9 +874,9 @@
                 </div>
 
                 <!-- شرح نوع السؤال -->
-                <div id="questionTypeExplanation" class="mb-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
-                    <!-- سيتم إدراج شرح نوع السؤال هنا -->
-                </div>
+                <!-- <div id="questionTypeExplanation" class="mb-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
+                    سيتم إدراج شرح نوع السؤال هنا
+                </div> -->
 
                 <!-- السؤال -->
                 <div id="questionContainer" class="mb-8">
@@ -1308,580 +1438,416 @@
             return shuffled;
         }
 
-        const originalQuestions = [
-            // أسئلة الذكاء اللغوي
+        const importing = [
             {
-                type: 'linguistic',
-                questionType: 'single',
-                question: 'عندما تذاكر، أي أسلوب تفضّل؟',
-                weight: 1.2,
-                difficulty: 'easy',
-                reliability: 0.9,
-                options: [
-                    { text: 'قراءة ملخّصات وكتب', value: 4 },
-                    { text: 'مشاهدة فيديو تعليمي', value: 1 },
-                    { text: 'عمل مخطط بصري', value: 1 },
-                    { text: 'مناقشة مع صديق', value: 2 }
-                ]
+                "qu": "أتعلم بسرعة عندما أمارس الشيء عمليًا.",
+                "type": "bodily"
             },
             {
-                type: 'linguistic',
-                questionType: 'single',
-                question: 'إذا طُلب منك شرح فكرة، ماذا تفعل أولاً؟',
-                weight: 1.5,
-                difficulty: 'medium',
-                reliability: 0.95,
-                options: [
-                    { text: 'أكتب النقاط الرئيسية', value: 4 },
-                    { text: 'أرسم مخططاً', value: 1 },
-                    { text: 'أعطي مثالاً عملياً', value: 2 },
-                    { text: 'أستخدم الإيماءات', value: 1 }
-                ]
+                "qu": "أعبّر عن أفكاري بإيماءات أو حركات تلقائية.",
+                "type": "bodily"
             },
             {
-                type: 'linguistic',
-                questionType: 'single',
-                question: 'أي من هذه الأنشطة تفضل في وقت فراغك؟',
-                weight: 1.0,
-                difficulty: 'easy',
-                reliability: 0.8,
-                options: [
-                    { text: 'قراءة الروايات والكتب', value: 4 },
-                    { text: 'مشاهدة الأفلام', value: 2 },
-                    { text: 'ممارسة الرياضة', value: 1 },
-                    { text: 'الاستماع للموسيقى', value: 1 }
-                ]
+                "qu": "أستمتع بالأعمال اليدوية أو الحرفية.",
+                "type": "bodily"
             },
             {
-                type: 'linguistic',
-                questionType: 'single',
-                question: 'عند تعلم معلومة جديدة، كيف تحفظها؟',
-                weight: 1.3,
-                difficulty: 'medium',
-                reliability: 0.9,
-                options: [
-                    { text: 'أكررها بصوت عالٍ', value: 4 },
-                    { text: 'أرسم مخططاً لها', value: 1 },
-                    { text: 'أربطها بحركة', value: 1 },
-                    { text: 'أحفظها كما هي', value: 2 }
-                ]
+                "qu": "أفضّل النشاطات التي تتضمن حركة على الجلوس الطويل.",
+                "type": "bodily"
             },
             {
-                type: 'linguistic',
-                questionType: 'single',
-                question: 'ما الذي يجذبك أكثر في الكتب؟',
-                weight: 1.1,
-                difficulty: 'medium',
-                reliability: 0.85,
-                options: [
-                    { text: 'أسلوب الكاتب وجمال اللغة', value: 4 },
-                    { text: 'المعلومات والحقائق', value: 2 },
-                    { text: 'الصور والرسوم التوضيحية', value: 1 },
-                    { text: 'القصص والأحداث', value: 3 }
-                ]
-            },
-            // أسئلة الذكاء المنطقي
-            {
-                type: 'logical',
-                questionType: 'single',
-                question: 'ما النمط التالي في هذه السلسلة: 2، 4، 8، 16، ؟',
-                weight: 1.6,
-                difficulty: 'hard',
-                reliability: 0.95,
-                options: [
-                    { text: '24', value: 1 },
-                    { text: '32', value: 4 },
-                    { text: '20', value: 1 },
-                    { text: '18', value: 1 }
-                ]
+                "qu": "أستطيع تقليد الحركات أو الإيماءات بسهولة.",
+                "type": "bodily"
             },
             {
-                type: 'logical',
-                questionType: 'single',
-                question: 'عند حل مشكلة، أي طريقة تفضل؟',
-                weight: 1.4,
-                difficulty: 'medium',
-                reliability: 0.9,
-                options: [
-                    { text: 'تحليل الأسباب والنتائج', value: 4 },
-                    { text: 'الاعتماد على الحدس', value: 1 },
-                    { text: 'تجربة حلول مختلفة', value: 2 },
-                    { text: 'سؤال الآخرين', value: 1 }
-                ]
+                "qu": "أجد متعة في الأنشطة الرياضية أو التمثيلية.",
+                "type": "bodily"
             },
             {
-                type: 'logical',
-                questionType: 'single',
-                question: 'إذا كان كل A هو B، وكل B هو C، فإن:',
-                weight: 1.7,
-                difficulty: 'hard',
-                reliability: 0.98,
-                options: [
-                    { text: 'كل A هو C', value: 4 },
-                    { text: 'كل C هو A', value: 1 },
-                    { text: 'بعض A هو C', value: 2 },
-                    { text: 'لا يمكن تحديد العلاقة', value: 1 }
-                ]
+                "qu": "أمتلك توازنًا جسديًا جيدًا.",
+                "type": "bodily"
             },
             {
-                type: 'logical',
-                questionType: 'single',
-                question: 'أي من هذه المواد الدراسية تستمتع بها أكثر؟',
-                weight: 1.0,
-                difficulty: 'easy',
-                reliability: 0.75,
-                options: [
-                    { text: 'الرياضيات والفيزياء', value: 4 },
-                    { text: 'اللغة والأدب', value: 1 },
-                    { text: 'الفنون والرسم', value: 1 },
-                    { text: 'التاريخ والجغرافيا', value: 2 }
-                ]
+                "qu": "أتعلم المهارات الحركية الجديدة بسرعة.",
+                "type": "bodily"
             },
             {
-                type: 'logical',
-                questionType: 'single',
-                question: 'عند اتخاذ قرار مهم، ما أول ما تفعله؟',
-                weight: 1.3,
-                difficulty: 'medium',
-                reliability: 0.88,
-                options: [
-                    { text: 'أجمع المعلومات وأحللها', value: 4 },
-                    { text: 'أستشير الآخرين', value: 1 },
-                    { text: 'أتبع مشاعري', value: 1 },
-                    { text: 'أفكر في النتائج المحتملة', value: 3 }
-                ]
-            },
-            // أسئلة الذكاء البصري
-            {
-                type: 'spatial',
-                questionType: 'multiple',
-                question: 'أي من هذه الأنشطة تجذبك؟ (اختر كل ما ينطبق)',
-                weight: 1.3,
-                difficulty: 'easy',
-                reliability: 0.85,
-                options: [
-                    { text: 'الرسم والتصميم', value: 4 },
-                    { text: 'التصوير الفوتوغرافي', value: 3 },
-                    { text: 'ترتيب الأثاث', value: 3 },
-                    { text: 'بناء النماذج', value: 4 }
-                ]
+                "qu": "أحب استخدام جسدي في التعبير (كالرقص أو المسرح).",
+                "type": "bodily"
             },
             {
-                type: 'spatial',
-                questionType: 'multiple',
-                question: 'ما الذي يساعدك في التعلم؟ (اختر كل ما ينطبق)',
-                weight: 1.5,
-                difficulty: 'medium',
-                reliability: 0.92,
-                options: [
-                    { text: 'الرسوم التوضيحية والمخططات', value: 4 },
-                    { text: 'الخرائط الذهنية', value: 4 },
-                    { text: 'الألوان والتمييز البصري', value: 3 },
-                    { text: 'النماذج ثلاثية الأبعاد', value: 4 }
-                ]
+                "qu": "أنسجم أكثر عندما أتحرك أثناء التعلم أو التفكير.",
+                "type": "bodily"
             },
             {
-                type: 'spatial',
-                questionType: 'multiple',
-                question: 'أي من هذه المهارات تجيدها؟ (اختر كل ما ينطبق)',
-                weight: 1.4,
-                difficulty: 'medium',
-                reliability: 0.88,
-                options: [
-                    { text: 'تذكر الوجوه والأماكن', value: 3 },
-                    { text: 'قراءة الخرائط بسهولة', value: 4 },
-                    { text: 'تخيل الأشكال من زوايا مختلفة', value: 4 },
-                    { text: 'ملاحظة التفاصيل البصرية', value: 3 }
-                ]
+                "qu": "أستطيع قراءة مشاعر الآخرين من وجوههم.",
+                "type": "interpersonal"
             },
             {
-                type: 'spatial',
-                questionType: 'multiple',
-                question: 'ما الذي تلاحظه أولاً في مكان جديد؟ (اختر كل ما ينطبق)',
-                weight: 1.2,
-                difficulty: 'easy',
-                reliability: 0.8,
-                options: [
-                    { text: 'الألوان والديكور', value: 4 },
-                    { text: 'ترتيب الأثاث والمساحات', value: 4 },
-                    { text: 'الإضاءة والظلال', value: 3 },
-                    { text: 'التناسق والتصميم العام', value: 4 }
-                ]
+                "qu": "أستمتع بالتحدث مع أشخاص من خلفيات مختلفة.",
+                "type": "interpersonal"
             },
             {
-                type: 'spatial',
-                questionType: 'multiple',
-                question: 'أي من هذه الأدوات تستخدمها كثيراً؟ (اختر كل ما ينطبق)',
-                weight: 1.1,
-                difficulty: 'easy',
-                reliability: 0.75,
-                options: [
-                    { text: 'برامج التصميم والرسم', value: 4 },
-                    { text: 'الكاميرا للتصوير', value: 3 },
-                    { text: 'أدوات الرسم التقليدية', value: 4 },
-                    { text: 'تطبيقات التصميم على الهاتف', value: 3 }
-                ]
-            },
-            // أسئلة الذكاء الحركي
-            {
-                type: 'bodily',
-                questionType: 'multiple',
-                question: 'أي من هذه الأنشطة تستمتع بها؟ (اختر كل ما ينطبق)',
-                weight: 1.3,
-                difficulty: 'easy',
-                reliability: 0.85,
-                options: [
-                    { text: 'الرياضة والألعاب', value: 4 },
-                    { text: 'الأعمال اليدوية', value: 4 },
-                    { text: 'الرقص', value: 3 },
-                    { text: 'الطبخ', value: 3 }
-                ]
+                "qu": "أستطيع اكتشاف نوايا الناس بسرعة.",
+                "type": "interpersonal"
             },
             {
-                type: 'bodily',
-                questionType: 'multiple',
-                question: 'كيف تفضل التعلم؟ (اختر كل ما ينطبق)',
-                weight: 1.4,
-                difficulty: 'medium',
-                reliability: 0.9,
-                options: [
-                    { text: 'التجربة العملية والممارسة', value: 4 },
-                    { text: 'الحركة أثناء الدراسة', value: 4 },
-                    { text: 'استخدام اليدين في التعلم', value: 4 },
-                    { text: 'التعلم في الهواء الطلق', value: 3 }
-                ]
+                "qu": "أعمل بكفاءة ضمن فريق متعاون.",
+                "type": "interpersonal"
             },
             {
-                type: 'bodily',
-                questionType: 'multiple',
-                question: 'أي من هذه المهارات تجيدها؟ (اختر كل ما ينطبق)',
-                weight: 1.2,
-                difficulty: 'medium',
-                reliability: 0.8,
-                options: [
-                    { text: 'التوازن والتناسق الحركي', value: 4 },
-                    { text: 'استخدام الأدوات بمهارة', value: 4 },
-                    { text: 'التعبير بلغة الجسد', value: 3 },
-                    { text: 'ردود الفعل السريعة', value: 3 }
-                ]
+                "qu": "أساعد الآخرين على حل خلافاتهم.",
+                "type": "interpersonal"
             },
             {
-                type: 'bodily',
-                questionType: 'multiple',
-                question: 'متى تشعر بالراحة أكثر؟ (اختر كل ما ينطبق)',
-                weight: 1.1,
-                difficulty: 'easy',
-                reliability: 0.75,
-                options: [
-                    { text: 'عند الحركة والنشاط', value: 4 },
-                    { text: 'أثناء العمل بيديك', value: 4 },
-                    { text: 'في الأماكن المفتوحة', value: 3 },
-                    { text: 'عند ممارسة الرياضة', value: 4 }
-                ]
+                "qu": "أستطيع تحفيز من حولي بسهولة.",
+                "type": "interpersonal"
             },
             {
-                type: 'bodily',
-                questionType: 'multiple',
-                question: 'أي بيئة عمل تفضل؟ (اختر كل ما ينطبق)',
-                weight: 1.0,
-                difficulty: 'easy',
-                reliability: 0.7,
-                options: [
-                    { text: 'ورشة عمل أو مختبر', value: 4 },
-                    { text: 'في الهواء الطلق', value: 4 },
-                    { text: 'صالة رياضية', value: 3 },
-                    { text: 'مكان يسمح بالحركة', value: 4 }
-                ]
-            },
-            // أسئلة الذكاء الإيقاعي
-            {
-                type: 'musical',
-                questionType: 'ranking',
-                question: 'رتّب هذه الأنشطة الإيقاعية حسب استمتاعك بها (الأول الأكثر تفضيلاً):',
-                weight: 1.2,
-                difficulty: 'medium',
-                reliability: 0.8,
-                options: [
-                    { text: 'التصفيق على الإيقاع', value: 0 },
-                    { text: 'المشي بخطوات منتظمة', value: 0 },
-                    { text: 'تنظيم الأعمال بجدول زمني', value: 0 },
-                    { text: 'ممارسة التمارين بإيقاع ثابت', value: 0 }
-                ]
+                "qu": "ألاحظ متى يشعر أحدهم بالضيق حتى دون أن يقول.",
+                "type": "interpersonal"
             },
             {
-                type: 'musical',
-                questionType: 'ranking',
-                question: 'رتّب هذه طرق التعلم حسب فعاليتها معك:',
-                weight: 1.3,
-                difficulty: 'medium',
-                reliability: 0.85,
-                options: [
-                    { text: 'التكرار المنتظم', value: 0 },
-                    { text: 'الجداول الزمنية المحددة', value: 0 },
-                    { text: 'الأنماط والتسلسلات', value: 0 },
-                    { text: 'الإيقاع في الحفظ', value: 0 }
-                ]
+                "qu": "أتكيف مع أنماط الشخصيات المختلفة.",
+                "type": "interpersonal"
             },
             {
-                type: 'musical',
-                questionType: 'ranking',
-                question: 'رتّب هذه البيئات حسب تركيزك فيها:',
-                weight: 1.1,
-                difficulty: 'easy',
-                reliability: 0.75,
-                options: [
-                    { text: 'مكان هادئ ومنتظم', value: 0 },
-                    { text: 'بيئة بها أصوات طبيعية منتظمة', value: 0 },
-                    { text: 'مكان به إيقاع خفيف في الخلفية', value: 0 },
-                    { text: 'بيئة صامتة تماماً', value: 0 }
-                ]
+                "qu": "أستطيع التأثير في الآخرين بإيجابية.",
+                "type": "interpersonal"
             },
             {
-                type: 'musical',
-                questionType: 'ranking',
-                question: 'رتّب هذه الأنشطة حسب قدرتك على ملاحظة الأنماط فيها:',
-                weight: 1.4,
-                difficulty: 'hard',
-                reliability: 0.9,
-                options: [
-                    { text: 'الأرقام والتسلسلات', value: 0 },
-                    { text: 'الحركات المتكررة', value: 0 },
-                    { text: 'الأصوات والإيقاعات', value: 0 },
-                    { text: 'الألوان والأشكال', value: 0 }
-                ]
+                "qu": "أستمتع ببناء العلاقات الاجتماعية المستمرة.",
+                "type": "interpersonal"
             },
             {
-                type: 'musical',
-                questionType: 'ranking',
-                question: 'رتّب هذه المهارات حسب قوتك فيها:',
-                weight: 1.2,
-                difficulty: 'medium',
-                reliability: 0.8,
-                options: [
-                    { text: 'تذكر التسلسلات والخطوات', value: 0 },
-                    { text: 'الالتزام بالمواعيد والجداول', value: 0 },
-                    { text: 'ملاحظة الأنماط المتكررة', value: 0 },
-                    { text: 'تنظيم الأعمال بطريقة منهجية', value: 0 }
-                ]
-            },
-            // أسئلة الذكاء الاجتماعي
-            {
-                type: 'interpersonal',
-                questionType: 'ranking',
-                question: 'رتّب هذه الأنشطة الاجتماعية حسب استمتاعك بها:',
-                weight: 1.3,
-                difficulty: 'medium',
-                reliability: 0.85,
-                options: [
-                    { text: 'العمل التطوعي', value: 0 },
-                    { text: 'تنظيم الفعاليات', value: 0 },
-                    { text: 'التدريس والتوجيه', value: 0 },
-                    { text: 'حل النزاعات', value: 0 }
-                ]
+                "qu": "أعرف نقاط قوتي وضعفي بوضوح.",
+                "type": "intrapersonal"
             },
             {
-                type: 'interpersonal',
-                questionType: 'ranking',
-                question: 'رتّب هذه المهارات حسب قوتك فيها:',
-                weight: 1.5,
-                difficulty: 'hard',
-                reliability: 0.95,
-                options: [
-                    { text: 'فهم مشاعر الآخرين', value: 0 },
-                    { text: 'التواصل الفعال', value: 0 },
-                    { text: 'القيادة والتأثير', value: 0 },
-                    { text: 'بناء العلاقات', value: 0 }
-                ]
+                "qu": "أراجع أفكاري ومواقفي بانتظام.",
+                "type": "intrapersonal"
             },
             {
-                type: 'interpersonal',
-                questionType: 'ranking',
-                question: 'رتّب هذه البيئات حسب راحتك فيها:',
-                weight: 1.2,
-                difficulty: 'medium',
-                reliability: 0.8,
-                options: [
-                    { text: 'الاجتماعات الكبيرة', value: 0 },
-                    { text: 'المجموعات الصغيرة', value: 0 },
-                    { text: 'المحادثات الثنائية', value: 0 },
-                    { text: 'العمل الفردي', value: 0 }
-                ]
+                "qu": "أستطيع التحكم في مشاعري أثناء التوتر.",
+                "type": "intrapersonal"
             },
             {
-                type: 'interpersonal',
-                questionType: 'ranking',
-                question: 'رتّب هذه الأدوار حسب تفضيلك في العمل الجماعي:',
-                weight: 1.4,
-                difficulty: 'medium',
-                reliability: 0.9,
-                options: [
-                    { text: 'قائد الفريق', value: 0 },
-                    { text: 'منسق المشروع', value: 0 },
-                    { text: 'مولد الأفكار', value: 0 },
-                    { text: 'منفذ المهام', value: 0 }
-                ]
+                "qu": "أضع أهدافًا طويلة المدى وأسعى لتحقيقها.",
+                "type": "intrapersonal"
             },
             {
-                type: 'interpersonal',
-                questionType: 'ranking',
-                question: 'رتّب هذه الطرق حسب تفضيلك لحل المشاكل:',
-                weight: 1.1,
-                difficulty: 'easy',
-                reliability: 0.75,
-                options: [
-                    { text: 'النقاش الجماعي', value: 0 },
-                    { text: 'استشارة الخبراء', value: 0 },
-                    { text: 'العصف الذهني', value: 0 },
-                    { text: 'التفكير المنفرد', value: 0 }
-                ]
-            },
-            // أسئلة الذكاء الذاتي
-            {
-                type: 'intrapersonal',
-                questionType: 'rating',
-                question: 'قيّم مدى انطباق هذه العبارات عليك (1-5 نجوم):',
-                weight: 1.4,
-                difficulty: 'medium',
-                reliability: 0.9,
-                statements: [
-                    { text: 'أعرف نقاط قوتي وضعفي جيداً', value: 0 },
-                    { text: 'أحتاج وقتاً وحيداً للتفكير', value: 0 },
-                    { text: 'أفهم مشاعري وأسبابها', value: 0 },
-                    { text: 'أثق بحدسي الداخلي', value: 0 }
-                ]
+                "qu": "أحتاج أحيانًا إلى العزلة للتفكير العميق.",
+                "type": "intrapersonal"
             },
             {
-                type: 'intrapersonal',
-                questionType: 'rating',
-                question: 'قيّم مدى ممارستك لهذه الأنشطة (1-5 نجوم):',
-                weight: 1.2,
-                difficulty: 'easy',
-                reliability: 0.8,
-                statements: [
-                    { text: 'كتابة اليوميات والتأملات', value: 0 },
-                    { text: 'وضع أهداف شخصية', value: 0 },
-                    { text: 'التأمل والتفكر', value: 0 },
-                    { text: 'مراجعة أخطائي وتعلم منها', value: 0 }
-                ]
+                "qu": "أتعلم من أخطائي بوعي حقيقي.",
+                "type": "intrapersonal"
             },
             {
-                type: 'intrapersonal',
-                questionType: 'rating',
-                question: 'قيّم مدى صحة هذه الصفات عنك (1-5 نجوم):',
-                weight: 1.3,
-                difficulty: 'medium',
-                reliability: 0.85,
-                statements: [
-                    { text: 'أحب العمل بمفردي', value: 0 },
-                    { text: 'أحلل تصرفاتي باستمرار', value: 0 },
-                    { text: 'أستمتع بالتعلم الذاتي', value: 0 },
-                    { text: 'أفهم قيمي ومبادئي جيداً', value: 0 }
-                ]
+                "qu": "ألاحظ تأثير مشاعري على قراراتي.",
+                "type": "intrapersonal"
             },
             {
-                type: 'intrapersonal',
-                questionType: 'rating',
-                question: 'قيّم مدى راحتك في هذه المواقف (1-5 نجوم):',
-                weight: 1.1,
-                difficulty: 'easy',
-                reliability: 0.75,
-                statements: [
-                    { text: 'قضاء يوم كامل وحيداً', value: 0 },
-                    { text: 'التفكير في معنى الحياة', value: 0 },
-                    { text: 'اتخاذ قرارات مهمة بمفردي', value: 0 },
-                    { text: 'التعبير عن مشاعري الداخلية', value: 0 }
-                ]
+                "qu": "أعبّر عن ذاتي بصدق حتى في المواقف الصعبة.",
+                "type": "intrapersonal"
             },
             {
-                type: 'intrapersonal',
-                questionType: 'rating',
-                question: 'قيّم قوتك في هذه المهارات الذاتية (1-5 نجوم):',
-                weight: 1.5,
-                difficulty: 'hard',
-                reliability: 0.95,
-                statements: [
-                    { text: 'معرفة ما يحفزني ويثبطني', value: 0 },
-                    { text: 'إدارة وقتي وأولوياتي', value: 0 },
-                    { text: 'التحكم في انفعالاتي', value: 0 },
-                    { text: 'تطوير نفسي باستمرار', value: 0 }
-                ]
-            },
-            // أسئلة الذكاء الطبيعي
-            {
-                type: 'naturalist',
-                questionType: 'rating',
-                question: 'قيّم مدى استمتاعك بهذه الأنشطة الطبيعية (1-5 نجوم):',
-                weight: 1.3,
-                difficulty: 'easy',
-                reliability: 0.85,
-                statements: [
-                    { text: 'زراعة النباتات والعناية بها', value: 0 },
-                    { text: 'مراقبة الطيور والحيوانات', value: 0 },
-                    { text: 'التخييم في الطبيعة', value: 0 },
-                    { text: 'جمع الأحجار والأصداف', value: 0 }
-                ]
+                "qu": "أضع خطط تطوير شخصية بشكل مستمر.",
+                "type": "intrapersonal"
             },
             {
-                type: 'naturalist',
-                questionType: 'rating',
-                question: 'قيّم مدى راحتك في هذه البيئات (1-5 نجوم):',
-                weight: 1.2,
-                difficulty: 'easy',
-                reliability: 0.8,
-                statements: [
-                    { text: 'الغابات والحدائق الطبيعية', value: 0 },
-                    { text: 'الشواطئ والبحيرات', value: 0 },
-                    { text: 'المزارع والريف', value: 0 },
-                    { text: 'الجبال والوديان', value: 0 }
-                ]
+                "qu": "لديّ وعي واضح بهويتي وقيمي الشخصية.",
+                "type": "intrapersonal"
             },
             {
-                type: 'naturalist',
-                questionType: 'rating',
-                question: 'قيّم قوتك في هذه المهارات الطبيعية (1-5 نجوم):',
-                weight: 1.4,
-                difficulty: 'medium',
-                reliability: 0.9,
-                statements: [
-                    { text: 'تمييز أنواع النباتات', value: 0 },
-                    { text: 'ملاحظة التغيرات في الطقس', value: 0 },
-                    { text: 'فهم دورات الطبيعة', value: 0 },
-                    { text: 'التنبؤ بالظواهر الطبيعية', value: 0 }
-                ]
+                "qu": "أجد سهولة في التعبير عن أفكاري بوضوح ودقة.",
+                "type": "linguistic"
             },
             {
-                type: 'naturalist',
-                questionType: 'rating',
-                question: 'قيّم أهمية هذه القضايا بالنسبة لك (1-5 نجوم):',
-                weight: 1.1,
-                difficulty: 'easy',
-                reliability: 0.75,
-                statements: [
-                    { text: 'حماية البيئة والطبيعة', value: 0 },
-                    { text: 'دراسة الكائنات الحية', value: 0 },
-                    { text: 'الأنشطة الخارجية', value: 0 },
-                    { text: 'الحفاظ على التنوع البيولوجي', value: 0 }
-                ]
+                "qu": "أستمتع بقراءة النصوص وتحليلها.",
+                "type": "linguistic"
             },
             {
-                type: 'naturalist',
-                questionType: 'rating',
-                question: 'قيّم مدى انطباق هذه العبارات عليك (1-5 نجوم):',
-                weight: 1.2,
-                difficulty: 'medium',
-                reliability: 0.8,
-                statements: [
-                    { text: 'أشعر بالسلام في الطبيعة', value: 0 },
-                    { text: 'ألاحظ تفاصيل البيئة حولي', value: 0 },
-                    { text: 'أهتم بالقضايا البيئية', value: 0 },
-                    { text: 'أفضل الأماكن الطبيعية على المدن', value: 0 }
-                ]
+                "qu": "أستطيع إقناع الآخرين باستخدام الكلمات المناسبة.",
+                "type": "linguistic"
+            },
+            {
+                "qu": "أمتلك مفردات غنية وأستخدمها بطلاقة.",
+                "type": "linguistic"
+            },
+            {
+                "qu": "أجد متعة في كتابة القصص أو المقالات.",
+                "type": "linguistic"
+            },
+            {
+                "qu": "ألاحظ التفاصيل اللغوية الصغيرة في النصوص.",
+                "type": "linguistic"
+            },
+            {
+                "qu": "أحبّ المناقشات والحوار الفكري.",
+                "type": "linguistic"
+            },
+            {
+                "qu": "أتعلم بشكل أفضل عندما أقرأ أو أكتب المعلومات.",
+                "type": "linguistic"
+            },
+            {
+                "qu": "أستطيع تحويل فكرة مجردة إلى شرح بسيط وواضح.",
+                "type": "linguistic"
+            },
+            {
+                "qu": "أستمتع باللعب بالكلمات أو إنشاء العبارات الإبداعية.",
+                "type": "linguistic"
+            },
+            {
+                "qu": "أستمتع بحل المشكلات المعقدة خطوة بخطوة.",
+                "type": "logical"
+            },
+            {
+                "qu": "أستطيع اكتشاف الأنماط والقوانين بسهولة.",
+                "type": "logical"
+            },
+            {
+                "qu": "أستخدم المنطق عند اتخاذ القرارات.",
+                "type": "logical"
+            },
+            {
+                "qu": "أحبّ التعامل مع الأرقام والإحصاءات.",
+                "type": "logical"
+            },
+            {
+                "qu": "أستمتع بالألعاب الذهنية التي تتطلب التفكير.",
+                "type": "logical"
+            },
+            {
+                "qu": "أطرح على نفسي أسئلة تحليلية باستمرار.",
+                "type": "logical"
+            },
+            {
+                "qu": "ألاحظ التناقضات في الحجج أو الأفكار بسرعة.",
+                "type": "logical"
+            },
+            {
+                "qu": "أحبّ فهم كيفية عمل الأشياء من الداخل.",
+                "type": "logical"
+            },
+            {
+                "qu": "أتعلم بسرعة عندما أطبّق التفكير المنهجي.",
+                "type": "logical"
+            },
+            {
+                "qu": "أجد متعة في البرمجة أو التفكير العلمي الدقيق.",
+                "type": "logical"
+            },
+            {
+                "qu": "ألاحظ الفروق الدقيقة بين الأصوات أو النبرات.",
+                "type": "musical"
+            },
+            {
+                "qu": "أستمتع بالاستماع للكلام المنطوق أكثر من القراءة.",
+                "type": "musical"
+            },
+            {
+                "qu": "أتعلم بسهولة عندما أسمع المعلومات.",
+                "type": "musical"
+            },
+            {
+                "qu": "أميز الأصوات المحيطة حتى في الخلفية.",
+                "type": "musical"
+            },
+            {
+                "qu": "أستخدم نغمة صوتي للتعبير عن المعنى.",
+                "type": "musical"
+            },
+            {
+                "qu": "أستمتع بتقليد الأصوات أو اللهجات.",
+                "type": "musical"
+            },
+            {
+                "qu": "أتعرف على الأشخاص من أصواتهم بسهولة.",
+                "type": "musical"
+            },
+            {
+                "qu": "أستخدم الصوت أو الإيقاع للمساعدة في التذكر.",
+                "type": "musical"
+            },
+            {
+                "qu": "ألاحظ التغيّر في نبرة الآخرين أثناء الحديث.",
+                "type": "musical"
+            },
+            {
+                "qu": "أستمتع بسماع الخطب أو الحوارات أكثر من النصوص المكتوبة.",
+                "type": "musical"
+            },
+            {
+                "qu": "أستمتع بالتأمل في الطبيعة أو مراقبة الكائنات الحية.",
+                "type": "naturalist"
+            },
+            {
+                "qu": "ألاحظ تغيرات الطقس أو الفصول بسهولة.",
+                "type": "naturalist"
+            },
+            {
+                "qu": "أهتم بالحيوانات والنباتات من حولي.",
+                "type": "naturalist"
+            },
+            {
+                "qu": "أحبّ الأنشطة الخارجية أكثر من الأماكن المغلقة.",
+                "type": "naturalist"
+            },
+            {
+                "qu": "أميز أنواع الأشجار أو الطيور أو الصخور.",
+                "type": "naturalist"
+            },
+            {
+                "qu": "أشعر بالراحة النفسية في الأماكن الطبيعية.",
+                "type": "naturalist"
+            },
+            {
+                "qu": "أهتم بالحفاظ على البيئة والنظافة العامة.",
+                "type": "naturalist"
+            },
+            {
+                "qu": "أستمتع بالرحلات أو المغامرات البيئية.",
+                "type": "naturalist"
+            },
+            {
+                "qu": "ألاحظ أدق التفاصيل في المناظر الطبيعية.",
+                "type": "naturalist"
+            },
+            {
+                "qu": "أتعلم بسرعة من الظواهر البيئية أو الميدانية.",
+                "type": "naturalist"
+            },
+            {
+                "qu": "أستطيع تخيّل الأشكال أو الأماكن بوضوح ذهني.",
+                "type": "spatial"
+            },
+            {
+                "qu": "ألاحظ التفاصيل البصرية في الصور والمشاهد.",
+                "type": "spatial"
+            },
+            {
+                "qu": "أرتب الأشياء بطريقة منسقة وجذابة بصريًا.",
+                "type": "spatial"
+            },
+            {
+                "qu": "أستمتع بالرسم أو التصميم أو التصوير.",
+                "type": "spatial"
+            },
+            {
+                "qu": "أستخدم الخرائط والمخططات بسهولة.",
+                "type": "spatial"
+            },
+            {
+                "qu": "أتعلم بشكل أفضل عندما أرى صورًا أو رسومات توضيحية.",
+                "type": "spatial"
+            },
+            {
+                "qu": "ألاحظ الجمال في الألوان والتناسق.",
+                "type": "spatial"
+            },
+            {
+                "qu": "أستطيع تكوين صورة ذهنية لأي فكرة أسمعها.",
+                "type": "spatial"
+            },
+            {
+                "qu": "أحبّ التجارب المرئية مثل الفيديوهات أو الرسوم المتحركة.",
+                "type": "spatial"
+            },
+            {
+                "qu": "أمتلك حسًّا قويًا بالاتجاهات والمواقع.",
+                "type": "spatial"
             }
         ];
+        // إنشاء HTML للسؤال
+
+        const originalQuestions = importing.filter((x, i) => i < 3).map(x => {
+            return {
+                type: x.type,
+                questionType: 'rating',
+                question: 'قيّم مدى انطباق هذه العبارة عليك:',
+                weight: 1,
+                difficulty: 'medium',
+                reliability: 1,
+                statements: [
+                    { text: x.qu, value: 0 },
+                ]
+            }
+        })
+        // [
+        // أسئلة الذكاء اللغوي
+        // {
+        //     type: 'linguistic',
+        //     questionType: 'single',
+        //     question: 'عندما تذاكر، أي أسلوب تفضّل؟',
+        //     weight: 1.2,
+        //     difficulty: 'easy',
+        //     reliability: 0.9,
+        //     options: [
+        //         { text: 'قراءة ملخّصات وكتب', value: 2 },
+        //         { text: 'مشاهدة فيديو تعليمي', value: 1 },
+        //         { text: 'عمل مخطط بصري', value: 1 },
+        //         { text: 'مناقشة مع صديق', value: 2 }
+        //     ]
+        // },
+        // {
+        //     type: 'linguistic',
+        //     questionType: 'single',
+        //     question: 'عندما تذاكر، أي أسلوب تفضّل؟',
+        //     weight: 1.2,
+        //     difficulty: 'easy',
+        //     reliability: 0.9,
+        //     options: [
+        //         { text: 'قراءة ملخّصات وكتب', value: 2 },
+        //         { text: 'مشاهدة فيديو تعليمي', value: 1 },
+        //         { text: 'عمل مخطط بصري', value: 1 },
+        //         { text: 'مناقشة مع صديق', value: 2 }
+        //     ]
+        // },
+        // {
+        //     type: 'bodily',
+        //     questionType: 'multiple',
+        //     question: 'أي بيئة عمل تفضل؟ (اختر كل ما ينطبق)',
+        //     weight: 1.0,
+        //     difficulty: 'easy',
+        //     reliability: 0.7,
+        //     options: [
+        //         { text: 'ورشة عمل أو مختبر', value: 4 },
+        //         { text: 'في الهواء الطلق', value: 4 },
+        //         { text: 'صالة رياضية', value: 3 },
+        //         { text: 'مكان يسمح بالحركة', value: 4 }
+        //     ]
+        // },
+        // {
+        //     type: 'musical',
+        //     questionType: 'ranking',
+        //     question: 'رتّب هذه الأنشطة الإيقاعية حسب استمتاعك بها (الأول الأكثر تفضيلاً):',
+        //     weight: 1.2,
+        //     difficulty: 'medium',
+        //     reliability: 0.8,
+        //     options: [
+        //         { text: 'التصفيق على الإيقاع', value: 0 },
+        //         { text: 'المشي بخطوات منتظمة', value: 0 },
+        //         { text: 'تنظيم الأعمال بجدول زمني', value: 0 },
+        //         { text: 'ممارسة التمارين بإيقاع ثابت', value: 0 }
+        //     ]
+        // },
+        // {
+        //     type: 'naturalist',
+        //     questionType: 'rating',
+        //     question: 'قيّم مدى انطباق هذه العبارات عليك (1-5 نجوم):',
+        //     weight: 1,
+        //     difficulty: 'medium',
+        //     reliability: 1,
+        //     statements: [
+        //         { text: 'أشعر بالسلام في الطبيعة', value: 0 },
+        //     ]
+        // }
+        // ];
 
         // خلط الأسئلة عشوائياً
         const questions = shuffleArray(originalQuestions);
-
         // متغيرات الحالة
         let currentUser = '';
         let currentQuestionIndex = 0;
@@ -2049,7 +2015,13 @@
             const timeline = document.getElementById('progressTimeline');
             timeline.innerHTML = '';
 
-            for (let i = 1; i <= 40; i++) {
+            for (let i = currentQuestionIndex; i <= currentQuestionIndex + 4 || i == 5; i++) {
+                if (i <= originalQuestions.length && i) {
+                    createDot(i)
+                }
+            }
+
+            function createDot(i) {
                 const dot = document.createElement('div');
                 const isAnswered = answers[i - 1] !== undefined;
                 const isCurrent = i === currentQuestionIndex + 1;
@@ -2063,13 +2035,15 @@
                 } else {
                     className += 'bg-white text-gray-400 border-gray-300 hover:border-gray-400';
                 }
-
                 dot.className = className;
                 dot.textContent = i;
                 dot.title = isAnswered ? 'تمت الإجابة' : (isCurrent ? 'السؤال الحالي' : 'لم تتم الإجابة');
                 // dot.addEventListener('click', () => goToQuestion(i - 1));
                 timeline.appendChild(dot);
+
             }
+
+
         }
 
         // الانتقال لسؤال محدد
@@ -2151,8 +2125,8 @@
 
         // عرض السؤال
         function showQuestion(index) {
-            const question = questions[index];
-            const intelligence = intelligences[question.type];
+            const question = questions[index] || "noQ";
+            const intelligence = intelligences[question.type] || "noQ";
             const container = document.getElementById('questionContainer');
 
             // إضافة تأثير الخروج
@@ -2177,13 +2151,18 @@
                 // تحديث النص التقدمي
                 const answeredCount = Object.keys(answers).length;
                 document.getElementById('progressText').textContent =
-                    `تمت الإجابة على ${answeredCount} من 40 · المتبقي: ${40 - answeredCount} سؤالًا`;
+                    `تمت الإجابة على ${answeredCount} من ${questions.length} · المتبقي: ${questions.length - answeredCount} سؤالًا`;
 
                 // تحديث شريط التقدم
                 createProgressTimeline();
+                if (question == "noQ") {
+                    updateNavigationButtons()
+                    container.innerHTML = "";
+                    return;
+                }
 
                 // عرض شرح نوع السؤال
-                showQuestionTypeExplanation(question.questionType);
+                // showQuestionTypeExplanation(question.questionType);
 
                 // عرض السؤال الجديد
                 container.innerHTML = createQuestionHTML(question, index);
@@ -2214,234 +2193,65 @@
         // إنشاء HTML للسؤال
         function createQuestionHTML(question, index) {
             let html = `<h3 class="text-2xl md:text-3xl font-semibold mb-8 text-center leading-relaxed">${question.question}</h3>`;
-
-            switch (question.questionType) {
-                case 'single':
-                    html += '<div class="space-y-3">';
-                    question.options.forEach((option, i) => {
-                        const checked = answers[index] === i ? 'checked' : '';
-                        html += `
-                            <label class="flex items-center p-6 border-2 rounded-xl cursor-pointer hover:bg-gray-50 transition-colors ${checked ? 'border-indigo-500 bg-indigo-50' : 'border-gray-200'}">
-                                <input type="radio" name="q${index}" value="${i}" class="mr-4 w-5 h-5" ${checked}>
-                                <span class="text-xl md:text-2xl leading-relaxed">${option.text}</span>
-                            </label>
-                        `;
-                    });
-                    html += '</div>';
-                    break;
-
-                case 'multiple':
-                    html += '<div class="space-y-3">';
-                    question.options.forEach((option, i) => {
-                        const checked = answers[index] && answers[index].includes(i) ? 'checked' : '';
-                        html += `
-                            <label class="flex items-center p-6 border-2 rounded-xl cursor-pointer hover:bg-gray-50 transition-colors ${checked ? 'border-indigo-500 bg-indigo-50' : 'border-gray-200'}">
-                                <input type="checkbox" name="q${index}" value="${i}" class="mr-4 w-5 h-5" ${checked}>
-                                <span class="text-xl md:text-2xl leading-relaxed">${option.text}</span>
-                            </label>
-                        `;
-                    });
-                    html += '</div>';
-                    html += `
-                        <div class="text-center mt-6">
-                            <button id="confirmMultipleBtn" class="bg-indigo-600 text-white px-8 py-3 rounded-lg hover:bg-indigo-700 transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed" disabled>
-                                ✅ تأكيد الإجابة
-                            </button>
-                        </div>
-                    `;
-                    break;
-
-                case 'ranking':
-                    html += '<div id="rankingContainer" class="space-y-3">';
-                    const currentRanking = answers[index] || [];
-                    const itemsToRank = currentRanking.length > 0 ?
-                        currentRanking.map(i => question.options[i]) :
-                        [...question.options];
-
-                    itemsToRank.forEach((option, i) => {
-                        const originalIndex = question.options.indexOf(option);
-                        html += `
-                            <div class="ranking-item bg-white border-2 border-gray-200 rounded-xl p-4 hover:bg-gray-50 transition-colors" data-index="${originalIndex}">
-                                <div class="flex items-center gap-4">
-                                    <div class="flex flex-col gap-1">
-                                        <button class="move-up-btn w-8 h-8 bg-blue-500 hover:bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold transition-colors ${i === 0 ? 'opacity-50 cursor-not-allowed' : ''}" 
-                                                data-direction="up" data-item-index="${i}" ${i === 0 ? 'disabled' : ''}>
-                                            ↑
-                                        </button>
-                                        <button class="move-down-btn w-8 h-8 bg-blue-500 hover:bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold transition-colors ${i === itemsToRank.length - 1 ? 'opacity-50 cursor-not-allowed' : ''}" 
-                                                data-direction="down" data-item-index="${i}" ${i === itemsToRank.length - 1 ? 'disabled' : ''}>
-                                            ↓
-                                        </button>
+            html += '<div class="space-y-6">';
+            question.statements.forEach((statement, i) => {
+                const currentRating = answers[index] && answers[index][i] ? answers[index][i] : 0;
+                html += `
+                    <div class="option-item ${question.type === 'preference' ? 'preference-option' : ''}">
+                        <div class="option-text">${statement.text}</div>
+                        <div class="rating-scale">
+                            <div class="rating-label">لا تنطبق</div>
+                            <div class="rating-buttons">
+                                ${[1, 2, 3, 4, 5].map(rating => `
+                                    <div class="rating-btn ${currentRating === rating ? 'selected' : ''}" 
+                                         data-rating="${rating}"
+                                         onclick="selectRating(${index}, ${rating})">
+                                        ${rating}
                                     </div>
-                                    <span class="w-12 h-12 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold text-xl rank-number">${i + 1}</span>
-                                    <span class="text-xl md:text-2xl leading-relaxed flex-1">${option.text}</span>
-                                </div>
+                                `).join('')}
                             </div>
-                        `;
-                    });
-                    html += '</div>';
-                    html += `
-                        <div class="text-center mt-6">
-                            <button id="confirmRankingBtn" class="bg-indigo-600 text-white px-8 py-3 rounded-lg hover:bg-indigo-700 transition-colors font-semibold">
-                                ✅ تأكيد الترتيب
-                            </button>
+                            <div class="rating-label">تنطبق تماماً</div>
                         </div>
-                    `;
-                    break;
+                    </div>
+                `;
 
-                case 'rating':
-                    html += '<div class="space-y-6">';
-                    question.statements.forEach((statement, i) => {
-                        const currentRating = answers[index] && answers[index][i] ? answers[index][i] : 0;
-                        html += `
-                            <div class="bg-gray-50 p-6 rounded-xl">
-                                <p class="text-xl md:text-2xl mb-4 leading-relaxed">${statement.text}</p>
-                                <div class="flex items-center gap-3">
-                                    <span class="text-base text-gray-600 ml-3">ضعيف</span>
-                                    <div class="flex gap-2" data-statement="${i}">
-                        `;
-
-                        for (let star = 1; star <= 5; star++) {
-                            const filled = star <= currentRating ? 'text-yellow-400' : 'text-gray-300';
-                            html += `
-                                <button type="button" class="star-btn text-3xl hover:text-yellow-400 transition-colors ${filled}" 
-                                        data-rating="${star}" data-statement="${i}">
-                                    ★
-                                </button>
-                            `;
-                        }
-
-                        html += `
-                                    </div>
-                                    <span class="text-base text-gray-600 mr-3">قوي</span>
-                                </div>
-                            </div>
-                        `;
-                    });
-                    html += '</div>';
-                    html += `
-                        <div class="text-center mt-6">
-                            <button id="confirmRatingBtn" class="bg-indigo-600 text-white px-8 py-3 rounded-lg hover:bg-indigo-700 transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed" disabled>
-                                ✅ تأكيد التقييم
-                            </button>
-                        </div>
-                    `;
-                    break;
-            }
-
+                // for (let star = 1; star <= 5; star++) {
+                //     const filled = star <= currentRating ? 'text-yellow-400' : 'text-gray-300';
+                //     html += `
+                //                 <button type="button" class="star-btn text-3xl hover:text-yellow-400 transition-colors ${filled}" 
+                //                         data-rating="${star}" data-statement="${i}">
+                //                     ★
+                //                 </button>
+                //             `;
+                // }
+            });
+            // html += '</div></div>';
             return html;
         }
 
         // إضافة مستمعي الأحداث للسؤال
         function addQuestionEventListeners(question, index) {
-            switch (question.questionType) {
-                case 'single':
-                    document.querySelectorAll(`input[name="q${index}"]`).forEach(input => {
-                        input.addEventListener('change', function () {
-                            answers[index] = parseInt(this.value);
-                            saveAnswer();
-                            updateNavigationButtons();
-
-                            // إظهار مؤشر الانتقال
-                            showAutoAdvanceIndicator();
-
-                            // الانتقال التلقائي للسؤال التالي بسرعة أكبر
-                            setTimeout(() => {
-                                hideAutoAdvanceIndicator();
-                                if (currentQuestionIndex < questions.length - 1) {
-                                    currentQuestionIndex++;
-                                    showQuestion(currentQuestionIndex);
-                                }
-                            }, 300);
-                        });
-                    });
-                    break;
-
-                case 'multiple':
-                    const confirmBtn = document.getElementById('confirmMultipleBtn');
-
-                    document.querySelectorAll(`input[name="q${index}"]`).forEach(input => {
-                        input.addEventListener('change', function () {
-                            if (!answers[index]) answers[index] = [];
-
-                            const value = parseInt(this.value);
-                            if (this.checked) {
-                                if (!answers[index].includes(value)) {
-                                    answers[index].push(value);
-                                }
-                            } else {
-                                answers[index] = answers[index].filter(v => v !== value);
-                            }
-
-                            // تفعيل/تعطيل زر التأكيد
-                            confirmBtn.disabled = !answers[index] || answers[index].length === 0;
-
-                            saveAnswer();
-                            updateNavigationButtons();
-                        });
-                    });
-
-                    // إضافة مستمع لزر التأكيد
-                    confirmBtn.addEventListener('click', function () {
-                        if (answers[index] && answers[index].length > 0) {
-                            showAutoAdvanceIndicator();
-                            setTimeout(() => {
-                                hideAutoAdvanceIndicator();
-                                if (currentQuestionIndex < questions.length - 1) {
-                                    currentQuestionIndex++;
-                                    showQuestion(currentQuestionIndex);
-                                }
-                            }, 300);
-                        }
-                    });
-
-                    // تفعيل الزر إذا كانت هناك إجابة محفوظة
-                    if (answers[index] && answers[index].length > 0) {
-                        confirmBtn.disabled = false;
-                    }
-                    break;
-
-                case 'ranking':
-                    // حفظ الترتيب الافتراضي عند تحميل السؤال
-                    saveDefaultRanking(index);
-
-                    initializeSortable(index);
-
-                    // إضافة مستمع لزر تأكيد الترتيب
-                    const confirmRankingBtn = document.getElementById('confirmRankingBtn');
-                    confirmRankingBtn.addEventListener('click', function () {
-                        // التأكد من حفظ الترتيب الحالي
-                        saveRankingAnswer(index);
-
-                        showAutoAdvanceIndicator();
-                        setTimeout(() => {
-                            hideAutoAdvanceIndicator();
-                            if (currentQuestionIndex < questions.length - 1) {
-                                currentQuestionIndex++;
-                                showQuestion(currentQuestionIndex);
-                            }
-                        }, 300);
-                    });
-                    break;
-
-                case 'rating':
-                    initializeRatingSystem(question, index);
-
-                    // إضافة مستمع لزر تأكيد التقييم
-                    const confirmRatingBtn = document.getElementById('confirmRatingBtn');
-                    confirmRatingBtn.addEventListener('click', function () {
-                        showAutoAdvanceIndicator();
-                        setTimeout(() => {
-                            hideAutoAdvanceIndicator();
-                            if (currentQuestionIndex < questions.length - 1) {
-                                currentQuestionIndex++;
-                                showQuestion(currentQuestionIndex);
-                            }
-                        }, 300);
-                    });
-                    break;
-            }
+            // initializeRatingSystem(question, index);
         }
+        function selectRating(index, rating) {
+            // answers[questionIndex][optionIndex] = rating;
+            if (!answers[index]) {
+                answers[index] = new Array(1).fill(0);
+            }
+
+            // حفظ التقييم
+            answers[index][0] = rating;
+
+            const ratingButtons = document.querySelectorAll('.rating-btn');
+            ratingButtons.forEach((btn) => {
+                const btnRating = parseInt(btn.getAttribute('data-rating'));
+                btn.classList.toggle('selected', btnRating === rating);
+            });
+            saveAnswer()
+            updateNavigationButtons();
+        }
+        document.getElementById('startBtn').click()
+        document.getElementById('startTestBtn').click()
 
         // تهيئة الترتيب بالأزرار
         function initializeSortable(index) {
@@ -2562,13 +2372,6 @@
 
                     saveAnswer();
                     updateNavigationButtons();
-
-                    // التحقق من اكتمال جميع التقييمات وتفعيل زر التأكيد
-                    const allRated = answers[index].every(rating => rating > 0);
-                    const confirmBtn = document.getElementById('confirmRatingBtn');
-                    if (confirmBtn) {
-                        confirmBtn.disabled = !allRated;
-                    }
                 });
             });
 
@@ -2583,19 +2386,11 @@
 
         // حفظ الإجابة وإظهار رسالة
         function saveAnswer() {
-            // حفظ في التخزين المحلي
-            // localStorage.setItem('multipleIntelligenceAnswers', JSON.stringify(answers));
-            // localStorage.setItem('multipleIntelligenceProgress', JSON.stringify({
-            //     currentQuestionIndex: currentQuestionIndex,
-            //     startTime: startTime,
-            //     userName: currentUser
-            // }));
-
             const message = document.getElementById('autoSaveMessage');
             message.style.opacity = '1';
             setTimeout(() => {
                 message.style.opacity = '0';
-            }, 2000);
+            }, 600);
         }
 
         // استرداد البيانات المحفوظة
@@ -2645,17 +2440,12 @@
             const answeredCount = Object.keys(answers).length;
             const completionPercentage = (answeredCount / questions.length) * 100;
 
-            // if (completionPercentage >= 90) { // 90% أو أكثر    
-            //     finishBtn.classList.remove('hidden');
-            // } else {
-            //     finishBtn.classList.add('hidden');
-            // }
-
             // تحديث نص زر التالي في السؤال الأخير
-            if (currentQuestionIndex === questions.length - 1) {
+            if (currentQuestionIndex === questions.length) {
                 nextBtn.textContent = '🏁 إنهاء الاختبار';
                 nextBtn.classList.remove('bg-indigo-600', 'hover:bg-indigo-700');
                 nextBtn.classList.add('bg-green-600', 'hover:bg-green-700');
+                nextBtn.disabled = false;
             } else {
                 nextBtn.textContent = 'التالي';
                 nextBtn.classList.remove('bg-green-600', 'hover:bg-green-700');
@@ -2672,7 +2462,7 @@
         });
 
         document.getElementById('nextBtn').addEventListener('click', function () {
-            if (currentQuestionIndex < questions.length - 1) {
+            if (currentQuestionIndex < questions.length) {
                 currentQuestionIndex++;
                 showQuestion(currentQuestionIndex);
             } else {

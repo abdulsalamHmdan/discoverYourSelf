@@ -1,0 +1,21 @@
+case 'single':
+                    document.querySelectorAll(`input[name="q${index}"]`).forEach(input => {
+                        input.addEventListener('change', function () {
+                            answers[index] = parseInt(this.value);
+                            saveAnswer();
+                            updateNavigationButtons();
+
+                            // إظهار مؤشر الانتقال
+                            showAutoAdvanceIndicator();
+
+                            // الانتقال التلقائي للسؤال التالي بسرعة أكبر
+                            setTimeout(() => {
+                                hideAutoAdvanceIndicator();
+                                if (currentQuestionIndex < questions.length - 1) {
+                                    currentQuestionIndex++;
+                                    showQuestion(currentQuestionIndex);
+                                }
+                            }, 300);
+                        });
+                    });
+                    break;

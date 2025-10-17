@@ -2,10 +2,6 @@ var express = require('express')
 var session = require('express-session')
 // const puppeteer = require('puppeteer');
 const pdf = require("html-pdf-node");
-
-
-
-
 var app = express()
 app.use(express.urlencoded({ extended: true }));
 app.use(session({
@@ -25,11 +21,16 @@ function isAuthenticated(req, res, next) {
     if (req.session.permissions == "student") next()
     else next('route')
 }
+// function isAdmin(req, res, next) {
+//     next()
+// }
 function isAdmin(req, res, next) {
     // next()
     if (req.session.permissions == "admin") next()
     else next('route')
 }
+
+
 function isTeacher(req, res, next) {
     if (req.session.permissions == "teacher") next()
     else next('route')
@@ -279,7 +280,7 @@ app.get('/admin/end/:id', isAdmin, async function (req, res) {
             res.render("studentPage", { id: user.idNumber, name: user.name, p1, p2, p3, rate });
             return;
         }
-        res.render("studentPage", { id: user.idNumber, name: user.name, p1, p2, p3,rate:null });
+        res.render("studentPage", { id: user.idNumber, name: user.name, p1, p2, p3, rate: null });
     } else {
         res.redirect('admin');
     }
