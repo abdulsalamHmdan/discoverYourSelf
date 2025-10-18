@@ -831,7 +831,7 @@
 
                 <div class="flex items-center gap-4">
                     <div class="text-lg font-semibold">
-                        <span id="currentQuestion">1</span> / 40
+                        <span id="currentQuestion"></span> / <span id="countQuestions"></span>
                     </div>
                     <div class="relative w-12 h-12">
                         <svg class="w-12 h-12 progress-circle">
@@ -841,7 +841,7 @@
                         </svg>
                         <div
                             class="absolute inset-0 flex items-center justify-center text-xs font-bold text-indigo-600">
-                            <span id="progressPercent">3%</span>
+                            <span id="progressPercent"></span>
                         </div>
                     </div>
                 </div>
@@ -884,48 +884,39 @@
                 </div>
 
                 <!-- سطر التقدم النصي -->
-                <div class="text-center text-sm text-gray-600 mb-6">
+                <div class="text-center text-sm text-gray-600">
                     <span id="progressText">تمت الإجابة على 0 من 40 · المتبقي: 40 سؤالًا</span>
                     <div id="autoSaveMessage" class="text-green-600 mt-2 opacity-0 transition-opacity">
                         تم الحفظ ✓
                     </div>
                 </div>
 
-                <!-- مؤشر الانتقال التلقائي -->
+                <!-- مؤشر الانتقال التلقائي
                 <div id="autoAdvanceIndicator" class="text-center mb-4 opacity-0 transition-opacity duration-300">
                     <div class="inline-flex items-center gap-2 bg-green-100 text-green-800 px-4 py-2 rounded-full">
                         <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
                         <span class="text-sm font-medium">الانتقال للسؤال التالي...</span>
                     </div>
-                </div>
+                </div> -->
 
                 <!-- أزرار التنقل -->
                 <div class="flex justify-between items-center">
                     <button id="prevBtn"
-                        class="bg-gray-300 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                        class="bg-yellow-300 text-gray-700 px-6 py-3 rounded-lg hover:bg-yellow-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
                         رجوع
                     </button>
 
-                    <div class="text-center">
-                        <button id="goToUnansweredBtn"
-                            class="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors text-sm mb-2">
-                            📝 الأسئلة غير المجابة
-                        </button>
-                        <div>
-                            <button id="saveLaterBtn" class="text-indigo-600 hover:text-indigo-800 underline text-sm">
-                                حفظ لاحقًا
-                            </button>
-                        </div>
-                        <div class="text-xs text-gray-500 mt-1">
-                            💡 سينتقل تلقائياً بعد الإجابة
+                    <div class="text-center autoSubmit">
+                        <div id="autoSubmitText" class="text-xs bg-blue-100 text-gray-500 mt-1">
+                            💡 اضغط هنا لتعطيل الانتقال تلقائياً بعد الإجابة
                         </div>
                     </div>
 
                     <div class="flex gap-3">
-                        <button id="finishTestBtn"
+                        <!-- <button id="finishTestBtn"
                             class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors font-semibold hidden">
                             🏁 إنهاء الاختبار
-                        </button>
+                        </button> -->
                         <button id="nextBtn"
                             class="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
                             التالي
@@ -1132,6 +1123,8 @@
     </div>
 
     <script>
+        let autoSubmit = true;
+
         // بيانات الاختبار
         const intelligences = {
             linguistic: { name: 'لغوي/لفظي', icon: '📚', color: '#ef4444' },
@@ -1762,7 +1755,7 @@
         ];
         // إنشاء HTML للسؤال
 
-        const originalQuestions = importing.filter((x, i) => true).map(x => {
+        const originalQuestions = importing.filter((x, i) => i < 20).map(x => {
             return {
                 type: x.type,
                 questionType: 'rating',
@@ -2015,8 +2008,8 @@
             const timeline = document.getElementById('progressTimeline');
             timeline.innerHTML = '';
 
-            for (let i = currentQuestionIndex; i <= currentQuestionIndex + 4 || i == 5; i++) {
-                if (i <= originalQuestions.length && i) {
+            for (let i = currentQuestionIndex - 4; i <= (currentQuestionIndex > 4 ? currentQuestionIndex + 4 : 9); i++) {
+                if (i <= originalQuestions.length && i > 0) {
                     createDot(i)
                 }
             }
@@ -2038,7 +2031,7 @@
                 dot.className = className;
                 dot.textContent = i;
                 dot.title = isAnswered ? 'تمت الإجابة' : (isCurrent ? 'السؤال الحالي' : 'لم تتم الإجابة');
-                // dot.addEventListener('click', () => goToQuestion(i - 1));
+                dot.addEventListener('click', () => goToQuestion(i - 1));
                 timeline.appendChild(dot);
 
             }
@@ -2136,10 +2129,12 @@
                 // إخفاء معلومات الذكاء الحالي لجعل الاختبار أكثر حيادية
                 document.getElementById('currentIntelligenceIcon').textContent = '🧠';
                 document.getElementById('currentIntelligenceName').textContent = 'اختبار الذكاءات المتعددة';
+                // document.getElementById('currentIntelligenceIcon').textContent = intelligence.icon;
+                // document.getElementById('currentIntelligenceName').textContent = intelligence.name;
 
                 // تحديث رقم السؤال والتقدم
-                document.getElementById('currentQuestion').textContent = index + 1;
-                const progress = ((index + 1) / 40) * 100;
+                document.getElementById('currentQuestion').textContent = index;
+                const progress = ((index + 1) / (questions.length + 1)) * 100;
                 document.getElementById('progressPercent').textContent = Math.round(progress) + '%';
 
                 // تحديث دائرة التقدم
@@ -2157,7 +2152,8 @@
                 createProgressTimeline();
                 if (question == "noQ") {
                     updateNavigationButtons()
-                    container.innerHTML = "";
+                    // container.innerHTML = `<div class="option-item"> <div class="rating-scale">نهاية الاسئلة</div></div>`;
+                    container.innerHTML = `<div class="option-item items-center"> <div class="rating-scale text-center" style="flex-direction: column;">نهاية الاسئلة</div></div>`;
                     return;
                 }
 
@@ -2177,8 +2173,9 @@
                 }, 50);
 
                 // تحديث أزرار التنقل
-                document.getElementById('prevBtn').disabled = index === 0;
-                document.getElementById('nextBtn').disabled = !answers[index];
+                updateNavigationButtons()
+                // document.getElementById('prevBtn').disabled = index === 0;
+                // document.getElementById('nextBtn').disabled = !answers[index];
 
                 // إضافة مستمعي الأحداث
                 addQuestionEventListeners(question, index);
@@ -2195,12 +2192,13 @@
             let html = `<h3 class="text-2xl md:text-3xl font-semibold mb-8 text-center leading-relaxed">${question.question}</h3>`;
             html += '<div class="space-y-6">';
             question.statements.forEach((statement, i) => {
-                if (!answers[index]) {
-                    answers[index] = new Array(1).fill(0);
-                }
+                // if (!answers[index]) {
+                //     answers[index] = new Array(1).fill(0);
+                // }
+                // // حفظ التقييم
+                // answers[index][0] = Math.ceil(Math.random() * 5);
 
-                // حفظ التقييم
-                answers[index][0] = Math.ceil(Math.random()*5);
+
                 const currentRating = answers[index] && answers[index][i] ? answers[index][i] : 0;
                 html += `
                     <div class="option-item ${question.type === 'preference' ? 'preference-option' : ''}">
@@ -2255,6 +2253,16 @@
             });
             saveAnswer()
             updateNavigationButtons();
+            setTimeout(() => {
+                // document.getElementById('nextBtn').click();
+                if (index < questions.length && currentQuestionIndex !== (index + 1) && autoSubmit) {
+                    currentQuestionIndex = index + 1;
+                    showQuestion(currentQuestionIndex);
+                } else if (index >= questions.length) {
+                    showReviewModal();
+                }
+            }, 300);
+
         }
         document.getElementById('startBtn').click()
         document.getElementById('startTestBtn').click()
@@ -2378,6 +2386,7 @@
 
                     saveAnswer();
                     updateNavigationButtons();
+
                 });
             });
 
@@ -2422,25 +2431,25 @@
         }
 
         // إظهار مؤشر الانتقال التلقائي
-        function showAutoAdvanceIndicator() {
-            const indicator = document.getElementById('autoAdvanceIndicator');
-            indicator.style.opacity = '1';
-        }
+        // function showAutoAdvanceIndicator() {
+        //     const indicator = document.getElementById('autoAdvanceIndicator');
+        //     indicator.style.opacity = '1';
+        // }
 
-        // إخفاء مؤشر الانتقال التلقائي
-        function hideAutoAdvanceIndicator() {
-            const indicator = document.getElementById('autoAdvanceIndicator');
-            indicator.style.opacity = '0';
-        }
+        // // إخفاء مؤشر الانتقال التلقائي
+        // function hideAutoAdvanceIndicator() {
+        //     const indicator = document.getElementById('autoAdvanceIndicator');
+        //     indicator.style.opacity = '0';
+        // }
 
         // تحديث أزرار التنقل
         function updateNavigationButtons() {
             const prevBtn = document.getElementById('prevBtn');
             const nextBtn = document.getElementById('nextBtn');
-            const finishBtn = document.getElementById('finishTestBtn');
+            // const finishBtn = document.getElementById('finishTestBtn');
 
             prevBtn.disabled = currentQuestionIndex === 0;
-            nextBtn.disabled = !answers[currentQuestionIndex];
+            nextBtn.disabled = !answers[currentQuestionIndex] || autoSubmit;
 
             // إظهار زر الإنهاء إذا تم الإجابة على 90% من الأسئلة على الأقل
             const answeredCount = Object.keys(answers).length;
@@ -2464,6 +2473,7 @@
             if (currentQuestionIndex > 0) {
                 currentQuestionIndex--;
                 showQuestion(currentQuestionIndex);
+                updateNavigationButtons()
             }
         });
 
@@ -2475,42 +2485,49 @@
                 showReviewModal();
             }
         });
+        document.querySelector('.autoSubmit').addEventListener('click', function () {
+            const autoSubmitText = document.getElementById('autoSubmitText');
+            autoSubmit = !autoSubmit
+            autoSubmitText.textContent = `💡 اضغط هنا ${autoSubmit ? 'لتعطيل' : 'لتفعيل'} الانتقال تلقائياً بعد الإجابة`
+            autoSubmitText.classList.toggle("bg-blue-100", autoSubmit)
+            updateNavigationButtons()
+        });
 
         // زر حفظ لاحقاً
-        document.getElementById('saveLaterBtn').addEventListener('click', function () {
-            // حفظ التقدم الحالي
-            saveAnswer();
+        // document.getElementById('saveLaterBtn').addEventListener('click', function () {
+        //     // حفظ التقدم الحالي
+        //     saveAnswer();
 
-            // إظهار رسالة تأكيد مع معلومات التقدم
-            const answeredCount = Object.keys(answers).length;
-            const progress = Math.round((answeredCount / questions.length) * 100);
+        //     // إظهار رسالة تأكيد مع معلومات التقدم
+        //     const answeredCount = Object.keys(answers).length;
+        //     const progress = Math.round((answeredCount / questions.length) * 100);
 
-            if (confirm(`تم حفظ تقدمك!\n\nالتقدم الحالي: ${answeredCount} من ${questions.length} سؤالاً (${progress}%)\n\nيمكنك العودة لاحقاً لإكمال الاختبار من حيث توقفت.\n\nهل تريد الخروج الآن؟`)) {
-                // العودة للشاشة الرئيسية
-                testScreen.classList.add('hidden');
-                welcomeScreen.classList.remove('hidden');
+        //     if (confirm(`تم حفظ تقدمك!\n\nالتقدم الحالي: ${answeredCount} من ${questions.length} سؤالاً (${progress}%)\n\nيمكنك العودة لاحقاً لإكمال الاختبار من حيث توقفت.\n\nهل تريد الخروج الآن؟`)) {
+        //         // العودة للشاشة الرئيسية
+        //         testScreen.classList.add('hidden');
+        //         welcomeScreen.classList.remove('hidden');
 
-                // إيقاف المؤقت
-                if (timerInterval) {
-                    clearInterval(timerInterval);
-                }
+        //         // إيقاف المؤقت
+        //         if (timerInterval) {
+        //             clearInterval(timerInterval);
+        //         }
 
-                // إظهار رسالة نجاح الحفظ
-                setTimeout(() => {
-                    alert('✅ تم حفظ تقدمك بنجاح!\n\nعند العودة، اضغط "ابدأ الاختبار" وستجد خيار "استكمال الاختبار" للمتابعة من حيث توقفت.');
-                }, 500);
-            }
-        });
+        //         // إظهار رسالة نجاح الحفظ
+        //         setTimeout(() => {
+        //             alert('✅ تم حفظ تقدمك بنجاح!\n\nعند العودة، اضغط "ابدأ الاختبار" وستجد خيار "استكمال الاختبار" للمتابعة من حيث توقفت.');
+        //         }, 500);
+        //     }
+        // });
 
         // زر إنهاء الاختبار
-        document.getElementById('finishTestBtn').addEventListener('click', function () {
-            showReviewModal();
-        });
+        // document.getElementById('finishTestBtn').addEventListener('click', function () {
+        //     showReviewModal();
+        // });
 
-        // زر الأسئلة غير المجابة
-        document.getElementById('goToUnansweredBtn').addEventListener('click', function () {
-            goToFirstUnansweredQuestion();
-        });
+        // // زر الأسئلة غير المجابة
+        // document.getElementById('goToUnansweredBtn').addEventListener('click', function () {
+        //     goToFirstUnansweredQuestion();
+        // });
 
         // بدء المؤقت
         function startTimer() {
