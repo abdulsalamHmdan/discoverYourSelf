@@ -92,32 +92,90 @@
         <div class="max-w-6xl mx-auto">
             <!-- هيدر النتيجة -->
             <div
-                class="bg-gradient-to-r from-blue-600 to-purple-600 rounded-3xl shadow-2xl p-8 mb-8 text-white text-center">
-                <div class="text-6xl mb-4">🎉</div>
-                <h1 class="text-4xl font-bold mb-4">
-                    تهانينا يا <span id="result-name" class="text-yellow-300"></span>!
+                class="bg-gradient-to-r from-slate-500 to-slate-600 rounded-3xl shadow-2xl p-8 mb-8 text-white text-center">
+                <div class="text-5xl mb-4">📄تقرير الميول المهنية – مقياس هولاند (RIASEC)
+ضمن مقاييس منصة بصيرة لاكتشاف الذات</div>
+                <h1 class="text-4xl font-bold mb-4">             
+                        <div class="text-3xl mb-4">👋مرحبًا  
+                      <span id="result-name" class="text-yellow-300"></span>!
                 </h1>
-                <p class="text-xl mb-6 opacity-90">لقد اكتشفت شخصيتك المهنية بنجاح</p>
+              <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl shadow-lg p-10 text-gray-100 leading-relaxed">
+  <h3 class="text-3xl font-bold text-white mb-6 text-center">🌟 مرحبًا بك في تقريرك الخاص للمقياس الأول</h3>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                    <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-4">
-                        <div class="text-2xl mb-2">⏱️</div>
-                        <div class="text-sm opacity-80">الوقت الكلي</div>
-                        <div id="total-time" class="text-lg font-bold"></div>
-                    </div>
-                    <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-4 cursor-pointer"
-                        onclick="showConfidenceExplanation()">
-                        <div class="text-2xl mb-2">🎯</div>
-                        <div class="text-sm opacity-80">مؤشر الثقة</div>
-                        <div id="confidence-level" class="text-lg font-bold"></div>
-                        <div class="text-xs opacity-70 mt-1">اضغط للتفاصيل</div>
-                    </div>
-                    <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-4">
-                        <div class="text-2xl mb-2">📊</div>
-                        <div class="text-sm opacity-80">نقاط القوة</div>
-                        <div id="strength-count" class="text-lg font-bold">3 أبعاد</div>
-                    </div>
-                </div>
+  <p class="text-xl mb-6 opacity-90">
+    يسعدنا أن يكون بين يديك التقرير الخاص بك ضمن مقاييس منصة 
+    <span class="text-indigo-300 font-semibold">بصيرة</span> لاكتشاف الذات.
+    أُعد هذا التقرير لمساعدتك على اكتشاف ميولك المهنية وتحديد المسارات الدراسية والوظيفية 
+    التي تتناسب مع شخصيتك وقدراتك.
+  </p>
+
+  <p class="text-xl mb-6 opacity-90">
+    يعتمد التقرير على <span class="font-semibold text-indigo-300">مقياس هولاند (RIASEC)</span>،
+    المبني على نظرية العالم <span class="italic text-indigo-200">John Holland</span>، 
+    التي تؤكد أن رضا الإنسان ونجاحه في العمل يتحقق عندما يكون هناك توافق 
+    بين شخصيته وبيئة عمله.
+  </p>
+
+  <p class="text-xl opacity-90">
+    يقيس المقياس ستة أنماط رئيسة تمثل مجالات الميول المهنية:
+    <span class="text-indigo-300 font-semibold">R – واقعي</span>،
+    <span class="text-indigo-300 font-semibold">I – استقصائي</span>،
+    <span class="text-indigo-300 font-semibold">A – فني</span>،
+    <span class="text-indigo-300 font-semibold">S – اجتماعي</span>،
+    <span class="text-indigo-300 font-semibold">E – ريادي</span>،
+    <span class="text-indigo-300 font-semibold">C – تقليدي</span>.
+    ومن خلال تحليل تفضيلاتك لهذه الأنشطة، يُقدَّم تصور شامل عن ميولك والمهن 
+    والتخصصات التي تتناسب معها، إضافة إلى توصيات عملية تساعدك على اتخاذ 
+    قرارات أكاديمية ومهنية أكثر وعيًا واتزانًا.
+  </p>
+</div>
+
+<div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl shadow-lg p-4 md:p-5 text-white leading-relaxed mt-10">
+  <h2 class="text-2xl font-bold mb-6 text-indigo-200">💡 نصائح قبل قراءة التقرير</h2>
+
+  <ul class="list-disc list-inside text-right text-lg opacity-90 space-y-2 mx-auto max-w-4xl">
+    <li>تذكّر أن نتائج هذا التقرير تمثّل انعكاسًا لميولك الحالية، وليست حكمًا ثابتًا على شخصيتك أو قدراتك.</li>
+    <li>يساعدك التقرير على فهم ذاتك وتوسيع وعيك المهني، وليس على حصر اختياراتك.</li>
+    <li>اقرأ النتائج بعقل منفتح واعتبرها فرصة لاكتشاف زوايا جديدة في شخصيتك.</li>
+    <li>ركّز على الميول الأعلى دون إهمال الميول المتوسطة أو الثانوية، فقد تكون داعمة لمسارك المهني.</li>
+    <li>تذكّر أن الاهتمامات تتغيّر بمرور الوقت، لذلك يُفضّل إعادة القياس بعد مرحلة دراسية أو عملية جديدة.</li>
+    <li>ناقش نتائجك مع مستشارك المهني أو الأكاديمي لتحديد المسار الأنسب لك.</li>
+    <li>استخدم ما ستقرأه لتخطّط لمسار يجمع بين الشغف، المهارة، والفرصة.</li>
+  </ul>
+
+  <p class="font-semibold text-indigo-200 text-xl mt-6 mb-10 text-center">
+    🎯 هدف هذا التقرير هو أن تعرف نفسك لتختار بوعي، لا أن تُقيّد نفسك بنتيجة واحدة.
+  </p>
+</div>
+
+
+
+<div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+
+  <!-- الوقت الكلي -->
+  <div class="bg-gradient-to-br from-blue-500/30 to-indigo-500/20 backdrop-blur-md rounded-xl p-2 border border-white/20 shadow-sm text-center">
+    <div class="text-lg mb-1">⏱️</div>
+    <div class="text-[11px] opacity-80">الوقت الكلي</div>
+    <div id="total-time" class="text-sm font-semibold">0:29</div>
+  </div>
+
+  <!-- مؤشر الثقة -->
+  <div class="bg-gradient-to-br from-emerald-500/30 to-teal-500/20 backdrop-blur-md rounded-xl p-2 border border-white/20 shadow-sm text-center cursor-pointer"
+       onclick="showConfidenceExplanation()">
+    <div class="text-lg mb-1">🎯</div>
+    <div class="text-[11px] opacity-80">مؤشر الثقة</div>
+    <div id="confidence-level" class="text-sm font-semibold">منخفض</div>
+    <div class="text-[10px] opacity-70 mt-1">اضغط للتفاصيل</div>
+  </div>
+
+  <!-- نقاط القوة -->
+  <div class="bg-gradient-to-br from-pink-500/30 to-purple-500/20 backdrop-blur-md rounded-xl p-2 border border-white/20 shadow-sm text-center">
+    <div class="text-lg mb-1">📊</div>
+    <div class="text-[11px] opacity-80">نقاط القوة</div>
+    <div id="strength-count" class="text-sm font-semibold">3 أبعاد</div>
+  </div>
+</div>
+
 
                 <!-- أعلى 3 أبعاد -->
                 <div class="flex flex-col items-center gap-4" id="top-dimensions">
@@ -125,9 +183,9 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <!-- الرسوم البيانية -->
-                <div class="bg-white rounded-2xl shadow-lg p-4">
+                <div class="bg-white rounded-2xl shadow-lg p-">
                     <h3 class="text-lg font-bold text-gray-800 mb-3 text-center">نتائجك التفصيلية</h3>
                     <canvas id="barChart" width="300" height="200"></canvas>
                 </div>
@@ -164,12 +222,53 @@
             <!-- التوصيات -->
             <div class="bg-white rounded-2xl shadow-lg p-8 mt-6">
                 <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">ما الخطوة القادمة؟</h3>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="recommendations">
+                <div class="grid grid-cols-1 md:grid-cols-1 gap-6" id="recommendations">
                     <!-- سيتم إنشاؤها ديناميكياً -->
                 </div>
             </div>
 
-            <!-- أزرار المشاركة -->
+            <!-- ملخص المسارين -->
+                    <div id="paths-summary" class="bg-white rounded-2xl shadow-lg p-6 mt-6">
+                        <!-- سيتم إنشاؤه ديناميكياً -->
+                    </div>
+ <div class="bg-gradient-to-b from-slate-800 to-slate-700 backdrop-blur-md border border-white/10 rounded-3xl shadow-2xl p-10 text-white leading-relaxed mt-12">
+  <h2 class="text-4xl font-bold mb-10 text-center text-indigo-300">
+    🧭 نصائح عملية بعد قراءة التقرير
+  </h2>
+
+  <p class="text-2xl text-center mb-10 opacity-95 max-w-4xl mx-auto">
+    بعد انتهائك من قراءة هذا التقرير وفهم نتائجك، اجعل الخطوة التالية تطبيقية وواعية.  
+    فالقيمة الحقيقية للمقياس تكمن في <span class="text-indigo-300 font-semibold">تحويل المعرفة إلى فعلٍ ملموس</span> يقودك نحو تطوير ذاتك ومسارك المهني.
+  </p>
+
+  <div class="text-right text-2xl opacity-100 space-y-6 mx-auto max-w-5xl">
+    <p>✍️ <span class="font-semibold text-indigo-300">اكتب خلاصة ما تعلّمته عن نفسك</span> في نقاط محددة — ما الذي جذبك؟ وما الذي فاجأك؟</p>
+
+    <p>🎯 <span class="font-semibold text-indigo-300">اختر مسارين محتملين</span> من التخصصات أو المهن المقترحة، وابدأ بالبحث الجاد عنها (المتطلبات، بيئة العمل، فرص التطور).</p>
+
+    <p>🗣️ <span class="font-semibold text-indigo-300">ناقش نتائجك</span> مع شخص مختص أو موجّه مهني ليساعدك على فهم النتائج وربطها بقدراتك الواقعية.</p>
+
+    <p>🧩 <span class="font-semibold text-indigo-300">جرّب الأنشطة المرتبطة بميولك</span> (تطوع، تدريب، مشروع صغير) لتتأكد أنك تستمتع فعلاً بهذا المجال.</p>
+
+    <p>📅 <span class="font-semibold text-indigo-300">ضع خطة قصيرة المدى (30 يومًا)</span> لتطوير مهارة أو معرفة في مجال ميولك الأعلى.</p>
+
+    <p>🕊️ <span class="font-semibold text-indigo-300">تذكّر أن المقياس دليل لا قرار</span> — استخدمه كخريطة ترشدك، لا كقيد يحدّك.</p>
+
+    <p>💡 <span class="font-semibold text-indigo-300">أعد القياس مستقبلاً</span> بعد مرحلة دراسية أو مهنية جديدة لتتابع تطور ميولك واتجاهاتك.</p>
+  </div>
+
+  <hr class="border-t border-indigo-500/30 my-12 w-3/4 mx-auto">
+
+  <p class="text-3xl text-center text-indigo-300 font-semibold">
+    🎓 هدف <span class="text-white font-bold">«بصيرة»</span> أن تبني مستقبلك بخطوات واعية  
+    تجمع بين <span class="text-indigo-200 font-semibold">شغفك، قدراتك، وفرصك الحقيقية</span>.
+  </p>
+</div>
+
+
+    </div>
+
+     <!-- أزرار المشاركة -->
             <% if(from=="show" ) { %>
 
                 <div class="bg-white rounded-2xl shadow-lg p-6 mt-6 noP">
@@ -188,16 +287,6 @@
                     </div>
                 </div>
                 <% } %>
-
-
-                    <!-- ملخص المسارين -->
-                    <div id="paths-summary" class="bg-white rounded-2xl shadow-lg p-6 mt-6">
-                        <!-- سيتم إنشاؤه ديناميكياً -->
-                    </div>
-
-        </div>
-    </div>
-
     <script>
         // بيانات المقياس
         const questions = [
@@ -1026,21 +1115,7 @@
                     ).join(''),
                     type: "activities"
                 },
-                {
-                    icon: "💼",
-                    title: "مهن مناسبة لك",
-                    description: `بناءً على نتائجك، هذه أفضل المهن المناسبة:`,
-                    content: calculateTopCareers(percentages).slice(0, 4).map(career =>
-                        `<div class="flex items-center gap-3 mb-2 p-2 bg-gray-50 rounded-lg">
-                            <span class="text-lg">${career.icon}</span>
-                            <div class="flex-1">
-                                <div class="font-semibold text-sm text-gray-800">${career.name}</div>
-                                <div class="text-xs text-gray-600">${Math.round(career.score)}% مطابقة</div>
-                            </div>
-                        </div>`
-                    ).join(''),
-                    type: "careers"
-                },
+
                 {
                     icon: "📈",
                     title: "خطة التطوير الشخصي",
