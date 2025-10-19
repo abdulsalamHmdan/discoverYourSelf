@@ -144,8 +144,8 @@
     <!-- Header -->
     <header class="gradient-bg text-white py-6">
         <div class="container mx-auto px-4">
-            <h1 class="text-3xl font-bold text-center mb-2">اختبار تحديد نمطك الشخصي</h1>
-            <p class="text-center opacity-90">خمسة مسارات مختلفة لاكتشاف شخصيتك الحقيقية</p>
+            <h1 class="text-4xl font-bold text-center mb-2">📄 تقرير أنماط الشخصية – مقياس MBTI</h1>
+            <p class="text-center opacity-200">ضمن مقاييس منصة بصيرة لاكتشاف الذات</p>
 
         </div>
     </header>
@@ -200,20 +200,86 @@
     <!-- Main Content -->
     <main class="container mx-auto px-4 py-8">
         <!-- Results Screen -->
-        <div id="resultsScreen" class="fade-in">
             <div class="max-w-4xl mx-auto">
-                <div class="bg-white rounded-lg card-shadow p-8">
+                <div class="bg-blue-50 card-shadow p-6">
                     <div class="text-center mb-8">
-                        <div class="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <svg class="w-12 h-12 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
                         </div>
-                        <h2 class="text-3xl font-bold text-gray-800 mb-4">🎉 تهانينا! اكتمل الاختبار</h2>
-                        <div id="userNameDisplay" class="text-2xl font-semibold text-blue-600 mb-4"></div>
-                        <div id="pathUsed" class="text-lg text-gray-600 mb-4"></div>
-                    </div>
+                       <div class="bg-gradient-to-r from-slate-500 to-slate-500 rounded-3xl shadow-2xl p-8 mb-8 text-white text-center">
+
+  <h1 class="text-4xl font-bold mb-4">
+    <div class="text-3xl mb-4">
+      👋 مرحبًا  
+      <span id="result-name" class="text-yellow-300"></span>
+    </div>
+  </h1>
+
+   <div class="bg-gradient-to-br from-slate-600/60 to-slate-700/70 backdrop-blur-md border border-white/20 rounded-3xl shadow-2xl p-10 text-white leading-relaxed mt-10">
+  <h2 class="text-3xl font-bold mb-8 text-center text-indigo-300">
+    <h3 class="text-3xl font-bold text-white mb-6 text-center">🌟 مرحبًا بك في تقريرك الخاص لمقياس أنماط الشخصية (MBTI)</h3>
+
+    <p class="text-xl mb-6 opacity-90">
+      يسعدنا أن نقدّم لك تقريرك الخاص بمقياس 
+      <span class="text-indigo-300 font-semibold">أنماط الشخصية (MBTI)</span> ضمن مقاييس منصة 
+      <span class="text-indigo-300 font-semibold">بصيرة</span> لاكتشاف الذات.
+      يهدف هذا التقرير إلى مساعدتك على فهم شخصيتك بعمق والتعرّف على الطريقة التي 
+      <span class="text-indigo-200 font-semibold">تفكّر، وتتفاعل، وتتّخذ بها قراراتك</span>،
+      مما يتيح لك بناء مسار دراسي ومهني يتناسب مع أسلوبك الطبيعي في الحياة والعمل.
+    </p>
+
+    <p class="text-xl mb-6 opacity-90">
+      يعتمد هذا المقياس على <span class="font-semibold text-indigo-300">نظرية كارل غوستاف يونغ (Carl G. Jung)</span> 
+      التي طوّرها فيما بعد 
+      <span class="italic text-indigo-200">إيزابيل مايرز وكاثرين بريغز (Isabel Myers & Katharine Briggs)</span>،
+      وتقوم فكرته على أن الناس يختلفون في الطريقة التي 
+      <span class="text-indigo-300 font-semibold">يدركون بها العالم ويتعاملون معه.</span>
+    </p>
+
+    <p class="text-xl mb-6 opacity-90">
+      يقيس المقياس أربع ثنائيات رئيسية تحدد نمط الشخصية المكوَّن من أربعة حروف:
+    </p>
+
+    <ul class="text-right text-xl opacity-90 space-y-4 max-w-3xl mx-auto list-disc list-inside">
+      <li><span class="text-indigo-300 font-semibold">الانبساط (E)</span> ↔ <span class="text-indigo-300 font-semibold">الانطواء (I)</span> — كيف تفضّل التفاعل مع العالم والناس.</li>
+      <li><span class="text-indigo-300 font-semibold">الحدس (N)</span> ↔ <span class="text-indigo-300 font-semibold">الاستشعار (S)</span> — كيف تفضل جمع المعلومات وفهم الواقع.</li>
+      <li><span class="text-indigo-300 font-semibold">التفكير (T)</span> ↔ <span class="text-indigo-300 font-semibold">المشاعر (F)</span> — كيف تتخذ قراراتك وتتعامل مع القيم.</li>
+      <li><span class="text-indigo-300 font-semibold">الحكم (J)</span> ↔ <span class="text-indigo-300 font-semibold">الإدراك (P)</span> — كيف تنظّم حياتك وتتفاعل مع المواقف.</li>
+    </ul>
+
+    <p class="text-xl mt-8 opacity-90">
+      ومن خلال جمع نتائجك في هذه الأبعاد، يحدّد المقياس 
+      <span class="font-semibold text-indigo-300">نمط شخصيتك المميز</span> 
+      (مثل: INFJ، ESTP، ENFP...)
+      ويقدّم لك تحليلًا شاملاً لأسلوبك الشخصي في التفكير والتواصل والعمل،
+      إضافةً إلى <span class="font-semibold text-indigo-300">توصيات مهنية وأكاديمية</span> 
+      تساعدك على تحقيق التوازن بين شخصيتك، أهدافك، وبيئتك الدراسية أو العملية.
+    </p>
+  </div>
+  <div class="bg-gradient-to-br from-slate-700/60 to-slate-800/70 backdrop-blur-md border border-white/20 rounded-3xl shadow-2xl p-10 text-white leading-relaxed mt-10">
+  <h2 class="text-3xl font-bold mb-8 text-center text-indigo-300">
+    💡 نصائح قبل قراءة التقرير
+  </h2>
+
+  <ul class="list-disc list-inside text-right text-xl opacity-95 space-y-4 mx-auto max-w-4xl">
+    <li>تذكّر أن نتائج هذا التقرير تمثّل انعكاسًا لميولك الحالية، وليست حكمًا ثابتًا على شخصيتك أو قدراتك.</li>
+    <li>يساعدك التقرير على فهم ذاتك وتوسيع وعيك المهني، وليس على حصر اختياراتك.</li>
+    <li>اقرأ النتائج بعقل منفتح واعتبرها فرصة لاكتشاف زوايا جديدة في شخصيتك.</li>
+    <li>ركّز على الميول الأعلى دون إهمال الميول المتوسطة أو الثانوية، فقد تكون داعمة لمسارك المهني.</li>
+    <li>تذكّر أن الاهتمامات تتغيّر بمرور الوقت، لذلك يُفضّل إعادة القياس بعد مرحلة دراسية أو عملية جديدة.</li>
+    <li>ناقش نتائجك مع مستشارك المهني أو الأكاديمي لتحديد المسار الأنسب لك.</li>
+    <li>استخدم ما ستقرأه لتخطّط لمسار يجمع بين الشغف، المهارة، والفرصة.</li>
+  </ul>
+
+  <p class="font-semibold text-indigo-300 text-2xl mt-10 text-center">
+    🎯 هدف هذا التقرير هو أن تعرف نفسك لتختار بوعي، لا أن تُقيّد نفسك بنتيجة واحدة.
+  </p>
+</div>
+
+<!-- المسافة الفاصلة قبل الأقسام التالية -->
+<div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+
+</div>
+
+            
 
                     <div id="personalityResult" class="mb-8">
                         <div
@@ -224,6 +290,13 @@
                                 <span class="text-lg font-medium">مستوى الثقة: <span
                                         id="confidenceLevel">92</span>%</span>
                             </div>
+                        </div>
+
+                        
+                        <!-- أداء المسارات -->
+                        <div class="bg-white p-4 rounded-lg border border-gray-200 mb-6">
+                            <h4 class="font-semibold text-gray-800 mb-4 text-lg text-center">🛤️ أداء المسارات</h4>
+                            <div id="pathPerformance" class="grid grid-cols-5 gap-2"></div>
                         </div>
 
                         <div class="grid md:grid-cols-2 gap-6 mb-6">
@@ -250,12 +323,6 @@
                         <!-- مستوى وضوح الأبعاد تحت الرسم مباشرة -->
                         <div class="mb-6">
                             <div id="clarityChart" class="space-y-3"></div>
-                        </div>
-
-                        <!-- أداء المسارات -->
-                        <div class="bg-white p-4 rounded-lg border border-gray-200 mb-6">
-                            <h4 class="font-semibold text-gray-800 mb-4 text-lg text-center">🛤️ أداء المسارات</h4>
-                            <div id="pathPerformance" class="grid grid-cols-5 gap-2"></div>
                         </div>
 
                         <!-- شرح مفصل لنمط الشخصية -->
@@ -289,11 +356,47 @@
                         </div>
                     </div>
 
+
                     <!-- Timing Statistics -->
                     <div class="mb-6">
                         <div id="timingStats">
                             <!-- Will be populated by JavaScript -->
                         </div>
+                         <div class="bg-gradient-to-b from-slate-800 to-slate-700 backdrop-blur-md border border-white/10 rounded-3xl shadow-2xl p-10 text-white leading-relaxed mt-12">
+  <h2 class="text-4xl font-bold mb-10 text-center text-indigo-300">
+    🧭 نصائح عملية بعد قراءة التقرير
+  </h2>
+
+  <p class="text-1xl text-center mb-10 opacity-95 max-w-2xl mx-auto">
+    بعد انتهائك من قراءة هذا التقرير وفهم نتائجك، اجعل الخطوة التالية تطبيقية وواعية.  
+    فالقيمة الحقيقية للمقياس تكمن في <span class="text-indigo-300 font-semibold">تحويل المعرفة إلى فعلٍ ملموس</span> يقودك نحو تطوير ذاتك ومسارك المهني.
+  </p>
+
+  <div class="text-right text-2xl opacity-100 space-y-6 mx-auto max-w-5xl">
+    <p>✍️ <span class="font-semibold text-indigo-300">اكتب خلاصة ما تعلّمته عن نفسك</span> في نقاط محددة — ما الذي جذبك؟ وما الذي فاجأك؟</p>
+
+    <p>🎯 <span class="font-semibold text-indigo-300">اختر مسارين محتملين</span> من التخصصات أو المهن المقترحة، وابدأ بالبحث الجاد عنها (المتطلبات، بيئة العمل، فرص التطور).</p>
+
+    <p>🗣️ <span class="font-semibold text-indigo-300">ناقش نتائجك</span> مع شخص مختص أو موجّه مهني ليساعدك على فهم النتائج وربطها بقدراتك الواقعية.</p>
+
+    <p>🧩 <span class="font-semibold text-indigo-300">جرّب الأنشطة المرتبطة بميولك</span> (تطوع، تدريب، مشروع صغير) لتتأكد أنك تستمتع فعلاً بهذا المجال.</p>
+
+    <p>📅 <span class="font-semibold text-indigo-300">ضع خطة قصيرة المدى (30 يومًا)</span> لتطوير مهارة أو معرفة في مجال ميولك الأعلى.</p>
+
+    <p>🕊️ <span class="font-semibold text-indigo-300">تذكّر أن المقياس دليل لا قرار</span> — استخدمه كخريطة ترشدك، لا كقيد يحدّك.</p>
+
+    <p>💡 <span class="font-semibold text-indigo-300">أعد القياس مستقبلاً</span> بعد مرحلة دراسية أو مهنية جديدة لتتابع تطور ميولك واتجاهاتك.</p>
+  </div>
+
+  <hr class="border-t border-indigo-500/30 my-12 w-3/4 mx-auto">
+
+  <p class="text-3xl text-center text-indigo-300 font-semibold">
+    🎓 هدف <span class="text-white font-bold">«بصيرة»</span> أن تبني مستقبلك بخطوات واعية  
+    تجمع بين <span class="text-indigo-200 font-semibold">شغفك، قدراتك، وفرصك الحقيقية</span>.
+  </p>
+</div>
+
+    </div>
                     </div>
                     <% if(from=="show" ) { %>
                         <div class="text-center space-x-4 space-x-reverse noP">
@@ -311,9 +414,11 @@
                         <% } %>
 
                 </div>
+                
             </div>
         </div>
     </main>
+    
 
     <script>
         // Test state
@@ -2247,7 +2352,7 @@
                                 <span class="font-medium">${label1}</span>
                                 <span class="font-medium">${label2}</span>
                             </div>
-                            <div class="w-full bg-gray-200 rounded-full h-4 mb-2 relative overflow-hidden">
+                            <div class="w-full bg-blue-200 rounded-full h-4 mb-2 relative overflow-hidden">
                                 <div class="bg-gradient-to-r ${barColorClass} h-4 rounded-full transition-all duration-1000 shadow-inner" 
                                      style="width: ${percent1}%"></div>
                                 ${result.difference < 10 ? `
@@ -2259,23 +2364,7 @@
                                 <span class="text-gray-700">${percent2}%</span>
                             </div>
                         </div>
-                        
-                        <!-- معلومات إضافية -->
-                        <div class="bg-gray-50 rounded-lg p-3 text-xs">
-                            <div class="flex justify-between items-center mb-1">
-                                <span class="text-gray-600">النقاط الموزونة:</span>
-                                <span class="font-mono text-gray-800">${score1.toFixed(1)} : ${score2.toFixed(1)}</span>
-                            </div>
-                            <div class="flex justify-between items-center mb-1">
-                                <span class="text-gray-600">مستوى الوضوح:</span>
-                                <span class="font-medium text-gray-800">${result.difference.toFixed(1)}%</span>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <span class="text-gray-600">إجمالي البيانات:</span>
-                                <span class="font-medium text-gray-800">${total.toFixed(1)} نقطة</span>
-                            </div>
-                        </div>
-                    </div>
+                       
                 `;
             }).join('');
             console.log("JJJJJJJJJJJJJJJJJJJJJJJ", personality.name, type)
