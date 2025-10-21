@@ -72,6 +72,8 @@
         }
     </style>
 </head>
+
+</head>
 <body class="gradient-bg min-h-screen flex items-center justify-center p-4">
   <div id="cont" class="bg-gradient-to-b from-gray-50 to-gray-100 border border-gray-200 rounded-2xl shadow-md w-full max-w-md p-8">
 
@@ -90,55 +92,33 @@
         </div>
       </div>
 
-    <!-- ✅ مبدّل نوع الحساب (مصغّر + ألوان وشدو محسّنة) -->
-<% if (collection == "users") { %>
-  <!-- الطلاب نشط -->
-  <div dir="rtl" class="mt-4 mb-6 bg-white/80 backdrop-blur-xl border border-indigo-100 rounded-2xl shadow-lg p-2">
-    <div class="grid grid-cols-2 gap-1 overflow-hidden rounded-xl border border-indigo-200 shadow-inner">
-      <a href="/"
-         class="text-center px-3 py-2 rounded-r-xl font-semibold text-sm
-                bg-gradient-to-r from-indigo-600 to-blue-500 text-white shadow-md ring-1 ring-indigo-300/50 transition-all duration-300">
-        🎓 الطلاب
-      </a>
-      <a href="/admin"
-         class="text-center px-3 py-2 rounded-l-xl font-semibold text-sm
-                bg-white text-indigo-700 hover:bg-indigo-50 transition-all duration-300">
-        🧭 المشرفين
-      </a>
-    </div>
-  </div>
-<% } else { %>
-  <!-- المشرفين نشط -->
-  <div dir="rtl" class="mt-4 mb-6 bg-white/80 backdrop-blur-xl border border-indigo-100 rounded-2xl shadow-lg p-2">
-    <div class="grid grid-cols-2 gap-1 overflow-hidden rounded-xl border border-indigo-200 shadow-inner">
-      <a href="/"
-         class="text-center px-3 py-2 rounded-r-xl font-semibold text-sm
-                bg-white text-indigo-700 hover:bg-indigo-50 transition-all duration-300">
-        🎓 الطلاب
-      </a>
-      <a href="/admin"
-         class="text-center px-3 py-2 rounded-l-xl font-semibold text-sm
-                bg-gradient-to-r from-indigo-600 to-blue-500 text-white shadow-md ring-1 ring-indigo-300/50 transition-all duration-300">
-        🧭 المشرفين
-      </a>
-    </div>
-  </div>
-<% } %>
+      <!-- ✅ مبدّل نوع الحساب (مصغّر + ألوان وشدو محسّنة) -->
+      <% if (collection == "users") { %>
+        <div dir="rtl" class="mt-4 mb-6 bg-white/80 backdrop-blur-xl border border-indigo-100 rounded-2xl shadow-lg p-2">
+          <div class="grid grid-cols-2 gap-1 overflow-hidden rounded-xl border border-indigo-200 shadow-inner">
+            <a href="/" class="text-center px-3 py-2 rounded-r-xl font-semibold text-sm bg-gradient-to-r from-indigo-600 to-blue-500 text-white shadow-md ring-1 ring-indigo-300/50 transition-all duration-300"> 🎓 الطلاب </a>
+            <a href="/admin" class="text-center px-3 py-2 rounded-l-xl font-semibold text-sm bg-white text-indigo-700 hover:bg-indigo-50 transition-all duration-300"> 🧭 المشرفين </a>
+          </div>
+        </div>
+      <% } else { %>
+        <div dir="rtl" class="mt-4 mb-6 bg-white/80 backdrop-blur-xl border border-indigo-100 rounded-2xl shadow-lg p-2">
+          <div class="grid grid-cols-2 gap-1 overflow-hidden rounded-xl border border-indigo-200 shadow-inner">
+            <a href="/" class="text-center px-3 py-2 rounded-r-xl font-semibold text-sm bg-white text-indigo-700 hover:bg-indigo-50 transition-all duration-300"> 🎓 الطلاب </a>
+            <a href="/admin" class="text-center px-3 py-2 rounded-l-xl font-semibold text-sm bg-gradient-to-r from-indigo-600 to-blue-500 text-white shadow-md ring-1 ring-indigo-300/50 transition-all duration-300"> 🧭 المشرفين </a>
+          </div>
+        </div>
+      <% } %>
 
-
-      <!-- خط جوجل للخط (إن لم يكن مضافًا في layout العام) -->
+      <!-- خط جوجل للخط -->
       <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
     </div>
 
     <!-- Login Form -->
-    <form id="loginForm" class="space-y-6">
+    <form id="loginForm" action="<%= (collection !== 'users') ? '/admin/login' : '/login' %>" method="POST" class="space-y-6">
       <!-- Username Field -->
       <div>
         <label for="username" class="block text-sm font-medium text-gray-700 mb-2">اسم المستخدم</label>
-        <input
-          type="text" id="username" name="username"
-          class="w-full px-4 py-3 border border-gray-300 rounded-lg input-focus transition-all duration-200 text-right"
-          placeholder="أدخل رقم الهوية" required>
+        <input type="text" id="username" name="username" class="w-full px-4 py-3 border border-gray-300 rounded-lg input-focus transition-all duration-200 text-right" placeholder="أدخل رقم الهوية" required>
         <div id="usernameError" class="text-red-500 text-sm mt-1 hidden error-message"></div>
       </div>
 
@@ -146,12 +126,8 @@
       <div>
         <label for="password" class="block text-sm font-medium text-gray-700 mb-2">كلمة المرور</label>
         <div class="relative">
-          <input
-            type="password" id="password" name="password"
-            class="w-full px-4 py-3 border border-gray-300 rounded-lg input-focus transition-all duration-200 text-right pr-12"
-            placeholder="أدخل كلمة المرور" required>
-          <button type="button" id="togglePassword"
-            class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 transition-colors">🔒</button>
+          <input type="password" id="password" name="password" class="w-full px-4 py-3 border border-gray-300 rounded-lg input-focus transition-all duration-200 text-right pr-12" placeholder="أدخل كلمة المرور" required>
+          <button type="button" id="togglePassword" class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 transition-colors">🔒</button>
         </div>
         <div id="passwordError" class="text-red-500 text-sm mt-1 hidden error-message"></div>
       </div>
@@ -159,37 +135,49 @@
       <!-- Remember Me / Forgot -->
       <div class="flex items-center justify-between">
         <label class="flex items-center">
-          <input type="checkbox" id="rememberMe"
-            class="ml-2 w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500">
+          <input type="checkbox" id="rememberMe" class="ml-2 w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500">
           <span class="text-sm text-gray-700">تذكّرني</span>
         </label>
-        <a href="#" id="forgotPassword" class="text-sm text-purple-600 hover:text-purple-800 transition-colors">
-          نسيت كلمة المرور؟
-        </a>
+        <a href="#" id="forgotPassword" class="text-sm text-purple-600 hover:text-purple-800 transition-colors">نسيت كلمة المرور؟</a>
       </div>
-      
+
       <!-- Login Button -->
-<div class="pt-1">
-  <button type="submit"
-          class="w-full bg-gradient-to-r from-indigo-600 to-purple-500 hover:from-indigo-800 hover:to-purple-600 
-                 text-white font-bold py-3 rounded-xl shadow-lg transition-all duration-100 transform hover:scale-[1.02]">
-    🚀 تسجيل الدخول
-  </button>
-</div>
+      <button type="submit" id="loginBtn"
+        class="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-3 px-4 rounded-lg font-medium
+               hover:from-purple-700 hover:to-blue-700 transition-all duration-200 transform hover:scale-105
+               disabled:opacity-50 disabled:cursor-not-allowed">
+        <span id="loginBtnText">🚀 دخول</span>
+      </button>
 
       <!-- Help -->
-      <div class="text-center">
+      <div class="text-center mt-2">
         <p class="text-sm text-gray-600">
           ليس لديك حساب؟
-          <a href="https://wa.me/966581334216" id="signUpLink"
-             class="text-purple-600 hover:text-purple-800 font-medium transition-colors">
+          <a href="https://wa.me/966581334216" id="signUpLink" class="text-purple-600 hover:text-purple-800 font-medium transition-colors">
             تواصل معنا عبر الواتس أب
           </a>
         </p>
       </div>
     </form>
   </div>
+
+  <script>
+    // تشغيل حالة التحميل عند الضغط
+    (function () {
+      const form = document.getElementById('loginForm');
+      const btn = document.getElementById('loginBtn');
+      const txt = document.getElementById('loginBtnText');
+      if (!form || !btn || !txt) return;
+
+      form.addEventListener('submit', () => {
+        btn.disabled = true;
+        txt.textContent = 'جارٍ تسجيل الدخول...';
+        btn.classList.add('animate-pulse');
+      });
+    })();
+  </script>
 </body>
+
 
     <script>
         // Password toggle functionality
