@@ -403,6 +403,7 @@ app.post('/deleteAll', async function (req, res) {
             ["p2"]: "",
             ["p3"]: "",
             ["stat"]: "",
+            ["rate"]: "",
         }
     }).then(() => {
         res.send("deleted")

@@ -700,7 +700,6 @@
     </div>
 
     <script>
-        let top3 = [];
         // بيانات المقياس
         const userName = '<%=name%>';
         const questions = [
@@ -1984,7 +1983,7 @@
             // إنشاء حاوية للأبعاد الثلاثة
             const dimensionsContainer = document.createElement('div');
             dimensionsContainer.className = 'flex flex-wrap justify-center gap-4 w-full';
-
+            let top3 = [];
             topDims.forEach((dim, index) => {
                 const badge = document.createElement('div');
                 badge.className = 'bg-white/20 backdrop-blur-sm rounded-2xl px-6 py-4 border border-white/30 flex-1 min-w-[280px] max-w-[320px]';
