@@ -1105,94 +1105,20 @@
             "إدارة الفنادق": { dimensions: ["E", "S", "C"], score: 0, icon: "🏨", description: "إدارة وتشغيل المنشآت الفندقية", category: "خدمات" },
             "الترجمة": { dimensions: ["A", "I", "S"], score: 0, icon: "🌍", description: "ترجمة النصوص بين اللغات المختلفة", category: "لغات" }
         };
-
-        // حفظ التقدم في التخزين المحلي
-        function saveProgress() {
-            const progressData = {
-                userName: testState.userName,
-                currentIndex: testState.currentIndex,
-                answers: testState.answers,
-                startedAt: testState.startedAt,
-                perQuestionTime: testState.perQuestionTime,
-                sectionsProgress: testState.sectionsProgress,
-                lastSaved: Date.now()
-            };
-            localStorage.setItem(`riasec_progress_${testState.userName}`, JSON.stringify(progressData));
-        }
-
-        // استعادة التقدم من التخزين المحلي
-        function loadProgress(userName) {
-            const savedData = localStorage.getItem(`riasec_progress_${userName}`);
-            if (savedData) {
-                const progressData = JSON.parse(savedData);
-                // التحقق من أن البيانات ليست قديمة جداً (أكثر من 7 أيام)
-                const daysSinceLastSave = (Date.now() - progressData.lastSaved) / (1000 * 60 * 60 * 24);
-                if (daysSinceLastSave <= 7) {
-                    return progressData;
-                }
-            }
-            return null;
-        }
-
-        // مسح التقدم المحفوظ
-        function clearProgress(userName) {
-            localStorage.removeItem(`riasec_progress_${userName}`);
-        }
-
-        // فحص وجود تقدم محفوظ
-        // function checkSavedProgress(userName) {
-        //     const savedProgress = loadProgress(userName);
-        //     if (savedProgress && Object.keys(savedProgress.answers).length > 0) {
-        //         return savedProgress;
-        //     }
-        //     return null;
-        // }
-
         // بدء المقياس
         function startTest() {
-            const nameInput = '<%=name%>'
             const agreementCheckbox = document.getElementById('agreementCheckbox');
-
             // فحص الموافقة على التنويه
             if (!agreementCheckbox.checked) {
                 agreementCheckbox.focus();
                 alert('يجب الموافقة على التنويه أولاً للمتابعة');
                 return;
             }
-
-            // if (!nameInput.value.trim()) {
-            //     nameInput.focus();
-            //     nameInput.classList.add('border-red-500');
-            //     return;
-            // }
-
-
-            // فحص وجود تقدم محفوظ
-            // const savedProgress = checkSavedProgress(userName);
-            // if (savedProgress) {
-            //     const answeredQuestions = Object.keys(savedProgress.answers).length;
-            //     const confirmMessage = `مرحباً ${userName}!\n\nوجدت تقدماً محفوظاً لك:\n• أجبت على ${answeredQuestions} سؤال من أصل 45\n• آخر مرة: ${new Date(savedProgress.lastSaved).toLocaleDateString('ar-SA')}\n\nهل تريد المتابعة من حيث توقفت؟`;
-
-            //     if (confirm(confirmMessage)) {
-            //         // استعادة التقدم
-            //         testState = { ...testState, ...savedProgress };
-            //         testState.userName = userName;
-            //     } else {
-            //         // بدء جديد
-            //         // clearProgress(userName);
-            //         testState.userName = userName;
-            //         testState.startedAt = Date.now();
-            //     }
-            // } else {
-            // بدء جديد
             testState.userName = userName;
             testState.startedAt = Date.now();
-            // }
-
             // إظهار شاشة التحميل
             document.getElementById('onboarding-screen').classList.add('hidden');
             document.getElementById('loading-screen').classList.remove('hidden');
-
             // الانتقال لشاشة المقياس بعد 1.5 ثانية
             setTimeout(() => {
                 document.getElementById('loading-screen').classList.add('hidden');
@@ -1213,15 +1139,13 @@
         function createSectionsBar() {
             const sectionsBar = document.getElementById('sections-bar');
             sectionsBar.innerHTML = ''; // مسح المحتوى السابق
-
             const totalSections = testState.currentPath === 1 ? 9 : 14;
             const currentSection = getCurrentSection();
-
             for (let i = 1; i <= totalSections; i++) {
                 const section = document.createElement('button');
                 section.className = `section-btn px-3 py-2 rounded-lg text-sm font-medium transition-colors ${i === currentSection ? 'bg-blue-600 text-white' : i < currentSection ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-600 hover:bg-gray-300'}`;
                 section.textContent = i;
-                section.onclick = () => openSectionModal(i);
+                // section.onclick = () => openSectionModal(i);
                 sectionsBar.appendChild(section);
             }
         }
@@ -1295,7 +1219,7 @@
             dimensionBg.style.background = `linear-gradient(to right, ${color}, ${color}dd)`;
 
             // تحديث شريط الأقسام
-            updateSectionsBar();
+            createSectionsBar();
 
             // تحديث حالة أزرار التنقل
             updateNavigationButtons();
@@ -1316,10 +1240,7 @@
             }
         }
 
-        // عرض الأسئلة القادمة - تم إزالتها
-        function displayUpcomingQuestions() {
-            // تم إزالة هذه الوظيفة
-        }
+
 
         // تحديث أزرار التنقل
         function updateNavigationButtons() {
@@ -1348,38 +1269,14 @@
             buttons[answerValue].style.transform = 'scale(1.02)';
         }
 
-        // القفز لسؤال معين
-        function jumpToQuestion(index) {
-            if (index >= 0 && index < questions.length) {
-                testState.currentIndex = index;
-                displayQuestion();
-            }
-        }
-
-        // تخطي السؤال - تم إزالتها
-        function skipQuestion() {
-            // تم إزالة هذه الوظيفة
-        }
-
-        // تحديث شريط الأقسام
-        function updateSectionsBar() {
-            const currentSection = questions[testState.currentIndex].section;
-            document.querySelectorAll('.section-btn').forEach((btn, index) => {
-                const sectionNum = index + 1;
-                if (sectionNum === currentSection) {
-                    btn.className = 'section-btn px-3 py-2 rounded-lg text-sm font-medium bg-blue-600 text-white';
-                } else if (sectionNum < currentSection) {
-                    btn.className = 'section-btn px-3 py-2 rounded-lg text-sm font-medium bg-green-500 text-white';
-                } else {
-                    btn.className = 'section-btn px-3 py-2 rounded-lg text-sm font-medium bg-gray-200 text-gray-600 hover:bg-gray-300';
-                }
-            });
-        }
 
         // اختيار إجابة
         function selectAnswer(value) {
             const question = questions[testState.currentIndex];
             const responseTime = Date.now() - testState.questionStartTime;
+            if (testState.answers[question?.id]) {
+                return;
+            }
 
             // حفظ الإجابة والوقت
             testState.answers[question.id] = value;
@@ -1387,9 +1284,6 @@
 
             // تحديث تقدم القسم
             testState.sectionsProgress[question.section - 1]++;
-
-            // حفظ التقدم في التخزين المحلي
-            // saveProgress();
 
             // فحص السرعة
             if (responseTime < 1200) {
@@ -1402,10 +1296,6 @@
             const buttons = document.querySelectorAll('.answer-btn');
             buttons[value].classList.add('pulse-success');
 
-            // تشغيل صوت (إذا كان مفعلاً)
-            if (testState.isSoundEnabled) {
-                playSound('select');
-            }
 
             // فحص تنبيه السرعة
             if (testState.fastStreakCount >= 10) {
@@ -1488,7 +1378,7 @@
             });
 
             // تحديث شريط الأقسام
-            updateSectionsBar();
+            createSectionsBar();
 
             // تحديث حالة أزرار التنقل
             updateNavigationButtons();
@@ -1507,6 +1397,10 @@
             const question = pathTwoQuestions[questionIndex];
             const selectedOption = question.options[optionIndex];
             const responseTime = Date.now() - testState.questionStartTime;
+            if (testState.pathTwoAnswers[question?.id] !== undefined) {
+                console.log("end")
+                return;
+            }
 
             // حفظ الإجابة والوقت
             testState.pathTwoAnswers[question.id] = optionIndex;
@@ -1515,8 +1409,6 @@
             // تحديث تقدم القسم
             testState.sectionsProgress[question.section - 1]++;
 
-            // حفظ التقدم في التخزين المحلي
-            // saveProgress();
 
             // فحص السرعة للمسار الثاني
             if (responseTime < 1200) {
@@ -1537,11 +1429,6 @@
             // تطبيق التحديد على الزر المختار
             optionButtons[optionIndex].classList.remove('bg-white', 'text-gray-800', 'border-gray-200');
             optionButtons[optionIndex].classList.add('bg-purple-600', 'text-white', 'border-purple-600', 'shadow-lg', 'transform', 'scale-105');
-
-            // تشغيل صوت (إذا كان مفعلاً)
-            if (testState.isSoundEnabled) {
-                playSound('select');
-            }
 
             // فحص تنبيه السرعة للمسار الثاني (بعد السؤال العاشر)
             const pathTwoIndex = testState.currentIndex - questions.length;
@@ -1602,7 +1489,6 @@
         // إظهار رسالة الانتقال للمسار الثاني
         function showPathTwoTransition() {
             document.getElementById('test-screen').classList.add('hidden');
-
             // إنشاء شاشة انتقال مؤقتة
             const transitionDiv = document.createElement('div');
             transitionDiv.id = 'path-two-transition';
@@ -1695,9 +1581,6 @@
         function showResults() {
             document.getElementById('test-screen').classList.add('hidden');
             document.getElementById('transition-screen').classList.remove('hidden');
-
-            // مسح التقدم المحفوظ لأن الاختبار اكتمل
-            // clearProgress(testState.userName);
 
             // إظهار شاشة الانتقال لمدة 3 ثوانٍ ثم الانتقال للنتائج
             testState.questionEndTime = Date.now() - testState.startedAt;
@@ -2309,23 +2192,17 @@
         function toggleLanguage() {
             alert('سيتم إضافة دعم اللغة الإنجليزية قريباً');
         }
-
         // تبديل الوضع الليلي
         function toggleDarkMode() {
             testState.isDarkMode = !testState.isDarkMode;
             document.getElementById('body').classList.toggle('dark-mode');
         }
-
         // تبديل الصوت
         function toggleSound() {
             testState.isSoundEnabled = !testState.isSoundEnabled;
         }
-
         // تشغيل الصوت
-        function playSound(type) {
-            // يمكن إضافة أصوات فعلية هنا
-            console.log(`Playing ${type} sound`);
-        }
+
 
         // فتح نافذة القسم
         function openSectionModal(sectionNum) {
@@ -2342,30 +2219,25 @@
         function saveAsImage() {
             // استخدام html2canvas لحفظ النتائج كصورة
             const resultsElement = document.getElementById('results-screen');
-
             // إنشاء canvas مؤقت
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
             canvas.width = 1200;
             canvas.height = 1600;
-
             // رسم خلفية بيضاء
             ctx.fillStyle = '#ffffff';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-
             // إضافة النص الأساسي
             ctx.fillStyle = '#1f2937';
             ctx.font = 'bold 32px Arial';
             ctx.textAlign = 'center';
             ctx.fillText(`نتائج مقياس RIASEC - ${testState.userName}`, canvas.width / 2, 60);
-
             // رسم الأبعاد الثلاثة الأولى
             const topDims = Object.keys(dimensions).sort((a, b) => {
                 const scoresA = calculateDimensionScore(a);
                 const scoresB = calculateDimensionScore(b);
                 return scoresB - scoresA;
             }).slice(0, 3);
-
             let yPos = 120;
             topDims.forEach((dim, index) => {
                 const score = calculateDimensionScore(dim);
@@ -2373,15 +2245,12 @@
                 ctx.fillText(`${index + 1}. ${dimensions[dim].name}: ${Math.round(score)}%`, canvas.width / 2, yPos);
                 yPos += 40;
             });
-
             // تحويل إلى صورة وتحميلها
             const link = document.createElement('a');
             link.download = `نتائج-مقياس-RIASEC-${testState.userName}.png`;
             link.href = canvas.toDataURL();
             link.click();
         }
-
-
 
         function printResults() {
             window.print();
@@ -2432,8 +2301,6 @@
 
         // العودة للتعليمات مع حفظ التقدم
         function goToInstructionsWithSave() {
-            // حفظ التقدم
-            // saveProgress();
 
             // إخفاء النافذة وشاشة المقياس
             document.getElementById('instructions-modal').classList.add('hidden');
@@ -2451,17 +2318,12 @@
 
         // العودة للتعليمات بدون حفظ التقدم
         function goToInstructionsWithoutSave() {
-            // مسح التقدم المحفوظ
-            // clearProgress(testState.userName);
-
             // إخفاء النافذة وشاشة المقياس
             document.getElementById('instructions-modal').classList.add('hidden');
             document.getElementById('test-screen').classList.add('hidden');
             document.getElementById('onboarding-screen').classList.remove('hidden');
-
             // تعبئة الاسم مسبقاً
             document.getElementById('userName').value = testState.userName;
-
             // إظهار رسالة تأكيد
             setTimeout(() => {
                 alert('تم حذف التقدم المحفوظ. يمكنك بدء مقياس جديد.');
@@ -2637,49 +2499,14 @@
         }
 
 
-        // إضافة مؤشر للتقدم المحفوظ في الشاشة الرئيسية
-        // function checkForSavedProgress() {
-        //     if (userName && checkSavedProgress(userName)) {
-        //         const savedProgress = loadProgress(userName);
-        //         const answeredQuestions = Object.keys(savedProgress.answers).length;
 
-        //         // إظهار مؤشر التقدم المحفوظ
-        //         let progressIndicator = document.getElementById('progress-indicator');
-        //         if (!progressIndicator) {
-        //             progressIndicator = document.createElement('div');
-        //             progressIndicator.id = 'progress-indicator';
-        //             progressIndicator.className = 'mt-2 p-3 bg-green-50 border border-green-200 rounded-lg text-center';
-        //         }
-
-        //         progressIndicator.innerHTML = `
-        //                 <div class="flex items-center justify-center gap-2 text-green-700">
-        //                     <span class="text-lg">💾</span>
-        //                     <span class="font-semibold">وجد تقدم محفوظ!</span>
-        //                 </div>
-        //                 <div class="text-sm text-green-600 mt-1">
-        //                     أجبت على ${answeredQuestions} سؤال من أصل 45
-        //                 </div>
-        //                 <div class="text-xs text-green-500 mt-1">
-        //                     آخر مرة: ${new Date(savedProgress.lastSaved).toLocaleDateString('ar-SA')}
-        //                 </div>
-        //             `;
-        //     } else {
-        //         // إزالة مؤشر التقدم إذا لم يوجد تقدم محفوظ
-        //         const progressIndicator = document.getElementById('progress-indicator');
-        //         if (progressIndicator) {
-        //             progressIndicator.remove();
-        //         }
-        //     }
-        // };
 
 
         // تفعيل/تعطيل زر البدء حسب الموافقة وإدخال الاسم
         function updateStartButton() {
-            // const nameInput = document.getElementById('userName');
             const agreementCheckbox = document.getElementById('agreementCheckbox');
             const startButton = document.getElementById('startButton');
 
-            // const isNameValid = nameInput.value.trim().length > 0;
             const isAgreementChecked = agreementCheckbox.checked;
 
             if (isAgreementChecked) {
@@ -2693,15 +2520,9 @@
 
         // تشغيل فحص التقدم المحفوظ عند تحميل الصفحة
         document.addEventListener('DOMContentLoaded', function () {
-            // checkForSavedProgress();
-
             // إضافة مراقبات للحقول
-            // const nameInput = document.getElementById('userName');
             const agreementCheckbox = document.getElementById('agreementCheckbox');
-
-            // nameInput.addEventListener('input', updateStartButton);
             agreementCheckbox.addEventListener('change', updateStartButton);
-
             // تحديث حالة الزر في البداية
             updateStartButton();
         });
