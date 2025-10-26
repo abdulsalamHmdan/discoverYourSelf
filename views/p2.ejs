@@ -670,7 +670,7 @@
                         </button> -->
                         <button onclick="restartTest()"
                             class="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-300">
-                            الانتقال الى الاختبار الثالث (الذكاءات)
+                            العودة الى الصفحة الرئيسية
                         </button>
                     </div>
                 </div>
@@ -5198,7 +5198,7 @@
         }
 
         function restartTest() {
-            location.href = "/p3"
+            location.reload()
         }
         // وظيفة إرسال النتائج إلى قاعدة البيانات
         async function sendResultsToDatabase(type, personality, confidenceLevel, totalQuestions, totalTimeSpent) {

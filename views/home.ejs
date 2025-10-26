@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>لوحة الاختبارات</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-slate-50 min-h-screen font-sans">
+    <div class="max-w-4xl mx-auto p-6">
+        <!-- Header / Greeting with logo placeholder -->
+        <header class="mb-8 flex items-center justify-between gap-4">
+            <div class="flex items-center gap-4">
+                <!-- Logo placeholder -->
+                <div class="w-16 h-16 bg-white rounded-lg shadow flex items-center justify-center p-2">
+                    <img src="logo.svg" alt="">
+                </div>
+
+                <div>
+                    <h1 class="text-3xl font-extrabold text-gray-800">مرحبًا، <span class="text-blue-600">
+                            <%=data.name%>
+                        </span></h1>
+                    <p class="text-sm text-gray-600 mt-1">اهلا بك في مقياس بصيرة</p>
+                </div>
+            </div>
+
+            <div class="text-right">
+                <span class="inline-block bg-white px-4 py-2 rounded-full shadow text-sm text-gray-700">حسابك</span>
+            </div>
+        </header>
+
+        <!-- Booked tests section -->
+        <section>
+            <h2 class="text-xl font-bold text-gray-800 mb-4">الاختبارات المحجوزة</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <% if (data.exams.includes("p1")) { %>
+                    <!-- بطاقة اختبار ثابتة 1 -->
+                    <div class="bg-white rounded-2xl p-5 shadow hover:shadow-md transition">
+                        <div class="flex items-start justify-between gap-4">
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-800">اختبار الميول المهني</h3>
+                                <p class="text-sm text-gray-500 mt-1">المدة التقريبية: 30 دقيقة</p>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span
+                                    class="inline-block px-3 py-1 text-sm bg-blue-50 text-blue-600 rounded-full">محجوز</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 flex items-center gap-3">
+                            <% if (data.p1 !== "done") { %>
+                                <button data-href="/p1"
+                                    class="action-btn flex-1 inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg border border-transparent text-sm font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 bg-blue-600 text-white hover:bg-blue-700">ابدأ
+                                    الاختبار</button>
+                                <% }else{%>
+                                    <a href="/results/p1"
+                                        class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg border border-blue-200 text-sm font-medium text-blue-700 bg-blue-50 hover:bg-blue-100">استعراض
+                                        النتائج</a>
+                                    <% } %>
+                        </div>
+                    </div>
+                    <% } %>
+                <% if (data.exams.includes("p2")) { %>
+                    <!-- بطاقة اختبار ثابتة 1 -->
+                    <div class="bg-white rounded-2xl p-5 shadow hover:shadow-md transition">
+                        <div class="flex items-start justify-between gap-4">
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-800">اختبار mbti</h3>
+                                <p class="text-sm text-gray-500 mt-1">المدة التقريبية: 30 دقيقة</p>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span
+                                    class="inline-block px-3 py-1 text-sm bg-blue-50 text-blue-600 rounded-full">محجوز</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 flex items-center gap-3">
+                            <% if (data.p2 !== "done") { %>
+
+                                <button data-href="/p2"
+                                    class="action-btn flex-1 inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg border border-transparent text-sm font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 bg-blue-600 text-white hover:bg-blue-700">ابدأ
+                                    الاختبار</button>
+                                <% }else{%>
+                                    <a href="/results/p2"
+                                        class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg border border-blue-200 text-sm font-medium text-blue-700 bg-blue-50 hover:bg-blue-100">استعراض
+                                        النتائج</a>
+                                    <% } %>
+                        </div>
+                    </div>
+                    <% } %>
+                <% if (data.exams.includes("p3")) { %>
+                    <!-- بطاقة اختبار ثابتة 1 -->
+                    <div class="bg-white rounded-2xl p-5 shadow hover:shadow-md transition">
+                        <div class="flex items-start justify-between gap-4">
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-800">اختبار الذكاءات</h3>
+                                <p class="text-sm text-gray-500 mt-1">المدة التقريبية: 30 دقيقة</p>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span
+                                    class="inline-block px-3 py-1 text-sm bg-blue-50 text-blue-600 rounded-full">محجوز</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 flex items-center gap-3">
+                            <% if (data.p3 !== "done") { %>
+
+                                <button data-href="/p3"
+                                    class="action-btn flex-1 inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg border border-transparent text-sm font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 bg-blue-600 text-white hover:bg-blue-700">ابدأ
+                                    الاختبار</button>
+                                <% }else{%>
+                                    <a href="/results/p3"
+                                        class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg border border-blue-200 text-sm font-medium text-blue-700 bg-blue-50 hover:bg-blue-100">استعراض
+                                        النتائج</a>
+                                    <% } %>
+                        </div>
+                    </div>
+                    <% } %>
+
+            </div>
+
+            <% if (data.exams.length == 0) { %>
+
+                <!-- حالة عدم وجود اختبارات -->
+                <div class="mt-6 p-6 bg-white rounded-lg shadow text-center text-gray-600">
+                    لا يوجد اختبار مسجل
+                </div>
+                <% } %>
+
+
+
+        </section>
+    </div>
+
+    <script>
+        document.querySelectorAll('.action-btn').forEach(btn => {
+            btn.addEventListener('click', e => {
+                const href = btn.getAttribute('data-href');
+                btn.disabled = true;
+                const originalText = btn.textContent;
+                btn.innerHTML = '<svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path></svg> جاري التحميل...';
+                setTimeout(() => {
+                    window.location.href = href;
+                }, 1000);
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -69,6 +69,9 @@ app.get('/p3', function (req, res) {
 app.get('/rate', isAuthenticated, function (req, res) {
     res.render("rate", { user: "test2" });
 })
+app.get('/rateR', isAuthenticated, function (req, res) {
+    res.render("rateResult", { user: "test2" });
+})
 app.get('/rate', function (req, res) {
     res.redirect("/");
 })
