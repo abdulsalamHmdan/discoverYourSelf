@@ -19,3 +19,79 @@ case 'single':
                         });
                     });
                     break;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                       // case 'single':
+                    //     // التأكد من وجود قيم صحيحة في الخيارات
+                    //     const validSingleOptions = question.options.filter(opt =>
+                    //         typeof opt.value === 'number' &&
+                    //         opt.value >= 0 &&
+                    //         opt.value <= 5 // حد أقصى منطقي
+                    //     );
+
+                    //     if (validSingleOptions.length > 0) {
+                    //         questionMaxScore = Math.max(...validSingleOptions.map(opt => opt.value));
+
+                    //         // حساب النقاط الفعلية
+                    //         if (answers[index] !== undefined && answers[index] !== null) {
+                    //             const answerIndex = answers[index];
+                    //             if (typeof answerIndex === 'number' &&
+                    //                 answerIndex >= 0 &&
+                    //                 answerIndex < question.options.length) {
+                    //                 const selectedOption = question.options[answerIndex];
+                    //                 if (selectedOption && typeof selectedOption.value === 'number') {
+                    //                     questionActualScore = Math.max(0, selectedOption.value);
+                    //                     isAnswered = true;
+                    //                 }
+                    //             }
+                    //         }
+                    //     }
+                    //     break;
+
+                    // case 'multiple':
+                    //     // حساب مجموع جميع الخيارات للاختيار المتعدد مع التحقق
+                    //     const validMultipleOptions = question.options.filter(opt =>
+                    //         typeof opt.value === 'number' &&
+                    //         opt.value >= 0 &&
+                    //         opt.value <= 5
+                    //     );
+
+                    //     if (validMultipleOptions.length > 0) {
+                    //         questionMaxScore = validMultipleOptions.reduce((sum, opt) => sum + opt.value, 0);
+
+                    //         // حساب النقاط الفعلية
+                    //         if (answers[index] !== undefined &&
+                    //             answers[index] !== null &&
+                    //             Array.isArray(answers[index]) &&
+                    //             answers[index].length > 0) {
+
+                    //             const selectedIndices = [...new Set(answers[index])]; // إزالة التكرارات
+                    //             selectedIndices.forEach(optionIndex => {
+                    //                 if (typeof optionIndex === 'number' &&
+                    //                     optionIndex >= 0 &&
+                    //                     optionIndex < question.options.length) {
+                    //                     const selectedOption = question.options[optionIndex];
+                    //                     if (selectedOption && typeof selectedOption.value === 'number') {
+                    //                         questionActualScore += Math.max(0, selectedOption.value);
+                    //                     }
+                    //                 }
+                    //             });
+                    //             isAnswered = selectedIndices.length > 0;
+                    //         }
+                    //     }
+                    //     break;
