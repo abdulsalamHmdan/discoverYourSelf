@@ -79,10 +79,10 @@ app.get('/p1', function (req, res) {
     res.redirect("/")
 })
 app.get('/p2', isAuthenticated, function (req, res) {
-    if (req.session.p2 == 'done' || !req.session.exams.includes("p2")) {
-        res.redirect("home")
-        return;
-    }
+    // if (req.session.p2 == 'done' || !req.session.exams.includes("p2")) {
+    //     res.redirect("home")
+    //     return;
+    // }
     res.render("p2", { name: req.session.name });
 })
 app.get('/p2', function (req, res) {
@@ -368,7 +368,6 @@ app.post('/login', express.urlencoded({ extended: false }), async function (req,
             req.session.p2 = user.p2 ? "done" : "no"
             req.session.p3 = user.p3 ? "done" : "no"
             req.session.exams = user.exams
-            // req.session.exams = ["p1","p2","p3"]
             req.session.rate = user.rate ? "done" : "no"
             req.session.save(function (err) {
                 if (err) return next(err)

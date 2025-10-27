@@ -273,7 +273,7 @@
                     return response.text()
                 })
                 .then((data) => {
-                    if (data == "exist") {
+                    if (data !== "notFound") {
                         location.reload();
                     }
                     else {
