@@ -1970,7 +1970,7 @@
                 // إخفاء شاشة الاختبار وإظهار النتائج
                 const testScreen = document.getElementById('testScreen');
                 const progressContainer = document.getElementById('progressContainer');
-                const resultsScreen = document.getElementById('resultsScreen');
+                const endScreen = document.getElementById('endScreen');
 
                 if (testScreen) testScreen.classList.add('fade-out');
 
@@ -1981,11 +1981,9 @@
                             testScreen.classList.remove('fade-out');
                         }
                         if (progressContainer) progressContainer.classList.add('hidden');
-                        if (resultsScreen) {
-                            // resultsScreen.classList.remove('hidden');
-                            // resultsScreen.classList.add('fade-in');
-                            // resultsScreen.classList.remove('hidden');
-                            // resultsScreen.classList.add('fade-in');
+                        if (endScreen) {
+                            endScreen.classList.remove('hidden');
+                            endScreen.classList.add('fade-in');
                         }
 
 
@@ -2025,7 +2023,7 @@
 
             try {
                 type = calculatePersonalityType();
-                personality = personalityTypes[type] || personalityTypes['ENFP'];
+                personality = personalityTypes[type];
                 const totalQuestions = Object.values(allPathAnswers).reduce((sum, pathAnswers) => sum + pathAnswers.length, 0);
                 const totalTimeSpent = Math.round((Date.now() - totalStartTime) / 1000 / 60);
                 const elements = {
