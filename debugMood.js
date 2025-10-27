@@ -40,7 +40,7 @@ app.get('/', function (req, res) {
     res.render("login", { collection: "users" });
 })
 app.get('/welcome', isAuthenticated, function (req, res) {
-    res.render("welcome");
+    res.render("welcome2");
 })
 app.get('/welcome', function (req, res) {
     res.redirect("/")
