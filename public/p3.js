@@ -630,7 +630,7 @@ const importing = [
 ];
 // إنشاء HTML للسؤال
 
-const originalQuestions = importing.filter((x, i) => i < 5).map(x => {
+const originalQuestions = importing.filter((x, i) => true).map(x => {
     return {
         type: x.type,
         questionType: 'rating',

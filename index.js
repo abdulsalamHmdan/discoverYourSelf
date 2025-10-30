@@ -17,8 +17,22 @@ const ejs = require('ejs');
 const url = "mongodb+srv://family:aS0507499583@cluster0.dvljyns.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(url);
 // async function addNames() {
-//     arr.forEach(x => x["exams"] = ["p2"])
-
+//     let arr = Array(10).fill(0)
+//     // arr.set(0)
+//     arr = arr.map((x, i) => {
+//         return {
+//             user: "test" + (i+11),
+//             pass: "11111111",
+//             idNumber: "-",
+//             name: "تجربة" + (i+11),
+//             phone: "-",
+//             email: "-",
+//             teacher: "-",
+//             permissions: "student",
+//             exams: ["p1", "p2", "p3"],
+//         }
+//     })
+//         console.log(arr)
 //     await client.connect();
 //     const db = client.db("soqy");
 //     const collection = db.collection('users');
@@ -61,7 +75,7 @@ app.get('/', function (req, res) {
 })
 
 app.get('/home', isAuthenticated, function (req, res) {
-    res.render("home",{data:req.session});
+    res.render("home", { data: req.session });
 })
 app.get('/home', function (req, res) {
     res.redirect("/")
