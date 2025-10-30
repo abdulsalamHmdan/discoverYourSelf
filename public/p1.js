@@ -1204,7 +1204,7 @@
                 },
                 body: data
             }).then(() => {
-                console.log("done")
+                location.reload()
             }).catch(() => {
                 console.log("error")
 

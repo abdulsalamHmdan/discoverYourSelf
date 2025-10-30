@@ -93,10 +93,10 @@ app.get('/p1', function (req, res) {
     res.redirect("/")
 })
 app.get('/p2', isAuthenticated, function (req, res) {
-    // if (req.session.p2 == 'done' || !req.session.exams.includes("p2")) {
-    //     res.redirect("home")
-    //     return;
-    // }
+    if (req.session.p2 == 'done' || !req.session.exams.includes("p2")) {
+        res.redirect("home")
+        return;
+    }
     res.render("p2", { name: req.session.name });
 })
 app.get('/p2', function (req, res) {
