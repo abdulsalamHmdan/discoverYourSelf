@@ -24,7 +24,7 @@ const client = new MongoClient(url);
 //             user: "test" + (i+11),
 //             pass: "11111111",
 //             idNumber: "-",
-//             name: "تجربة" + (i+11),
+//             name: i>0?"تجربة" + (i+21):"ياسر المشيلح",
 //             phone: "-",
 //             email: "-",
 //             teacher: "-",

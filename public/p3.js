@@ -2605,8 +2605,9 @@ async function shareResults() {
     }).catch(() => {
         alert("حصلت مشكلة في حفظ البيانات قد تضطر الى اعادة الاختبار")
     }).finally(() => {
-        testScreen.classList.add('hidden');
-        resultsScreen.classList.remove('hidden');
+        // testScreen.classList.add('hidden');
+        // resultsScreen.classList.remove('hidden');
+        location.reload()
     })
 
 }
