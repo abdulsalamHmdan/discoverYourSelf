@@ -652,20 +652,7 @@
         // حالة المقياس
         let testState = JSON.parse('<%-p1%>')
 
-        // let testState = {
-        //     currentIndex: 0,
-        //     answers: {},
-        //     startedAt: null,
-        //     perQuestionTime: {},
-        //     fastStreakCount: 0,
-        //     sectionsProgress: Array(14).fill(0), // زيادة عدد الأقسام إلى 14
-        //     userName: '',
-        //     isDarkMode: false,
-        //     isSoundEnabled: true,
-        //     questionStartTime: null,
-        //     currentPath: 1, // 1 للمسار الأول، 2 للمسار الثاني
-        //     pathTwoAnswers: {} // إجابات المسار الثاني
-        // };
+
 
         // قاعدة بيانات التخصصات الجامعية
         const majorDatabase = {
@@ -740,7 +727,7 @@
             const sortedDimensions = Object.keys(percentages).sort((a, b) => percentages[b] - percentages[a]);
 
             // عرض المعلومات الأساسية
-            document.getElementById('result-name').textContent = testState.userName;
+            document.getElementById('result-name').textContent = '<%=name%>';
             document.getElementById('total-time').textContent = formatTime(testState.questionEndTime);
             document.getElementById('confidence-level').textContent = calculateConfidenceLevel();
 
