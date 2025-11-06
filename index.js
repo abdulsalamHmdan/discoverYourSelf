@@ -12,33 +12,11 @@ const path = require("path");
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join(__dirname, 'public')));
-const { MongoClient } = require('mongodb');
+const { MongoClient,ObjectId } = require('mongodb');
 const ejs = require('ejs');
 const url = "mongodb+srv://family:aS0507499583@cluster0.dvljyns.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(url);
 // async function addNames() {
-//     let arr = Array(10).fill(0)
-//     // arr.set(0)
-//     arr = arr.map((x, i) => {
-//         return {
-//             user: "test" + (i+11),
-//             pass: "11111111",
-//             idNumber: "-",
-//             name: i>0?"تجربة" + (i+21):"ياسر المشيلح",
-//             phone: "-",
-//             email: "-",
-//             teacher: "-",
-//             permissions: "student",
-//             exams: ["p1", "p2", "p3"],
-//         }
-//     })
-//         console.log(arr)
-//     await client.connect();
-//     const db = client.db("soqy");
-//     const collection = db.collection('users');
-//     await collection.insertMany(arr).then(() => {
-//         console.log('saved')
-//     })
 
 // }
 // addNames();
@@ -121,7 +99,49 @@ app.get('/p3', function (req, res) {
 // })
 
 
-//end pages
+app.post('/addUser', async function ({ body:data }, res) {
+    // res.send(data)
+    await client.connect();
+    const db = client.db("soqy");
+    const collection = db.collection('users');
+    const collection2 = db.collection('tokens');
+    const token = await collection2.findOne({ _id: new ObjectId(data.token) })
+    console.log(token)
+    const check = await collection.findOne({ user: data.user })
+    if (token?.status !== "new") {
+        res.send("الرمز غير فعال")
+        return
+    }
+    if (check !== null) {
+        res.send("المستخدم موجود")
+        return
+    }
+
+    let user = {
+        user: data.user,
+        pass: data.pass,
+        idNumber: data.idNumber,
+        name: data.name,
+        phone: data.phone,
+        email: data.email,
+        teacher: token.teacher,
+        permissions: "student",
+        exams: token.exams,
+    }
+    console.log(user)
+    await collection.insertMany(user).then(() => {
+        res.send("saved");
+    }).catch(() => {
+        res.send("err");
+    })
+
+
+
+})
+
+
+
+
 // app.get('/end', isAuthenticated, async function (req, res) {
 //     await client.connect();
 //     const db = client.db("soqy");
