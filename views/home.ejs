@@ -458,7 +458,29 @@
             flex-wrap: wrap;
         }
 
-        .feature-tag {
+        .feature-tag1 {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+        }
+        .feature-tag2 {
+            background: linear-gradient(135deg, #256862, #80577687);
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+        }
+        .feature-tag3 {
             background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
             padding: 0.4rem 1rem;
@@ -814,8 +836,6 @@
                     </div>
                 </div>
             </div>
-
-
         </header>
         <div class="welcome-card">
             <div class="welcome-header">
@@ -884,18 +904,17 @@
                             لشخصيتك وقدراتك.</p>
                         <div class="test-features">
                             <% if (!data.exams.includes("p1") ) { %>
-                                <span class="feature-tag"
+                                <span class="feature-tag3"
                                     style="padding:12px 28px;font-size:18px;border-radius:10px;">غير محجوز</span>
                                 <% }else if (data.p1 !=="done" ) { %>
-                                    <a href="/p1" class="feature-tag"
+                                    <a href="/p1" class="feature-tag1"
                                         style="padding:12px 28px;font-size:18px;border-radius:10px;">بدء المقياس</a>
                                     <% } else { %>
-                                        <a href="/results/p1" class="feature-tag"
+                                        <a href="/results/p1" class="feature-tag2"
                                             style="padding:12px 28px;font-size:18px;border-radius:10px;">استعراض
                                             النتائج</a>
                                         <% } %>
                         </div>
-
                     </div>
                 </div>
                 <div class="test-card <%= !data.exams.includes('p2') ?'disabled-div':''%> ">
@@ -917,13 +936,13 @@
                             العالم.</p>
                         <div class="test-features">
                             <% if (!data.exams.includes("p2") ) { %>
-                                <span class="feature-tag"
+                                <span class="feature-tag3"
                                     style="padding:12px 28px;font-size:18px;border-radius:10px;">غير محجوز</span>
                                 <% }else if (data.p2 !=="done" ) { %>
-                                    <a href="/p2" class="feature-tag"
+                                    <a href="/p2" class="feature-tag1"
                                         style="padding:12px 28px;font-size:18px;border-radius:10px;">بدء المقياس</a>
                                     <% } else { %>
-                                        <a href="/results/p2" class="feature-tag"
+                                        <a href="/results/p2" class="feature-tag2"
                                             style="padding:12px 28px;font-size:18px;border-radius:10px;">استعراض
                                             النتائج</a>
                                         <% } %>
@@ -949,13 +968,13 @@
                             و تطوير إمكانياتك الكامنة.</p>
                         <div class="test-features">
                             <% if (!data.exams.includes("p3") ) { %>
-                                <span class="feature-tag"
+                                <span class="feature-tag3"
                                     style="padding:12px 28px;font-size:18px;border-radius:10px;">غير محجوز</span>
                                 <% }else if (data.p3 !=="done" ) { %>
-                                    <a href="/p3" class="feature-tag"
+                                    <a href="/p3" class="feature-tag1"
                                         style="padding:12px 28px;font-size:18px;border-radius:10px;">بدء المقياس</a>
                                     <% } else { %>
-                                        <a href="/results/p3" class="feature-tag"
+                                        <a href="/results/p3" class="feature-tag2"
                                             style="padding:12px 28px;font-size:18px;border-radius:10px;">استعراض
                                             النتائج</a>
                                         <% } %>
