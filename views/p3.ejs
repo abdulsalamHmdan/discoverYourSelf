@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>اختبار الذكاءات المتعددة</title>
+    <title>مقياس الذكاءات المتعددة</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
@@ -281,7 +281,7 @@
                                 </div>
                                 <div>
                                     <div class="font-bold text-gray-800">10-15 دقائق</div>
-                                    <div class="text-sm text-gray-600">مدة الاختبار</div>
+                                    <div class="text-sm text-gray-600">مدة المقياس</div>
                                 </div>
                             </div>
                         </div>
@@ -452,11 +452,11 @@
             </div>
         </div>
 
-        <!-- شرح طريقة الاختبار -->
+        <!-- شرح طريقة المقياس -->
         <div
             class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-3xl shadow-2xl p-8 mb-8 border border-amber-200">
             <div class="text-center mb-6">
-                <h3 class="text-3xl font-bold text-amber-800 mb-2">🎯 كيف يعمل الاختبار؟</h3>
+                <h3 class="text-3xl font-bold text-amber-800 mb-2">🎯 كيف يعمل المقياس؟</h3>
                 <p class="text-amber-700 text-lg">اقرأ هذه النقاط المهمة قبل البدء</p>
             </div>
 
@@ -543,7 +543,7 @@
             <div class="bg-indigo-100 rounded-2xl p-6 text-center">
                 <h4 class="text-lg font-bold text-indigo-800 mb-3">💡 معلومة مهمة</h4>
                 <p class="text-indigo-700 leading-relaxed">
-                    هذا الاختبار يقيس <strong>أنماط التعلم والميول الطبيعية</strong> وليس مستوى الذكاء العام (IQ).
+                    هذا المقياس يقيس <strong>أنماط التعلم والميول الطبيعية</strong> وليس مستوى الذكاء العام (IQ).
                     كل شخص لديه مزيج فريد من الذكاءات، والهدف هو اكتشاف نقاط قوتك لتطويرها واستغلالها في التعلم والعمل.
                 </p>
             </div>
@@ -560,7 +560,7 @@
                         <div class="bg-white rounded-xl p-4 shadow-md">
                             <div class="text-2xl mb-2">⏱️</div>
                             <div class="font-semibold text-gray-800">10-15 دقائق</div>
-                            <div class="text-sm text-gray-600">مدة الاختبار</div>
+                            <div class="text-sm text-gray-600">مدة المقياس</div>
                         </div>
                         <div class="bg-white rounded-xl p-4 shadow-md">
                             <div class="text-2xl mb-2">📊</div>
@@ -577,7 +577,7 @@
 
                 <button id="startBtn"
                     class="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-12 py-5 rounded-2xl text-2xl font-bold cursor-pointer mb-6 transition-all duration-300 shadow-lg transform hover:scale-105">
-                    🚀 ابدأ الاختبار الآن
+                    🚀 ابدأ المقياس الآن
                 </button>
 
                 <div class="flex justify-center gap-6 text-sm">
@@ -594,11 +594,11 @@
     <!-- نافذة "التفاصيل الإضافية" -->
     <div id="howItWorksModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
         <div class="bg-white rounded-2xl p-8 max-w-3xl mx-4 max-h-96 overflow-y-auto">
-            <h3 class="text-2xl font-bold text-indigo-800 mb-4">📋 تفاصيل إضافية عن الاختبار</h3>
+            <h3 class="text-2xl font-bold text-indigo-800 mb-4">📋 تفاصيل إضافية عن المقياس</h3>
 
             <div class="grid md:grid-cols-2 gap-6 mb-6">
                 <div>
-                    <h4 class="font-bold text-green-700 mb-3">✅ ما يقيسه الاختبار:</h4>
+                    <h4 class="font-bold text-green-700 mb-3">✅ ما يقيسه المقياس:</h4>
                     <ul class="space-y-2 text-sm text-gray-700">
                         <li>• أنماط التعلم المفضلة لديك</li>
                         <li>• نقاط القوة الطبيعية في شخصيتك</li>
@@ -640,14 +640,14 @@
         </div>
     </div>
 
-    <!-- نافذة تنبيه الاختبار غير المكتمل -->
+    <!-- نافذة تنبيه المقياس غير المكتمل -->
     <div id="incompleteTestModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
         <div class="bg-white rounded-2xl p-8 max-w-lg mx-4">
             <div class="text-center mb-6">
                 <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <span class="text-3xl">⚠️</span>
                 </div>
-                <h3 class="text-2xl font-bold text-gray-800 mb-2">الاختبار غير مكتمل</h3>
+                <h3 class="text-2xl font-bold text-gray-800 mb-2">المقياس غير مكتمل</h3>
                 <p class="text-gray-600" id="incompleteMessage">
                     <!-- سيتم إدراج الرسالة هنا -->
                 </p>
@@ -680,21 +680,21 @@
     </div>
 
     
-    <!-- نافذة مراجعة الاختبار قبل التسليم -->
+    <!-- نافذة مراجعة المقياس قبل التسليم -->
     <div id="reviewTestModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
         <div class="bg-white rounded-2xl p-8 max-w-2xl mx-4 max-h-96 overflow-y-auto">
             <div class="text-center mb-6">
                 <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <span class="text-3xl">🎯</span>
                 </div>
-                <h3 class="text-2xl font-bold text-gray-800 mb-2">مراجعة الاختبار</h3>
+                <h3 class="text-2xl font-bold text-gray-800 mb-2">مراجعة المقياس</h3>
                 <p class="text-gray-600">تأكد من إجاباتك قبل عرض النتائج النهائية</p>
             </div>
 
             <!-- ملخص الإجابات -->
             <div class="bg-gradient-to-r from-green-50 to-blue-50 rounded-xl p-6 mb-6 border border-green-200">
                 <h4 class="text-lg font-bold text-green-800 mb-4 flex items-center gap-2">
-                    <span class="text-xl">📊</span> ملخص إجاباتك
+                    <span class="text-xl">📊</span>  ملخص إجمالي الاسئلة التي تم الاجابة عنها  
                 </h4>
                 <div id="reviewSummary" class="grid grid-cols-2 md:grid-cols-4 gap-4">
                     <!-- سيتم إدراج الملخص هنا -->
@@ -789,7 +789,7 @@
         <div class="bg-white shadow-md px-4 py-3 sticky top-0 z-40">
             <div class="container mx-auto flex items-center justify-between">
                 <div class="flex items-center gap-3">
-                    <span class="font-semibold text-indigo-800">اختبار الذكاءات المتعددة</span>
+                    <span class="font-semibold text-indigo-800">مقياس الذكاءات المتعددة</span>
                     <span class="w-2 h-2 bg-green-500 rounded-full" title="محفوظ تلقائيًا"></span>
                 </div>
 
@@ -828,11 +828,11 @@
         <!-- محتوى السؤال -->
         <div class="container mx-auto px-4 py-8 max-w-4xl">
             <div class="bg-white rounded-2xl shadow-lg p-8">
-                <!-- عنوان الاختبار -->
+                <!-- عنوان المقياس -->
                 <div class="text-center mb-6">
                     <div class="inline-flex items-center gap-3 bg-indigo-100 px-4 py-2 rounded-full">
                         <span id="currentIntelligenceIcon" class="text-2xl">🧠</span>
-                        <span id="currentIntelligenceName" class="font-semibold text-indigo-800">اختبار الذكاءات
+                        <span id="currentIntelligenceName" class="font-semibold text-indigo-800">مقياس الذكاءات
                             المتعددة</span>
                     </div>
                 </div>
@@ -866,20 +866,16 @@
                 <!-- أزرار التنقل -->
                 <div class="flex justify-between items-center">
                     <button id="prevBtn"
-                        class="bg-yellow-300 text-gray-700 px-6 py-3 rounded-lg hover:bg-yellow-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                        class="bg-purple-400 text-white px-6 py-3 rounded-lg hover:bg-purple-600 transition-colors disabled:opacity-200 disabled:cursor-not-allowed">
                         رجوع
                     </button>
 
-                    <div class="text-center autoSubmit">
-                        <div id="autoSubmitText" class="text-xs bg-blue-100 text-gray-500 mt-1">
-                            💡 اضغط هنا لتعطيل الانتقال تلقائياً بعد الإجابة
-                        </div>
-                    </div>
+                    
 
                     <div class="flex gap-3">
                         <!-- <button id="finishTestBtn"
                             class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors font-semibold hidden">
-                            🏁 إنهاء الاختبار
+                            🏁 إنهاء المقياس
                         </button> -->
                         <button id="nextBtn"
                             class="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
@@ -906,7 +902,7 @@
 
             <button id="continueTestBtn"
                 class="bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition-colors">
-                أكمل الاختبار
+                أكمل المقياس
             </button>
         </div>
     </div>
@@ -964,7 +960,7 @@
                     <input type="checkbox" id="enablePerformanceMetrics" class="w-5 h-5" checked>
                     <div>
                         <div class="font-semibold text-gray-800">مقاييس الأداء</div>
-                        <div class="text-sm text-gray-600">وقت الاختبار ومعدل الإجابة</div>
+                        <div class="text-sm text-gray-600">وقت المقياس ومعدل الإجابة</div>
                     </div>
                 </label>
             </div>
