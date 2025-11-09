@@ -894,7 +894,7 @@
                 body: data
             }).then(() => {
                 document.getElementById('transition-screen').classList.add('hidden');
-                document.getElementById('results-screen').classList.remove('hidden');
+                document.getElementById('end-screen').classList.remove('hidden');
                 calculateAndDisplayResults();
             }).catch(() => {
                 alert("حصلت مشكلة في حفظ البيانات قد تضطر الى اعادة الاختبار")
@@ -1204,7 +1204,7 @@
                 },
                 body: data
             }).then(() => {
-                location.reload()
+                // location.reload()
             }).catch(() => {
                 console.log("error")
 

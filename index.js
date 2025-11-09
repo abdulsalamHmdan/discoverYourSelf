@@ -100,7 +100,6 @@ app.get('/p3', function (req, res) {
 
 
 app.post('/addUser', async function ({ body:data }, res) {
-    // res.send(data)
     await client.connect();
     const db = client.db("soqy");
     const collection = db.collection('users');

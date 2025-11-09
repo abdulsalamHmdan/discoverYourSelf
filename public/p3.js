@@ -728,6 +728,7 @@ const welcomeScreen = document.getElementById('welcome-screen');
 const onboardingScreen = document.getElementById('onboarding-screen');
 const testScreen = document.getElementById('test-screen');
 const resultsScreen = document.getElementById('results-screen');
+const endScreen = document.getElementById('end-screen');
 const userNameInput = document.getElementById('userName');
 const startBtn = document.getElementById('startBtn');
 const howItWorksBtn = document.getElementById('howItWorksBtn');
@@ -1432,31 +1433,31 @@ function calculateResults() {
 
         switch (question.questionType) {
             case 'rating':
-                    questionMaxScore = 4; // 5 نجوم لكل عبارة
+                questionMaxScore = 4; // 5 نجوم لكل عبارة
 
-                    // حساب النقاط الفعلية
-                    if (answers[index] !== undefined &&
-                        answers[index] !== null &&
-                        Array.isArray(answers[index]) &&
-                        answers[index].length === question.statements.length) {
+                // حساب النقاط الفعلية
+                if (answers[index] !== undefined &&
+                    answers[index] !== null &&
+                    Array.isArray(answers[index]) &&
+                    answers[index].length === question.statements.length) {
 
-                        let validRatings = 0;
-                        answers[index].forEach(rating => {
-                            if (typeof rating === 'number' && rating >= 1 && rating <= 5) {
-                                questionActualScore += rating-1;
-                                validRatings++;
-                            }
-                        });
-
-                        // اعتبر السؤال مُجاب عليه إذا تم تقييم 80% من العبارات على الأقل
-                        isAnswered = validRatings >= Math.ceil(question.statements.length * 0.8);
-
-                        if (!isAnswered && validRatings > 0) {
-                            // إعطاء نقاط جزئية للتقييمات الناقصة
-                            questionActualScore = (questionActualScore / validRatings) * question.statements.length * 0.7;
-                            isAnswered = true;
+                    let validRatings = 0;
+                    answers[index].forEach(rating => {
+                        if (typeof rating === 'number' && rating >= 1 && rating <= 5) {
+                            questionActualScore += rating - 1;
+                            validRatings++;
                         }
+                    });
+
+                    // اعتبر السؤال مُجاب عليه إذا تم تقييم 80% من العبارات على الأقل
+                    isAnswered = validRatings >= Math.ceil(question.statements.length * 0.8);
+
+                    if (!isAnswered && validRatings > 0) {
+                        // إعطاء نقاط جزئية للتقييمات الناقصة
+                        questionActualScore = (questionActualScore / validRatings) * question.statements.length * 0.7;
+                        isAnswered = true;
                     }
+                }
                 break;
         }
 
@@ -2564,6 +2565,13 @@ function setupActionButtons() {
             }
         });
     }
+    const reloadBtn = document.getElementById('reload');
+    if (reloadBtn) {
+        reloadBtn.addEventListener('click', function () {
+            location.reload();
+
+        });
+    }
 }
 
 // مشاركة النتائج
@@ -2605,9 +2613,10 @@ async function shareResults() {
     }).catch(() => {
         alert("حصلت مشكلة في حفظ البيانات قد تضطر الى اعادة الاختبار")
     }).finally(() => {
-        // testScreen.classList.add('hidden');
+        testScreen.classList.add('hidden');
         // resultsScreen.classList.remove('hidden');
-        location.reload()
+        endScreen.classList.remove('hidden');
+        // location.reload()
     })
 
 }
