@@ -12,7 +12,7 @@ const path = require("path");
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join(__dirname, 'public')));
-const { MongoClient,ObjectId } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
 const ejs = require('ejs');
 const url = "mongodb+srv://family:aS0507499583@cluster0.dvljyns.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(url);
@@ -99,7 +99,7 @@ app.get('/p3', function (req, res) {
 // })
 
 
-app.post('/addUser', async function ({ body:data }, res) {
+app.post('/addUser', async function ({ body: data }, res) {
     await client.connect();
     const db = client.db("soqy");
     const collection = db.collection('users');
@@ -138,8 +138,42 @@ app.post('/addUser', async function ({ body:data }, res) {
 
 })
 
+function sumArray(numbers) {
+    // .reduce(accumulator, currentValue) => accumulator + currentValue
+    // القيمة 0 هي القيمة الابتدائية للمجمع (accumulator)
+    return numbers.reduce((total, current) => +total + +current, 0);
+}
+app.get('/aa', async function (req, res) {
+    await client.connect();
+    const db = client.db("soqy");
+    const collection = db.collection('archive');
+    const user = await collection.find({}).toArray()
+    function aa(xx) {
+        let a1 = (user.map(x => x?.rate?.qus[xx]?.val || null).filter(x => x !== null));
+        console.log(sumArray(a1), a1.length)
+        let gg = (((sumArray(a1) - a1.length) / a1.length))
+        return Math.ceil(gg / 2 * 100)
+    }
 
+    client.close()
+    let all = []
+    for (let i = 0; i < 10; i++) {
+        all.push(aa(i))
+    }
+    res.send(all)
+})
 
+app.get('/rate', async function (req, res) {
+    await client.connect();
+    const db = client.db("soqy");
+    const collection = db.collection('archive');
+    const user = await collection.find({}).toArray()
+    console.log(user.length);
+
+    client.close()
+
+    res.render("rateShow", { data: user });
+})
 
 // app.get('/end', isAuthenticated, async function (req, res) {
 //     await client.connect();
