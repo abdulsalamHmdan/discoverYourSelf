@@ -1793,7 +1793,7 @@
 
         // إعادة المقياس
         function restartTest() {
-            location.reload();
+            location.href = "/p1Rate";
         }
 
 

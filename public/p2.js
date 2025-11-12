@@ -4131,5 +4131,5 @@
         }
 
         function restartTest() {
-            location.reload()
+            location.href ="/p2Rate"
         }

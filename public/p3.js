@@ -1307,13 +1307,13 @@ document.getElementById('nextBtn').addEventListener('click', function () {
         showReviewModal();
     }
 });
-document.querySelector('.autoSubmit').addEventListener('click', function () {
-    const autoSubmitText = document.getElementById('autoSubmitText');
-    autoSubmit = !autoSubmit
-    autoSubmitText.textContent = `💡 اضغط هنا ${autoSubmit ? 'لتعطيل' : 'لتفعيل'} الانتقال تلقائياً بعد الإجابة`
-    autoSubmitText.classList.toggle("bg-blue-100", autoSubmit)
-    updateNavigationButtons()
-});
+// document.querySelector('.autoSubmit').addEventListener('click', function () {
+//     const autoSubmitText = document.getElementById('autoSubmitText');
+//     autoSubmit = !autoSubmit
+//     autoSubmitText.textContent = `💡 اضغط هنا ${autoSubmit ? 'لتعطيل' : 'لتفعيل'} الانتقال تلقائياً بعد الإجابة`
+//     autoSubmitText.classList.toggle("bg-blue-100", autoSubmit)
+//     updateNavigationButtons()
+// });
 
 // زر حفظ لاحقاً
 // document.getElementById('saveLaterBtn').addEventListener('click', function () {
@@ -2553,23 +2553,22 @@ function setupActionButtons() {
     });
 
     // زر إعادة الاختبار
-    const retakeBtn = document.getElementById('retakeBtn');
-    if (retakeBtn) {
-        retakeBtn.addEventListener('click', function () {
-            if (confirm('هل أنت متأكد من أنك تريد إعادة الاختبار؟ ستفقد النتائج الحالية.')) {
-                // مسح البيانات المحفوظة
-                localStorage.removeItem('multipleIntelligenceAnswers');
-                localStorage.removeItem('multipleIntelligenceProgress');
-                localStorage.removeItem('multipleIntelligenceResults');
-                location.reload();
-            }
-        });
-    }
+    // const retakeBtn = document.getElementById('retakeBtn');
+    // if (retakeBtn) {
+    //     retakeBtn.addEventListener('click', function () {
+    //         if (confirm('هل أنت متأكد من أنك تريد إعادة الاختبار؟ ستفقد النتائج الحالية.')) {
+    //             // مسح البيانات المحفوظة
+    //             localStorage.removeItem('multipleIntelligenceAnswers');
+    //             localStorage.removeItem('multipleIntelligenceProgress');
+    //             localStorage.removeItem('multipleIntelligenceResults');
+    //             location.reload();
+    //         }
+    //     });
+    // }
     const reloadBtn = document.getElementById('reload');
     if (reloadBtn) {
         reloadBtn.addEventListener('click', function () {
-            location.reload();
-
+            location.href = "/p3Result";
         });
     }
 }

@@ -17,6 +17,24 @@ const ejs = require('ejs');
 const url = "mongodb+srv://family:aS0507499583@cluster0.dvljyns.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(url);
 // async function addNames() {
+//     await client.connect();
+//     const db = client.db("soqy");
+//     const collection = db.collection('users');
+//    collection.updateMany({}, {
+//     $set:{"exams":["p1","p2","p3"]}
+//     }).then(()=>{
+//         console.log("done");
+
+//     }).catch(()=>{
+//         console.log("error");
+        
+//     })
+
+    // await collection.insertMany(users).then(() => {
+    //     // res.send("saved");
+    // }).catch(() => {
+    //     // res.send("err");
+    // })
 
 // }
 // addNames();
@@ -91,12 +109,24 @@ app.get('/p3', function (req, res) {
     res.redirect("/");
 })
 
-// app.get('/rate', isAuthenticated, function (req, res) {
-//     res.render("rate", { user: req.session.name });
-// })
-// app.get('/rate', function (req, res) {
-//     res.redirect("/");
-// })
+app.get('/p1rate', isAuthenticated, function (req, res) {
+    res.render("p1rate", { user: req.session.name });
+})
+app.get('/p1rate', function (req, res) {
+    res.redirect("/");
+})
+app.get('/p2rate', isAuthenticated, function (req, res) {
+    res.render("p2rate", { user: req.session.name });
+})
+app.get('/p2rate', function (req, res) {
+    res.redirect("/");
+})
+app.get('/p3rate', isAuthenticated, function (req, res) {
+    res.render("p3rate", { user: req.session.name });
+})
+app.get('/p3rate', function (req, res) {
+    res.redirect("/");
+})
 
 
 app.post('/addUser', async function ({ body: data }, res) {

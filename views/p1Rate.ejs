@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قياس مستوى الرضا</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap');
+
+        body {
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .test-card {
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .test-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .test-card.completed {
+            border-color: #10b981;
+            background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 100%);
+        }
+
+        .confidence-option {
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .confidence-option:hover {
+            transform: scale(1.02);
+        }
+
+        .confidence-option.selected {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .progress-bar {
+            transition: width 0.5s ease;
+        }
+
+        .result-card {
+            animation: fadeInUp 0.6s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen py-8">
+    <div class="container mx-auto px-4 max-w-4xl">
+
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-gray-800 mb-4">📊 قياس مستوى الرضا</h1>
+            <p class="text-lg text-gray-600">قيّم مدى ثقتك في نتائج المقياس</p>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="mb-8">
+            <div class="bg-white rounded-full p-1 shadow-sm">
+                <div id="progressBar" class="progress-bar bg-gradient-to-r from-blue-500 to-indigo-600 h-3 rounded-full"
+                    style="width: 1%"></div>
+            </div>
+            <p id="progressText" class="text-center text-sm text-gray-600 mt-2">0% مكتمل</p>
+        </div>
+
+        <!-- Test Cards Container -->
+        <div id="testsContainer" class="space-y-6">
+            <!-- Holland Codes Test -->
+            <div class="test-card bg-white rounded-xl p-6 shadow-lg" data-test="holland">
+                <div class="flex items-center mb-6">
+                    <span class="text-3xl ml-4">🧩</span>
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-800">مقياس هولاند (Holland Codes)</h2>
+                        <p class="text-gray-600">مقياس الميول المهنية والاهتمامات</p>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="question-group">
+                        <h3 class="text-lg font-semibold text-gray-700 mb-4">ما مدى ثقتك بأن إجاباتك عكست اهتماماتك
+                            وميولك الحقيقية؟</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                            <div class="confidence-option bg-red-50 border-2 border-red-200 rounded-lg p-4 text-center"
+                                data-value="0">
+                                <span class="block text-lg font-medium">منخفضة</span>
+                                <span class="text-sm text-gray-600">لم تعكس ميولي</span>
+                            </div>
+                            <div class="confidence-option bg-yellow-50 border-2 border-yellow-200 rounded-lg p-4 text-center"
+                                data-value="1">
+                                <span class="block text-lg font-medium">متوسطة</span>
+                                <span class="text-sm text-gray-600">عكست جزئياً</span>
+                            </div>
+                            <div class="confidence-option bg-green-50 border-2 border-green-200 rounded-lg p-4 text-center"
+                                data-value="2">
+                                <span class="block text-lg font-medium">عالية</span>
+                                <span class="text-sm text-gray-600">عكست تماماً</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question-group">
+                        <h3 class="text-lg font-semibold text-gray-700 mb-4">هل شعرت أن الأسئلة كانت واضحة وسهلة الفهم؟
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                            <div class="confidence-option bg-red-50 border-2 border-red-200 rounded-lg p-4 text-center"
+                                data-value="0">
+                                <span class="block text-lg font-medium">لا</span>
+                                <span class="text-sm text-gray-600">غير واضحة</span>
+                            </div>
+                            <div class="confidence-option bg-yellow-50 border-2 border-yellow-200 rounded-lg p-4 text-center"
+                                data-value="1">
+                                <span class="block text-lg font-medium">نوعاً ما</span>
+                                <span class="text-sm text-gray-600">واضحة جزئياً</span>
+                            </div>
+                            <div class="confidence-option bg-green-50 border-2 border-green-200 rounded-lg p-4 text-center"
+                                data-value="2">
+                                <span class="block text-lg font-medium">نعم</span>
+                                <span class="text-sm text-gray-600">واضحة تماماً</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question-group">
+                        <h3 class="text-lg font-semibold text-gray-700 mb-4">هل ترى أن النتيجة النهائية تعبّر عنك بدقة؟
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                            <div class="confidence-option bg-red-50 border-2 border-red-200 rounded-lg p-4 text-center"
+                                data-value="0">
+                                <span class="block text-lg font-medium">لا</span>
+                                <span class="text-sm text-gray-600">لا تعبر عني</span>
+                            </div>
+                            <div class="confidence-option bg-yellow-50 border-2 border-yellow-200 rounded-lg p-4 text-center"
+                                data-value="1">
+                                <span class="block text-lg font-medium">إلى حدٍّ ما</span>
+                                <span class="text-sm text-gray-600">تعبر جزئياً</span>
+                            </div>
+                            <div class="confidence-option bg-green-50 border-2 border-green-200 rounded-lg p-4 text-center"
+                                data-value="2">
+                                <span class="block text-lg font-medium">نعم جداً</span>
+                                <span class="text-sm text-gray-600">تعبر تماماً</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notes Section -->
+        <div id="notesSection" class="hidden mt-8">
+            <div class="result-card bg-white rounded-xl p-8 shadow-lg">
+                <div class="text-center mb-6">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">📝 ملاحظاتك الشخصية</h2>
+                    <p class="text-gray-600">شاركنا رأيك وأي ملاحظات إضافية</p>
+                </div>
+
+                <div class="space-y-6">
+                    <!-- Personal Notes -->
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">💭 ملاحظاتك العامة</h3>
+                        <textarea id="personalNotes"
+                            placeholder="شاركنا رأيك في المقياس... هل كنا واضح؟ هل واجهت صعوبات؟ ما انطباعك العام؟"
+                            class="w-full h-32 p-4 border-2 border-gray-200 rounded-lg resize-none focus:border-blue-500 focus:outline-none transition-colors"
+                            maxlength="500"></textarea>
+                        <div class="flex justify-between items-center mt-2">
+                            <span id="charCount" class="text-sm text-gray-400">0 حرف</span>
+                            <span class="text-sm text-gray-400">الحد الأقصى: 500 حرف</span>
+                        </div>
+                    </div>
+
+                    <!-- Goals Selection -->
+                    <div class="bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">🎯 ما هدفك من هذا المقياس؟</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <label
+                                class="flex items-center space-x-3 space-x-reverse cursor-pointer p-3 rounded-lg hover:bg-white transition-colors">
+                                <input type="checkbox" name="goals" class="w-4 h-4 text-blue-600 rounded">
+                                <span>اختيار التخصص الجامعي</span>
+                            </label>
+                            <label
+                                class="flex items-center space-x-3 space-x-reverse cursor-pointer p-3 rounded-lg hover:bg-white transition-colors">
+                                <input type="checkbox" name="goals" class="w-4 h-4 text-blue-600 rounded">
+                                <span>تغيير المسار المهني</span>
+                            </label>
+                            <label
+                                class="flex items-center space-x-3 space-x-reverse cursor-pointer p-3 rounded-lg hover:bg-white transition-colors">
+                                <input type="checkbox" name="goals" class="w-4 h-4 text-blue-600 rounded">
+                                <span>فهم الشخصية بشكل أفضل</span>
+                            </label>
+                            <label
+                                class="flex items-center space-x-3 space-x-reverse cursor-pointer p-3 rounded-lg hover:bg-white transition-colors">
+                                <input type="checkbox" name="goals" class="w-4 h-4 text-blue-600 rounded">
+                                <span>تطوير المهارات الشخصية</span>
+                            </label>
+                            <label
+                                class="flex items-center space-x-3 space-x-reverse cursor-pointer p-3 rounded-lg hover:bg-white transition-colors">
+                                <input type="checkbox" name="goals" class="w-4 h-4 text-blue-600 rounded">
+                                <span>اتخاذ قرارات مهمة</span>
+                            </label>
+                            <label
+                                class="flex items-center space-x-3 space-x-reverse cursor-pointer p-3 rounded-lg hover:bg-white transition-colors">
+                                <input type="checkbox" name="goals" class="w-4 h-4 text-blue-600 rounded">
+                                <span>الفضول والاستطلاع</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Suggestions for Improvement -->
+                    <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">💡 اقتراحات للتحسين</h3>
+                        <textarea id="suggestions"
+                            placeholder="هل لديك اقتراحات لتحسين المقياس؟ أسئلة إضافية؟ تعديلات مطلوبة؟"
+                            class="w-full h-24 p-4 border-2 border-gray-200 rounded-lg resize-none focus:border-orange-500 focus:outline-none transition-colors"
+                            maxlength="300"></textarea>
+                        <div class="flex justify-between items-center mt-2">
+                            <span id="suggestionsCount" class="text-sm text-gray-400">0 حرف</span>
+                            <span class="text-sm text-gray-400">الحد الأقصى: 300 حرف</span>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex justify-center">
+                        <button onclick="proceedToResults()"
+                            class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-8 py-3 rounded-lg font-semibold hover:from-blue-600 hover:to-indigo-700 transition-all duration-300 transform hover:scale-105">
+                            📊 عرض النتائج النهائية
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div id="resultsSection" class="hidden mt-8">
+            <div class="result-card bg-white rounded-xl p-8 shadow-lg text-center">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6">📈 نتائج تقييم الجودة</h2>
+
+                <div class="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-lg p-6 mb-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">📊 التقييم العام</h3>
+                    <div id="overallScore" class="text-4xl font-bold text-indigo-600 mb-2">-</div>
+                    <div id="overallLevel" class="text-lg text-gray-700 mb-4">-</div>
+                    <div id="recommendation" class="text-gray-600 leading-relaxed">-</div>
+                </div>
+
+                <!-- User Notes Display -->
+                <div id="userNotesDisplay" class="hidden bg-gradient-to-r from-gray-50 to-slate-50 rounded-lg p-6 mb-6">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">📝 ملاحظاتك الشخصية</h3>
+                    <div class="space-y-4">
+                        <div class="bg-white rounded-lg p-4">
+                            <h4 class="font-semibold text-gray-700 mb-2">💭 رأيك العام:</h4>
+                            <p id="displayedNotes" class="text-gray-600 italic">-</p>
+                        </div>
+                        <div class="bg-white rounded-lg p-4">
+                            <h4 class="font-semibold text-gray-700 mb-2">🎯 أهدافك:</h4>
+                            <p id="displayedGoals" class="text-gray-600">-</p>
+                        </div>
+                        <div class="bg-white rounded-lg p-4">
+                            <h4 class="font-semibold text-gray-700 mb-2">💡 اقتراحاتك:</h4>
+                            <p id="displayedSuggestions" class="text-gray-600 italic">-</p>
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="resetTest()"
+                    class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-8 py-3 rounded-lg font-semibold hover:from-blue-600 hover:to-indigo-700 transition-all duration-300 transform hover:scale-105">
+                    عرض الملخص الشامل لأدائك لجميع الاختبارات
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer - Developer Credits -->
+    <footer class="mt-16 py-8 bg-gradient-to-r from-gray-800 to-gray-900 text-white">
+        <div class="container mx-auto px-4 max-w-4xl">
+            <div class="text-center space-y-4">
+                <!-- Arabic Credits -->
+                <div class="space-y-2 border-t border-gray-600 pt-6">
+                    <h3 class="text-xl font-bold text-blue-300">👨‍💻 تم التطوير بواسطة</h3>
+                    <div class="flex flex-col sm:flex-row justify-center items-center gap-4 text-lg">
+                        <div class="flex items-center gap-2">
+                            <span class="text-yellow-400">🧠</span>
+                            <span class="font-semibold">حمد السليم</span>
+                        </div>
+                        <span class="hidden sm:inline text-gray-400">&</span>
+                        <div class="flex items-center gap-2">
+                            <span class="text-yellow-400">🧠</span>
+                            <span class="font-semibold">عبدالسلام الشرقي</span>
+                        </div>
+                    </div>
+                    <div class="flex justify-center items-center gap-2 text-sm text-orange-300 mt-2">
+                        <span class="text-orange-400">🔥</span>
+                        <span>Nickname: Spark_HA</span>
+                        <span class="text-orange-400">⚡</span>
+                    </div>
+                </div>
+                <!-- English Credits -->
+                <div class="space-y-2 border-t border-gray-600 pt-4">
+                    <h3 class="text-xl font-bold text-blue-300">💼 Developed by</h3>
+                    <div class="flex flex-col sm:flex-row justify-center items-center gap-4 text-lg">
+                        <div class="flex items-center gap-2">
+                            <span class="text-yellow-400">🧠</span>
+                            <span class="font-semibold">Hamad Al-Saleem</span>
+                        </div>
+                        <span class="hidden sm:inline text-gray-400">&</span>
+                        <div class="flex items-center gap-2">
+                            <span class="text-yellow-400">🧠</span>
+                            <span class="font-semibold">Abdulsalam Al-Sharqi</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Copyright -->
+                <div class="border-t border-gray-600 pt-4">
+                    <div class="flex flex-col sm:flex-row justify-center items-center gap-2 text-sm text-gray-300">
+                        <span class="flex items-center gap-1">
+                            <span>©️</span>
+                            <span>2025</span>
+                        </span>
+                        <span class="hidden sm:inline">•</span>
+                        <span>جميع الحقوق محفوظة — All Rights Reserved</span>
+                        <span class="text-yellow-400">🌟</span>
+                    </div>
+                </div>
+                <!-- Decorative Elements -->
+                <div class="flex justify-center gap-4 pt-4">
+                    <div class="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
+                    <div class="w-2 h-2 bg-yellow-400 rounded-full animate-pulse" style="animation-delay: 0.5s;"></div>
+                    <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse" style="animation-delay: 1s;"></div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let testScores = {
+            holland: [],
+            mbti: [],
+            mi: []
+        };
+
+        let totalQuestions = 3;
+        let answeredQuestions = 0;
+
+        // Character counter for notes
+        document.addEventListener('DOMContentLoaded', function () {
+
+            const notesTextarea = document.getElementById('personalNotes');
+            const charCount = document.getElementById('charCount');
+            const suggestionsTextarea = document.getElementById('suggestions');
+            const suggestionsCount = document.getElementById('suggestionsCount');
+
+            if (notesTextarea && charCount) {
+                notesTextarea.addEventListener('input', function () {
+                    const count = this.value.length;
+                    charCount.textContent = count + ' حرف';
+
+                    if (count > 500) {
+                        charCount.classList.add('text-red-500');
+                        charCount.classList.remove('text-gray-400');
+                    } else {
+                        charCount.classList.remove('text-red-500');
+                        charCount.classList.add('text-gray-400');
+                    }
+                });
+            }
+
+            if (suggestionsTextarea && suggestionsCount) {
+                suggestionsTextarea.addEventListener('input', function () {
+                    const count = this.value.length;
+                    suggestionsCount.textContent = count + ' حرف';
+
+                    if (count > 300) {
+                        suggestionsCount.classList.add('text-red-500');
+                        suggestionsCount.classList.remove('text-gray-400');
+                    } else {
+                        suggestionsCount.classList.remove('text-red-500');
+                        suggestionsCount.classList.add('text-gray-400');
+                    }
+                });
+            }
+        });
+
+        // Handle option selection
+        document.addEventListener('click', function (e) {
+            if (e.target.closest('.confidence-option')) {
+                const option = e.target.closest('.confidence-option');
+                const questionGroup = option.closest('.question-group');
+                const testCard = option.closest('.test-card');
+                const testType = testCard.dataset.test;
+                const value = parseInt(option.dataset.value);
+
+                // Remove previous selection in this question group
+                questionGroup.querySelectorAll('.confidence-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+
+                // Add selection to clicked option
+                option.classList.add('selected');
+
+                // Store the answer
+                const questionIndex = Array.from(testCard.querySelectorAll('.question-group')).indexOf(questionGroup);
+                if (!testScores[testType][questionIndex]) {
+                    answeredQuestions++;
+                }
+                testScores[testType][questionIndex] = value;
+
+                // Update progress
+                updateProgress();
+
+                // Check if test is complete
+                checkTestCompletion(testCard, testType);
+
+                // Check if all tests are complete
+                if (answeredQuestions === totalQuestions) {
+                    setTimeout(showNotesSection, 500);
+                }
+            }
+        });
+
+        function updateProgress() {
+            const progress = (answeredQuestions / totalQuestions) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+            document.getElementById('progressText').textContent = Math.round(progress) + '% مكتمل';
+        }
+
+        function checkTestCompletion(testCard, testType) {
+            const questionsInTest = testCard.querySelectorAll('.question-group').length;
+            if (testScores[testType].length === questionsInTest && testScores[testType].every(score => score > 0)) {
+                testCard.classList.add('completed');
+            }
+        }
+
+        function calculateTestScore(scores) {
+            const sum = scores.reduce((a, b) => a + b, 0);
+            const average = sum / scores.length;
+            const percentage = ((average) / 2) * 100;
+            return Math.round(percentage);
+        }
+
+        function getConfidenceLevel(score) {
+            if (score >= 80) return { level: 'ثقة عالية جداً', color: 'text-green-600' };
+            if (score >= 60) return { level: 'ثقة عالية', color: 'text-green-500' };
+            if (score >= 40) return { level: 'ثقة متوسطة', color: 'text-yellow-500' };
+            if (score >= 20) return { level: 'ثقة منخفضة', color: 'text-orange-500' };
+            return { level: 'ثقة منخفضة جداً', color: 'text-red-500' };
+        }
+
+        function getOverallRecommendation(overallScore) {
+            if (overallScore >= 80) {
+                return 'ممتاز! نتائج الاختبارات موثوقة جداً ويمكن الاعتماد عليها في اتخاذ القرارات المهنية والشخصية.';
+            } else if (overallScore >= 60) {
+                return 'جيد جداً! النتائج موثوقة إلى حد كبير، لكن قد تحتاج لمراجعة بعض الجوانب أو إعادة بعض الاختبارات.';
+            } else if (overallScore >= 40) {
+                return 'متوسط. النتائج مقبولة لكن يُنصح بإعادة الاختبارات مع التركيز أكثر أو استشارة مختص.';
+            } else {
+                return 'منخفض. يُنصح بشدة بإعادة الاختبارات في وقت آخر أو استشارة مختص لفهم النتائج بشكل أفضل.';
+            }
+        }
+
+        function showNotesSection() {
+            document.getElementById('resultsSection').classList.add('hidden');
+
+            document.getElementById('notesSection').classList.remove('hidden');
+            document.getElementById('notesSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        let notes;
+        let suggestions;
+        let selectedGoals;
+        function proceedToResults() {
+            // Get user notes, goals, and suggestions
+            notes = document.getElementById('personalNotes').value.trim();
+            suggestions = document.getElementById('suggestions').value.trim();
+            selectedGoals = Array.from(document.querySelectorAll('input[name="goals"]:checked'))
+                .map(checkbox => checkbox.nextElementSibling.textContent);
+
+            // Store notes for display in results
+            displayUserNotes(notes, selectedGoals, suggestions);
+
+            // Hide notes section and show results
+            document.getElementById('notesSection').classList.add('hidden');
+            showResults();
+        }
+
+        function displayUserNotes(notes, goals, suggestions) {
+            const notesDisplay = document.getElementById('userNotesDisplay');
+            const displayedNotes = document.getElementById('displayedNotes');
+            const displayedGoals = document.getElementById('displayedGoals');
+            const displayedSuggestions = document.getElementById('displayedSuggestions');
+
+            // Display notes
+            if (notes) {
+                displayedNotes.textContent = notes;
+            } else {
+                displayedNotes.textContent = 'لم يتم إضافة ملاحظات عامة';
+                displayedNotes.classList.add('text-gray-400');
+            }
+
+            // Display goals
+            if (goals.length > 0) {
+                displayedGoals.textContent = goals.join(' • ');
+            } else {
+                displayedGoals.textContent = 'لم يتم تحديد أهداف محددة';
+                displayedGoals.classList.add('text-gray-400');
+            }
+
+            // Display suggestions
+            if (suggestions) {
+                displayedSuggestions.textContent = suggestions;
+            } else {
+                displayedSuggestions.textContent = 'لم يتم إضافة اقتراحات';
+                displayedSuggestions.classList.add('text-gray-400');
+            }
+
+            notesDisplay.classList.remove('hidden');
+        }
+
+        function showResults() {
+
+            const hollandScore = calculateTestScore(testScores.holland);
+            // const mbtiScore = calculateTestScore(testScores.mbti);
+            // const miScore = calculateTestScore(testScores.mi);
+            const overallScore = Math.round(hollandScore);
+            document.getElementById('overallScore').textContent = overallScore + '%';
+
+
+            // Update confidence levels
+            const overallLevel = getConfidenceLevel(overallScore);
+            const hollandLevel = getConfidenceLevel(hollandScore);
+            // const mbtiLevel = getConfidenceLevel(mbtiScore);
+            // const miLevel = getConfidenceLevel(miScore);
+            // console.log({ hollandLevel, mbtiLevel, miLevel, overallLevel })
+            console.log(notes, selectedGoals, suggestions)
+            const qus = [...document.querySelectorAll(".question-group")].map(x => { return { name: x.querySelector("h3").innerText, val: x.querySelector("div.selected").dataset.value } })
+           console.log({ qus, notes, selectedGoals, suggestions })
+            var data = new URLSearchParams();
+            data.append('data', JSON.stringify({ qus, notes, selectedGoals, suggestions }));
+            data.append('type', 'p1rate');
+            data.append('ob', '1');
+            fetch('saveExam', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                    },
+                    body: data
+                    }).catch(() => {
+                        alert("حصلت مشكلة في حفظ البيانات قد تضطر الى اعادة الاختبار")
+                        }).finally(() => {
+                            document.getElementById('overallLevel').textContent = overallLevel.level;
+                            document.getElementById('overallLevel').className = 'text-lg mb-4 ' + overallLevel.color;
+                            // Update recommendation
+                            document.getElementById('recommendation').textContent = getOverallRecommendation(overallScore);
+                            // Show results section
+                            document.getElementById('resultsSection').classList.remove('hidden');
+                            document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+                        })
+
+
+        }
+
+        function resetTest() {
+            // location.reload();
+            location.href = "/"
+        }
+    </script>
+    <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'98047c5a72e77892',t:'MTc1ODA2ODkzMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script>
+</body>
+
+</html>
