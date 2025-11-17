@@ -27,14 +27,14 @@ const client = new MongoClient(url);
 
 //     }).catch(()=>{
 //         console.log("error");
-        
+
 //     })
 
-    // await collection.insertMany(users).then(() => {
-    //     // res.send("saved");
-    // }).catch(() => {
-    //     // res.send("err");
-    // })
+// await collection.insertMany(users).then(() => {
+//     // res.send("saved");
+// }).catch(() => {
+//     // res.send("err");
+// })
 
 // }
 // addNames();
@@ -56,19 +56,19 @@ function isTeacher(req, res, next) {
 
 
 // Routing
-// app.get('/', isAuthenticated, function (req, res) {
-//     res.redirect("home");
-// })
-// app.get('/', isAdmin, function (req, res) {
-//     res.redirect("admin");
-// })
-// app.get('/', isTeacher, function (req, res) {
-//     res.redirect("admin");
-// })
+app.get('/', isAuthenticated, function (req, res) {
+    res.redirect("home");
+})
+app.get('/', isAdmin, function (req, res) {
+    res.redirect("admin");
+})
+app.get('/', isTeacher, function (req, res) {
+    res.redirect("admin");
+})
 
 app.get('/', function (req, res) {
-    res.render("googlec8565fdb526d95db");
-    // res.render("login", { collection: "users" });
+    // res.render("googlec8565fdb526d95db");
+    res.render("login", { collection: "users" });
 })
 
 app.get('/home', isAuthenticated, function (req, res) {
