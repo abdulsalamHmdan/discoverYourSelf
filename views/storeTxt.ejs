@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>تم الطلب بنجاح - مقياس بصيرة</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --primary-color: #2c3e50;
+        --success-color: #27ae60;
+        --bg-color: #f4f7f6;
+      }
+
+      body {
+        font-family: "Tajawal", sans-serif;
+        background-color: var(--bg-color);
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        padding: 20px;
+        text-align: center;
+      }
+
+      .card {
+        background: white;
+        padding: 40px 30px;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        max-width: 500px;
+        width: 100%;
+        animation: slideUp 0.5s ease-out;
+      }
+
+      @keyframes slideUp {
+        from {
+          transform: translateY(20px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      /* أنيميشن دائرة النجاح */
+      .success-animation {
+        margin: 0 auto 20px;
+        width: 80px;
+        height: 80px;
+      }
+
+      .checkmark {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        display: block;
+        stroke-width: 2;
+        stroke: #fff;
+        stroke-miterlimit: 10;
+        box-shadow: inset 0px 0px 0px var(--success-color);
+        animation: fill 0.4s ease-in-out 0.4s forwards,
+          scale 0.3s ease-in-out 0.9s both;
+        position: relative;
+        top: 5px;
+        right: 5px;
+        margin: 0 auto;
+      }
+
+      .checkmark__circle {
+        stroke-dasharray: 166;
+        stroke-dashoffset: 166;
+        stroke-width: 2;
+        stroke-miterlimit: 10;
+        stroke: var(--success-color);
+        fill: none;
+        animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+      }
+
+      .checkmark__check {
+        transform-origin: 50% 50%;
+        stroke-dasharray: 48;
+        stroke-dashoffset: 48;
+        animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+      }
+
+      @keyframes stroke {
+        100% {
+          stroke-dashoffset: 0;
+        }
+      }
+      @keyframes scale {
+        0%,
+        100% {
+          transform: none;
+        }
+        50% {
+          transform: scale3d(1.1, 1.1, 1);
+        }
+      }
+      @keyframes fill {
+        100% {
+          box-shadow: inset 0px 0px 0px 50px var(--success-color);
+        }
+      }
+
+      /* النصوص */
+      h1 {
+        color: var(--primary-color);
+        margin-bottom: 10px;
+        font-size: 1.8rem;
+      }
+      p {
+        color: #777;
+        line-height: 1.6;
+        margin-bottom: 30px;
+      }
+
+      /* صندوق تفاصيل الطلب */
+      .order-details {
+        background: #f9f9f9;
+        border: 1px dashed #ccc;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 30px;
+      }
+      .detail-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 5px;
+        font-size: 0.9rem;
+      }
+      .detail-row strong {
+        color: var(--primary-color);
+      }
+
+      /* الأزرار */
+      .btn {
+        display: block;
+        width: 80%;
+        padding: 15px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 1rem;
+        transition: transform 0.2s;
+        margin-bottom: 10px;
+        margin-inline: auto;
+      }
+      .btn-primary {
+        background-color: var(--primary-color);
+        color: white;
+      }
+      .btn-primary:hover {
+        background-color: #1a252f;
+        transform: translateY(-2px);
+      }
+
+      .btn-secondary {
+        background-color: white;
+        color: #777;
+        border: 1px solid #ddd;
+      }
+      .btn-secondary:hover {
+        background-color: #f9f9f9;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <div class="success-animation">
+        <svg
+          class="checkmark"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 52 52"
+        >
+          <circle
+            class="checkmark__circle"
+            cx="26"
+            cy="26"
+            r="25"
+            fill="none"
+          />
+          <path
+            class="checkmark__check"
+            fill="none"
+            d="M14.1 27.2l7.1 7.2 16.7-16.8"
+          />
+        </svg>
+      </div>
+
+      <h1>تمت العملية بنجاح!</h1>
+      <p>
+        شكراً لثقتك في مقياس بصيرة.<br />تم تفعيل باقتك ويمكنك البدء في
+        الاختبارات الآن.
+      </p>
+
+      <div class="order-details">
+        <div class="detail-row">
+          <span>رقم الطلب:</span>
+          <strong dir="ltr">#849201</strong>
+        </div>
+        <div class="detail-row">
+          <span>تاريخ العملية:</span>
+          <strong id="dateDisplay"></strong>
+        </div>
+      </div>
+
+      <a href="#" class="btn btn-primary">اذهب الى حسابك</a>
+    </div>
+
+    <script>
+      // عرض تاريخ اليوم تلقائياً
+      const date = new Date();
+      document.getElementById("dateDisplay").innerText =
+        date.toLocaleDateString("ar-EG");
+    </script>
+  </body>
+</html>
