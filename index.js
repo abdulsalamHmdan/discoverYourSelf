@@ -178,44 +178,76 @@ app.get("/text", async (req, res) => {
   res.render("storeTxt");
 });
 
-app.post("/addUser", async function ({ body: data }, res) {
+app.get("/signup", async function ({ body: data }, res) {
+  res.render("signup");
+});
+
+app.post("/signup", express.json(), async function ({ body: data }, res) {
   await client.connect();
   const db = client.db("soqy");
   const collection = db.collection("users");
-  const collection2 = db.collection("tokens");
-  const token = await collection2.findOne({ _id: new ObjectId(data.token) });
-  console.log(token);
   const check = await collection.findOne({ user: data.user });
-  if (token?.status !== "new") {
-    res.send("الرمز غير فعال");
-    return;
-  }
   if (check !== null) {
-    res.send("المستخدم موجود");
+    res.send("قم باختيار اسم مستخدم اخر");
     return;
   }
-
   let user = {
     user: data.user,
     pass: data.pass,
-    idNumber: data.idNumber,
     name: data.name,
     phone: data.phone,
     email: data.email,
-    teacher: token.teacher,
     permissions: "student",
-    exams: token.exams,
+    exams: [],
   };
-  console.log(user);
   await collection
-    .insertMany(user)
+    .insertOne(user)
     .then(() => {
-      res.send("saved");
+      res.send("done");
     })
     .catch(() => {
       res.send("err");
     });
 });
+
+// app.post("/addUser", async function ({ body: data }, res) {
+//   await client.connect();
+//   const db = client.db("soqy");
+//   const collection = db.collection("users");
+//   const collection2 = db.collection("tokens");
+//   const token = await collection2.findOne({ _id: new ObjectId(data.token) });
+//   console.log(token);
+//   const check = await collection.findOne({ user: data.user });
+//   if (token?.status !== "new") {
+//     res.send("الرمز غير فعال");
+//     return;
+//   }
+//   if (check !== null) {
+//     res.send("المستخدم موجود");
+//     return;
+//   }
+
+//   let user = {
+//     user: data.user,
+//     pass: data.pass,
+//     idNumber: data.idNumber,
+//     name: data.name,
+//     phone: data.phone,
+//     email: data.email,
+//     teacher: token.teacher,
+//     permissions: "student",
+//     exams: token.exams,
+//   };
+//   console.log(user);
+//   await collection
+//     .insertMany(user)
+//     .then(() => {
+//       res.send("saved");
+//     })
+//     .catch(() => {
+//       res.send("err");
+//     });
+// });
 
 function sumArray(numbers) {
   // .reduce(accumulator, currentValue) => accumulator + currentValue
