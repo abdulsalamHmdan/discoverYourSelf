@@ -173,9 +173,25 @@ app.post("/payment", isAuthenticated, async (req, res) => {
   }
 });
 
-app.get("/text", async (req, res) => {
-  console.log(req.query.tap_id);
-  res.render("storeTxt");
+app.get("/text", isAuthenticated, async (req, res) => {
+  await client.connect();
+  const db = client.db("soqy");
+  const collection = db.collection("users");
+  collection
+    .updateOne(
+      { user: req.session.user },
+      { $set: { exams: ["p1", "p2", "p3"] } }
+    )
+    .then(() => {
+      console.log("done");
+      client.close();
+      res.render("storeTxt");
+    })
+    .catch(() => {
+      console.log("error");
+      client.close();
+      res.send("حدث خطأ ما");
+    });
 });
 
 app.get("/signup", async function ({ body: data }, res) {
@@ -282,12 +298,9 @@ app.get("/rate", async function (req, res) {
   const collection = db.collection("archive");
   const user = await collection.find({}).toArray();
   console.log(user.length);
-
   client.close();
-
   res.render("rateShow", { data: user });
 });
-
 // app.get('/end', isAuthenticated, async function (req, res) {
 //     await client.connect();
 //     const db = client.db("soqy");
