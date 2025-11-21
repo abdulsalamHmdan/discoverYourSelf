@@ -15,8 +15,10 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join(__dirname, "public")));
 const { MongoClient, ObjectId } = require("mongodb");
 const ejs = require("ejs");
-const url =  "mongodb+srv://family:aS0507499583@cluster0.dvljyns.mongodb.net/?retryWrites=true&w=majority";
+const url =
+  "mongodb+srv://family:aS0507499583@cluster0.dvljyns.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(url);
+const axios = require("axios");
 // async function addNames() {
 //     await client.connect();
 //     const db = client.db("soqy");

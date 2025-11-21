@@ -478,7 +478,7 @@
         console.log("المبلغ النهائي:", finalPrice);
         var data = new URLSearchParams();
         data.append("price", "pass");
-        fetch("payment", {
+        fetch("/payment", {
           method: "POST",
           headers: {
             "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
@@ -489,7 +489,8 @@
             return response.text();
           })
           .then((x) => {
-            console.log(x);
+            // console.log(x);
+            // إعادة التوجيه لصفحة الدفع
             location.href = x;
           })
           .catch(() => {
