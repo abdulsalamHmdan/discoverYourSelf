@@ -15,8 +15,7 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join(__dirname, "public")));
 const { MongoClient, ObjectId } = require("mongodb");
 const ejs = require("ejs");
-const url =
-  "mongodb+srv://family:aS0507499583@cluster0.dvljyns.mongodb.net/?retryWrites=true&w=majority";
+const url =  "mongodb+srv://family:aS0507499583@cluster0.dvljyns.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(url);
 // async function addNames() {
 //     await client.connect();
@@ -111,19 +110,19 @@ app.get("/p3", function (req, res) {
 });
 
 app.get("/p1rate", isAuthenticated, function (req, res) {
-  res.render("p1rate", { user: req.session.name });
+  res.render("p1Rate", { user: req.session.name });
 });
 app.get("/p1rate", function (req, res) {
   res.redirect("/");
 });
 app.get("/p2rate", isAuthenticated, function (req, res) {
-  res.render("p2rate", { user: req.session.name });
+  res.render("p1Rate", { user: req.session.name });
 });
 app.get("/p2rate", function (req, res) {
   res.redirect("/");
 });
 app.get("/p3rate", isAuthenticated, function (req, res) {
-  res.render("p3rate", { user: req.session.name });
+  res.render("p1Rate", { user: req.session.name });
 });
 app.get("/p3rate", function (req, res) {
   res.redirect("/");
