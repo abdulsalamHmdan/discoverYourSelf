@@ -311,7 +311,7 @@ app.get("/admin", isAdmin, async function (req, res) {
   const collection = db.collection("users");
   let user = await collection.find({}).toArray();
   client.close();
-  user = user.map((x) => {
+  user = user.map((x, i) => {
     let completion = 0;
     let prog = "";
     if (x["p1"]) {
@@ -336,7 +336,7 @@ app.get("/admin", isAdmin, async function (req, res) {
       id: x.user,
       name: x.name,
       phone: x.phone,
-      studentId: x.idNumber,
+      studentId: `${i}`,
       status: prog,
       completion: completion,
       riasec: x?.stat?.p1?.tops?.map((l) => l.dim),
@@ -354,7 +354,7 @@ app.get("/admin", isTeacher, async function (req, res) {
   const collection = db.collection("users");
   let user = await collection.find({ techer: req.session.name }).toArray();
   client.close();
-  user = user.map((x) => {
+  user = user.map((x, i) => {
     let completion = 0;
     let prog = "";
     if (x["p1"]) {
@@ -377,7 +377,6 @@ app.get("/admin", isTeacher, async function (req, res) {
       id: x.user,
       name: x.name,
       phone: x.phone,
-      studentId: x.idNumber,
       status: prog,
       completion: completion,
       riasec: x?.stat?.p1?.tops?.map((l) => l.dim),

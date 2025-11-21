@@ -738,7 +738,7 @@
             if (searchQuery.trim()) {
                 filteredData = filteredData.filter(student =>
                     student.name.includes(searchQuery) ||
-                    student.studentId.includes(searchQuery) ||
+                    student.id.includes(searchQuery) ||
                     student.mbti?.includes(searchQuery) ||
                     student.riasec?.some(r => r.includes(searchQuery))
                 );
@@ -830,11 +830,11 @@
                                         انقر لعرض نتيجته النهائية
                                     </div>
                                 </button>
-                                <div class="text-xs text-gray-500 mobile-full">${student.studentId}</div>
+                                <div class="text-xs text-gray-500 mobile-full">${student.id}</div>
                             </div>
                         </div>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-gray-900 mobile-hidden font-mono text-sm">${student.studentId}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-gray-900 mobile-hidden font-mono text-sm">${student.id}</td>
                     <td class="px-6 py-4 whitespace-nowrap">
                         <span class="status-badge px-3 py-1 text-xs font-semibold rounded-full ${getStatusClass(student.status)} flex items-center gap-1 w-fit">
                             <span>${getStatusIcon(student.status)}</span>
@@ -992,19 +992,19 @@
             }
         }
 
-        function downloadStudentReport(studentId) {
-            showAlert(`جاري تحميل تقرير الطالب رقم ${studentId}...`, 'info');
+        function downloadStudentReport(id) {
+            showAlert(`جاري تحميل تقرير الطالب رقم ${id}...`, 'info');
             setTimeout(() => {
                 showAlert('تم تحميل التقرير بنجاح 📄', 'success');
             }, 1500);
         }
 
         // تحديد/إلغاء تحديد الطلاب
-        function toggleStudentSelection(studentId) {
-            if (selectedStudents.has(studentId)) {
-                selectedStudents.delete(studentId);
+        function toggleStudentSelection(id) {
+            if (selectedStudents.has(id)) {
+                selectedStudents.delete(id);
             } else {
-                selectedStudents.add(studentId);
+                selectedStudents.add(id);
             }
             updateBulkActions();
         }
@@ -1096,11 +1096,11 @@
         }
 
         // وظائف الإجراءات المحسنة
-        function toggleActionsMenu(studentId) {
-            const menu = document.getElementById(`actions-${studentId}`);
+        function toggleActionsMenu(id) {
+            const menu = document.getElementById(`actions-${id}`);
             // إخفاء جميع القوائم الأخرى
             document.querySelectorAll('[id^="actions-"]').forEach(m => {
-                if (m.id !== `actions-${studentId}`) {
+                if (m.id !== `actions-${id}`) {
                     m.classList.add('hidden');
                 }
             });
@@ -1115,7 +1115,7 @@
 
         function exportExcel() {
             const columnsMap = {
-                studentId: "الهوية",
+                id: "الهوية",
                 name: "الاسم",
                 phone: "الجوال",
                 status: "الحالة",
@@ -1190,7 +1190,7 @@
             if (searchValue.length > 0) {
                 const matches = studentsData.filter(student =>
                     student.name.includes(searchValue) ||
-                    student.studentId.includes(searchValue) ||
+                    student.id.includes(searchValue) ||
                     student.mbti?.includes(searchValue)
                 ).slice(0, 5);
 
@@ -1198,7 +1198,7 @@
                     suggestions.innerHTML = matches.map(student => `
                         <div class="search-suggestion" onclick="selectSuggestion('${student.name}')">
                             <div class="font-medium">${student.name}</div>
-                            <div class="text-xs text-gray-500">${student.studentId} - ${student.mbti || 'غير محدد'}</div>
+                            <div class="text-xs text-gray-500">${student.id} - ${student.mbti || 'غير محدد'}</div>
                         </div>
                     `).join('');
                     suggestions.style.display = 'block';
@@ -1354,14 +1354,14 @@
             alertBar.classList.remove('show');
         }
 
-        function viewStudentResult(studentId) {
-            window.open(`admin/end/${studentId}`, "_blank")
+        function viewStudentResult(id) {
+            window.open(`admin/end/${id}`, "_blank")
 
             showAlert('جاري فتح صفحة الطالب', 'success');
         }
 
-        function copyResultLink(studentId) {
-            navigator.clipboard.writeText(`${location.host}/admin/end/${studentId}`);
+        function copyResultLink(id) {
+            navigator.clipboard.writeText(`${location.host}/admin/end/${id}`);
             showAlert('تم نسخ رابط النتيجة بنجاح', 'success');
         }
 
