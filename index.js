@@ -135,7 +135,7 @@ app.get("/store", async (req, res) => {
 });
 app.post("/payment", isAuthenticated, async (req, res) => {
   const paymentData = {
-    amount: 100,
+    amount: +req.body.price,
     currency: "SAR",
     customer: {
       first_name: "Ahmed",
@@ -183,9 +183,12 @@ app.get("/text", isAuthenticated, async (req, res) => {
       { $set: { exams: ["p1", "p2", "p3"] } }
     )
     .then(() => {
-      console.log("done");
-      client.close();
-      res.render("storeTxt");
+      req.session["exams"] = ["p1", "p2", "p3"];
+      req.session.save(function (err) {
+        console.log("done");
+        client.close();
+        res.render("storeTxt");
+      });
     })
     .catch(() => {
       console.log("error");

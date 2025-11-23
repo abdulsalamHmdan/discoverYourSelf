@@ -477,7 +477,7 @@
         console.log("الكوبون:", document.getElementById("couponCode").value);
         console.log("المبلغ النهائي:", finalPrice);
         var data = new URLSearchParams();
-        data.append("price", "pass");
+        data.append("price", finalPrice);
         fetch("/payment", {
           method: "POST",
           headers: {
