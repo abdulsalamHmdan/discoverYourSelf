@@ -152,7 +152,7 @@ app.post("/payment", isAuthenticated, async (req, res) => {
     receipt: { email: false, sms: false },
     reference: { transaction: "txn_01", order: "ord_01" },
     merchant: { id: "1234" },
-    // post: { url: 'http://your_website.com/post_url' },
+    post: { url: 'https://discoveryourself.onrender.com/paying' },
     redirect: { url: "https://discoveryourself.onrender.com/text" },
   };
   try {
@@ -195,6 +195,10 @@ app.get("/text", isAuthenticated, async (req, res) => {
       client.close();
       res.send("حدث خطأ ما");
     });
+});
+app.post("/paying", isAuthenticated, async (req, res) => {
+  console.log("Payment successful:", req.body);
+  res.sendStatus(200);
 });
 
 app.get("/signup", async function ({ body: data }, res) {
