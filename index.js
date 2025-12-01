@@ -131,7 +131,7 @@ app.get("/p3rate", function (req, res) {
 });
 
 app.get("/store", async (req, res) => {
-  res.render("store");
+  res.render("store", { exams: req.session.exams });
 });
 app.post("/payment", isAuthenticated, async (req, res) => {
   const paymentData = {
@@ -152,7 +152,7 @@ app.post("/payment", isAuthenticated, async (req, res) => {
     receipt: { email: false, sms: false },
     reference: { transaction: "txn_01", order: "ord_01" },
     merchant: { id: "1234" },
-    post: { url: 'https://discoveryourself.onrender.com/paying' },
+    post: { url: "https://discoveryourself.onrender.com/paying" },
     redirect: { url: "https://discoveryourself.onrender.com/text" },
   };
   try {
@@ -671,7 +671,7 @@ app.get("/logout", (req, res) => {
     }
     // Optionally, clear the session cookie from the client's browser
     res.clearCookie("connect.sid"); // Replace 'connect.sid' with your session cookie name
-    res.send("Logged out successfully");
+    res.redirect("/");
   });
 });
 app.listen(3000);

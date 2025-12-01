@@ -277,27 +277,37 @@
 
       <div class="products-grid">
         <div
-          class="product-card"
+          class="product-card <%= exams.includes('p1') ? 'purchased' : '' %>"
           onclick="toggleProduct(this, 99, 'أنماط الشخصية')"
         >
           <div class="product-title">أنماط الشخصية</div>
           <div class="product-desc">تحليل شامل لنمط شخصيتك.</div>
-          <div class="product-price">99 ر.س</div>
-        </div>
-
-        <div class="product-card purchased">
-          <div class="product-title">الميول المهني</div>
-          <div class="product-desc">اكتشف المسارات الوظيفية.</div>
-          <div class="product-price">تم الشراء</div>
+          <div class="product-price">
+            <%= exams.includes('p1') ? 'تم الشراء' : '99 ر.س' %>
+          </div>
+          <!-- <div class="product-price">99 ر.س</div> -->
         </div>
 
         <div
-          class="product-card"
+          class="product-card <%= exams.includes('p2') ? 'purchased' : '' %>"
+          onclick="toggleProduct(this, 120, 'الميول المهني')"
+        >
+          <div class="product-title">الميول المهني</div>
+          <div class="product-desc">اكتشف المسارات الوظيفية.</div>
+          <div class="product-price">
+            <%= exams.includes('p2') ? 'تم الشراء' : '120 ر.س' %>
+          </div>
+        </div>
+
+        <div
+          class="product-card <%= exams.includes('p3') ? 'purchased' : '' %>"
           onclick="toggleProduct(this, 199, 'الذكاء العاطفي')"
         >
           <div class="product-title">الذكاء العاطفي</div>
           <div class="product-desc">قياس مهارات التواصل والمشاعر.</div>
-          <div class="product-price">199 ر.س</div>
+          <div class="product-price">
+            <%= exams.includes('p3') ? 'تم الشراء' : '199 ر.س' %>
+          </div>
         </div>
       </div>
     </div>
