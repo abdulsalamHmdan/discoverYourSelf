@@ -43,6 +43,7 @@ const axios = require("axios");
 // addNames();
 
 //Auth
+
 function isAuthenticated(req, res, next) {
   if (req.session.permissions == "student") next();
   else next("route");
@@ -66,10 +67,109 @@ app.get("/", isAdmin, function (req, res) {
 app.get("/", isTeacher, function (req, res) {
   res.redirect("admin");
 });
-
 app.get("/", function (req, res) {
-  // res.render("googlec8565fdb526d95db");
+  res.render("firstpage");
+});
+
+app.get("/login", isAuthenticated, function (req, res) {
+  res.redirect("/");
+});
+app.get("/login", isAdmin, function (req, res) {
+  res.redirect("/");
+});
+app.get("/login", isTeacher, function (req, res) {
+  res.redirect("/");
+});
+
+app.get("/login", function (req, res) {
   res.render("login", { collection: "users" });
+});
+
+app.get("/admin", isAdmin, async function (req, res) {
+  await client.connect();
+  const db = client.db("soqy");
+  const collection = db.collection("users");
+  let user = await collection.find({}).toArray();
+  client.close();
+  user = user.map((x, i) => {
+    let completion = 0;
+    let prog = "";
+    if (x["p1"]) {
+      completion += 33;
+    }
+    if (x["p2"]) {
+      completion += 33;
+    }
+    if (x["p3"]) {
+      completion += 34;
+    }
+    prog =
+      completion == 100
+        ? "completed"
+        : completion > 0
+        ? "in-progress"
+        : "not-started";
+    if (x.name.trim() == "عبدالاله علي دعاس الحازمي") {
+      console.log(x["p1"], x["p2"], x["p3"]);
+    }
+    return {
+      id: x.user,
+      name: x.name,
+      phone: x.phone,
+      studentId: `${i}`,
+      status: prog,
+      completion: completion,
+      riasec: x?.stat?.p1?.tops?.map((l) => l.dim),
+      mbti: x?.stat?.p2?.type,
+      thk: x?.stat?.p3?.tops?.map((l) => l.name),
+      startTime: +x?.stat?.start,
+      endTime: +x?.stat?.end,
+    };
+  });
+  res.render("adminPage", { data: JSON.stringify(user) });
+});
+app.get("/admin", isTeacher, async function (req, res) {
+  await client.connect();
+  const db = client.db("soqy");
+  const collection = db.collection("users");
+  let user = await collection.find({ techer: req.session.name }).toArray();
+  client.close();
+  user = user.map((x, i) => {
+    let completion = 0;
+    let prog = "";
+    if (x["p1"]) {
+      completion += 33;
+    }
+    if (x["p2"]) {
+      completion += 33;
+    }
+    if (x["p3"]) {
+      completion += 34;
+    }
+    prog =
+      completion == 100
+        ? "completed"
+        : completion > 0
+        ? "in-progress"
+        : "not-started";
+
+    return {
+      id: x.user,
+      name: x.name,
+      phone: x.phone,
+      status: prog,
+      completion: completion,
+      riasec: x?.stat?.p1?.tops?.map((l) => l.dim),
+      mbti: x?.stat?.p2?.type,
+      thk: x?.stat?.p3?.tops?.map((l) => l.name),
+      startTime: +x?.stat?.start,
+      endTime: +x?.stat?.end,
+    };
+  });
+  res.render("adminPage", { data: JSON.stringify(user) });
+});
+app.get("/admin", function (req, res) {
+  res.render("login", { collection: "admin" });
 });
 
 app.get("/home", isAuthenticated, function (req, res) {
@@ -272,145 +372,45 @@ app.post("/signup", express.json(), async function ({ body: data }, res) {
 //     });
 // });
 
-function sumArray(numbers) {
-  // .reduce(accumulator, currentValue) => accumulator + currentValue
-  // القيمة 0 هي القيمة الابتدائية للمجمع (accumulator)
-  return numbers.reduce((total, current) => +total + +current, 0);
-}
-app.get("/aa", async function (req, res) {
-  await client.connect();
-  const db = client.db("soqy");
-  const collection = db.collection("archive");
-  const user = await collection.find({}).toArray();
-  function aa(xx) {
-    let a1 = user
-      .map((x) => x?.rate?.qus[xx]?.val || null)
-      .filter((x) => x !== null);
-    console.log(sumArray(a1), a1.length);
-    let gg = (sumArray(a1) - a1.length) / a1.length;
-    return Math.ceil((gg / 2) * 100);
-  }
+// function sumArray(numbers) {
+//   // .reduce(accumulator, currentValue) => accumulator + currentValue
+//   // القيمة 0 هي القيمة الابتدائية للمجمع (accumulator)
+//   return numbers.reduce((total, current) => +total + +current, 0);
+// }
+// app.get("/aa", async function (req, res) {
+//   await client.connect();
+//   const db = client.db("soqy");
+//   const collection = db.collection("archive");
+//   const user = await collection.find({}).toArray();
+//   function aa(xx) {
+//     let a1 = user
+//       .map((x) => x?.rate?.qus[xx]?.val || null)
+//       .filter((x) => x !== null);
+//     console.log(sumArray(a1), a1.length);
+//     let gg = (sumArray(a1) - a1.length) / a1.length;
+//     return Math.ceil((gg / 2) * 100);
+//   }
 
-  client.close();
-  let all = [];
-  for (let i = 0; i < 10; i++) {
-    all.push(aa(i));
-  }
-  res.send(all);
-});
+//   client.close();
+//   let all = [];
+//   for (let i = 0; i < 10; i++) {
+//     all.push(aa(i));
+//   }
+//   res.send(all);
+// });
 
-app.get("/rate", async function (req, res) {
-  await client.connect();
-  const db = client.db("soqy");
-  const collection = db.collection("archive");
-  const user = await collection.find({}).toArray();
-  console.log(user.length);
-  client.close();
-  res.render("rateShow", { data: user });
-});
-// app.get('/end', isAuthenticated, async function (req, res) {
-//     await client.connect();
-//     const db = client.db("soqy");
-//     const collection = db.collection('users');
-//     const user = await collection.findOne({ user: req.session.user })
-//     client.close()
-//     const p1 = user.stat?.p1 ? user.stat.p1.tops : null;
-//     const p2 = user.stat?.p2 ? user.stat.p2 : null;
-//     const p3 = user.stat?.p3 ? user.stat.p3.tops : null;
-//     const time = new Date(+user.stat.end) - new Date(+user.stat.start)
-//     res.render("end", { user: req.session, time: time, p1, p2, p3 });
-// })
-// app.get('/end', function (req, res) {
-//     res.redirect("/");
-// })
+// app.get("/rate", async function (req, res) {
+//   await client.connect();
+//   const db = client.db("soqy");
+//   const collection = db.collection("archive");
+//   const user = await collection.find({}).toArray();
+//   console.log(user.length);
+//   client.close();
+//   res.render("rateShow", { data: user });
+// });
 
 // Admin pages
-app.get("/admin", isAdmin, async function (req, res) {
-  await client.connect();
-  const db = client.db("soqy");
-  const collection = db.collection("users");
-  let user = await collection.find({}).toArray();
-  client.close();
-  user = user.map((x, i) => {
-    let completion = 0;
-    let prog = "";
-    if (x["p1"]) {
-      completion += 33;
-    }
-    if (x["p2"]) {
-      completion += 33;
-    }
-    if (x["p3"]) {
-      completion += 34;
-    }
-    prog =
-      completion == 100
-        ? "completed"
-        : completion > 0
-        ? "in-progress"
-        : "not-started";
-    if (x.name.trim() == "عبدالاله علي دعاس الحازمي") {
-      console.log(x["p1"], x["p2"], x["p3"]);
-    }
-    return {
-      id: x.user,
-      name: x.name,
-      phone: x.phone,
-      studentId: `${i}`,
-      status: prog,
-      completion: completion,
-      riasec: x?.stat?.p1?.tops?.map((l) => l.dim),
-      mbti: x?.stat?.p2?.type,
-      thk: x?.stat?.p3?.tops?.map((l) => l.name),
-      startTime: +x?.stat?.start,
-      endTime: +x?.stat?.end,
-    };
-  });
-  res.render("adminPage", { data: JSON.stringify(user) });
-});
-app.get("/admin", isTeacher, async function (req, res) {
-  await client.connect();
-  const db = client.db("soqy");
-  const collection = db.collection("users");
-  let user = await collection.find({ techer: req.session.name }).toArray();
-  client.close();
-  user = user.map((x, i) => {
-    let completion = 0;
-    let prog = "";
-    if (x["p1"]) {
-      completion += 33;
-    }
-    if (x["p2"]) {
-      completion += 33;
-    }
-    if (x["p3"]) {
-      completion += 34;
-    }
-    prog =
-      completion == 100
-        ? "completed"
-        : completion > 0
-        ? "in-progress"
-        : "not-started";
 
-    return {
-      id: x.user,
-      name: x.name,
-      phone: x.phone,
-      status: prog,
-      completion: completion,
-      riasec: x?.stat?.p1?.tops?.map((l) => l.dim),
-      mbti: x?.stat?.p2?.type,
-      thk: x?.stat?.p3?.tops?.map((l) => l.name),
-      startTime: +x?.stat?.start,
-      endTime: +x?.stat?.end,
-    };
-  });
-  res.render("adminPage", { data: JSON.stringify(user) });
-});
-app.get("/admin", function (req, res) {
-  res.render("login", { collection: "admin" });
-});
 app.get("/admin/Results/:id/:exam", isAdmin, async function (req, res) {
   await client.connect();
   const db = client.db("soqy");
@@ -426,6 +426,7 @@ app.get("/admin/Results/:id/:exam", isAdmin, async function (req, res) {
   }
   res.send("notFound");
 });
+
 app.get("/admin/Results/:id/:exam", isTeacher, async function (req, res) {
   await client.connect();
   const db = client.db("soqy");
@@ -569,53 +570,56 @@ app.post("/saveExam", async function (req, res) {
       res.send("notFound");
     });
 });
-app.post("/deleteExam", async function (req, res) {
-  await client.connect();
-  const db = client.db("soqy");
-  const collection = db.collection("users");
-  // console.log(req.body.user)
-  await collection
-    .updateOne(
-      { user: req.body.user },
-      {
-        $unset: {
-          [req.body.type]: "",
-          [`stat.${req.body.type}`]: "",
-        },
-      }
-    )
-    .then(() => {
-      res.send("deleted");
-    })
-    .catch((err) => {
-      res.send("notFound");
-    });
-});
-app.post("/deleteAll", async function (req, res) {
-  await client.connect();
-  const db = client.db("soqy");
-  const collection = db.collection("users");
-  // console.log(req.body.user)
-  await collection
-    .updateOne(
-      { user: req.body.user },
-      {
-        $unset: {
-          ["p1"]: "",
-          ["p2"]: "",
-          ["p3"]: "",
-          ["stat"]: "",
-          ["rate"]: "",
-        },
-      }
-    )
-    .then(() => {
-      res.send("deleted");
-    })
-    .catch((err) => {
-      res.send("notFound");
-    });
-});
+
+// app.post("/deleteExam", async function (req, res) {
+//   await client.connect();
+//   const db = client.db("soqy");
+//   const collection = db.collection("users");
+//   // console.log(req.body.user)
+//   await collection
+//     .updateOne(
+//       { user: req.body.user },
+//       {
+//         $unset: {
+//           [req.body.type]: "",
+//           [`stat.${req.body.type}`]: "",
+//         },
+//       }
+//     )
+//     .then(() => {
+//       res.send("deleted");
+//     })
+//     .catch((err) => {
+//       res.send("notFound");
+//     });
+// });
+
+// app.post("/deleteAll", async function (req, res) {
+//   await client.connect();
+//   const db = client.db("soqy");
+//   const collection = db.collection("users");
+//   // console.log(req.body.user)
+//   await collection
+//     .updateOne(
+//       { user: req.body.user },
+//       {
+//         $unset: {
+//           ["p1"]: "",
+//           ["p2"]: "",
+//           ["p3"]: "",
+//           ["stat"]: "",
+//           ["rate"]: "",
+//         },
+//       }
+//     )
+//     .then(() => {
+//       res.send("deleted");
+//     })
+//     .catch((err) => {
+//       res.send("notFound");
+//     });
+// });
+
 app.post("/deleteStudent", async function (req, res) {
   await client.connect();
   const db = client.db("soqy");

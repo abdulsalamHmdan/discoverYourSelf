@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 
 # تحديد مكان خريطة الموقع
-Sitemap: https://discoveryourself.onrender.com/sitemap.xml
+Sitemap: https://baserah.app/sitemap.xml
