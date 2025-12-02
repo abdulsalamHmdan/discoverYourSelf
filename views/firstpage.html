@@ -1,1250 +1,0 @@
-    <!doctype html>
-    <html lang="ar" dir="rtl">
-    <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مقياس بصيرة</title>
-    
-    <script src="/_sdk/element_sdk.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&amp;display=swap" rel="stylesheet">
-    <style>
-        
-    body {
-      box-sizing: border-box;
-      font-family: 'Tajawal', sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-    
-    html, body {
-      height: 100%;
-      width: 100%;
-    }
-    
-    .gradient-bg {
-background: linear-gradient(135deg, #1c3a63fb 10%, #3a7cc7 70% , #764ba2b0 100%);
-      min-height: 100%;
-      width: 100%;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .gradient-bg::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-image: 
-        url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
-      opacity: 0.5;
-      pointer-events: none;
-    }
-    
-    .geometric-element {
-      position: absolute;
-      opacity: 0.08;
-      pointer-events: none;
-      z-index: 1;
-    }
-    
-    .arc-1 {
-      top: 10%;
-      left: -5%;
-      width: 400px;
-      height: 400px;
-      border: 2px solid #D6B46A;
-      border-radius: 50%;
-      border-right-color: transparent;
-      border-bottom-color: transparent;
-      transform: rotate(45deg);
-    }
-    
-    .arc-2 {
-      bottom: 15%;
-      right: -3%;
-      width: 350px;
-      height: 350px;
-      border: 2px solid #D6B46A;
-      border-radius: 50%;
-      border-left-color: transparent;
-      border-top-color: transparent;
-      transform: rotate(-30deg);
-    }
-    
-    .circle-1 {
-      top: 30%;
-      right: 5%;
-      width: 220px;
-      height: 220px;
-      border: 1px solid #D6B46A;
-      border-radius: 50%;
-    }
-    
-    .curved-left {
-      top: 20%;
-      left: -10%;
-      width: 300px;
-      height: 600px;
-      border-radius: 50%;
-      background: rgba(59, 82, 122, 0.15);
-    }
-    
-    .curved-right {
-      bottom: 10%;
-      right: -10%;
-      width: 350px;
-      height: 700px;
-      border-radius: 50%;
-      background: rgba(59, 82, 122, 0.15);
-    }
-    
-    /* Large Geometric Golden Waves - Modern Identity Style - ENHANCED */
-    .golden-wave-bg {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 1;
-      opacity: 1;
-      overflow: hidden;
-      pointer-events: none;
-    }
-    
-    .golden-wave-bg svg {
-      position: absolute;
-      width: 130%;
-      height: 15%;
-    }
-    
-    /* Animated glow effect for golden waves */
-    @keyframes goldenGlow {
-      0%, 100% {
-        filter: drop-shadow(0 0 8px rgba(174, 131, 37, 0.6)) drop-shadow(0 0 15px rgba(214, 180, 106, 0.4));
-      }
-      50% {
-        filter: drop-shadow(0 0 12px rgba(214, 180, 106, 0.8)) drop-shadow(0 0 20px rgba(214, 180, 106, 0.5));
-      }
-    }
-    
-    .golden-wave-bg svg {
-      animation: goldenGlow 4s ease-in-out infinite;
-    }
-    
-    .decorative-line {
-      position: absolute;
-      opacity: 0.8;
-      pointer-events: none;
-      z-index: 1;
-    }
-    
-    .line-1 {
-      bottom: 5%;
-      left: 0%;
-      width: 250px;
-      height: 2px;
-      background: linear-gradient(90deg, #D6B46A, transparent);
-      transform: rotate(35deg);
-      transform-origin: left bottom;
-    }
-    
-    .line-2 {
-      bottom: 8%;
-      left: 0%;
-      width: 200px;
-      height: 2px;
-      background: linear-gradient(90deg, #D6B46A, transparent);
-      transform: rotate(25deg);
-      transform-origin: left bottom;
-    }
-    
-    .line-3 {
-      bottom: 12%;
-      left: 0%;
-      width: 180px;
-      height: 2px;
-      background: linear-gradient(90deg, #D6B46A, transparent);
-      transform: rotate(45deg);
-      transform-origin: left bottom;
-    }
-    
-    .line-4 {
-      bottom: 5%;
-      right: 0%;
-      width: 220px;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, #D6B46A);
-      transform: rotate(-35deg);
-      transform-origin: right bottom;
-    }
-    
-    .line-5 {
-      bottom: 8%;
-      right: 0%;
-      width: 180px;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, #D6B46A);
-      transform: rotate(-25deg);
-      transform-origin: right bottom;
-    }
-    
-    .line-6 {
-      bottom: 12%;
-      right: 0%;
-      width: 200px;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, #D6B46A);
-      transform: rotate(-45deg);
-      transform-origin: right bottom;
-    }
-    
-    .diagonal-line-1 {
-      bottom: 0%;
-      left: 0%;
-      width: 1px;
-      height: 350px;
-      background: linear-gradient(180deg, transparent, #D6B46A);
-      transform: rotate(20deg);
-      transform-origin: left bottom;
-    }
-    
-    .diagonal-line-2 {
-      bottom: 0%;
-      right: 0%;
-      width: 1px;
-      height: 300px;
-      background: linear-gradient(180deg, transparent, #D6B46A);
-      transform: rotate(-20deg);
-      transform-origin: right bottom;
-    }
-    
-    .gold-accent {
-      color: #D6B46A;
-    }
-    
-    .section-divider {
-      height: 1px;
-      background: linear-gradient(90deg, transparent, #D6B46A, transparent);
-      opacity: 0.3;
-      margin: 3rem 0;
-    }
-    
-   .card-hover {
-  transition: all 0.3s ease;
-  background: rgba(255, 255, 255, 0.85); /* شفافية عالية */
-  border: 1px solid rgba(214, 180, 106, 0.3); /* ذهبي شفاف */
-  backdrop-filter: blur(10px); /* يعطي لمعة خفيفة */ 
-}
-
-    
-    
-    .card-hover:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 30px rgba(214, 180, 106, 0.2);
-      border-color: rgba(214, 180, 106, 0.3);
-    }
-    
-    .pulse-glow {
-      animation: pulse 2s infinite;
-    }
-    
-    @keyframes pulse {
-      0%, 100% {
-        opacity: 1;
-      }
-      50% {
-        opacity: 0.7;
-      }
-    }
-    
-    /* Navigation Bar Styles */
-    .nav-bar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      width: 100%;
-      background-color: rgba(115, 136, 164, 0.256);
-      backdrop-filter: blur(10px);
-      z-index: 1000;
-      height: 105px;
-      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
-    }
-    
-   .nav-container {
-  width: 100%;
-  margin: 0;
-  height: 105px; /* 🔥 يكبّر الشريط */
-  display: flex;
-  align-items: center;
-  justify-content: flex-end; /* 🔥 كل شيء على اليمين */
-    padding: 0 3rem; /* 🔥 يبعدهم عن الطرف */
-  gap: 3.5rem; /* 🔥 مسافات بين العناصر */
-}
-
-    
-    .nav-logo {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      flex-shrink: 0;
-    }
-    
-    .logo-icon {
-      width: 64px;
-      height: 64px;
-      flex-shrink: 0;
-    }
-    
-    .logo-text {
-      color: #c58a0b;
-      font-size: 2rem;
-      font-weight: 800;
-      white-space: nowrap;
-      text-shadow: 0 2px 8px rgba(214, 180, 106, 0.3);
-    }
-    
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 1.5rem;
-      flex-wrap: wrap;
-      justify-content: center;
-      flex: 1;
-      padding: 0 1rem;
-    }
-    
-    .nav-link {
-      color: #F2F4F7;
-      font-size: 1.2rem;
-      font-weight: 800;
-      text-decoration: none;
-      transition: color 0.3s ease;
-      white-space: nowrap;
-      position: relative;
-      letter-spacing: 0.3px;
-    }
-    
-    .nav-link:hover {
-      color: #f77009;
-    }
-    
-    .nav-link::after {
-      content: '';
-      position: absolute;
-      bottom: -5px;
-      left: 0;
-      width: 0;
-      height: 2px;
-      background-color: #f77009;
-      transition: width 0.3s ease;
-    }
-    
-    .nav-link:hover::after {
-      width: 100%;
-    }
-    
-    .nav-user {
-      display: flex;
-      align-items: center;
-      flex-shrink: 0;
-    }
-    
-    .login-link {
-  color: #c58a0b;
-  font-size: 1.8rem;
-  font-weight: 600;
-  text-decoration: none;
-  padding: 0.4rem 1rem;
-  border: 1.5px solid #bb6e33b4;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-  white-space: nowrap;
-  background-color: #a17c2b3d; /* ← هنا الخلفية */
-}
-
-    
-    .login-link:hover {
-      background-color: rgba(214, 180, 106, 0.15);
-      color: #f77009;
-      box-shadow: 0 0 15px rgba(214, 180, 106, 0.3);
-    }
-    
-    .nav-border {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 1.5px;
-      background: linear-gradient(90deg, transparent, #f77009, transparent);
-      opacity: 0.6;
-    }
-    
-    .mobile-menu-btn {
-      display: none;
-      background: none;
-      border: none;
-      color: #f77009;
-      font-size: 1.5rem;
-      cursor: pointer;
-      padding: 0.5rem;
-      margin-left: 0.5rem;
-    }
-    
-    @media (max-width: 1024px) {
-      .nav-links {
-        gap: 1rem;
-      }
-      
-      .nav-link {
-        font-size: 0.85rem;
-      }
-    }
-    
-    @media (max-width: 768px) {
-      .nav-bar {
-        height: 60px;
-      }
-      
-      .nav-container {
-        padding: 0 1rem;
-      }
-      
-      .logo-icon {
-        width: 28px;
-        height: 28px;
-      }
-      
-      .logo-text {
-        font-size: 0.95rem;
-      }
-      
-      .nav-links {
-        position: fixed;
-        top: 60px;
-        left: 0;
-        right: 0;
-        background-color: rgba(12, 28, 50, 0.98);
-        backdrop-filter: blur(10px);
-        flex-direction: column;
-        padding: 1.5rem 1rem;
-        gap: 1rem;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-        transform: translateY(-100%);
-        opacity: 0;
-        transition: all 0.3s ease;
-        pointer-events: none;
-      }
-      
-      .nav-links.active {
-        transform: translateY(0);
-        opacity: 1;
-        pointer-events: all;
-      }
-      
-      .nav-link {
-        font-size: 1rem;
-        padding: 0.5rem 0;
-        width: 100%;
-        text-align: center;
-      }
-      
-      .mobile-menu-btn {
-        display: block;
-      }
-      
-      .login-link {
-        font-size: 0.85rem;
-        padding: 0.35rem 0.85rem;
-      }
-    }
-    
-    @media (max-width: 480px) {
-      .nav-container {
-        padding: 0 0.75rem;
-      }
-      
-      .logo-text {
-        font-size: 0.85rem;
-      }
-      
-      .logo-icon {
-        width: 24px;
-        height: 24px;
-      }
-      
-      .login-link {
-        font-size: 0.8rem;
-        padding: 0.3rem 0.7rem;
-      }
-    }
-  </style>
-  <style>@view-transition { navigation: auto; }</style>
-  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
- </head>
- <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;600;700&display=swap" rel="stylesheet">
-
-<style>
-* {
-  font-family: 'IBM Plex Sans Arabic', sans-serif !important;
-}
-</style
-
- <body>
-<div class="gradient-bg"><!-- Navigation Bar --> <nav class="nav-bar"> <div class="nav-container"> <div class="nav-logo"> <svg class="logo-icon" width="40" height="40" viewbox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="25" stroke="#D6B46A" stroke-width="2" /> <path d="M40 20 L50 35 L40 32 L30 35 Z" fill="#D6B46A" /> <circle cx="40" cy="40" r="8" fill="#D6B46A" /> </svg><span class="logo-text">مقياس بصيرة</span> </div>
-     <div class="nav-links"><a href="#home" class="nav-link">الرئيسية</a> <a href="#about" class="nav-link">عن المقياس</a> <a href="#pillars" class="nav-link">محاور بصيرة</a> <a href="#start" class="nav-link">بدء المقياس</a> <a href="#faq" class="nav-link">الأسئلة الشائعة</a>
-     </div>
-     <div class="nav-user"><a href="#login" class="login-link">تسجيل الدخول</a> <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="القائمة">☰</button>
-     </div>
-    </div>
-    <div class="nav-border"></div>
-   </nav><!-- Geometric Elements -->
-   <div class="geometric-element arc-1"></div>
-   <div class="geometric-element arc-2"></div>
-   <div class="geometric-element circle-1"></div>
-   <div class="geometric-element curved-left"></div>
-   <div class="geometric-element curved-right"></div><!-- Large Geometric Golden Waves Background - ENHANCED VERSION -->
-   <div class="golden-wave-bg"><!-- Main large flowing waves with increased opacity and stroke width -->
-    <svg viewbox="0 0 1920 1080" preserveaspectratio="xMidYMid slice"><!-- Upper large curve flowing from right - ENHANCED --> <path d="M 1920,0 Q 1600,200 1200,250 Q 800,300 400,200 Q 100,150 0,300 L 0,0 Z" fill="none" stroke="#D6B46A" stroke-width="4" opacity="0.25" /> <!-- Middle elegant wave - ENHANCED --> <path d="M 1920,200 Q 1500,350 1100,380 Q 700,410 300,320 Q 50,280 0,400" fill="none" stroke="#D6B46A" stroke-width="3" opacity="0.2" /> <!-- Lower sweeping curve - ENHANCED --> <path d="M 1920,500 Q 1450,650 1000,600 Q 550,550 200,650 Q 80,690 0,750" fill="none" stroke="#D6B46A" stroke-width="5" opacity="0.4" /> <!-- Bottom flowing wave - ENHANCED --> <path d="M 1920,800 Q 1400,920 950,880 Q 500,840 150,950 Q 60,990 0,1050" fill="none" stroke="#D6B46A" stroke-width="5" opacity="0.48" />
-    </svg><!-- Secondary decorative curves for depth - ENHANCED -->
-    <svg viewbox="0 0 1920 1080" preserveaspectratio="xMidYMid slice"><!-- Upper secondary wave - ENHANCED --> <path d="M 0,100 Q 400,50 800,120 Q 1200,190 1600,140 Q 1800,115 1920,180" fill="none" stroke="#D6B46A" stroke-width="3" opacity="0.15" /> <!-- Middle secondary wave - ENHANCED --> <path d="M 0,450 Q 350,380 750,440 Q 1150,500 1550,430 Q 1750,395 1920,460" fill="none" stroke="#D6B46A" stroke-width="4" opacity="0.38" /> <!-- Lower secondary wave - ENHANCED --> <path d="M 0,850 Q 420,780 840,840 Q 1260,900 1680,820 Q 1850,780 1920,840" fill="none" stroke="#D6B46A" stroke-width="5" opacity="0.42" />
-    </svg><!-- Additional accent waves for more presence - NEW -->
-    <svg viewbox="0 0 1920 1080" preserveaspectratio="xMidYMid slice"><!-- Top accent wave --> <path d="M 1920,120 Q 1550,250 1150,230 Q 750,210 350,280 Q 150,320 0,200" fill="none" stroke="#D6B46A" stroke-width="2" opacity="0.12" /> <!-- Middle accent wave --> <path d="M 0,550 Q 380,480 780,520 Q 1180,560 1580,490 Q 1760,450 1920,520" fill="none" stroke="#D6B46A" stroke-width="3" opacity="0.32" /> <!-- Bottom accent wave --> <path d="M 1920,950 Q 1480,850 1080,920 Q 680,990 280,880 Q 120,830 0,920" fill="none" stroke="#D6B46A" stroke-width="4" opacity="0.36" />
-    </svg>
-   </div><!-- Decorative Lines -->
-   <div class="decorative-line line-1"></div>
-   <div class="decorative-line line-2"></div>
-   <div class="decorative-line line-3"></div>
-   <div class="decorative-line line-4"></div>
-   <div class="decorative-line line-5"></div>
-   <div class="decorative-line line-6"></div>
-   <div class="decorative-line diagonal-line-1"></div>
-   <div class="decorative-line diagonal-line-2"></div>
-   <div class="w-full" style="padding: 3rem 1.5rem; padding-top: 110px; position: relative; z-index: 10;"><!-- Header Section -->
-    <header class="text-center mb-16" style="padding-top: 1rem; position: relative; z-index: 10;">
-     <div class="mb-8 relative">
-      <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 120px; height: 120px; background: radial-gradient(circle, rgba(214, 180, 106, 0.15) 0%, transparent 70%); border-radius: 50%;"></div>
-      <svg class="mx-auto pulse-glow" style="position: relative; z-index: 2; filter: drop-shadow(0 4px 12px rgba(214, 180, 106, 0.4));" width="80" height="80" viewbox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="35" stroke="#D6B46A" stroke-width="2" opacity="0.3" /> <circle cx="40" cy="40" r="25" stroke="#D6B46A" stroke-width="2" /> <path d="M40 20 L50 35 L40 32 L30 35 Z" fill="#D6B46A" /> <circle cx="40" cy="40" r="8" fill="#D6B46A" />
-      </svg>
-     </div>
-<h1 style="
-  font-size: 4.5rem;
-  font-weight: 700;
-  color: #f77009;
-  text-align: center;
-  padding-bottom: 18px;
-  margin-bottom: 15px;
-  border-bottom: 4px solid #f77009;
-  display: inline-block;
-">
-  مقياس بصيرة
-</h1>
-     <p id="subtitle" style="font-size: 2rem; color: #F2F4F7; margin-bottom: 1rem; max-width: 100rem; margin-left: auto; margin-right: auto; font-weight: 500; line-height: 1.5;">منظومة متكاملة لاكتشاف أنماط الشخصية والميول والذكاءات</p>
-     <p id="tagline" style="font-size: 2rem; color: #f77009; font-weight: 500; letter-spacing: 0.5px;">رؤية واضحة… تعطي حياة أوضح.</p>
-    </header><!-- Main Content Container -->
-    <div class="max-width: 1200px; margin: 0 auto;"><!-- Home Section -->
-     <div id="home-section"><!-- Introduction Section -->
-      <section class="rounded-2xl p-12 mb-8 card-hover">
-<h2 id="intro-title" 
-    class="text-5xl font-bold mb-4"
-    style="color: #f77009;">
-    🌟 ما هو مقياس بصيرة؟
-</h2>
-<p style="
-  color: #000000; 
-  font-size: 1.7rem; 
-  line-height: 2.75; 
-  margin-bottom: 1rem;
-">
-  مقياس بصيرة هو أداة معرفية مقنّنة تهدف إلى فهم الذات من خلال ثلاثة محاور رئيسية:
-  
-  <span style="color: #f77009; font-weight: 600;">
-    الطبيعة الشخصية – الميول المهنية – أنماط الذكاءات
-  </span>
-</p>
-       <p style="color: #000000; font-size: 1.7rem; line-height: 1.75;">إنه ليس مقياسًا عابرًا، بل مرآة موضوعية تساعد الفرد على اكتشاف نقاط قوته، فهم طريقة تفكيره، وتحديد مساره التعليمي والمهني بوعي عميق.</p>
-      </section><!-- Three Pillars Section -->
-<div style="
-  background: rgba(120, 99, 56, 0.167);
-  border: 2px solid #ce8f5f;
-  padding: 1.2rem 4rem;
-  border-radius: 20px;
-  text-align: center;
-  margin: 2.5rem auto;
-  width: fit-content;
-  box-shadow: 15px rgba(167, 135, 66, 0.666);
-">
-  <p id="tagline" 
-     style="
-       font-size: 2rem; 
-       color: #d8b192; 
-       font-weight: 300; 
-       letter-spacing: 0.5px;
-       margin: 0;
-     ">
-    المقاييس المتوفرة
-  </p>
-</div>
-
-
-      <div class="grid md:grid-cols-3 gap-6 mb-8">
-       <div class="rounded-2xl p-6 card-hover">
-        <div class="relative mb-4" style="display: flex; justify-content: center;">
-         <div style="position: absolute; width: 100px; height: 100px; background: radial-gradient(circle, rgba(214, 180, 106, 0.1) 0%, transparent 70%); border-radius: 50%;"></div>
-         <div style="position: relative; font-size: 3rem; z-index: 2;">
-         🧭
-         </div>
-        </div>
-
-
-<h3 style="
-    font-size: 1.9rem; 
-    font-weight: 800; 
-    color: #000000; 
-    margin-bottom: 0.75rem; 
-    text-align: center;
-    letter-spacing: 0.5px;
-">
- الميول المهنية
-</h3>
-
-<p class="text-center mb-3 text-sm" 
-   style="font-size: 1.5rem; color: #f77009;">
-    (نموذج هولاند RIASEC)
-</p>
-
-
-<p style="
-    color: #000000; 
-    line-height: 1.9; 
-    font-size: 1.1rem;
-    text-align: center;
-    max-width: 360px;
-    margin: 0 auto;
-">
-    يكشف ما يحركك من الداخل، ما يستهويك، وما المجالات التي تتوافق مع طبيعتك بلا تكلّف.
-</p>
-
-</div>
-
-       <div class="rounded-2xl p-6 card-hover">
-        <div class="relative mb-4" style="display: flex; justify-content: center;">
-         <div style="position: absolute; width: 100px; height: 100px; background: radial-gradient(circle, rgba(214, 180, 106, 0.1) 0%, transparent 70%); border-radius: 50%;"></div>
-         <div style="position: relative; font-size: 3rem; z-index: 2;">
-          🧩
-         </div>
-        </div>
-
-        <h3 style="
-    font-size: 1.9rem; 
-    font-weight: 800; 
-    color: #000000; 
-    margin-bottom: 0.75rem; 
-    text-align: center;
-    letter-spacing: 0.5px;
-">
-    أنماط الشخصية
-</h3>
-
-<p class="text-center mb-3 text-sm gold-accent" style="font-size: 1.5rem; color: #f77009;">
-    (مستند إلى MBTI)
-</p>
-
-<p style="
-    color: #000000; 
-    line-height: 1.9; 
-    font-size: 1.1rem;
-    text-align: center;
-    max-width: 360px;
-    margin: 0 auto;
-">
-    يساعد على فهم أسلوبك في استقبال المعلومات، اتخاذ القرار، التفاعل مع العالم، وتنظيم حياتك اليومية.
-</p>
-
-</div>
-
-       <div class="rounded-2xl p-6 card-hover">
-        <div class="relative mb-4" style="display: flex; justify-content: center;">
-         <div style="position: absolute; width: 100px; height: 100px; background: radial-gradient(circle, rgba(214, 180, 106, 0.1) 0%, transparent 70%); border-radius: 50%;"></div>
-         <div style="position: relative; font-size: 3rem; z-index: 2;">
-          🧠
-         </div>
-       </div>
-
-<h3 style="
-    font-size: 1.9rem; 
-    font-weight: 800; 
-    color: #000000; 
-    margin-bottom: 0.75rem; 
-    text-align: center;
-    letter-spacing: 0.5px;
-">
-     الذكاءات المتعددة
-</h3>
-
-<p class="text-center mb-3 text-sm gold-accent" style="font-size: 1.5rem;color: #f77009;">
-    (نظرية جاردنر)
-</p>
-
-<p style="
-    color: #000000; 
-    line-height: 1.9; 
-    font-size: 1.1rem;
-    text-align: center;
-    max-width: 360px;
-    margin: 0 auto;
-">
-    يكشف المزيج الفريد من ذكاءاتك الثمانية، ليمكّنك من معرفة أين تكمن قدراتك الطبيعية.
-</p>
-
-</div>
-
-      </div>
-<div class="section-divider"></div>
-
-<!-- لماذا يعتبر مقياس بصيرة مختلفًا؟ -->
-<section class="rounded-2xl p-10 mb-10 card-hover text-center ">
-
-  <h2 class="text-4xl font-bold mb-12 gold-accent" style="letter-spacing: 1px; color: #f77009;" >
-    ⭐ لماذا يُعد مقياس بصيرة مختلفًا؟
-  </h2>
-
-  <div class="grid md:grid-cols-4 gap-10 justify-center items-center">
-
-    <div class="flex flex-col items-center gap-3">
-      <span class="text-5xl gold-accent">✓</span>
-      <p style="color: #000000; font-size: 2rem; line-height: 2; max-width: 250px;">
-        لأنه لا يصنّفك… بل يفهمك بعمق.
-      </p>
-    </div>
-
-    <div class="flex flex-col items-center gap-3">
-      <span class="text-5xl gold-accent">✓</span>
-      <p style="color: #000000; font-size: 2rem; line-height: 2; max-width: 500px;">
-        يعرض صورة شمولية من ثلاثة أبعاد وليس بُعدًا واحدًا.
-      </p>
-    </div>
-
-    <div class="flex flex-col items-center gap-3">
-      <span class="text-5xl gold-accent">✓</span>
-      <p style="color: #000000; font-size: 2rem; line-height: 2; max-width: 400px;">
-        يستند إلى نماذج علمية موثوقة بأسلوب بسيط وواضح.
-      </p>
-    </div>
-
-    <div class="flex flex-col items-center gap-3">
-      <span class="text-5xl gold-accent">✓</span>
-      <p style="color: #000000; font-size: 2rem; line-height: 2; max-width: 400px;">
-        يقدّم لك وضوحًا ينعكس على قراراتك وثقتك بنفسك.
-      </p>
-    </div>
-
-  </div>
-</section>
-
-      </section>
-     </div><!-- About Section -->
-     <div id="about-section" style="display: none;">
-      <section class="rounded-2xl p-12 mb-12 card-hover">
-<h2 class="text-4xl font-bold mb-8 text-center" style="color: #f77009;">
-    📖 عن المقياس
-</h2>
-       <div class="space-y-10">
-        <div>
-         <h3 class="text-4xl font-bold mb-4" style="color: #c08026;">رحلة اكتشاف الذات</h3>
-         <p style="color: #000000; font-size: 1.5rem; line-height: 1.8;">مقياس بصيرة ليس مجرد مقياس تقليدي، بل هو رحلة معرفية عميقة تأخذك في استكشاف أبعاد شخصيتك الحقيقية. تم تصميم هذا المقياس بعناية فائقة ليجمع بين الدقة العلمية والبساطة في التطبيق، مما يجعله أداة موثوقة للأفراد والمؤسسات التعليمية والمهنية على حد سواء.</p>
-        </div>
-        <div class="grid md:grid-cols-4 gap-6 mt-6">
-         <div class="p-5 rounded-xl" style="background: rgba(214, 180, 106, 0.1); border: 1px solid rgba(28, 22, 9, 0.2);">
-          <div class="text-3xl mb-3 text-center">
-           🎯
-          </div>
-<h4 class="text-xl font-bold mb-2 text-center" style="color: #f77009;"> الهدف</h4> 
-    <p style="color: #000000; line-height: 1.7; text-align: center;">تمكين الأفراد من فهم ذواتهم بعمق واتخاذ قرارات واعية تتعلق بمستقبلهم الأكاديمي والمهني والشخصي</p>
-         </div>
-         <div class="p-5 rounded-xl" style="background: rgba(214, 180, 106, 0.1); border: 1px solid rgba(28, 22, 9, 0.2);">
-          <div class="text-3xl mb-3 text-center">
-           📘
-          </div>
-<h4 class="text-xl font-bold mb-2 text-center" style="color: #f77009;"> المصداقية</h4>
-          <p style="color: #000000; line-height: 1.7; text-align: center;">مبني على نماذج نفسية معتمدة عالميًا: MBTI، نموذج هولاند RIASEC، ونظرية الذكاءات المتعددة لجاردنر</p>
-         </div>
-         <div class="p-5 rounded-xl" style="background: rgba(214, 180, 106, 0.1); border: 1px solid rgba(28, 22, 9, 0.2);">
-          <div class="text-3xl mb-3 text-center">
-           👥
-          </div>
-<h4 class="text-xl font-bold mb-2 text-center" style="color: #f77009;">  الفئة المستهدفة</h4>
-          <p style="color: #000000; line-height: 1.7; text-align: center;">الطلاب في المرحلة الثانوية والجامعية، الباحثون عن وظيفة، والمهتمون بالتطوير الذاتي</p>
-         </div>
-         <div class="p-5 rounded-xl" style="background: rgba(214, 180, 106, 0.1); border: 1px solid rgba(28, 22, 9, 0.2);">
-          <div class="text-3xl mb-3 text-center">
-           ⏱️
-          </div>
-<h4 class="text-xl font-bold mb-2 text-center" style="color: #f77009;">  المدة الزمنية</h4>
-          <p style="color: #000000; line-height: 1.7; text-align: center;">يستغرق إكمال المقياس حوالي 45-55 دقيقة، وتحصل على النتائج فورًا مع تقرير تفصيلي شامل</p>
-         </div>
-        </div>
-       </div>
-      </section>
-     </div><!-- Pillars Section -->
-     <div id="pillars-section" style="display: none;">
-      <section class="mb-8">
-       <div class="rounded-2xl p-8 mb-6 card-hover">
-        <div class="flex items-center gap-4 mb-5">
-             <div class="text-5xl">
-          🧭
-         </div>
-<h3 class="text-2xl font-bold" style="color: #f77009;">
-    المحور الأول: الميول المهنية
-</h3>
-        </div>
-        <p style="color: #000000; font-size: 1.125rem; line-height: 1.8; margin-bottom: 1.5rem;">يستند إلى <span class="gold-accent font-semibold">نموذج هولاند RIASEC</span>، الذي يدرس ستة أنماط رئيسية للميول المهنية:</p>
-        <div class="space-y-3 mb-5">
-         <div class="p-4 rounded-lg flex items-start gap-3" style="background:rgba(214, 180, 106, 0.207);border: 1px solid rgba(214, 180, 106, 0.3);"><span class="text-2xl">🔧</span>
-          <div>
-<h4 class="font-bold mb-1" style="color: #f77009;">Realistic - الواقعية</h4>
-           <p style="color: #000000; line-height: 1.6;">يميل للعمل اليدوي، الأدوات، الآلات، والأنشطة العملية التطبيقية.</p>
-          </div>
-         </div>
-         <div class="p-4 rounded-lg flex items-start gap-3" style="background: rgba(214, 180, 106, 0.207);border: 1px solid rgba(214, 180, 106, 0.3);">🔬</span>
-          <div>
-<h4 class="font-bold mb-1" style="color: #f77009;">Investigative - الاستقصائي</h4>
-           <p style="color: #000000; line-height: 1.6;">يحب البحث التحليل، حل المشكلات العقدة، والتفكير النقدي.</p>
-          </div>
-         </div>
-         <div class="p-4 rounded-lg flex items-start gap-3" style="background: rgba(214, 180, 106, 0.207);border: 1px solid rgba(214, 180, 106, 0.3);">🎭</span>
-          <div>
-<h4 class="font-bold mb-1" style="color: #f77009;">Artistic - الفني</h4>
-           <p style="color: #000000; line-height: 1.6;">ينجذب للإبداع، التعبير الذاتي، الفنون، والتصميم.</p>
-          </div>
-         </div>
-         <div class="p-4 rounded-lg flex items-start gap-3" style="background: rgba(214, 180, 106, 0.207);border: 1px solid rgba(214, 180, 106, 0.3);">🤝</span>
-          <div>
-<h4 class="font-bold mb-1" style="color: #f77009;">Social - الاجتماعي</h4>
-           <p style="color: #000000; line-height: 1.6;">يستمتع بمساعدة الآخرين، التدريس، الرعاية، والعمل الإنساني.</p>
-          </div>
-         </div>
-         <div class="p-4 rounded-lg flex items-start gap-3" style="background: rgba(214, 180, 106, 0.207);border: 1px solid rgba(214, 180, 106, 0.3);">💼</span>
-          <div>
-<h4 class="font-bold mb-1" style="color: #f77009;">Enterprising - المغامر</h4>
-           <p style="color: #000000; line-height: 1.6;">يفضل القيادة، الإقناع، ريادة الأعمال، واتخاذ المبادرات.</p>
-          </div>
-         </div>
-         <div class="p-4 rounded-lg flex items-start gap-3" style="background: rgba(214, 180, 106, 0.207);border: 1px solid rgba(214, 180, 106, 0.3);">📊</span>
-          <div>
-<h4 class="font-bold mb-1" style="color: #f77009;">Conventional - التقليدي</h4>
-           <p style="color: #000000; line-height: 1.6;">يميل للتنظيم، إدارة البيانات، الدقة، والأنظمة المحددة.</p>
-          </div>
-         </div>
-        </div>
-        <div class="p-4 rounded-lg" style="background: rgba(214, 180, 106, 0.1); border: 1px solid rgba(214, 180, 106, 0.3);">
-<p class="font-semibold mb-2" style="color: #f77009;">✨ ماذا ستستفيد؟</p>
-         <p style="color: #000000; line-height: 1.7;">اكتشاف التخصصات الأكاديمية والمسارات المهنية التي تتوافق مع ميولك الحقيقية، مما يزيد من فرص نجاحك ورضاك الوظيفي.</p>
-         
-        </div>
-       </div><!-- Pillar 3 -->
-       <div class="rounded-2xl p-8 mb-6 card-hover">
-        <div class="flex items-center gap-4 mb-5">
-
-<div class="text-5xl">
-          🧩
-         </div>
-<h3 class="text-2xl font-bold text-center" style="color: #f77009;">
-    المحور الثاني: أنماط الشخصية
-</h3>
-        </div>
-        <p style="color: #000000; font-size: 1.125rem; line-height: 1.8; margin-bottom: 1.5rem;">يعتمد هذا المحور على نموذج <span class="gold-accent font-semibold">مايرز-بريجز MBTI</span>، الذي يصنف الشخصيات إلى 16 نمطًا بناءً على أربعة أبعاد رئيسية:</p>
-        <div class="grid md:grid-cols-2 gap-4 mb-5">
-         <div class="p-4 rounded-lg" style="background:rgba(214, 180, 106, 0.207);border: 1px solid rgba(214, 180, 106, 0.3);">
-<h4 class="font-bold mb-2" style="color: #f77009;">
-    🔄 الإنبساط (E) vs الانطواء (I)
-</h4>
-          <p style="color: #000000; line-height: 1.6;">من أين تستمد طاقتك؟ من التفاعل الاجتماعي أم من العالم الداخلي؟</p>
-         </div>
-         <div class="p-4 rounded-lg" style="background:rgba(214, 180, 106, 0.207); border: 1px solid rgba(214, 180, 106, 0.3 );">
-<h4 class="font-bold mb-2" style="color: #f77009;">
-    👁️ الحدس (N) vs الحس (S)
-</h4>
-          <p style="color: #000000; line-height: 1.6;">كيف تستقبل المعلومات؟ عبر الحواس أم الأنماط والمعاني الكامنة؟</p>
-         </div>
-         <div class="p-4 rounded-lg" style="background: rgba(214, 180, 106, 0.207);border: 1px solid rgba(214, 180, 106, 0.3);">
-<h4 class="font-bold mb-2" style="color:#f77009;">💭 التفكير (T) vs الشعور (F)</h4>
-          <p style="color: #000000; line-height: 1.6;">كيف تتخذ قراراتك؟ بناءً على المنطق أم القيم والعواطف؟</p>
-         </div>
-         <div class="p-4 rounded-lg" style="background:rgba(214, 180, 106, 0.207); border: 1px solid rgba(214, 180, 106, 0.3);">
-<h4 class="font-bold mb-2" style="color:#f77009;">📋 الحكم (J) vs الإدراك (P)</h4>
-          <p style="color: #000000; line-height: 1.6;">كيف تنظم حياتك؟ بشكل مخطط ومنظم أم مرن وعفوي؟</p>
-         </div>
-        </div>
-        <div class="p-4 rounded-lg" style="background: rgba(214, 180, 106, 0.1); border: 1px solid rgba(214, 180, 106, 0.3);">
-<p class="font-semibold mb-2" style="color:#f77009;">✨ ماذا ستستفيد؟</p>
-         <p style="color: #000000; line-height: 1.7;">فهم أعمق لأسلوب تواصلك، طريقة تعلمك المفضلة، بيئة العمل المثالية لك، ونقاط قوتك في العلاقات الشخصية والمهنية.</p>
-        </div>
-       </div><!-- Pillar 2 -->
-       <div class="rounded-2xl p-8 mb-6 card-hover">
-        <div class="flex items-center gap-4 mb-5">
-        
-
-
-
-
-         <div class="text-5xl">
-          🧠
-         </div>
-<h3 class="text-2xl font-bold" style="color: #f77009;">
-    المحور الثالث: الذكاءات المتعددة
-</h3>        </div>
-        <p style="color: #000000; font-size: 1.125rem; line-height: 1.8; margin-bottom: 1.5rem;">يعتمد على <span class="gold-accent font-semibold">نظرية هوارد جاردنر للذكاءات المتعددة</span>، التي تؤكد أن الذكاء ليس رقمًا واحدًا بل مجموعة من القدرات المتنوعة:</p>
-        <div class="grid md:grid-cols-2 gap-4 mb-5">
-         <div class="p-4 rounded-lg" style="background: rgba(214, 180, 106, 0.207);border: 1px solid rgba(214, 180, 106, 0.3);">
-<h4 class="font-bold mb-2" style="color: #f77009;">📝 الذكاء اللغوي</h4>
-          <p style="color: #000000; line-height: 1.6;">القدرة على استخدام اللغة بفعالية في التعبير والكتابة والتواصل.</p>
-         </div>
-         <div class="p-4 rounded-lg" style="background: rgba(214, 180, 106, 0.207);border: 1px solid rgba(214, 180, 106, 0.3);">
-<h4 class="font-bold mb-2" style="color: #f77009;">🔢 الذكاء المنطقي الرياضي</h4>
-          <p style="color: #000000; line-height: 1.6;">القدرة على التفكير المنطقي وحل المسائل الرياضية والتحليل.</p>
-         </div>
-         <div class="p-4 rounded-lg" style="background: rgba(214, 180, 106, 0.207);border: 1px solid rgba(214, 180, 106, 0.3);">
-<h4 class="font-bold mb-2" style="color: #f77009;">🎨 الذكاء البصري المكاني</h4>
-          <p style="color: #000000; line-height: 1.6;">القدرة على التصور المكاني والتفكير بالصور والأشكال.</p>
-         </div>
-         <div class="p-4 rounded-lg" style="background: rgba(214, 180, 106, 0.207);border: 1px solid rgba(214, 180, 106, 0.3);">
-<h4 class="font-bold mb-2" style="color: #f77009;">🏃 الذكاء الحركي الجسدي</h4>
-          <p style="color: #000000; line-height: 1.6;">القدرة على استخدام الجسم بمهارة في الرياضة أو الفنون الأدائية.</p>
-         </div>
-         <div class="p-4 rounded-lg" style="background:rgba(214, 180, 106, 0.207);border: 1px solid rgba(214, 180, 106, 0.3);">
-<h4 class="font-bold mb-2" style="color: #f77009;">🎵 الذكاء الصوتي</h4>
-          <p style="color: #000000; line-height: 1.6;">القدرة على فهم وإنتاج وتقدير الأصوات والإيقاعات.</p>
-         </div>
-         <div class="p-4 rounded-lg" style="background: rgba(214, 180, 106, 0.207);border: 1px solid rgba(214, 180, 106, 0.3);">
-<h4 class="font-bold mb-2" style="color: #f77009;">👥 الذكاء الاجتماعي</h4>
-          <p style="color: #000000; line-height: 1.6;">القدرة على فهم الآخرين والتفاعل معهم بفعالية.</p>
-         </div>
-         <div class="p-4 rounded-lg" style="background:rgba(214, 180, 106, 0.207);border: 1px solid rgba(214, 180, 106, 0.3);">
-<h4 class="font-bold mb-2" style="color: #f77009;">🤔 الذكاء الذاتي</h4>
-          <p style="color: #000000; line-height: 1.6;">القدرة على فهم الذات والوعي بالمشاعر والوافع الداخلية.</p>
-         </div>
-         <div class="p-4 rounded-lg" style="background: rgba(214, 180, 106, 0.207);border: 1px solid rgba(214, 180, 106, 0.3);">
-<h4 class="font-bold mb-2" style="color: #f77009;">🌿 الذكاء الطبيعي</h4>
-          <p style="color: #000000; line-height: 1.6;">القدرة على فهم الطبيعة والتعامل مع البيئة الحية.</p>
-         </div>
-        </div>
-        <div class="p-4 rounded-lg" style="background: rgba(214, 180, 106, 0.1); border: 1px solid rgba(214, 180, 106, 0.3);">
-<p class="font-semibold mb-2" style="color: #f77009;">✨ ماذا ستستفيد؟</p>
-         <p style="color: #000000; line-height: 1.7;">معرفة نقاط قوتك الفريدة في التعلم والعمل، واختيار أساليب الدراسة والمهن التي تستفيد من ذكاءاتك الطبيعية.</p>
-        </div>
-       </div>
-      </section>
-     </div><!-- Start Section -->
-     <div id="start-section" style="display: none;">
-      <section class="rounded-2xl p-8 mb-8 card-hover">
-<h2 class="text-3xl font-bold mb-6 text-center" style="color: #f77009;">
-    كيف تبدأ رحلتك مع بصيرة؟
-</h2>
-       <div class="grid md:grid-cols-4 gap-6 mb-8">
-        <div class="text-center">
-         <div class="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center text-2xl font-bold" style="background: rgba(214, 180, 106, 0.2); color: #f77009;">
-          1
-         </div>
-<h3 class="font-bold mb-2" style="color: #f77009;">التسجيل</h3>
-         <p style="color: #000000; line-height: 1.6;">أنشئ حسابك  في دقائق</p>
-        </div>
-        <div class="text-center">
-         <div class="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center text-2xl font-bold" style="background: rgba(214, 180, 106, 0.2); color: #f77009;">
-          2
-         </div>
-<h3 class="font-bold mb-2" style="color: #f77009;">الإجابة</h3>
-         <p style="color: #000000; line-height: 1.6;">أجب بصدق على المقاييس الثلاثة</p>
-        </div>
-        <div class="text-center">
-         <div class="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center text-2xl font-bold" style="background: rgba(214, 180, 106, 0.2); color: #f77009;">
-          3
-         </div>
-<h3 class="font-bold mb-2" style="color: #f77009;">التحليل</h3>
-         <p style="color: #000000; line-height: 1.6;">احصل على نتائجك الفورية</p>
-        </div>
-        <div class="text-center">
-         <div class="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center text-2xl font-bold" style="background: rgba(214, 180, 106, 0.2); color: #f77009;">
-          4
-         </div>
-<h3 class="font-bold mb-2" style="color: #f77009;">التطبيق</h3>
-         <p style="color: #000000; line-height: 1.6;">استخدم البصيرة في قراراتك</p>
-        </div>
-       </div>
-       <div class="p-6 rounded-xl" style="background: rgba(214, 180, 106, 0.1); border: 1px solid rgba(214, 180, 106, 0.3);">
-<h3 class="font-bold mb-5 text-x2" style="color: #f77009;">💡 نصائح للحصول على أفضل نتائج:</h3>
-        <ul class="space-y-2" style="color: #000000; line-height: 1.7;">
-         <li>• أجب بتلقائية دون تفكير مطول - الإجابة الأولى غالبًا هي الأدق</li>
-         <li>• اختر الإجابات التي تعكس ما أنت عليه حقًا، ليس ما تريد أن تكون</li>
-         <li>• خصص وقتاً هادئًا دون مقاطعات لإتمام المقياس</li>
-         <li>• لا توجد إجابات صحيحة أو خاطئة - كل النتائج صحيحة</li>
-         <li>• احتفظ بنسخة من تقريرك للرجوع إليه مستقبلاً</li>
-        </ul>
-       </div>
-      </section>
-     </div><!-- FAQ Section -->
-     <div id="faq-section" style="display: none;">
-      <section class="rounded-2xl p-8 mb-8 card-hover">
-<h2 class="text-3xl font-bold mb-8 text-center" style="color: #f77009;">
-     الأسئلة الشائعة؟
-</h2>
-       <div class="space-y-4">
-        <div class="p-5 rounded-xl" style="background: rgba(214, 180, 106, 0.207);border: 1px solid rgba(214, 180, 106, 0.3);">
-<h3 class="font-bold mb-2 text-lg" style="color:#f77009;">هل المقياس مجاني؟</h3>
-         <p style="color: #000000; line-height: 1.7;">لا، المقياس غير مجاني. يتطلب رسومًا بسيطة تشمل الوصول الكامل للمقياس بالإضافة إلى تقرير تفصيلي ودقيق لنتائجك.
-</p>
-        </div> 
-        <div class="p-5 rounded-xl" style="background: rgba(214, 180, 106, 0.207);border: 1px solid rgba(214, 180, 106, 0.3);">
-<h3 class="font-bold mb-2 text-lg" style="color:#f77009;">كم من الوقت يستغرق إكمال المقياس؟</h3>
-         <p style="color: #000000; line-height: 1.7;">عادة بين 45-55 دقيقة لإكمال المحاور الثلاثة. يمكنك أخذ استراحة والعودة لاحقًا إذا احتجت.</p>
-        </div>
-        <div class="p-5 rounded-xl" style="background: rgba(214, 180, 106, 0.207);border: 1px solid rgba(214, 180, 106, 0.3);">
-<h3 class="font-bold mb-2 text-lg" style="color:#f77009;">هل يمكنني إعادة المقياس؟</h3>
-         <p style="color: #000000; line-height: 1.7;">نعم، لكننا ننصح بالانتظار 6 أشهر على الأقل بين كل مقياس وآخر، حيث أن الشخصية والميول تتطور مع الخبرات.</p>
-        </div>
-        <div class="p-5 rounded-xl" style="background: rgba(214, 180, 106, 0.207);border: 1px solid rgba(214, 180, 106, 0.3);">
-<h3 class="font-bold mb-2 text-lg" style="color:#f77009;">هل النتائج دقيقة 100%؟</h3>
-         <p style="color: #000000; line-height: 1.7;">المقياس أداة علمية موثوقة، لكن دقة النتائج تعتمد على صدقك في الإجابات. النتائج تمثل ميولك الحالية وليست حكمًا نهائيًا على شخصيتك.</p>
-        </div>
-        <div class="p-5 rounded-xl" style="background: rgba(214, 180, 106, 0.207);border: 1px solid rgba(214, 180, 106, 0.3);">
-<h3 class="font-bold mb-2 text-lg" style="color:#f77009;">هل تحفظ بياناتي بسرية؟</h3>
-         <p style="color: #000000; line-height: 1.7;">نعم، نحن نلتزم تمامًا بسياسة الخصوصية. بياناتك محمية ولن تُشارك مع أي جهة خارجية دون موافقتك الصريحة.</p>
-        </div>
-        <div class="p-5 rounded-xl" style="background: rgba(214, 180, 106, 0.207);border: 1px solid rgba(214, 180, 106, 0.3);">
-<h3 class="font-bold mb-2 text-lg" style="color:#f77009;">من أي عمر يمكنني إجراء المقياس؟</h3>
-         <p style="color: #000000; line-height: 1.7;">المقياس مناسب لمن هم في سن 15 عامًا فأكثر. للأعمار الأصغر، نوصي بمساعدة ولي الأمر في فهم بعض الأسئلة.</p>
-        </div>
-        <div class="p-5 rounded-xl" style="background: rgba(214, 180, 106, 0.207);border: 1px solid rgba(214, 180, 106, 0.3);">
-<h3 class="font-bold mb-2 text-lg" style="color:#f77009;">ماذا أفعل بعد الحصول على النتائج؟</h3>
-         <p style="color: #000000; line-height: 1.7;">اقرأ تقريرك بعناية، ناقش النتائج مع مرشد أكاديمي أو مستشار مهني، واستخدمها كدليل لاتخاذ قرارات واعية بشأن دراستك ومسارك المهني.</p>
-        </div>
-        <div class="p-5 rounded-xl" style="background: rgba(214, 180, 106, 0.207);border: 1px solid rgba(214, 180, 106, 0.3);">
-<h3 class="font-bold mb-2 text-lg" style="color:#f77009;">هل يمكن للمؤسسات التعليمية استخدام المقياس؟</h3>
-         <p style="color: #000000; line-height: 1.7;">نعم، نوفر نسخة مؤسسية بلوحة تحكم للمرشدين الأكاديميين وتقارير جماعية. تواصل معنا للحصول على عرض خاص.</p>
-        </div>
-       </div>
-      </section>
-     </div>
-     <div class="section-divider"></div><!-- Footer Message -->
-     <footer class="text-center py-8">
-      <p id="footer-message" style="font-size: 2.5rem; color: #F2F4F7; font-weight: 300; font-style: italic; margin-bottom: 0.5rem; line-height: 1.8;"> "ما تبحث عنه في الآخرين… قد تجده أولًا في نفسك."</p>
-<div style="display: flex; justify-content: center; align-items: center; width: 100%; margin-top: 40px;">
-  <div style="background-color: #ffffff; padding: 25px 35px; border-radius: 14px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.789); text-align: center;">
-    <p style="color: #f77009; font-size: 2.25rem; font-weight: 400; letter-spacing: 0.5px; margin: 0;">
-      مقياس بصيرة – مساحة صافية للوعي الذاتي
-    </p>
-  </div>
-</div>
-     </footer>
-    </div>
-   </div>
-
-  <footer class="noP text-center text-white opacity-100 fade-in" 
-        style="margin-top: 40px; padding: 20px 0; font-size: 1.1rem;">
-
-    <div style="border-top: 1px solid rgba(255,255,255,0.5); padding-top: 15px;">
-        <p style="margin: 0; letter-spacing: 0.5px;">
-            ©️ 2025 مقياس بصيرة — جميع الحقوق محفوظة 🌟
-        </p>
-    </div>
-
-</footer>
-
-
-  </div>
-  <script>
-    const defaultConfig = {
-      main_title: "✨ مقياس بصيرة",
-      subtitle: "منظومة متكاملة لاكتشاف أنماط الشخصية والميول والذكاءات",
-      tagline: "رؤية واضحة… تعطي حياة أوضح.",
-      intro_title: "🌟 ما هو مقياس بصيرة؟",
-      footer_message: "🌿 \"ما ت��حث عنه في الآخرين… قد تجده أولًا في نفسك.\"",
-      background_color: "#0E213F",
-      surface_color: "#2B426A",
-      text_color: "#F2F4F7",
-      primary_action_color: "#D6B46A",
-      secondary_action_color: "#D6B46A"
-    };
-
-    // Navigation functionality
-    function showSection(sectionId) {
-      // Hide all sections
-      const sections = ['home-section', 'about-section', 'pillars-section', 'start-section', 'faq-section'];
-      sections.forEach(id => {
-        const element = document.getElementById(id);
-        if (element) {
-          element.style.display = 'none';
-        }
-      });
-
-      // Show the selected section
-      const selectedSection = document.getElementById(sectionId);
-      if (selectedSection) {
-        selectedSection.style.display = 'block';
-      }
-
-      // Update active state on nav links
-      document.querySelectorAll('.nav-link').forEach(link => {
-        link.style.color = '#F2F4F7';
-      });
-      const activeLink = document.querySelector(`a[href="#${sectionId.replace('-section', '')}"]`);
-      if (activeLink) {
-        activeLink.style.color = '#D6B46A';
-      }
-
-      // Scroll to top smoothly when changing sections
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    // Setup navigation event listeners
-    document.addEventListener('DOMContentLoaded', function() {
-      const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-      const navLinks = document.querySelector('.nav-links');
-      
-      // Toggle mobile menu
-      if (mobileMenuBtn) {
-        mobileMenuBtn.addEventListener('click', function() {
-          navLinks.classList.toggle('active');
-          this.textContent = navLinks.classList.contains('active') ? '✕' : '☰';
-        });
-      }
-      
-      document.querySelectorAll('.nav-link').forEach(link => {
-        link.addEventListener('click', function(e) {
-          e.preventDefault();
-          const targetId = this.getAttribute('href').substring(1) + '-section';
-          showSection(targetId);
-          
-          // Close mobile menu after clicking a link
-          if (window.innerWidth <= 768) {
-            navLinks.classList.remove('active');
-            if (mobileMenuBtn) {
-              mobileMenuBtn.textContent = '☰';
-            }
-          }
-        });
-      });
-
-      // Show home section by default
-      showSection('home-section');
-      
-      // Close mobile menu when clicking outside
-      document.addEventListener('click', function(e) {
-        if (window.innerWidth <= 768 && navLinks.classList.contains('active')) {
-          if (!navLinks.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
-            navLinks.classList.remove('active');
-            if (mobileMenuBtn) {
-              mobileMenuBtn.textContent = '☰';
-            }
-          }
-        }
-      });
-    });
-
-    async function onConfigChange(config) {
-      const mainTitle = config.main_title || defaultConfig.main_title;
-      const subtitle = config.subtitle || defaultConfig.subtitle;
-      const tagline = config.tagline || defaultConfig.tagline;
-      const introTitle = config.intro_title || defaultConfig.intro_title;
-      const footerMessage = config.footer_message || defaultConfig.footer_message;
-      
-      const backgroundColor = config.background_color || defaultConfig.background_color;
-      const surfaceColor = config.surface_color || defaultConfig.surface_color;
-      const textColor = config.text_color || defaultConfig.text_color;
-      const primaryActionColor = config.primary_action_color || defaultConfig.primary_action_color;
-      const secondaryActionColor = config.secondary_action_color || defaultConfig.secondary_action_color;
-
-      document.getElementById('main-title').textContent = mainTitle;
-      document.getElementById('subtitle').textContent = subtitle;
-      document.getElementById('tagline').textContent = tagline;
-      document.getElementById('intro-title').textContent = introTitle;
-      document.getElementById('footer-message').textContent = footerMessage;
-
-      document.querySelector('.gradient-bg').style.background = `linear-gradient(160deg, ${backgroundColor} 0%, ${surfaceColor} 100%)`;
-
-      const goldAccents = document.querySelectorAll('.gold-accent');
-      goldAccents.forEach(el => {
-        el.style.color = secondaryActionColor;
-      });
-    }
-
-    function mapToCapabilities(config) {
-      return {
-        recolorables: [
-          {
-            get: () => config.background_color || defaultConfig.background_color,
-            set: (value) => {
-              if (window.elementSdk) {
-                window.elementSdk.config.background_color = value;
-                window.elementSdk.setConfig({ background_color: value });
-              }
-            }
-          },
-          {
-            get: () => config.surface_color || defaultConfig.surface_color,
-            set: (value) => {
-              if (window.elementSdk) {
-                window.elementSdk.config.surface_color = value;
-                window.elementSdk.setConfig({ surface_color: value });
-              }
-            }
-          },
-          {
-            get: () => config.text_color || defaultConfig.text_color,
-            set: (value) => {
-              if (window.elementSdk) {
-                window.elementSdk.config.text_color = value;
-                window.elementSdk.setConfig({ text_color: value });
-              }
-            }
-          },
-          {
-            get: () => config.primary_action_color || defaultConfig.primary_action_color,
-            set: (value) => {
-              if (window.elementSdk) {
-                window.elementSdk.config.primary_action_color = value;
-                window.elementSdk.setConfig({ primary_action_color: value });
-              }
-            }
-          },
-          {
-            get: () => config.secondary_action_color || defaultConfig.secondary_action_color,
-            set: (value) => {
-              if (window.elementSdk) {
-                window.elementSdk.config.secondary_action_color = value;
-                window.elementSdk.setConfig({ secondary_action_color: value });
-              }
-            }
-          }
-        ],
-        borderables: [],
-        fontEditable: undefined,
-        fontSizeable: undefined
-      };
-    }
-
-    function mapToEditPanelValues(config) {
-      return new Map([
-        ["main_title", config.main_title || defaultConfig.main_title],
-        ["subtitle", config.subtitle || defaultConfig.subtitle],
-        ["tagline", config.tagline || defaultConfig.tagline],
-        ["intro_title", config.intro_title || defaultConfig.intro_title],
-        ["footer_message", config.footer_message || defaultConfig.footer_message]
-      ]);
-    }
-
-    if (window.elementSdk) {
-      window.elementSdk.init({
-        defaultConfig,
-        onConfigChange,
-        mapToCapabilities,
-        mapToEditPanelValues
-      });
-    }
-  </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a376cbc805eee6e',t:'MTc2Mzk3MTc3My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
- </body>
-</html>
