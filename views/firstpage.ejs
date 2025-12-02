@@ -290,7 +290,7 @@ background: linear-gradient(135deg, #1c3a63fb 10%, #3a7cc7 70% , #764ba2b0 100%)
   display: flex;
   align-items: center;
   justify-content: flex-end; /* 🔥 كل شيء على اليمين */
-    padding: 0 3rem; /* 🔥 يبعدهم عن الطرف */
+    padding: 0 1.5rem; /* 🔥 يبعدهم عن الطرف */
   gap: 3.5rem; /* 🔥 مسافات بين العناصر */
 }
 
@@ -303,8 +303,8 @@ background: linear-gradient(135deg, #1c3a63fb 10%, #3a7cc7 70% , #764ba2b0 100%)
     }
     
     .logo-icon {
-      width: 64px;
-      height: 64px;
+      width: 100px;
+      height: 100px;
       flex-shrink: 0;
     }
     
@@ -503,10 +503,16 @@ background: linear-gradient(135deg, #1c3a63fb 10%, #3a7cc7 70% , #764ba2b0 100%)
 </style
 
  <body>
-<div class="gradient-bg"><!-- Navigation Bar --> <nav class="nav-bar"> <div class="nav-container"> <div class="nav-logo"> <svg class="logo-icon" width="40" height="40" viewbox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="25" stroke="#D6B46A" stroke-width="2" /> <path d="M40 20 L50 35 L40 32 L30 35 Z" fill="#D6B46A" /> <circle cx="40" cy="40" r="8" fill="#D6B46A" /> </svg><span class="logo-text">مقياس بصيرة</span> </div>
+<div class="gradient-bg"><!-- Navigation Bar --> <nav class="nav-bar"> 
+  <div class="nav-container"> 
+    <div class="nav-logo">
+      <img src="logo.svg" alt="Logo" class="logo-icon" />       
+       <span class="logo-text">مقياس بصيرة</span> </div>
+
+
      <div class="nav-links"><a href="#home" class="nav-link">الرئيسية</a> <a href="#about" class="nav-link">عن المقياس</a> <a href="#pillars" class="nav-link">محاور بصيرة</a> <a href="#start" class="nav-link">بدء المقياس</a> <a href="#faq" class="nav-link">الأسئلة الشائعة</a>
      </div>
-     <div class="nav-user"><a href="#login" class="login-link">تسجيل الدخول</a> <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="القائمة">☰</button>
+     <div class="nav-user"><a href="/login" class="login-link">تسجيل الدخول</a> <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="القائمة">☰</button>
      </div>
     </div>
     <div class="nav-border"></div>
@@ -535,10 +541,7 @@ background: linear-gradient(135deg, #1c3a63fb 10%, #3a7cc7 70% , #764ba2b0 100%)
    <div class="w-full" style="padding: 3rem 1.5rem; padding-top: 110px; position: relative; z-index: 10;"><!-- Header Section -->
     <header class="text-center mb-16" style="padding-top: 1rem; position: relative; z-index: 10;">
      <div class="mb-8 relative">
-      <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 120px; height: 120px; background: radial-gradient(circle, rgba(214, 180, 106, 0.15) 0%, transparent 70%); border-radius: 50%;"></div>
-      <svg class="mx-auto pulse-glow" style="position: relative; z-index: 2; filter: drop-shadow(0 4px 12px rgba(214, 180, 106, 0.4));" width="80" height="80" viewbox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="35" stroke="#D6B46A" stroke-width="2" opacity="0.3" /> <circle cx="40" cy="40" r="25" stroke="#D6B46A" stroke-width="2" /> <path d="M40 20 L50 35 L40 32 L30 35 Z" fill="#D6B46A" /> <circle cx="40" cy="40" r="8" fill="#D6B46A" />
-      </svg>
-     </div>
+
 <h1 style="
   font-size: 4.5rem;
   font-weight: 700;
