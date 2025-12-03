@@ -88,68 +88,6 @@ app.get("/login", function (req, res) {
   res.render("login", { collection: "users" });
 });
 
-app.get("/admin", isAdmin, async function (req, res) {
-  let user = await User.find({});
-  user = user.map((x, i) => {
-    let completion = 0;
-    let prog = "";
-    prog =
-      completion == 100
-        ? "completed"
-        : completion > 0
-        ? "in-progress"
-        : "not-started";
-    if (x.name.trim() == "عبدالاله علي دعاس الحازمي") {
-      console.log(x["p1"], x["p2"], x["p3"]);
-    }
-    return {
-      id: x.user,
-      name: x.name,
-      phone: x.phone,
-      studentId: `${i}`,
-      status: prog,
-      completion: completion,
-      riasec: null,
-      mbti: null,
-      thk: null,
-      startTime: null,
-      endTime: null,
-    };
-  });
-  res.render("adminPage", { data: JSON.stringify(user) });
-});
-
-app.get("/admin", isTeacher, async function (req, res) {
-  let user = await User.find({techer: req.session.name});
-  user = user.map((x, i) => {
-    let completion = 0;
-    let prog = "";
-    prog =
-      completion == 100
-        ? "completed"
-        : completion > 0
-        ? "in-progress"
-        : "not-started";
-    if (x.name.trim() == "عبدالاله علي دعاس الحازمي") {
-      console.log(x["p1"], x["p2"], x["p3"]);
-    }
-    return {
-      id: x.user,
-      name: x.name,
-      phone: x.phone,
-      studentId: `${i}`,
-      status: prog,
-      completion: completion,
-      riasec: null,
-      mbti: null,
-      thk: null,
-      startTime: null,
-      endTime: null,
-    };
-  });
-  res.render("adminPage", { data: JSON.stringify(user) });
-});
-
 app.get("/admin", function (req, res) {
   res.render("login", { collection: "admin" });
 });
@@ -165,8 +103,6 @@ app.get("/p1", isAuthenticated, function (req, res) {
     res.redirect("home");
     return;
   }
-  // console.log(req.session)
-  // console.log(req.session.exams.includes("p55"))
   res.render("p1", { name: req.session.name });
 });
 app.get("/p1", function (req, res) {
