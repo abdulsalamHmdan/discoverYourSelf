@@ -1,5 +1,8 @@
 var express = require("express");
 var session = require("express-session");
+const mongoose = require("mongoose");
+const User = require("./models/user");
+const Teacher = require("./models/teacher");
 var app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(
@@ -16,46 +19,46 @@ app.use(express.static(path.join(__dirname, "public")));
 const { MongoClient, ObjectId } = require("mongodb");
 const ejs = require("ejs");
 const url =
-  "mongodb+srv://family:aS0507499583@cluster0.dvljyns.mongodb.net/?retryWrites=true&w=majority";
-const client = new MongoClient(url);
+  "mongodb+srv://family:aS0507499583@cluster0.dvljyns.mongodb.net/soqy?retryWrites=true&w=majority";
+mongoose
+  .connect(url)
+  .then(() => console.log("تم الاتصال بقاعدة البيانات بنجاح!"))
+  .catch((err) => console.log("فشل الاتصال:", err));
 const axios = require("axios");
-// async function addNames() {
-//     await client.connect();
-//     const db = client.db("soqy");
-//     const collection = db.collection('users');
-//    collection.updateMany({}, {
-//     $set:{"exams":["p1","p2","p3"]}
-//     }).then(()=>{
-//         console.log("done");
-
-//     }).catch(()=>{
-//         console.log("error");
-
-//     })
-
-// await collection.insertMany(users).then(() => {
-//     // res.send("saved");
-// }).catch(() => {
-//     // res.send("err");
-// })
-
-// }
-// addNames();
-
-//Auth
-
+const teacher = require("./models/teacher");
 function isAuthenticated(req, res, next) {
-  if (req.session.permissions == "student") next();
+  if (req.session.role == "user") next();
   else next("route");
 }
 function isAdmin(req, res, next) {
-  if (req.session.permissions == "admin") next();
+  if (req.session.role == "admin") next();
   else next("route");
 }
 function isTeacher(req, res, next) {
-  if (req.session.permissions == "teacher") next();
+  if (req.session.role == "teacher") next();
   else next("route");
 }
+
+// app.get("/register", async (req, res) => {
+//   try {
+//     const newTeacher = await Teacher.create({
+//       user: "admin",
+//       email: "abdulsalam.hmdan@gmail.com",
+//       pass: 112233, // ملاحظة: يجب تشفير كلمة المرور في التطبيق الحقيقي
+//       name: "مسؤول النظام",
+//       role: "admin",
+//     });
+//     res.json(newTeacher);
+//   } catch (error) {
+//     res.status(400).send(error.message);
+//   }
+// });
+
+// مثال: البحث عن جميع المستخدمين (Read)
+// app.get("/users", async (req, res) => {
+//   const users = await User.find(); // دالة جاهزة من الموديل
+//   res.json(users);
+// });
 
 // Routing
 app.get("/", isAuthenticated, function (req, res) {
@@ -86,23 +89,10 @@ app.get("/login", function (req, res) {
 });
 
 app.get("/admin", isAdmin, async function (req, res) {
-  await client.connect();
-  const db = client.db("soqy");
-  const collection = db.collection("users");
-  let user = await collection.find({}).toArray();
-  client.close();
+  let user = await User.find({});
   user = user.map((x, i) => {
     let completion = 0;
     let prog = "";
-    if (x["p1"]) {
-      completion += 33;
-    }
-    if (x["p2"]) {
-      completion += 33;
-    }
-    if (x["p3"]) {
-      completion += 34;
-    }
     prog =
       completion == 100
         ? "completed"
@@ -119,55 +109,47 @@ app.get("/admin", isAdmin, async function (req, res) {
       studentId: `${i}`,
       status: prog,
       completion: completion,
-      riasec: x?.stat?.p1?.tops?.map((l) => l.dim),
-      mbti: x?.stat?.p2?.type,
-      thk: x?.stat?.p3?.tops?.map((l) => l.name),
-      startTime: +x?.stat?.start,
-      endTime: +x?.stat?.end,
+      riasec: null,
+      mbti: null,
+      thk: null,
+      startTime: null,
+      endTime: null,
     };
   });
   res.render("adminPage", { data: JSON.stringify(user) });
 });
+
 app.get("/admin", isTeacher, async function (req, res) {
-  await client.connect();
-  const db = client.db("soqy");
-  const collection = db.collection("users");
-  let user = await collection.find({ techer: req.session.name }).toArray();
-  client.close();
+  let user = await User.find({techer: req.session.name});
   user = user.map((x, i) => {
     let completion = 0;
     let prog = "";
-    if (x["p1"]) {
-      completion += 33;
-    }
-    if (x["p2"]) {
-      completion += 33;
-    }
-    if (x["p3"]) {
-      completion += 34;
-    }
     prog =
       completion == 100
         ? "completed"
         : completion > 0
         ? "in-progress"
         : "not-started";
-
+    if (x.name.trim() == "عبدالاله علي دعاس الحازمي") {
+      console.log(x["p1"], x["p2"], x["p3"]);
+    }
     return {
       id: x.user,
       name: x.name,
       phone: x.phone,
+      studentId: `${i}`,
       status: prog,
       completion: completion,
-      riasec: x?.stat?.p1?.tops?.map((l) => l.dim),
-      mbti: x?.stat?.p2?.type,
-      thk: x?.stat?.p3?.tops?.map((l) => l.name),
-      startTime: +x?.stat?.start,
-      endTime: +x?.stat?.end,
+      riasec: null,
+      mbti: null,
+      thk: null,
+      startTime: null,
+      endTime: null,
     };
   });
   res.render("adminPage", { data: JSON.stringify(user) });
 });
+
 app.get("/admin", function (req, res) {
   res.render("login", { collection: "admin" });
 });
@@ -304,27 +286,25 @@ app.post("/paying", isAuthenticated, async (req, res) => {
 app.get("/signup", async function ({ body: data }, res) {
   res.render("signup");
 });
-
 app.post("/signup", express.json(), async function ({ body: data }, res) {
-  await client.connect();
-  const db = client.db("soqy");
-  const collection = db.collection("users");
-  const check = await collection.findOne({ user: data.user });
-  if (check !== null) {
+  const check = await User.findOne({ user: data.user });
+  const check2 = await User.findOne({ user: data.user });
+  if (check) {
     res.send("قم باختيار اسم مستخدم اخر");
     return;
   }
-  let user = {
+  if (check2) {
+    res.send("البريد الالكتروني مستخدم بالفعل");
+    return;
+  }
+  let userData = {
     user: data.user,
     pass: data.pass,
     name: data.name,
     phone: data.phone,
     email: data.email,
-    permissions: "student",
-    exams: [],
   };
-  await collection
-    .insertOne(user)
+  await User.create(userData)
     .then(() => {
       res.send("done");
     })
@@ -332,84 +312,6 @@ app.post("/signup", express.json(), async function ({ body: data }, res) {
       res.send("err");
     });
 });
-
-// app.post("/addUser", async function ({ body: data }, res) {
-//   await client.connect();
-//   const db = client.db("soqy");
-//   const collection = db.collection("users");
-//   const collection2 = db.collection("tokens");
-//   const token = await collection2.findOne({ _id: new ObjectId(data.token) });
-//   console.log(token);
-//   const check = await collection.findOne({ user: data.user });
-//   if (token?.status !== "new") {
-//     res.send("الرمز غير فعال");
-//     return;
-//   }
-//   if (check !== null) {
-//     res.send("المستخدم موجود");
-//     return;
-//   }
-
-//   let user = {
-//     user: data.user,
-//     pass: data.pass,
-//     idNumber: data.idNumber,
-//     name: data.name,
-//     phone: data.phone,
-//     email: data.email,
-//     teacher: token.teacher,
-//     permissions: "student",
-//     exams: token.exams,
-//   };
-//   console.log(user);
-//   await collection
-//     .insertMany(user)
-//     .then(() => {
-//       res.send("saved");
-//     })
-//     .catch(() => {
-//       res.send("err");
-//     });
-// });
-
-// function sumArray(numbers) {
-//   // .reduce(accumulator, currentValue) => accumulator + currentValue
-//   // القيمة 0 هي القيمة الابتدائية للمجمع (accumulator)
-//   return numbers.reduce((total, current) => +total + +current, 0);
-// }
-// app.get("/aa", async function (req, res) {
-//   await client.connect();
-//   const db = client.db("soqy");
-//   const collection = db.collection("archive");
-//   const user = await collection.find({}).toArray();
-//   function aa(xx) {
-//     let a1 = user
-//       .map((x) => x?.rate?.qus[xx]?.val || null)
-//       .filter((x) => x !== null);
-//     console.log(sumArray(a1), a1.length);
-//     let gg = (sumArray(a1) - a1.length) / a1.length;
-//     return Math.ceil((gg / 2) * 100);
-//   }
-
-//   client.close();
-//   let all = [];
-//   for (let i = 0; i < 10; i++) {
-//     all.push(aa(i));
-//   }
-//   res.send(all);
-// });
-
-// app.get("/rate", async function (req, res) {
-//   await client.connect();
-//   const db = client.db("soqy");
-//   const collection = db.collection("archive");
-//   const user = await collection.find({}).toArray();
-//   console.log(user.length);
-//   client.close();
-//   res.render("rateShow", { data: user });
-// });
-
-// Admin pages
 
 app.get("/admin/Results/:id/:exam", isAdmin, async function (req, res) {
   await client.connect();
@@ -638,32 +540,49 @@ app.post(
   "/login",
   express.urlencoded({ extended: false }),
   async function (req, res) {
-    await client.connect();
-    const db = client.db("soqy");
-    const collection = db.collection(req.body.collection);
-    // {projection:{ email: 1, }}
-    const user = await collection.findOne({
-      user: req.body.user,
-      pass: req.body.pass,
-    });
-    if (user) {
-      req.session.regenerate(function (err) {
-        if (err) next(err);
-        req.session.user = user.user;
-        req.session.name = user.name;
-        req.session.permissions = user.permissions;
-        req.session.p1 = user.p1 ? "done" : "no";
-        req.session.p2 = user.p2 ? "done" : "no";
-        req.session.p3 = user.p3 ? "done" : "no";
-        req.session.exams = user.exams;
-        req.session.rate = user.rate ? "done" : "no";
-        req.session.save(function (err) {
-          if (err) return next(err);
-          res.send(user.user == "admin" ? "admin" : "exist");
-        });
+    const collection = req.body.collection;
+    if (collection == "users") {
+      console.log("user login");
+      const user = await User.findOne({
+        user: req.body.user,
+        pass: req.body.pass,
       });
+      console.log(user);
+      if (user) {
+        req.session.regenerate(function (err) {
+          if (err) next(err);
+          req.session.user = user.user;
+          req.session.name = user.name;
+          req.session.role = user.role;
+          req.session.save(function (err) {
+            if (err) return next(err);
+            res.send("exist");
+          });
+        });
+      } else {
+        res.send("notFound");
+      }
     } else {
-      res.send("notFound");
+      console.log("admin login");
+      const user = await Teacher.findOne({
+        user: req.body.user,
+        pass: req.body.pass,
+      });
+      console.log(user);
+      if (user) {
+        req.session.regenerate(function (err) {
+          if (err) next(err);
+          req.session.user = user.user;
+          req.session.name = user.name;
+          req.session.role = user.role;
+          req.session.save(function (err) {
+            if (err) return next(err);
+            res.send(user.user == "admin" ? "admin" : "exist");
+          });
+        });
+      } else {
+        res.send("notFound");
+      }
     }
   }
 );
