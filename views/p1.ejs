@@ -84,13 +84,22 @@
     <div id="onboarding-screen" class=" min-h-screen gradient-bg flex items-center justify-center p-4">
         <div class="max-w-2xl w-full">
 
+            
 
             <!-- المحتوى الرئيسي -->
             <div class="bg-white/95 backdrop-blur-sm rounded-3xl p-8 shadow-2xl">
+                
+                    <button onclick="openSettings()"
+        class="bg-red-600 hover:bg-red-700 text-white px-4 py-1 rounded-lg flex items-center gap-2 transition-all hover:scale-70 mr-auto">
+    <span>⬅️</span>
+    <span class="mobile-hidden">رجوع</span>
+</button>
+
+                
                 <div class="text-center mb-8">
                     <div class="text-6xl mb-4">🎯</div>
                     <h1 class="text-4xl font-bold text-gray-800 mb-4">اكتشف ميولك المهنية!</h1>
-                    <h3 class="text-2xl text-blue-600">مرحبا <%=name %> في الاختبار الاول</h3>
+                    <h3 class="text-2xl text-blue-600">مرحبا <%=name %> في المقياس الاول</h3>
                     <p class="text-lg text-gray-600">قياس بصيرة المستند على أبحاث العالم النفسي جون هولاند ..</p>
                 </div>
 
@@ -199,7 +208,7 @@
                             <div class="text-3xl mb-2">⏱️</div>
                             <div class="font-bold text-green-600 text-xl">15-20</div>
                             <div class="text-sm text-gray-600 font-medium">دقيقة</div>
-                            <div class="text-xs text-gray-500 mt-1">وقت مناسب</div>
+                            <div class="text-xs text-gray-500 mt-1">الوقت المقدر</div>
                         </div>
                         <div
                             class="bg-white rounded-xl p-4 border border-purple-200 text-center hover:shadow-md transition-shadow">
@@ -212,7 +221,7 @@
                             class="bg-white rounded-xl p-4 border border-orange-200 text-center hover:shadow-md transition-shadow">
                             <div class="text-3xl mb-2">🧩</div>
                             <div class="font-bold text-orange-600 text-xl">2</div>
-                            <div class="text-sm text-gray-600 font-medium">مسار</div>
+                            <div class="text-sm text-gray-600 font-medium">مسارين</div>
                             <div class="text-xs text-gray-500 mt-1">دقة أعلى</div>
                         </div>
                     </div>
@@ -704,7 +713,7 @@
             <div class="text-center mt-8">
                 <button onclick="restartTest()"
                     class="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-200 transform hover:scale-105">
-                    الانتقال الى الاختبار الثاني ( MPTI )
+                    الانتقال الى المقياس الثاني ( MPTI )
                 </button>
             </div>
         </div>
