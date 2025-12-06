@@ -3,6 +3,8 @@ var session = require("express-session");
 const mongoose = require("mongoose");
 const User = require("./models/user");
 const Teacher = require("./models/teacher");
+const Payment = require("./models/payment");
+const Exam = require("./models/exam");
 var app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(
@@ -26,6 +28,7 @@ mongoose
   .catch((err) => console.log("فشل الاتصال:", err));
 const axios = require("axios");
 const teacher = require("./models/teacher");
+const user = require("./models/user");
 function isAuthenticated(req, res, next) {
   if (req.session.role == "user") next();
   else next("route");
@@ -92,8 +95,13 @@ app.get("/admin", function (req, res) {
   res.render("login", { collection: "admin" });
 });
 
-app.get("/home", isAuthenticated, function (req, res) {
-  res.render("home", { data: req.session });
+app.get("/home", isAuthenticated, async (req, res) => {
+  console.log(req.session.userId);
+  const exams = await Exam.find({
+    user: new mongoose.Types.ObjectId(req.session.userId),
+  });
+  console.log(exams);
+  res.render("home", { data: {exams} });
 });
 app.get("/home", function (req, res) {
   res.redirect("/");
@@ -149,73 +157,82 @@ app.get("/p3rate", function (req, res) {
 });
 
 app.get("/store", async (req, res) => {
-  res.render("store", { exams: req.session.exams });
+  res.render("store", { exams: [] });
 });
 app.post("/payment", isAuthenticated, async (req, res) => {
-  const paymentData = {
-    amount: +req.body.price,
-    currency: "SAR",
-    customer: {
-      first_name: "Ahmed",
-      email: "ahmed@example.com",
-    },
-    source: {
-      id: "src_all",
-    },
-    customer_initiated: true,
-    threeDSecure: true,
-    save_card: false,
-    description: "Test Description",
-    metadata: { udf1: "Metadata 1" },
-    receipt: { email: false, sms: false },
-    reference: { transaction: "txn_01", order: "ord_01" },
-    merchant: { id: "1234" },
-    post: { url: "https://discoveryourself.onrender.com/paying" },
-    redirect: { url: "https://discoveryourself.onrender.com/text" },
-  };
-  try {
-    const response = await axios.post(
-      "https://api.tap.company/v2/charges", // نقطة نهاية (Endpoint) لإنشاء الدفعة
-      paymentData,
-      {
-        headers: {
-          Authorization: `Bearer sk_test_XKokBfNWv6FIYuTMg5sLPjhJ`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    const redirectUrl = response.data.transaction.url;
-    res.send(redirectUrl);
-  } catch (error) {
-    res.status(500).send("Error creating payment session");
-  }
+  // const paymentData = {
+  //   amount: +req.body.price,
+  //   currency: "SAR",
+  //   customer: {
+  //     first_name: "Ahmed",
+  //     email: "ahmed@example.com",
+  //   },
+  //   source: {
+  //     id: "src_all",
+  //   },
+  //   customer_initiated: true,
+  //   threeDSecure: true,
+  //   save_card: false,
+  //   description: "Test Description",
+  //   metadata: { udf1: "Metadata 1" },
+  //   receipt: { email: false, sms: false },
+  //   reference: { transaction: "txn_01", order: "ord_01" },
+  //   merchant: { id: "1234" },
+  //   post: { url: "https://discoveryourself.onrender.com/paying" },
+  //   redirect: { url: "https://discoveryourself.onrender.com/text" },
+  // };
+  // try {
+  // const response = await axios.post(
+  //   "https://api.tap.company/v2/charges", // نقطة نهاية (Endpoint) لإنشاء الدفعة
+  //   paymentData,
+  //   {
+  //     headers: {
+  //       Authorization: `Bearer sk_test_XKokBfNWv6FIYuTMg5sLPjhJ`,
+  //       "Content-Type": "application/json",
+  //     },
+  //   }
+  // );
+  // const redirectUrl = response.data.transaction.url;
+  // }
+  //  catch (error) {
+  //   res.status(500).send("Error creating payment session");
+  // }
+  const user = await User.findOne({ user: req.session.user });
+  Payment.create({
+    tapId: "tap_123456789", // يجب أن يكون هذا معرف فريد من نوعه لكل دفعة
+    type: "personal",
+    exams: ["p1", "p2", "p3"],
+    url: "https://baserah.app/text",
+    users: [user],
+    teacher: null,
+    stat: "pending",
+  });
+
+  res.send("done");
 });
 
-app.get("/text", isAuthenticated, async (req, res) => {
-  await client.connect();
-  const db = client.db("soqy");
-  const collection = db.collection("users");
-  collection
-    .updateOne(
-      { user: req.session.user },
-      { $set: { exams: ["p1", "p2", "p3"] } }
-    )
-    .then(() => {
-      req.session["exams"] = ["p1", "p2", "p3"];
-      req.session.save(function (err) {
-        console.log("done");
-        client.close();
-        res.render("storeTxt");
+app.get("/text", async (req, res) => {
+  const paymentRecord = await Payment.findOne({
+    tapId: req.query.tapId,
+  }).populate("users");
+  if (paymentRecord && paymentRecord.stat === "pending") {
+    // console.log("Payment completed for users:", paymentRecord);
+    let exams = [];
+    paymentRecord.users.forEach((u) => {
+      paymentRecord.exams.forEach((e) => {
+        exams.push({ payment: paymentRecord._id, user: u._id, type: e });
       });
-    })
-    .catch(() => {
-      console.log("error");
-      client.close();
-      res.send("حدث خطأ ما");
     });
+    await Exam.insertMany(exams);
+    paymentRecord.stat = "completed";
+    await paymentRecord.save();
+    res.render("storeTxt");
+  } else {
+    res.send("Payment record not found or already processed.");
+  }
 });
 app.post("/paying", isAuthenticated, async (req, res) => {
-  console.log("Payment successful:", req.body);
+  // console.log("Payment successful:", req.body);
   res.sendStatus(200);
 });
 
@@ -323,7 +340,7 @@ app.get("/admin/end/:id", isAdmin, async function (req, res) {
             ),
         },
       ];
-      console.log(rate);
+      // console.log(rate);
       res.render("studentPage", {
         id: user.user,
         name: user.name,
@@ -394,7 +411,7 @@ app.post("/saveExam", async function (req, res) {
       req.body.ob == "1" ? JSON.parse(req.body.data) : req.body.data,
     ["stat.end"]: `${Date.now()}`,
   };
-  console.log(object);
+  // console.log(object);
   await collection
     .updateOne({ user: req.session.user }, { $set: object })
     .then(() => {
@@ -478,15 +495,19 @@ app.post(
   async function (req, res) {
     const collection = req.body.collection;
     if (collection == "users") {
-      console.log("user login");
+      // console.log("user login");
       const user = await User.findOne({
         user: req.body.user,
         pass: req.body.pass,
       });
-      console.log(user);
+      // console.log(user);
       if (user) {
+        console.log("User ID:", user._id.toString());
+        const aa = user._id.toString();
+        console.log(typeof aa);
         req.session.regenerate(function (err) {
           if (err) next(err);
+          req.session.userId = aa;
           req.session.user = user.user;
           req.session.name = user.name;
           req.session.role = user.role;

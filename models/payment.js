@@ -8,11 +8,29 @@ const paymentSchema = new mongoose.Schema(
       required: true,
       unique: true, // لضمان عدم تكرار رقم الفاتورة اليدوي
     },
-    // users array form table users
+    type: {
+      type: String, // أو Number حسب رغبتك
+      required: true,
+      unique: true, // لضمان عدم تكرار رقم الفاتورة اليدوي
+      default: "personal",
+      enum: ["personal", "organization"],
+    },
+    url: {
+      type: String, // أو Number حسب رغبتك
+      required: true,
+      default: "personal",
+    },
     users: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "user",
+      },
+    ],
+    exams: [
+      {
+        type:String,
+        required:true,
+        enum:["p1","p2","p3"]
       },
     ],
 
