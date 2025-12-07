@@ -884,9 +884,9 @@
             testState.questionEndTime = Date.now() - testState.startedAt;
             var data = new URLSearchParams();
             data.append('data', JSON.stringify(testState));
-            data.append('type', 'p1');
+            data.append('type', 'exam');
             data.append('ob', '1');
-            fetch('saveExam', {
+            fetch('', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
@@ -1197,18 +1197,18 @@
             data.append('data', JSON.stringify({ tops: top3, time: testState.questionEndTime }));
             data.append('type', 'stat.p1');
             data.append('ob', '1');
-            fetch('saveExam', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-                },
-                body: data
-            }).then(() => {
-                // location.reload()
-            }).catch(() => {
-                console.log("error")
+                // fetch('', {
+                //     method: 'POST',
+                //     headers: {
+                //         'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                //     },
+                //     body: data
+                // }).then(() => {
+                //     // location.reload()
+                // }).catch(() => {
+                //     console.log("error")
 
-            })
+                // })
             container.appendChild(dimensionsContainer);
         }
 

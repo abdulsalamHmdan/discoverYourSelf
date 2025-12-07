@@ -928,14 +928,14 @@ info = {
                         <h3 class="test-title" id="test1-title"><%=info[exam.type].title %></h3>
                         <p class="test-description" id="test1-description"><%=info[exam.type].desc %></p>
                         <div class="test-features">
-                            <% if (!data.exams.includes("p1") ) { %>
-                                <span class="feature-tag3"
-                                    style="padding:12px 28px;font-size:18px;border-radius:10px;">غير محجوز</span>
-                                <% }else if (data.p1 !=="done" ) { %>
-                                    <a href="/p1" class="feature-tag1"
+                            <% if (exam.stat == "new" ) { %>
+                                    <a href="exam/<%= exam._id %>" class="feature-tag1"
                                         style="padding:12px 28px;font-size:18px;border-radius:10px;">بدء المقياس</a>
+                                <% }else if (exam.stat == "inprogress" ) { %>
+                                    <a href="exam/<%= exam._id %>" class="feature-tag1"
+                                        style="padding:12px 28px;font-size:18px;border-radius:10px;">التقييم</a>
                                     <% } else { %>
-                                        <a href="/results/p1" class="feature-tag2"
+                                        <a href="exam/<%= exam._id %>" class="feature-tag2"
                                             style="padding:12px 28px;font-size:18px;border-radius:10px;">استعراض
                                             النتائج</a>
                                         <% } %>
@@ -944,71 +944,6 @@ info = {
                 </div>
                 <% }); %>
 
-                 <!-- <div class="test-card <%= !data.exams.includes('p2') ?'disabled-div':''%> ">
-                    <div class="card-header"><span class="test-icon">🧩</span>
-                        <div class="card-badge">
-                            MBTI
-                        </div>
-                    </div>
-                    <div class="card-content">
-                        <h3 class="test-title" id="test2-title">مقياس مايرز-بريجز للأنماط الشخصية</h3>
-                        <p class="test-description" id="test2-description">أحد أشهر مقياسات الشخصية
-                            عالمياً،
-                            يحدد
-                            نمطك
-                            الشخصي من بين 16 نمطاً مختلفاً بناءً على أربعة أبعاد: الانطوائية/الانبساطية،
-                            الحدس/الحس،
-                            التفكير/الشعور، والحكم/الإدراك. يوفر فهماً عميقاً لطريقة تفكيرك واتخاذ قراراتك
-                            وتفاعلك مع
-                            العالم.</p>
-                        <div class="test-features">
-                            <% if (!data.exams.includes("p2") ) { %>
-                                <span class="feature-tag3"
-                                    style="padding:12px 28px;font-size:18px;border-radius:10px;">غير محجوز</span>
-                                <% }else if (data.p2 !=="done" ) { %>
-                                    <a href="/p2" class="feature-tag1"
-                                        style="padding:12px 28px;font-size:18px;border-radius:10px;">بدء المقياس</a>
-                                    <% } else { %>
-                                        <a href="/results/p2" class="feature-tag2"
-                                            style="padding:12px 28px;font-size:18px;border-radius:10px;">استعراض
-                                            النتائج</a>
-                                        <% } %>
-                        </div>
-
-                    </div>
-                </div>
-                <div class="test-card <%= !data.exams.includes('p3') ?'disabled-div':''%> ">
-                    <div class="card-header"><span class="test-icon">🌟</span>
-                        <div class="card-badge">
-                            Gardner
-                        </div>
-                    </div>
-                    <div class="card-content">
-                        <h3 class="test-title" id="test3-title">مقياس الذكاءات المتعددة لجاردنر</h3>
-                        <p class="test-description" id="test3-description">يستند إلى نظرية هوارد
-                            جاردنر للذكاءات
-                            المتعددة، ويقيس ثمانية أنواع من الذكاء: اللغوي، المنطقي-الرياضي،
-                            المكاني، الصوتي،
-                            الجسدي-الحركي، الطبيعي، الاجتماعي، والذاتي. يساعدك في اكتشاف نقاط قوتك
-                            الفكرية
-                            المتنوعة
-                            و تطوير إمكانياتك الكامنة.</p>
-                        <div class="test-features">
-                            <% if (!data.exams.includes("p3") ) { %>
-                                <span class="feature-tag3"
-                                    style="padding:12px 28px;font-size:18px;border-radius:10px;">غير محجوز</span>
-                                <% }else if (data.p3 !=="done" ) { %>
-                                    <a href="/p3" class="feature-tag1"
-                                        style="padding:12px 28px;font-size:18px;border-radius:10px;">بدء المقياس</a>
-                                    <% } else { %>
-                                        <a href="/results/p3" class="feature-tag2"
-                                            style="padding:12px 28px;font-size:18px;border-radius:10px;">استعراض
-                                            النتائج</a>
-                                        <% } %>
-                        </div>
-
-                    </div>
-                </div> -->
             </div>
         </section>
         <div class="closing-section">

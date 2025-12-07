@@ -96,65 +96,68 @@ app.get("/admin", function (req, res) {
 });
 
 app.get("/home", isAuthenticated, async (req, res) => {
-  console.log(req.session.userId);
+  // console.log(req.session.userId);
   const exams = await Exam.find({
     user: new mongoose.Types.ObjectId(req.session.userId),
   });
-  console.log(exams);
+  // console.log(exams);
   res.render("home", { data: {exams} });
 });
 app.get("/home", function (req, res) {
   res.redirect("/");
 });
-app.get("/p1", isAuthenticated, function (req, res) {
-  if (req.session.p1 == "done" || !req.session.exams.includes("p1")) {
-    res.redirect("home");
+
+app.get("/exam/:id", async function (req, res) {
+  const examId = req.params.id;
+  let exam = null;
+  try {
+    exam = await Exam.findById(examId);
+  } catch (error) {
+    exam = null;
+  }
+  if (!exam) {
+    res.send("notFound");
     return;
   }
-  res.render("p1", { name: req.session.name });
+  // if (exam.user.toString() !== req.session.userId) {
+  //   res.send("غير مسموح");
+  //   return;
+  // }
+
+  if (exam.stat === "new") {
+    res.render(exam.type, { name: req.session.name });
+
+  }
 });
-app.get("/p1", function (req, res) {
+
+app.get("/exam/:id", function (req, res) {
   res.redirect("/");
 });
-app.get("/p2", isAuthenticated, function (req, res) {
-  if (req.session.p2 == "done" || !req.session.exams.includes("p2")) {
-    res.redirect("home");
-    return;
-  }
-  res.render("p2", { name: req.session.name });
-});
-app.get("/p2", function (req, res) {
-  res.redirect("/");
-});
-app.get("/p3", isAuthenticated, function (req, res) {
-  if (req.session.p3 == "done" || !req.session.exams.includes("p3")) {
-    res.redirect("home");
-    return;
-  }
-  res.render("p3", { name: req.session.name });
-});
-app.get("/p3", function (req, res) {
+app.post("/exam/:id", function (req, res) {
+  console.log(req.body);
+  console.log(req.params.id);
   res.redirect("/");
 });
 
 app.get("/p1rate", isAuthenticated, function (req, res) {
   res.render("p1Rate", { user: req.session.name });
 });
-app.get("/p1rate", function (req, res) {
-  res.redirect("/");
+app.get("/Results/:exam", isAuthenticated, async function (req, res) {
+  await client.connect();
+  const db = client.db("soqy");
+  const collection = db.collection("users");
+  const user = await collection.findOne({ user: req.session.user });
+  if (user[req.params.exam]) {
+    res.render(`${req.params.exam}Result`, {
+      [req.params.exam]: JSON.stringify(user[req.params.exam]),
+      name: req.session.name,
+      from: "show",
+    });
+    return;
+  }
+  res.send("notFound");
 });
-app.get("/p2rate", isAuthenticated, function (req, res) {
-  res.render("p1Rate", { user: req.session.name });
-});
-app.get("/p2rate", function (req, res) {
-  res.redirect("/");
-});
-app.get("/p3rate", isAuthenticated, function (req, res) {
-  res.render("p1Rate", { user: req.session.name });
-});
-app.get("/p3rate", function (req, res) {
-  res.redirect("/");
-});
+
 
 app.get("/store", async (req, res) => {
   res.render("store", { exams: [] });
@@ -386,21 +389,7 @@ app.get("/admin/end/:id", function (req, res) {
 });
 
 // Result-Page
-app.get("/Results/:exam", isAuthenticated, async function (req, res) {
-  await client.connect();
-  const db = client.db("soqy");
-  const collection = db.collection("users");
-  const user = await collection.findOne({ user: req.session.user });
-  if (user[req.params.exam]) {
-    res.render(`${req.params.exam}Result`, {
-      [req.params.exam]: JSON.stringify(user[req.params.exam]),
-      name: req.session.name,
-      from: "show",
-    });
-    return;
-  }
-  res.send("notFound");
-});
+
 
 app.post("/saveExam", async function (req, res) {
   await client.connect();
@@ -502,9 +491,9 @@ app.post(
       });
       // console.log(user);
       if (user) {
-        console.log("User ID:", user._id.toString());
+        // console.log("User ID:", user._id.toString());
         const aa = user._id.toString();
-        console.log(typeof aa);
+        // console.log(typeof aa);
         req.session.regenerate(function (err) {
           if (err) next(err);
           req.session.userId = aa;
@@ -520,12 +509,12 @@ app.post(
         res.send("notFound");
       }
     } else {
-      console.log("admin login");
+      // console.log("admin login");
       const user = await Teacher.findOne({
         user: req.body.user,
         pass: req.body.pass,
       });
-      console.log(user);
+      // console.log(user);
       if (user) {
         req.session.regenerate(function (err) {
           if (err) next(err);

@@ -15,7 +15,7 @@ const examSchema = new mongoose.Schema(
     },
     type: { type: String},
 
-    stat: { type: String, default: "new" },
+    stat: { type: String, default: "new",enum: ["new", "inprogress", "done"] },
     hidden: {
       type: Boolean,
       default: false,
