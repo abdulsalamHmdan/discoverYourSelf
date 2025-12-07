@@ -1546,9 +1546,9 @@
                     testState.endTime = Date.now() - startTheTime;
                     var data = new URLSearchParams();
                     data.append('data', JSON.stringify(testState));
-                    data.append('type', 'p2');
+                    data.append('type', 'exam');
                     data.append('ob', '1');
-                    fetch('saveExam', {
+                    fetch('', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
@@ -3152,20 +3152,20 @@
             data.append('data', JSON.stringify({ tops: sfat, time: testState.endTime, pers: personality.name, type }));
             data.append('type', 'stat.p2');
             data.append('ob', '1');
-            fetch('saveExam', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-                },
-                body: data
-            }).then(() => {
+            // fetch('', {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+            //     },
+            //     body: data
+            // }).then(() => {
 
-                // location.reload()
+            //     // location.reload()
 
-            }).catch(() => {
-                // إزالة رسالة الإكمال
-                alert("حصلت مشكلة في حفظ البيانات قد تضطر الى اعادة الاختبار")
-            })
+            // }).catch(() => {
+            //     // إزالة رسالة الإكمال
+            //     alert("حصلت مشكلة في حفظ البيانات قد تضطر الى اعادة الاختبار")
+            // })
 
 
         }

@@ -101,7 +101,7 @@ app.get("/home", isAuthenticated, async (req, res) => {
     user: new mongoose.Types.ObjectId(req.session.userId),
   });
   // console.log(exams);
-  res.render("home", { data: {exams} });
+  res.render("home", { data: { exams } });
 });
 app.get("/home", function (req, res) {
   res.redirect("/");
@@ -126,7 +126,6 @@ app.get("/exam/:id", async function (req, res) {
 
   if (exam.stat === "new") {
     res.render(exam.type, { name: req.session.name });
-
   }
 });
 
@@ -136,7 +135,16 @@ app.get("/exam/:id", function (req, res) {
 app.post("/exam/:id", function (req, res) {
   console.log(req.body);
   console.log(req.params.id);
-  res.redirect("/");
+  Exam.findByIdAndUpdate(req.params.id, {
+    result: JSON.parse(req.body.data),
+    stat: "inprogress",
+  })
+    .then(() => {
+      res.send("started");
+    })
+    .catch(() => {
+      res.send("notFound");
+    });
 });
 
 app.get("/p1rate", isAuthenticated, function (req, res) {
@@ -157,7 +165,6 @@ app.get("/Results/:exam", isAuthenticated, async function (req, res) {
   }
   res.send("notFound");
 });
-
 
 app.get("/store", async (req, res) => {
   res.render("store", { exams: [] });
@@ -389,7 +396,6 @@ app.get("/admin/end/:id", function (req, res) {
 });
 
 // Result-Page
-
 
 app.post("/saveExam", async function (req, res) {
   await client.connect();
