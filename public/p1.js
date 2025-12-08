@@ -1791,10 +1791,10 @@
             document.body.appendChild(modal);
         }
 
-        // إعادة المقياس
-        function restartTest() {
-            location.href = "/p1Rate";
-        }
+        // // إعادة المقياس
+        // function restartTest() {
+        //     location.href = "/rate/<%=examId%>";
+        // }
 
 
 

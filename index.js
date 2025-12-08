@@ -91,6 +91,9 @@ app.get("/login", function (req, res) {
   res.render("login", { collection: "users" });
 });
 
+app.get("/admin",isAdmin, function (req, res) {
+  res.render("adminPage");
+});
 app.get("/admin", function (req, res) {
   res.render("login", { collection: "admin" });
 });
@@ -111,7 +114,7 @@ app.get("/exam/:id", async function (req, res) {
   const examId = req.params.id;
   let exam = null;
   try {
-    exam = await Exam.findById(examId);
+    exam = await Exam.findById(examId).populate("user");
   } catch (error) {
     exam = null;
   }
@@ -125,13 +128,65 @@ app.get("/exam/:id", async function (req, res) {
   // }
 
   if (exam.stat === "new") {
-    res.render(exam.type, { name: req.session.name });
+    res.render(exam.type, { name: exam.user.name, examId: req.params.id });
+  } else {
+    res.send("تم بدء الاختبار مسبقاً");
+  }
+});
+app.get("/rate/:id", async function (req, res) {
+  const examId = req.params.id;
+  let exam = null;
+  try {
+    exam = await Exam.findById(examId).populate("user");
+  } catch (error) {
+    exam = null;
+  }
+  if (!exam) {
+    res.send("notFound");
+    return;
+  }
+  // if (exam.user.toString() !== req.session.userId) {
+  //   res.send("غير مسموح");
+  //   return;
+  // }
+
+  if (exam.stat === "inprogress") {
+    res.render(`${exam.type}Rate`, {
+      user: exam.user.name,
+      examId: req.params.id,
+    });
+  } else {
+    res.send("لا يمكن التقييم في الوقت الحالي");
+  }
+});
+app.get("/result/:id", async function (req, res) {
+  const examId = req.params.id;
+  let exam = null;
+  try {
+    exam = await Exam.findById(examId).populate("user");
+  } catch (error) {
+    exam = null;
+  }
+  if (!exam) {
+    res.send("notFound");
+    return;
+  }
+  // if (exam.user.toString() !== req.session.userId) {
+  //   res.send("غير مسموح");
+  //   return;
+  // }
+
+  if (exam.stat === "done") {
+    res.render(`${exam.type}Result`, {
+      [exam.type]: JSON.stringify(exam.result),
+      name: exam.user.name,
+      from: "show",
+    });
+  } else {
+    res.send("تم بدء الاختبار مسبقاً");
   }
 });
 
-app.get("/exam/:id", function (req, res) {
-  res.redirect("/");
-});
 app.post("/exam/:id", function (req, res) {
   console.log(req.body);
   console.log(req.params.id);
@@ -146,27 +201,22 @@ app.post("/exam/:id", function (req, res) {
       res.send("notFound");
     });
 });
-
-app.get("/p1rate", isAuthenticated, function (req, res) {
-  res.render("p1Rate", { user: req.session.name });
-});
-app.get("/Results/:exam", isAuthenticated, async function (req, res) {
-  await client.connect();
-  const db = client.db("soqy");
-  const collection = db.collection("users");
-  const user = await collection.findOne({ user: req.session.user });
-  if (user[req.params.exam]) {
-    res.render(`${req.params.exam}Result`, {
-      [req.params.exam]: JSON.stringify(user[req.params.exam]),
-      name: req.session.name,
-      from: "show",
+app.post("/rate/:id", function (req, res) {
+  console.log(req.body);
+  console.log(req.params.id);
+  Exam.findByIdAndUpdate(req.params.id, {
+    rate: JSON.parse(req.body.data),
+    stat: "done",
+  })
+    .then(() => {
+      res.send("started");
+    })
+    .catch(() => {
+      res.send("notFound");
     });
-    return;
-  }
-  res.send("notFound");
 });
 
-app.get("/store", async (req, res) => {
+app.get("/store", isAuthenticated, async (req, res) => {
   res.render("store", { exams: [] });
 });
 app.post("/payment", isAuthenticated, async (req, res) => {
@@ -209,9 +259,9 @@ app.post("/payment", isAuthenticated, async (req, res) => {
   // }
   const user = await User.findOne({ user: req.session.user });
   Payment.create({
-    tapId: "tap_123456789", // يجب أن يكون هذا معرف فريد من نوعه لكل دفعة
+    tapId: "tap_9988", // يجب أن يكون هذا معرف فريد من نوعه لكل دفعة
     type: "personal",
-    exams: ["p1", "p2", "p3"],
+    exams: JSON.parse(req.body.exams),
     url: "https://baserah.app/text",
     users: [user],
     teacher: null,
@@ -220,7 +270,6 @@ app.post("/payment", isAuthenticated, async (req, res) => {
 
   res.send("done");
 });
-
 app.get("/text", async (req, res) => {
   const paymentRecord = await Payment.findOne({
     tapId: req.query.tapId,
@@ -245,7 +294,6 @@ app.post("/paying", isAuthenticated, async (req, res) => {
   // console.log("Payment successful:", req.body);
   res.sendStatus(200);
 });
-
 app.get("/signup", async function ({ body: data }, res) {
   res.render("signup");
 });
@@ -276,150 +324,125 @@ app.post("/signup", express.json(), async function ({ body: data }, res) {
     });
 });
 
-app.get("/admin/Results/:id/:exam", isAdmin, async function (req, res) {
-  await client.connect();
-  const db = client.db("soqy");
-  const collection = db.collection("users");
-  const user = await collection.findOne({ user: req.params.id });
-  if (user[req.params.exam]) {
-    res.render(`${req.params.exam}Result`, {
-      [req.params.exam]: JSON.stringify(user[req.params.exam]),
-      name: user.name,
-      from: "show",
-    });
-    return;
-  }
-  res.send("notFound");
-});
-
-app.get("/admin/Results/:id/:exam", isTeacher, async function (req, res) {
-  await client.connect();
-  const db = client.db("soqy");
-  const collection = db.collection("users");
-  const user = await collection.findOne({ user: req.params.id });
-  if (user[req.params.exam]) {
-    res.render(`${req.params.exam}Result`, {
-      [req.params.exam]: JSON.stringify(user[req.params.exam]),
-      name: user.name,
-      from: "show",
-    });
-    return;
-  }
-  res.send("notFound");
-});
-app.get("/admin/Results/:id/:exam", function (req, res) {
-  res.redirect("/admin");
-});
-app.get("/admin/end/:id", isAdmin, async function (req, res) {
-  await client.connect();
-  const db = client.db("soqy");
-  const collection = db.collection("users");
-  const user = await collection.findOne({ user: req.params.id });
-  client.close();
-  if (user) {
-    const p1 = user.stat?.p1 ? user.stat.p1.tops : null;
-    const p2 = user.stat?.p2 ? user.stat.p2 : null;
-    const p3 = user.stat?.p3 ? user.stat.p3.tops : null;
-    if (user.rate) {
-      const rate = [
-        {
-          name: "الميول المهنية",
-          val: user.rate.qus
-            .slice(0, 3)
-            .reduce(
-              (accumulator, currentValue) => +accumulator + +currentValue.val,
-              0
-            ),
-        },
-        {
-          name: "تحليل الشخصية mbti",
-          val: user.rate.qus
-            .slice(3, 6)
-            .reduce(
-              (accumulator, currentValue) => +accumulator + +currentValue.val,
-              0
-            ),
-        },
-        {
-          name: "الذكاءات المتعددة",
-          val: user.rate.qus
-            .slice(6, 9)
-            .reduce(
-              (accumulator, currentValue) => +accumulator + +currentValue.val,
-              0
-            ),
-        },
-      ];
-      // console.log(rate);
-      res.render("studentPage", {
-        id: user.user,
-        name: user.name,
-        p1,
-        p2,
-        p3,
-        rate,
-      });
-      return;
-    }
-    res.render("studentPage", {
-      id: user.user,
-      name: user.name,
-      p1,
-      p2,
-      p3,
-      rate: null,
-    });
-  } else {
-    res.redirect("admin");
-  }
-});
-app.get("/admin/end/:id", isTeacher, async function (req, res) {
-  await client.connect();
-  const db = client.db("soqy");
-  const collection = db.collection("users");
-  const user = await collection.findOne({ user: req.params.id });
-  client.close();
-  if (user) {
-    const p1 = user.stat?.p1 ? user.stat.p1.tops : null;
-    const p2 = user.stat?.p2 ? user.stat.p2 : null;
-    const p3 = user.stat?.p3 ? user.stat.p3.tops : null;
-    res.render("studentPage", { id: user.user, name: user.name, p1, p2, p3 });
-  } else {
-    res.redirect("admin");
-  }
-});
-app.get("/admin/end/:id", async function (req, res) {
-  res.redirect("/admin");
-});
-app.get("/admin/end/:id", function (req, res) {
-  res.send("not allowd");
-});
+// app.get("/admin/Results/:id/:exam", isAdmin, async function (req, res) {
+//   await client.connect();
+//   const db = client.db("soqy");
+//   const collection = db.collection("users");
+//   const user = await collection.findOne({ user: req.params.id });
+//   if (user[req.params.exam]) {
+//     res.render(`${req.params.exam}Result`, {
+//       [req.params.exam]: JSON.stringify(user[req.params.exam]),
+//       name: user.name,
+//       from: "show",
+//     });
+//     return;
+//   }
+//   res.send("notFound");
+// });
+// app.get("/admin/Results/:id/:exam", isTeacher, async function (req, res) {
+//   await client.connect();
+//   const db = client.db("soqy");
+//   const collection = db.collection("users");
+//   const user = await collection.findOne({ user: req.params.id });
+//   if (user[req.params.exam]) {
+//     res.render(`${req.params.exam}Result`, {
+//       [req.params.exam]: JSON.stringify(user[req.params.exam]),
+//       name: user.name,
+//       from: "show",
+//     });
+//     return;
+//   }
+//   res.send("notFound");
+// });
+// app.get("/admin/Results/:id/:exam", function (req, res) {
+//   res.redirect("/admin");
+// });
+// app.get("/admin/end/:id", isAdmin, async function (req, res) {
+//   await client.connect();
+//   const db = client.db("soqy");
+//   const collection = db.collection("users");
+//   const user = await collection.findOne({ user: req.params.id });
+//   client.close();
+//   if (user) {
+//     const p1 = user.stat?.p1 ? user.stat.p1.tops : null;
+//     const p2 = user.stat?.p2 ? user.stat.p2 : null;
+//     const p3 = user.stat?.p3 ? user.stat.p3.tops : null;
+//     if (user.rate) {
+//       const rate = [
+//         {
+//           name: "الميول المهنية",
+//           val: user.rate.qus
+//             .slice(0, 3)
+//             .reduce(
+//               (accumulator, currentValue) => +accumulator + +currentValue.val,
+//               0
+//             ),
+//         },
+//         {
+//           name: "تحليل الشخصية mbti",
+//           val: user.rate.qus
+//             .slice(3, 6)
+//             .reduce(
+//               (accumulator, currentValue) => +accumulator + +currentValue.val,
+//               0
+//             ),
+//         },
+//         {
+//           name: "الذكاءات المتعددة",
+//           val: user.rate.qus
+//             .slice(6, 9)
+//             .reduce(
+//               (accumulator, currentValue) => +accumulator + +currentValue.val,
+//               0
+//             ),
+//         },
+//       ];
+//       // console.log(rate);
+//       res.render("studentPage", {
+//         id: user.user,
+//         name: user.name,
+//         p1,
+//         p2,
+//         p3,
+//         rate,
+//       });
+//       return;
+//     }
+//     res.render("studentPage", {
+//       id: user.user,
+//       name: user.name,
+//       p1,
+//       p2,
+//       p3,
+//       rate: null,
+//     });
+//   } else {
+//     res.redirect("admin");
+//   }
+// });
+// app.get("/admin/end/:id", isTeacher, async function (req, res) {
+//   await client.connect();
+//   const db = client.db("soqy");
+//   const collection = db.collection("users");
+//   const user = await collection.findOne({ user: req.params.id });
+//   client.close();
+//   if (user) {
+//     const p1 = user.stat?.p1 ? user.stat.p1.tops : null;
+//     const p2 = user.stat?.p2 ? user.stat.p2 : null;
+//     const p3 = user.stat?.p3 ? user.stat.p3.tops : null;
+//     res.render("studentPage", { id: user.user, name: user.name, p1, p2, p3 });
+//   } else {
+//     res.redirect("admin");
+//   }
+// });
+// app.get("/admin/end/:id", async function (req, res) {
+//   res.redirect("/admin");
+// });
+// app.get("/admin/end/:id", function (req, res) {
+//   res.send("not allowd");
+// });
 
 // Result-Page
-
-app.post("/saveExam", async function (req, res) {
-  await client.connect();
-  const db = client.db("soqy");
-  const collection = db.collection("users");
-  let object = {
-    [req.body.type]:
-      req.body.ob == "1" ? JSON.parse(req.body.data) : req.body.data,
-    ["stat.end"]: `${Date.now()}`,
-  };
-  // console.log(object);
-  await collection
-    .updateOne({ user: req.session.user }, { $set: object })
-    .then(() => {
-      req.session[req.body.type] = "done";
-      req.session.save(function (err) {
-        if (err) return next(err);
-        res.send("saved");
-      });
-    })
-    .catch((err) => {
-      res.send("notFound");
-    });
-});
 
 // app.post("/deleteExam", async function (req, res) {
 //   await client.connect();

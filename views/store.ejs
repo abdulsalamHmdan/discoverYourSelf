@@ -278,7 +278,7 @@
       <div class="products-grid">
         <div
           class="product-card <%= exams.includes('p1') ? 'purchased' : '' %>"
-          onclick="toggleProduct(this, 99, 'أنماط الشخصية')"
+          onclick="toggleProduct(this, 99, 'p1')"
         >
           <div class="product-title">أنماط الشخصية</div>
           <div class="product-desc">تحليل شامل لنمط شخصيتك.</div>
@@ -290,7 +290,7 @@
 
         <div
           class="product-card <%= exams.includes('p2') ? 'purchased' : '' %>"
-          onclick="toggleProduct(this, 120, 'الميول المهني')"
+          onclick="toggleProduct(this, 120, 'p2')"
         >
           <div class="product-title">الميول المهني</div>
           <div class="product-desc">اكتشف المسارات الوظيفية.</div>
@@ -301,7 +301,7 @@
 
         <div
           class="product-card <%= exams.includes('p3') ? 'purchased' : '' %>"
-          onclick="toggleProduct(this, 199, 'الذكاء العاطفي')"
+          onclick="toggleProduct(this, 199, 'p3')"
         >
           <div class="product-title">الذكاء العاطفي</div>
           <div class="product-desc">قياس مهارات التواصل والمشاعر.</div>
@@ -488,6 +488,7 @@
         console.log("المبلغ النهائي:", finalPrice);
         var data = new URLSearchParams();
         data.append("price", finalPrice);
+        data.append("exams", JSON.stringify(cart.map((item) => item.name)));
         fetch("/payment", {
           method: "POST",
           headers: {
@@ -499,9 +500,13 @@
             return response.text();
           })
           .then((x) => {
-            // console.log(x);
             // إعادة التوجيه لصفحة الدفع
-            location.href = x;
+            if (x.startsWith("http")) {
+              location.href = x;
+            } else {
+              alert("حدث خطأ أثناء إنشاء طلب الدفع. الرجاء المحاولة مرة أخرى.");
+              closeModal();
+            }
           })
           .catch(() => {
             console.log("error");

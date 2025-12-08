@@ -553,9 +553,7 @@
            console.log({ qus, notes, selectedGoals, suggestions })
             var data = new URLSearchParams();
             data.append('data', JSON.stringify({ qus, notes, selectedGoals, suggestions }));
-            data.append('type', 'p1rate');
-            data.append('ob', '1');
-            fetch('saveExam', {
+            fetch('', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'

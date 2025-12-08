@@ -11,7 +11,6 @@ const paymentSchema = new mongoose.Schema(
     type: {
       type: String, // أو Number حسب رغبتك
       required: true,
-      unique: true, // لضمان عدم تكرار رقم الفاتورة اليدوي
       default: "personal",
       enum: ["personal", "organization"],
     },
