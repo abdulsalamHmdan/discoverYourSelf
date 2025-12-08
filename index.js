@@ -91,8 +91,84 @@ app.get("/login", function (req, res) {
   res.render("login", { collection: "users" });
 });
 
-app.get("/admin",isAdmin, function (req, res) {
-  res.render("adminPage");
+app.get("/admin", function (req, res) {
+  User.find()
+    .then((usersFromDb) => {
+      const users = usersFromDb.map((x) => {
+        let completion = 0;
+        let prog = "";
+        return {
+          id: x._id,
+          name: x.name,
+          phone: x.phone,
+          studentId: x.user,
+          status: prog,
+          completion: completion,
+          riasec: null,
+          mbti: null,
+          thk: null,
+          startTime: null,
+          endTime: null,
+        };
+      });
+      res.render("adminPage", { data: JSON.stringify(users) });
+    })
+    .catch((err) => {
+      console.error(err);
+      res.render("adminPage", { data: null });
+    });
+  // const users = [{
+  //           id: x.user,
+  //           name: x.name,
+  //           phone: x.phone,
+  //           studentId: x.idNumber,
+  //           status: prog,
+  //           completion: completion,
+  //           riasec: x?.stat?.p1?.tops?.map(l => l.dim),
+  //           mbti: x?.stat?.p2?.type,
+  //           thk: x?.stat?.p3?.tops?.map(l => l.name),
+  //           startTime: +x?.stat?.start,
+  //           endTime: +x?.stat?.end
+  //       }];
+  // res.render("adminPage",{ data: null });
+});
+app.get("/admin", isTeacher, async function (req, res) {
+  let user = await collection.find({ techer: req.session.name }).toArray();
+  client.close();
+  user = user.map((x) => {
+    let completion = 0;
+    let prog = "";
+    if (x["p1"]) {
+      completion += 33;
+    }
+    if (x["p2"]) {
+      completion += 33;
+    }
+    if (x["p3"]) {
+      completion += 34;
+    }
+    prog =
+      completion == 100
+        ? "completed"
+        : completion > 0
+        ? "in-progress"
+        : "not-started";
+
+    return {
+      id: x.user,
+      name: x.name,
+      phone: x.phone,
+      studentId: x.idNumber,
+      status: prog,
+      completion: completion,
+      riasec: x?.stat?.p1?.tops?.map((l) => l.dim),
+      mbti: x?.stat?.p2?.type,
+      thk: x?.stat?.p3?.tops?.map((l) => l.name),
+      startTime: +x?.stat?.start,
+      endTime: +x?.stat?.end,
+    };
+  });
+  res.render("adminPage", { data: JSON.stringify(user) });
 });
 app.get("/admin", function (req, res) {
   res.render("login", { collection: "admin" });
