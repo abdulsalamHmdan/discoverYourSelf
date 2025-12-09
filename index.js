@@ -174,6 +174,40 @@ app.get("/admin", function (req, res) {
   res.render("login", { collection: "admin" });
 });
 
+app.get("/addUsers", async function (req, res) {
+  res.render("addUsers", { addedStudents: [] });
+});
+app.post("/addUsers", express.json(), async function (req, res) {
+  const studentsData = req.body; // مصفوفة JSON قادمة من الفرونت
+  let result;
+  try {
+    if (!Array.isArray(studentsData) || studentsData.length === 0) {
+      return res.status(400).json({ message: "لا توجد بيانات صالحة للإضافة" });
+    }
+    result = await User.insertMany(studentsData, { ordered: false });
+    res.status(200).json({
+      success: true,
+      message: "تمت الإضافة بنجاح",
+      count: result.length,
+    });
+  } catch (error) {
+    if (error.code === 11000) {
+      return res.status(200).json({
+        success: false,
+        error: error.writeErrors,
+        insertedDocs: error.insertedDocs,
+        message:
+          "تمت العملية، لكن تم تجاهل بعض السجلات المكررة (User أو Email)",
+        count: error.insertedDocs ? error.insertedDocs.length : 0,
+      });
+    } else {
+      return res
+        .status(400)
+        .json({ message: "فشل في إضافة المستخدمين", error: error.message });
+    }
+  }
+});
+
 app.get("/home", isAuthenticated, async (req, res) => {
   // console.log(req.session.userId);
   const exams = await Exam.find({
