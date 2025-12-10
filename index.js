@@ -177,13 +177,13 @@ app.get("/admin", function (req, res) {
 app.get("/addUsers", isAdmin, async function (req, res) {
   res.render("addUsers");
 });
-app.get("/addUsers", isAdmin, async function (req, res) {
-  res.render("addUsers");
-});
 app.get("/addUsers", isTeacher, async function (req, res) {
   res.render("addUsers");
 });
-app.post("/addUsers", isTeacher, express.json(), async function (req, res) {
+app.get("/addUsers", async function (req, res) {
+  res.redirect("/");
+});
+app.post("/addUsers", isAdmin, express.json(), async function (req, res) {
   const studentsData = req.body; // مصفوفة JSON قادمة من الفرونت
   let result;
   try {
@@ -214,7 +214,7 @@ app.post("/addUsers", isTeacher, express.json(), async function (req, res) {
   }
 });
 
-app.post("/addUsers", isAdmin, express.json(), async function (req, res) {
+app.post("/addUsers", isTeacher, express.json(), async function (req, res) {
   const studentsData = req.body; // مصفوفة JSON قادمة من الفرونت
   let result;
   let teacher = await Teacher.findOne({ user: req.session.user });

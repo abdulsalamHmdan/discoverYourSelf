@@ -261,11 +261,11 @@
                     </div>
                 </div>
                 <div class="flex flex-wrap gap-3">
-                    <button onclick="refreshData()"
+                    <button onclick="importData()"
                         class="btn-primary text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all hover:scale-105 focus-visible">
                         <div id="refreshSpinner" class="loading-spinner hidden"></div>
-                        <span id="refreshIcon">⟳</span>
-                        <span class="mobile-hidden">تحديث البيانات</span>
+                        <span id="refreshIcon">📥</span>
+                        <span class="mobile-hidden">استيراد الطلاب</span>
                     </button>
                     <div class="relative">
                         <button onclick="toggleExportMenu()"
@@ -1370,27 +1370,8 @@
             location.href = `https://wa.me/966${num}`
         }
 
-        function refreshData() {
-            const refreshIcon = document.getElementById('refreshIcon');
-            const refreshSpinner = document.getElementById('refreshSpinner');
-
-            // إظهار مؤشر التحميل
-            refreshIcon.classList.add('hidden');
-            refreshSpinner.classList.remove('hidden');
-
-            showAlert('جاري تحديث البيانات...', 'info');
-
-            // محاكاة تحديث البيانات
-            setTimeout(() => {
-                // إخفاء مؤشر التحميل
-                refreshSpinner.classList.add('hidden');
-                refreshIcon.classList.remove('hidden');
-
-                renderTable();
-                updatePagination();
-                updateFilteredCount();
-                showAlert('تم تحديث البيانات بنجاح!', 'success');
-            }, 2000);
+        function importData() {
+            location.href = '/addUsers';
         }
 
         function exportCSV() {
