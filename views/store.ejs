@@ -497,12 +497,12 @@
           body: data,
         })
           .then((response) => {
-            return response.text();
+            return response.json();
           })
           .then((x) => {
             // إعادة التوجيه لصفحة الدفع
-            if (x.startsWith("http")) {
-              location.href = x;
+            if (x.status === "success" && x.url) {
+              location.href = x.url;
             } else {
               alert("حدث خطأ أثناء إنشاء طلب الدفع. الرجاء المحاولة مرة أخرى.");
               closeModal();

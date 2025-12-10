@@ -117,6 +117,35 @@ app.get("/admin", isAdmin, function (req, res) {
       console.error(err);
       res.render("adminPage", { data: null });
     });
+});
+app.get("/admin", isTeacher, function (req, res) {
+  User.find({
+    teacher: { $in: new mongoose.Types.ObjectId(req.session.userId) },
+  })
+    .then((usersFromDb) => {
+      const users = usersFromDb.map((x) => {
+        let completion = 0;
+        let prog = "";
+        return {
+          id: x._id,
+          name: x.name,
+          phone: x.phone,
+          studentId: x.user,
+          status: prog,
+          completion: completion,
+          riasec: null,
+          mbti: null,
+          thk: null,
+          startTime: null,
+          endTime: null,
+        };
+      });
+      res.render("adminPage", { data: JSON.stringify(users) });
+    })
+    .catch((err) => {
+      console.error(err);
+      res.render("adminPage", { data: null });
+    });
   // const users = [{
   //           id: x.user,
   //           name: x.name,
@@ -132,44 +161,7 @@ app.get("/admin", isAdmin, function (req, res) {
   //       }];
   // res.render("adminPage",{ data: null });
 });
-app.get("/admin", isTeacher, async function (req, res) {
-  let user = await collection.find({ techer: req.session.name }).toArray();
-  client.close();
-  user = user.map((x) => {
-    let completion = 0;
-    let prog = "";
-    if (x["p1"]) {
-      completion += 33;
-    }
-    if (x["p2"]) {
-      completion += 33;
-    }
-    if (x["p3"]) {
-      completion += 34;
-    }
-    prog =
-      completion == 100
-        ? "completed"
-        : completion > 0
-        ? "in-progress"
-        : "not-started";
 
-    return {
-      id: x.user,
-      name: x.name,
-      phone: x.phone,
-      studentId: x.idNumber,
-      status: prog,
-      completion: completion,
-      riasec: x?.stat?.p1?.tops?.map((l) => l.dim),
-      mbti: x?.stat?.p2?.type,
-      thk: x?.stat?.p3?.tops?.map((l) => l.name),
-      startTime: +x?.stat?.start,
-      endTime: +x?.stat?.end,
-    };
-  });
-  res.render("adminPage", { data: JSON.stringify(user) });
-});
 app.get("/admin", function (req, res) {
   res.render("login", { collection: "admin" });
 });
@@ -371,59 +363,59 @@ app.get("/store", isAuthenticated, async (req, res) => {
   res.render("store", { exams: [] });
 });
 app.post("/payment", isAuthenticated, async (req, res) => {
-  // const paymentData = {
-  //   amount: +req.body.price,
-  //   currency: "SAR",
-  //   customer: {
-  //     first_name: "Ahmed",
-  //     email: "ahmed@example.com",
-  //   },
-  //   source: {
-  //     id: "src_all",
-  //   },
-  //   customer_initiated: true,
-  //   threeDSecure: true,
-  //   save_card: false,
-  //   description: "Test Description",
-  //   metadata: { udf1: "Metadata 1" },
-  //   receipt: { email: false, sms: false },
-  //   reference: { transaction: "txn_01", order: "ord_01" },
-  //   merchant: { id: "1234" },
-  //   post: { url: "https://discoveryourself.onrender.com/paying" },
-  //   redirect: { url: "https://discoveryourself.onrender.com/text" },
-  // };
-  // try {
-  // const response = await axios.post(
-  //   "https://api.tap.company/v2/charges", // نقطة نهاية (Endpoint) لإنشاء الدفعة
-  //   paymentData,
-  //   {
-  //     headers: {
-  //       Authorization: `Bearer sk_test_XKokBfNWv6FIYuTMg5sLPjhJ`,
-  //       "Content-Type": "application/json",
-  //     },
-  //   }
-  // );
-  // const redirectUrl = response.data.transaction.url;
-  // }
-  //  catch (error) {
-  //   res.status(500).send("Error creating payment session");
-  // }
-  const user = await User.findOne({ user: req.session.user });
-  Payment.create({
-    tapId: "tap_9988", // يجب أن يكون هذا معرف فريد من نوعه لكل دفعة
-    type: "personal",
-    exams: JSON.parse(req.body.exams),
-    url: "https://baserah.app/text",
-    users: [user],
-    teacher: null,
-    stat: "pending",
-  });
-
-  res.send("done");
+  const paymentData = {
+    amount: +req.body.price,
+    currency: "SAR",
+    customer: {
+      first_name: "Ahmed",
+      email: "ahmed@example.com",
+    },
+    source: {
+      id: "src_all",
+    },
+    customer_initiated: true,
+    threeDSecure: true,
+    save_card: false,
+    description: "Test Description",
+    metadata: { udf1: "Metadata 1" },
+    receipt: { email: false, sms: false },
+    reference: { transaction: "txn_01", order: "ord_01" },
+    merchant: { id: "1234" },
+    post: { url: "https://baserah.app/paying" },
+    redirect: { url: "https://baserah.app/text" },
+  };
+  try {
+    const response = await axios.post(
+      "https://api.tap.company/v2/charges", // نقطة نهاية (Endpoint) لإنشاء الدفعة
+      paymentData,
+      {
+        headers: {
+          Authorization: `Bearer sk_test_XKokBfNWv6FIYuTMg5sLPjhJ`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const redirectUrl = response.data.transaction.url;
+    const user = await User.findOne({ user: req.session.user });
+    Payment.create({
+      tapId: response.data.id,
+      type: "personal",
+      exams: JSON.parse(req.body.exams),
+      url: redirectUrl,
+      users: [user],
+      teacher: null,
+      stat: "pending",
+    });
+    res.json({ status: "success", url: redirectUrl });
+  } catch (error) {
+    console.error("Error creating payment session:", error.response.data);
+    res.status(500).json({ status: "error", message: "Error creating payment session" });
+  }
 });
 app.get("/text", async (req, res) => {
+  console.log("Payment redirect received:", req.query);
   const paymentRecord = await Payment.findOne({
-    tapId: req.query.tapId,
+    tapId: req.query.tap_id,
   }).populate("users");
   if (paymentRecord && paymentRecord.stat === "pending") {
     // console.log("Payment completed for users:", paymentRecord);
@@ -474,6 +466,42 @@ app.post("/signup", express.json(), async function ({ body: data }, res) {
       res.send("err");
     });
 });
+app.get("/teacherSignup", async function ({ body: data }, res) {
+  res.render("teacherSignup");
+});
+app.post(
+  "/teacherSignup",
+  express.json(),
+  async function ({ body: data }, res) {
+    const check = await Teacher.findOne({ user: data.user });
+    const check2 = await Teacher.findOne({ email: data.email });
+    console.log(check, check2);
+    if (check) {
+      res.send("قم باختيار اسم مستخدم اخر");
+      return;
+    }
+    if (check2) {
+      res.send("البريد الالكتروني مستخدم بالفعل");
+      return;
+    }
+    let userData = {
+      user: data.user,
+      pass: data.pass,
+      name: data.name,
+      phone: data.phone,
+      email: data.email,
+    };
+    console.log(userData);
+    await Teacher.create(userData)
+      .then(() => {
+        res.send("done");
+      })
+      .catch((err) => {
+        // console.log(err);
+        res.send("err");
+      });
+  }
+);
 
 // app.get("/admin/Results/:id/:exam", isAdmin, async function (req, res) {
 //   await client.connect();
@@ -696,8 +724,11 @@ app.post(
       });
       // console.log(user);
       if (user) {
+        const aa = user._id.toString();
+
         req.session.regenerate(function (err) {
           if (err) next(err);
+          req.session.userId = aa;
           req.session.user = user.user;
           req.session.name = user.name;
           req.session.role = user.role;
