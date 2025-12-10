@@ -1,146 +1,296 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>إضافة طلاب - JSON Import</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
-    <style> body { font-family: 'Cairo', sans-serif; } </style>
-</head>
-<body class="bg-[#f8f9fa] text-gray-700 p-6">
-
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Cairo", sans-serif;
+      }
+    </style>
+  </head>
+  <body class="bg-[#f8f9fa] text-gray-700 p-6">
     <div class="max-w-7xl mx-auto space-y-6">
-        <h1 class="text-2xl font-bold text-gray-800">إدارة الطلاب (Client-side Processing)</h1>
+      <h1 class="text-2xl font-bold text-gray-800">
+        إدارة الطلاب (Client-side Processing)
+      </h1>
 
-        <div class="bg-white rounded-xl shadow-sm p-8 border border-gray-100">
-            <div class="flex flex-col md:flex-row gap-8 items-start">
-                
-                <div class="w-full md:w-1/3 space-y-4">
-                    <h3 class="text-lg font-bold text-gray-800">تعليمات هامة</h3>
-                    <ul class="list-disc list-inside text-sm text-gray-600 space-y-2">
-                        <li>سيتم فحص الملف في المتصفح قبل الإرسال.</li>
-                        <li>يجب أن يحتوي الملف على الأعمدة: <br><code class="bg-gray-100 px-1">user, pass, name, phone, email</code></li>
-                    </ul>
-                    <a href="/example.xlsx" class="mt-4 block text-center py-2 px-4 border border-blue-200 text-blue-600 bg-blue-50 rounded-lg text-sm">تحميل النموذج</a>
+      <div class="bg-white rounded-xl shadow-sm p-8 border border-gray-100">
+        <div class="flex flex-col md:flex-row gap-8 items-start">
+          <div class="w-full md:w-1/3 space-y-4">
+            <h3 class="text-lg font-bold text-gray-800">تعليمات هامة</h3>
+            <ul class="list-disc list-inside text-sm text-gray-600 space-y-2">
+              <li>سيتم فحص الملف في المتصفح قبل الإرسال.</li>
+              <li>
+                يجب أن يحتوي الملف على الأعمدة: <br /><code
+                  class="bg-gray-100 px-1"
+                  >user, pass, name, phone, email</code
+                >
+              </li>
+            </ul>
+            <a
+              href="/example.xlsx"
+              class="mt-4 block text-center py-2 px-4 border border-blue-200 text-blue-600 bg-blue-50 rounded-lg text-sm"
+              >تحميل النموذج</a
+            >
+          </div>
+
+          <div class="w-full md:w-2/3">
+            <div class="space-y-4">
+              <label
+                for="fileInput"
+                class="flex flex-col items-center justify-center w-full h-48 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors"
+              >
+                <div
+                  class="flex flex-col items-center justify-center pt-5 pb-6"
+                >
+                  <svg
+                    class="w-10 h-10 mb-3 text-gray-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                    ></path>
+                  </svg>
+                  <p class="mb-2 text-sm text-gray-500" id="fileName">
+                    اضغط لاختيار ملف Excel
+                  </p>
                 </div>
+                <input
+                  id="fileInput"
+                  type="file"
+                  class="hidden"
+                  accept=".xlsx, .xls"
+                />
+              </label>
 
-                <div class="w-full md:w-2/3">
-                    <div class="space-y-4">
-                        <label for="fileInput" class="flex flex-col items-center justify-center w-full h-48 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors">
-                            <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                                <svg class="w-10 h-10 mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
-                                <p class="mb-2 text-sm text-gray-500" id="fileName">اضغط لاختيار ملف Excel</p>
-                            </div>
-                            <input id="fileInput" type="file" class="hidden" accept=".xlsx, .xls" />
-                        </label>
+              <div
+                id="errorMsg"
+                class="hidden bg-red-50 text-red-600 p-3 rounded-lg text-sm border border-red-200"
+              ></div>
 
-                        <div id="errorMsg" class="hidden bg-red-50 text-red-600 p-3 rounded-lg text-sm border border-red-200"></div>
-                        
-                        <div id="successMsg" class="hidden bg-green-50 text-green-600 p-3 rounded-lg text-sm border border-green-200"></div>
+              <div
+                id="successMsg"
+                class="hidden bg-green-50 text-green-600 p-3 rounded-lg text-sm border border-green-200"
+              ></div>
 
-                        <button id="uploadBtn" onclick="processFile()" class="w-full py-3 px-4 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-lg shadow-md transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed">
-                            معالجة وإرسال البيانات
-                        </button>
-                    </div>
-                </div>
+              <button
+                id="uploadBtn"
+                onclick="processFile()"
+                class="w-full py-3 px-4 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-lg shadow-md transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+              >
+                معالجة وإرسال البيانات
+              </button>
             </div>
+          </div>
         </div>
+      </div>
+      <div
+        class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden"
+      >
+        <div
+          class="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50"
+        >
+          <h3 class="font-bold text-gray-700">قائمة الطلاب المضافين حديثاً</h3>
+          <span
+            class="bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full"
+            >ناجح</span
+          >
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm text-right text-gray-500">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+              <tr>
+                <th scope="col" class="px-6 py-4">الاسم الكامل</th>
+                <th scope="col" class="px-6 py-4">المعرف (User)</th>
+                <th scope="col" class="px-6 py-4">البريد الإلكتروني</th>
+                <th scope="col" class="px-6 py-4">رقم الجوال</th>
+                <th scope="col" class="px-6 py-4">الحالة</th>
+              </tr>
+            </thead>
+            <tbody id="studentsTableBody"></tbody>
+            <template id="row">
+              <tr class="bg-white border-b hover:bg-gray-50">
+                <td
+                  class="px-6 py-4 font-medium text-gray-900 flex items-center gap-3"
+                >
+                  <div
+                    class="w-8 h-8 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center font-bold text-xs"
+                  ></div>
+                </td>
+                <td class="px-6 py-4 font-mono text-xs"></td>
+                <td class="px-6 py-4"></td>
+                <td class="px-6 py-4"></td>
+                <td class="px-6 py-4 text-xs text-gray-400"></td>
+              </tr>
+            </template>
+          </table>
+        </div>
+
+        <div
+          class="p-4 border-t border-gray-100 flex justify-between items-center"
+        >
+          <span class="text-xs text-gray-500">عرض 2 من أصل 2</span>
+        </div>
+      </div>
     </div>
 
     <script>
-        // تغيير اسم الملف عند الاختيار
-        document.getElementById('fileInput').addEventListener('change', function(e) {
-            const fileName = e.target.files[0]?.name || "اضغط لاختيار ملف Excel";
-            document.getElementById('fileName').innerText = fileName;
-            document.getElementById('errorMsg').classList.add('hidden');
+      // تغيير اسم الملف عند الاختيار
+      document
+        .getElementById("fileInput")
+        .addEventListener("change", function (e) {
+          const fileName = e.target.files[0]?.name || "اضغط لاختيار ملف Excel";
+          document.getElementById("fileName").innerText = fileName;
+          document.getElementById("errorMsg").classList.add("hidden");
         });
 
-        async function processFile() {
-            const fileInput = document.getElementById('fileInput');
-            const errorDiv = document.getElementById('errorMsg');
-            const successDiv = document.getElementById('successMsg');
-            const uploadBtn = document.getElementById('uploadBtn');
+      async function processFile() {
+        const fileInput = document.getElementById("fileInput");
+        const errorDiv = document.getElementById("errorMsg");
+        const successDiv = document.getElementById("successMsg");
+        const uploadBtn = document.getElementById("uploadBtn");
 
-            // 1. التحقق من وجود ملف
-            if (!fileInput.files.length) {
-                showError("الرجاء اختيار ملف أولاً.");
-                return;
+        // 1. التحقق من وجود ملف
+        if (!fileInput.files.length) {
+          showError("الرجاء اختيار ملف أولاً.");
+          return;
+        }
+
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+
+        uploadBtn.disabled = true;
+        uploadBtn.innerText = "جاري القراءة والتحقق...";
+
+        reader.onload = async function (e) {
+          try {
+            const data = new Uint8Array(e.target.result);
+            const workbook = XLSX.read(data, { type: "array" });
+            const sheetName = workbook.SheetNames[0];
+            const jsonData = XLSX.utils.sheet_to_json(
+              workbook.Sheets[sheetName]
+            );
+
+            // 2. التحقق من صحة البيانات (Validation Logic)
+            if (jsonData.length === 0) {
+              throw new Error("الملف فارغ!");
             }
+            const cleanData = [];
+            const errors = [];
 
-            const file = fileInput.files[0];
-            const reader = new FileReader();
+            jsonData.forEach((row, index) => {
+              // تحقق من الحقول الإجبارية
+              if (!row.user || !row.pass || !row.name || !row.email) {
+                errors.push(`صف رقم ${index + 2}: بيانات ناقصة`);
+              } else {
+                // يمكنك إضافة المزيد من التحقق هنا (مثل صيغة الإيميل)
+                cleanData.push({
+                  user: String(row.user).trim(),
+                  pass: String(row.pass).trim(),
+                  name: String(row.name).trim(),
+                  phone: row.phone ? String(row.phone).trim() : "",
+                  email: String(row.email).trim(),
+                });
+              }
+            });
 
-            uploadBtn.disabled = true;
-            uploadBtn.innerText = "جاري القراءة والتحقق...";
+            if (errors.length > 0) {
+              throw new Error(
+                `يوجد أخطاء في البيانات:\n` +
+                  errors.slice(0, 3).join("\n") +
+                  (errors.length > 3 ? "\n...وغيرها" : "")
+              );
+            }
+            // 3. الإرسال إلى الباك إند
+            uploadBtn.innerText = "جاري الإرسال للسيرفر...";
+            const response = await fetch("/addUsers", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(cleanData),
+            });
+            const result = await response.json();
+            if (response.ok) {
+              if (result.success) {
+                successDiv.innerText = `تمت العملية بنجاح! تمت إضافة ${result.count} طالب.`;
+                successDiv.classList.remove("hidden");
+                errorDiv.classList.add("hidden");
+                renderStudentsTable(
+                  cleanData.map((x) => ({ ...x, icon: "✔️" }))
+                );
+              } else {
+                showError(
+                  `تمت إضافة ${result.count} من الطلاب وتجاهل البقية لوجود تعارض في User أو Email.`
+                );
+                renderStudentsTable(
+                  result.insertedDocs.map((x) => ({ ...x, icon: "✔️" }))
+                );
+                const failedCount = result.error.map((err) => err.index);
+                renderStudentsTable(
+                  cleanData
+                    .filter((x, i) => failedCount.includes(i))
+                    .map((x) => ({ ...x, icon: "❌" }))
+                );
+              }
+            } else {
+              throw new Error(result.message || "فشل الحفظ في قاعدة البيانات");
+            }
+          } catch (err) {
+            showError(err.message);
+          } finally {
+            uploadBtn.disabled = false;
+            uploadBtn.innerText = "معالجة وإرسال البيانات";
+          }
+        };
 
-            reader.onload = async function(e) {
-                try {
-                    const data = new Uint8Array(e.target.result);
-                    const workbook = XLSX.read(data, { type: 'array' });
-                    const sheetName = workbook.SheetNames[0];
-                    const jsonData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
+        reader.readAsArrayBuffer(file);
+      }
 
-                    // 2. التحقق من صحة البيانات (Validation Logic)
-                    if (jsonData.length === 0) {
-                        throw new Error("الملف فارغ!");
-                    }
-                    const cleanData = [];
-                    const errors = [];
+      function showError(msg) {
+        const errorDiv = document.getElementById("errorMsg");
+        errorDiv.innerText = msg;
+        errorDiv.classList.remove("hidden");
+        document.getElementById("successMsg").classList.add("hidden");
+      }
+      function renderStudentsTable(studentsData) {
+        const template = document.getElementById("row");
+        const tbody = document.getElementById("studentsTableBody");
+        studentsData.forEach((student) => {
+          // 1. استنساخ محتوى التيمبلت
+          const clone = template.content.cloneNode(true);
+          // 2. الوصول للخلايا داخل النسخة (يفضل استخدام selectors دقيقة)
+          const tds = clone.querySelectorAll("td");
+          // نستخدم innerHTML لإعادة رسم هذا الجزء بدقة مع الحفاظ على التصميم
+          const firstLetter = student.name ? student.name.charAt(0) : "?";
+          tds[0].innerHTML = `
+            <div class="w-8 h-8 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center font-bold text-xs">
+                ${firstLetter}
+            </div>
+            ${student.name}
+        `;
 
-                    jsonData.forEach((row, index) => {
-                        // تحقق من الحقول الإجبارية
-                        if (!row.user || !row.pass || !row.name || !row.email) {
-                            errors.push(`صف رقم ${index + 2}: بيانات ناقصة`);
-                        } else {
-                            // يمكنك إضافة المزيد من التحقق هنا (مثل صيغة الإيميل)
-                            cleanData.push({
-                                user: String(row.user).trim(),
-                                pass: String(row.pass).trim(),
-                                name: String(row.name).trim(),
-                                phone: row.phone ? String(row.phone).trim() : "",
-                                email: String(row.email).trim()
-                            });
-                        }
-                    });
-
-                    if (errors.length > 0) {
-                        throw new Error(`يوجد أخطاء في البيانات:\n` + errors.slice(0, 3).join("\n") + (errors.length > 3 ? "\n...وغيرها" : ""));
-                    }
-                    // 3. الإرسال إلى الباك إند
-                    uploadBtn.innerText = "جاري الإرسال للسيرفر...";
-                    const response = await fetch('/addUsers', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(cleanData)
-                    });
-                    const result = await response.json();
-                    if (response.ok) {
-                        successDiv.innerText = `تمت العملية بنجاح! تمت إضافة ${result.count} طالب.`;
-                        successDiv.classList.remove('hidden');
-                        errorDiv.classList.add('hidden');
-                    } else {
-                        throw new Error(result.message || "فشل الحفظ في قاعدة البيانات");
-                    }
-
-                } catch (err) {
-                    showError(err.message);
-                } finally {
-                    uploadBtn.disabled = false;
-                    uploadBtn.innerText = "معالجة وإرسال البيانات";
-                }
-            };
-
-            reader.readAsArrayBuffer(file);
-        }
-
-        function showError(msg) {
-            const errorDiv = document.getElementById('errorMsg');
-            errorDiv.innerText = msg;
-            errorDiv.classList.remove('hidden');
-            document.getElementById('successMsg').classList.add('hidden');
-        }
+          // --- تعبئة باقي الأعمدة ---
+          tds[1].textContent = student.user; // المعرف
+          tds[2].textContent = student.email; // البريد
+          tds[3].textContent = student.phone; // الجوال
+          tds[4].textContent = student.icon; // الجوال
+          // 3. إضافة الصف للجدول
+          tbody.appendChild(clone);
+        });
+      }
     </script>
-</body>
+  </body>
 </html>
