@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>شراء اختبارات - تحديد الطلاب</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Cairo", sans-serif;
+      }
+
+      /* تأثير اختيار الكرت */
+      .exam-card.active {
+        border-color: #9333ea;
+        background-color: #faf5ff;
+        box-shadow: 0 4px 6px -1px rgba(147, 51, 234, 0.2);
+      }
+      .exam-card.active .check-indicator {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      /* أنميشن بسيط */
+      .fade-in {
+        animation: fadeIn 0.4s ease-out forwards;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-[#f8f9fa] text-gray-700 pb-32">
+    <div class="max-w-7xl mx-auto p-6 space-y-8">
+      <div class="flex justify-between items-end">
+        <div>
+          <h1 class="text-2xl font-bold text-gray-800">تخصيص الاختبارات</h1>
+          <p class="text-sm text-gray-500 mt-1">
+            اختر المقياس المطلوب لعرض الطلاب المؤهلين
+          </p>
+        </div>
+        <div class="text-left">
+          <!-- <span class="block text-xs text-gray-400">الرصيد المتاح</span>
+                <span class="text-xl font-bold text-purple-600">5,000 ر.س</span> -->
+        </div>
+      </div>
+
+      <section>
+        <h2
+          class="text-sm font-bold text-gray-400 uppercase mb-4 tracking-wider"
+        >
+          1. حدد المقياس
+        </h2>
+        <div
+          id="cards-container"
+          class="grid grid-cols-1 md:grid-cols-3 gap-6"
+        ></div>
+      </section>
+
+      <section id="studentsSection" class="hidden fade-in">
+        <div class="flex justify-between items-center mb-4">
+          <h2
+            class="text-sm font-bold text-gray-400 uppercase tracking-wider flex items-center gap-2"
+          >
+            2. حدد الطلاب لـ:
+            <span
+              id="selectedExamTitle"
+              class="text-purple-700 bg-purple-100 px-3 py-1 rounded-lg text-xs font-bold shadow-sm"
+            ></span>
+          </h2>
+
+          <div class="flex gap-2">
+            <button
+              onclick="toggleSelectAll()"
+              class="text-xs bg-white border border-gray-200 px-3 py-2 rounded hover:bg-gray-50 text-gray-600 font-medium"
+            >
+              تحديد الكل
+            </button>
+          </div>
+        </div>
+
+        <div
+          class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden"
+        >
+          <table class="w-full text-sm text-right text-gray-500">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+              <tr>
+                <th scope="col" class="p-4 w-4"></th>
+                <th scope="col" class="px-6 py-4">الطالب</th>
+                <th scope="col" class="px-6 py-4">المقاييس المشتراة مسبقاً</th>
+                <th scope="col" class="px-6 py-4">العدد</th>
+                <th scope="col" class="px-6 py-4">الحالة</th>
+              </tr>
+            </thead>
+            <tbody id="studentsTableBody"></tbody>
+          </table>
+
+          <div id="emptyState" class="hidden p-12 text-center">
+            <div class="text-4xl mb-2">🎉</div>
+            <p class="text-gray-500 font-medium">
+              جميع الطلاب لديهم هذا المقياس بالفعل.
+            </p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div
+      id="checkoutBar"
+      class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] p-4 transform translate-y-full transition-transform duration-300 z-50"
+    >
+      <div class="max-w-7xl mx-auto flex justify-between items-center">
+        <div class="flex items-center gap-4">
+          <div class="bg-purple-100 p-2 rounded-lg text-purple-600">
+            <svg
+              class="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 13l4 4L19 7"
+              ></path>
+            </svg>
+          </div>
+          <div>
+            <p class="text-sm text-gray-500">تم تحديد</p>
+            <p class="font-bold text-gray-800 text-lg">
+              <span id="selectedCount">0</span> طالب
+            </p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-6">
+          <div class="text-left hidden md:block">
+            <p class="text-xs text-gray-400">الإجمالي</p>
+            <p class="font-bold text-gray-800 text-lg">
+              <span id="totalCost">0</span> ر.س
+            </p>
+          </div>
+          <button
+            onclick="confirmPurchase()"
+            class="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-xl font-bold shadow-lg shadow-purple-200 transition-colors flex items-center gap-2"
+          >
+            <span>تأكيد وشراء</span>
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M14 5l7 7m0 0l-7 7m7-7H3"
+              ></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // --- 1. إعدادات النظام (التعريفات) ---
+
+      // الأوبجكت الخاص بتعريف الاختبارات كما طلبت
+      const info = {
+        p1: {
+          icon: "🎯",
+          label: "Holland",
+          title: "مقياس هولاند للميول المهنية",
+        },
+        p2: {
+          icon: "🧠",
+          label: "MBTI",
+          title: "مقياس مايرز-بريجز للأنماط الشخصية",
+        },
+        p3: {
+          icon: "💡", // أضفت أيقونة افتراضية لأنها كانت ناقصة
+          label: "Gardner",
+          title: "مقياس الذكاءات المتعددة لجاردنر",
+        },
+      };
+
+      // بيانات الطلاب (Mock Data)
+      const studentsData = JSON.parse('<%-data %>');
+
+      // [    {
+      //         "_id": "69397ba143241c5859123b06",
+      //         "name": "حمد السليم",
+      //         "exams": ["p1", "p2"],
+      //         "totalExams": 2,
+      //     },
+      //     {
+      //         "_id": "77397ba143241c5859123b07",
+      //         "name": "سارة القحطاني",
+      //         "exams": ["p1"],
+      //         "totalExams": 1,
+      //     },
+      //     {
+      //         "_id": "88397ba143241c5859123b08",
+      //         "name": "فيصل الجهني",
+      //         "exams": [],
+      //         "totalExams": 0,
+      //     }
+      // ];
+
+      let currentExam = null;
+      let selectedStudentIds = new Set();
+      const EXAM_PRICE = 50;
+
+      // --- 2. تهيئة الصفحة (رسم الكروت) ---
+      function initPage() {
+        const container = document.getElementById("cards-container");
+
+        // Loop through info keys (p1, p2, p3)
+        Object.keys(info).forEach((key) => {
+          const item = info[key];
+          // حساب عدد الطلاب المتاحين لهذا الاختبار
+          const availableCount = studentsData.filter(
+            (s) => !s.exams.includes(key)
+          ).length;
+
+          const cardHTML = `
+                <div onclick="selectExamType('${key}')" id="card-${key}" class="exam-card cursor-pointer bg-white rounded-xl p-6 border-2 border-transparent hover:border-gray-200 transition-all relative group shadow-sm flex flex-col h-full">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="w-12 h-12 rounded-2xl bg-gray-50 text-2xl flex items-center justify-center shadow-inner">
+                            ${item.icon}
+                        </div>
+                        <div class="check-indicator opacity-0 transform scale-50 transition-all duration-200 text-purple-600 bg-purple-50 rounded-full p-1">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                        </div>
+                    </div>
+                    
+                    <h3 class="font-bold text-gray-800 text-lg mb-1 leading-snug">${item.title}</h3>
+                    <div class="mt-auto pt-4 flex justify-between items-center border-t border-gray-50">
+                        <span class="text-xs font-semibold text-gray-400 tracking-wider">${item.label}</span>
+                        <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-md">متاح: ${availableCount}</span>
+                    </div>
+                </div>
+                `;
+          container.innerHTML += cardHTML;
+        });
+      }
+
+      // --- 3. اختيار الاختبار ---
+      function selectExamType(examKey) {
+        currentExam = examKey;
+        selectedStudentIds.clear();
+        updateCheckoutBar();
+
+        // تحديث الستايل للكروت
+        document
+          .querySelectorAll(".exam-card")
+          .forEach((el) => el.classList.remove("active"));
+        document.getElementById(`card-${examKey}`).classList.add("active");
+
+        // تحديث العنوان باستخدام info.title
+        const examTitle = info[examKey].title;
+        document.getElementById("selectedExamTitle").innerText = examTitle;
+
+        // عرض سكشن الطلاب
+        document.getElementById("studentsSection").classList.remove("hidden");
+
+        renderTable();
+      }
+
+      // --- 4. رسم الجدول ---
+      function renderTable() {
+        const tbody = document.getElementById("studentsTableBody");
+        tbody.innerHTML = "";
+
+        const availableStudents = studentsData.filter(
+          (student) => !student.exams.includes(currentExam)
+        );
+
+        if (availableStudents.length === 0) {
+          document.getElementById("emptyState").classList.remove("hidden");
+          document.querySelector("table").classList.add("hidden"); // إخفاء الهيدر
+        } else {
+          document.getElementById("emptyState").classList.add("hidden");
+          document.querySelector("table").classList.remove("hidden");
+        }
+
+        availableStudents.forEach((student) => {
+          const tr = document.createElement("tr");
+          tr.className =
+            "bg-white border-b hover:bg-gray-50 cursor-pointer transition-colors group";
+          tr.onclick = (e) => {
+            if (e.target.type !== "checkbox") toggleStudent(student._id);
+          };
+
+          const isSelected = selectedStudentIds.has(student._id);
+
+          // تحويل رموز الاختبارات (p1, p2) إلى (Holland, MBTI) للعرض
+          const existingBadges = student.exams
+            .map((examCode) => {
+              const label = info[examCode] ? info[examCode].label : examCode;
+              return `<span class="px-2 py-1 bg-gray-100 text-gray-500 text-xs rounded border border-gray-200 font-mono">${label}</span>`;
+            })
+            .join(" ");
+
+          tr.innerHTML = `
+                    <td class="p-4 w-4">
+                        <input type="checkbox" 
+                            onchange="toggleStudent('${student._id}')" 
+                            ${isSelected ? "checked" : ""}
+                            class="w-5 h-5 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500 focus:ring-2 cursor-pointer">
+                    </td>
+                    <td class="px-6 py-4 font-medium text-gray-900">
+                        <div class="flex items-center gap-3">
+                            <div class="w-9 h-9 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-sm border border-indigo-100">
+                                ${student.name.charAt(0)}
+                            </div>
+                            ${student.name}
+                        </div>
+                    </td>
+                    <td class="px-6 py-4">
+                        <div class="flex gap-1 flex-wrap">
+                            ${
+                              existingBadges ||
+                              '<span class="text-xs text-gray-300">لا يوجد اختبارات سابقة</span>'
+                            }
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 text-gray-400 text-xs">${
+                      student.totalExams
+                    }</td>
+                    <td class="px-6 py-4">
+                        <span class="bg-green-50 text-green-700 text-xs px-2 py-1 rounded border border-green-100 group-hover:bg-green-100 transition-colors">متاح</span>
+                    </td>
+                `;
+          tbody.appendChild(tr);
+        });
+      }
+
+      // --- 5. منطق التحديد والشريط السفلي ---
+      function toggleStudent(id) {
+        if (selectedStudentIds.has(id)) {
+          selectedStudentIds.delete(id);
+        } else {
+          selectedStudentIds.add(id);
+        }
+        const checkbox = document.querySelector(
+          `input[onchange="toggleStudent('${id}')"]`
+        );
+        if (checkbox) checkbox.checked = selectedStudentIds.has(id);
+        updateCheckoutBar();
+      }
+
+      function toggleSelectAll() {
+        const availableStudents = studentsData.filter(
+          (student) => !student.exams.includes(currentExam)
+        );
+        const allSelected = availableStudents.every((s) =>
+          selectedStudentIds.has(s._id)
+        );
+
+        if (allSelected) {
+          selectedStudentIds.clear();
+        } else {
+          availableStudents.forEach((s) => selectedStudentIds.add(s._id));
+        }
+        renderTable();
+        updateCheckoutBar();
+      }
+
+      function updateCheckoutBar() {
+        const bar = document.getElementById("checkoutBar");
+        const count = selectedStudentIds.size;
+
+        document.getElementById("selectedCount").innerText = count;
+        document.getElementById("totalCost").innerText = (
+          count * EXAM_PRICE
+        ).toLocaleString();
+
+        if (count > 0) bar.classList.remove("translate-y-full");
+        else bar.classList.add("translate-y-full");
+      }
+
+      function confirmPurchase() {
+        const dataToSend = {
+          exam: currentExam,
+          studentIds: Array.from(selectedStudentIds),
+        };
+
+        const examTitle = info[currentExam].title;
+        alert(
+          `✅ تم إرسال الطلب:\n\nالاختبار: ${examTitle}\nعدد الطلاب: ${selectedStudentIds.size}`
+        );
+        console.log("Payload:", dataToSend);
+      }
+
+      // تشغيل التهيئة عند التحميل
+      initPage();
+    </script>
+  </body>
+</html>

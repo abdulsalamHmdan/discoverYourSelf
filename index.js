@@ -64,6 +64,38 @@ function isTeacher(req, res, next) {
 // });
 
 // Routing
+app.get("/adminStore", async function (req, res) {
+  const students = await User.aggregate([
+    // {$match: { user: "test" }},
+    {$match: {}},
+    {
+      $lookup: {
+        from: "exams",
+        localField: "_id",
+        foreignField: "user",
+        as: "exams",
+      },
+    },
+    {
+      $project: {
+        name: "$name",
+        exams: "$exams.type",
+        totalExams: { $size: "$exams" },
+        newExams: {
+          $size: {
+            $filter: {
+              input: "$exams",
+              as: "exam",
+              cond: { $eq: ["$$exam.stat", "new"] },
+            },
+          },
+        },
+      },
+    },
+  ]);
+  res.render("adminStore", { data: JSON.stringify(students) });
+  // res.json(students);
+});
 app.get("/", isAuthenticated, function (req, res) {
   res.redirect("home");
 });
@@ -409,7 +441,9 @@ app.post("/payment", isAuthenticated, async (req, res) => {
     res.json({ status: "success", url: redirectUrl });
   } catch (error) {
     console.error("Error creating payment session:", error.response.data);
-    res.status(500).json({ status: "error", message: "Error creating payment session" });
+    res
+      .status(500)
+      .json({ status: "error", message: "Error creating payment session" });
   }
 });
 app.get("/text", async (req, res) => {
