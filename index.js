@@ -41,29 +41,41 @@ function isTeacher(req, res, next) {
   if (req.session.role == "teacher") next();
   else next("route");
 }
-
-// app.get("/register", async (req, res) => {
-//   try {
-//     const newTeacher = await Teacher.create({
-//       user: "admin",
-//       email: "abdulsalam.hmdan@gmail.com",
-//       pass: 112233, // ملاحظة: يجب تشفير كلمة المرور في التطبيق الحقيقي
-//       name: "مسؤول النظام",
-//       role: "admin",
-//     });
-//     res.json(newTeacher);
-//   } catch (error) {
-//     res.status(400).send(error.message);
-//   }
-// });
-
-// مثال: البحث عن جميع المستخدمين (Read)
-// app.get("/users", async (req, res) => {
-//   const users = await User.find(); // دالة جاهزة من الموديل
-//   res.json(users);
-// });
-
 // Routing
+// app.get("/test", async function (req, res) {
+//     const students = await User.aggregate([
+//     // {$match: { user: "test" }},
+//     {$match: {}},
+//     {
+//       $lookup: {
+//         from: "exams",
+//         localField: "_id",
+//         foreignField: "user",
+//         as: "exams",
+//       },
+//     },
+//     {$match: { ["exams.stat"]: "new" }},
+//     // {
+//     //   $project: {
+//     //     name: "$name",
+//     //     exams: "$exams.type",
+//     //     totalExams: { $size: "$exams" },
+//     //     newExams: {
+//     //       $size: {
+//     //         $filter: {
+//     //           input: "$exams",
+//     //           as: "exam",
+//     //           cond: { $eq: ["$$exam.stat", "new"] },
+//     //         },
+//     //       },
+//     //     },
+//     //   },
+//     // },
+//   ]);
+
+//   res.json(students);
+// });
+
 app.get("/adminStore", async function (req, res) {
   const students = await User.aggregate([
     // {$match: { user: "test" }},
@@ -94,8 +106,67 @@ app.get("/adminStore", async function (req, res) {
     },
   ]);
   res.render("adminStore", { data: JSON.stringify(students) });
-  // res.json(students);
 });
+
+
+app.post("/adminStore", express.json(), async function (req, res) {
+  console.log(req.body);
+  const paymentData = {
+    amount: +req.body.finalPrice,
+    currency: "SAR",
+    customer: {
+      first_name: "Ahmed",
+      email: "ahmed@example.com",
+    },
+    source: {
+      id: "src_all",
+    },
+    customer_initiated: true,
+    threeDSecure: true,
+    save_card: false,
+    description: "Test Description",
+    metadata: { udf1: "Metadata 1" },
+    receipt: { email: false, sms: false },
+    reference: { transaction: "txn_01", order: "ord_01" },
+    merchant: { id: "1234" },
+    post: { url: "https://baserah.app/paying" },
+    redirect: { url: "https://baserah.app/text" },
+  };
+  try {
+    const response = await axios.post(
+      "https://api.tap.company/v2/charges", // نقطة نهاية (Endpoint) لإنشاء الدفعة
+      paymentData,
+      {
+        headers: {
+          Authorization: `Bearer sk_test_XKokBfNWv6FIYuTMg5sLPjhJ`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const redirectUrl = response.data.transaction.url;
+    const reqBodyUser = req.body.studentIds;
+    reqBodyUser.map(async (id) => await new mongoose.Types.ObjectId(id));
+    console.log(reqBodyUser);
+    const user = await User.find({ _id: { $in: reqBodyUser } });
+    Payment.create({
+      tapId: response.data.id,
+      type: "personal",
+      exams: [req.body.exam],
+      url: redirectUrl,
+      users: reqBodyUser,
+      teacher: null,
+      stat: "pending",
+    });
+    res.json({ status: "success", url: redirectUrl });
+  } catch (error) {
+    console.error("Error creating payment session:", error);
+    res
+      .status(500)
+      .json({ status: "error", message: "Error creating payment session" });
+  }
+});
+
+
 app.get("/", isAuthenticated, function (req, res) {
   res.redirect("home");
 });
@@ -418,7 +489,7 @@ app.post("/payment", isAuthenticated, async (req, res) => {
   };
   try {
     const response = await axios.post(
-      "https://api.tap.company/v2/charges", // نقطة نهاية (Endpoint) لإنشاء الدفعة
+      "https://api.tap.company/v2/charges",
       paymentData,
       {
         headers: {

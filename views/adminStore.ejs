@@ -14,7 +14,6 @@
         font-family: "Cairo", sans-serif;
       }
 
-      /* تأثير اختيار الكرت */
       .exam-card.active {
         border-color: #9333ea;
         background-color: #faf5ff;
@@ -24,8 +23,6 @@
         opacity: 1;
         transform: scale(1);
       }
-
-      /* أنميشن بسيط */
       .fade-in {
         animation: fadeIn 0.4s ease-out forwards;
       }
@@ -39,20 +36,27 @@
           transform: translateY(0);
         }
       }
+
+      /* تأثير السعر المشطوب */
+      .line-through-price {
+        text-decoration: line-through;
+        color: #9ca3af;
+        font-size: 0.8rem;
+      }
     </style>
   </head>
-  <body class="bg-[#f8f9fa] text-gray-700 pb-32">
+  <body class="bg-[#f8f9fa] text-gray-700 pb-40">
     <div class="max-w-7xl mx-auto p-6 space-y-8">
       <div class="flex justify-between items-end">
         <div>
           <h1 class="text-2xl font-bold text-gray-800">تخصيص الاختبارات</h1>
           <p class="text-sm text-gray-500 mt-1">
-            اختر المقياس المطلوب لعرض الطلاب المؤهلين
+            اختر المقياس ثم ابحث وحدد الطلاب
           </p>
         </div>
         <div class="text-left">
           <!-- <span class="block text-xs text-gray-400">الرصيد المتاح</span>
-                <span class="text-xl font-bold text-purple-600">5,000 ر.س</span> -->
+          <span class="text-xl font-bold text-purple-600">5,000 ر.س</span> -->
         </div>
       </div>
 
@@ -68,8 +72,10 @@
         ></div>
       </section>
 
-      <section id="studentsSection" class="hidden fade-in">
-        <div class="flex justify-between items-center mb-4">
+      <section id="studentsSection" class="hidden fade-in space-y-4">
+        <div
+          class="flex flex-col md:flex-row md:justify-between md:items-center gap-4"
+        >
           <h2
             class="text-sm font-bold text-gray-400 uppercase tracking-wider flex items-center gap-2"
           >
@@ -80,10 +86,37 @@
             ></span>
           </h2>
 
-          <div class="flex gap-2">
+          <div class="flex items-center gap-3 w-full md:w-auto">
+            <div class="relative w-full md:w-64">
+              <div
+                class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"
+              >
+                <svg
+                  class="w-4 h-4 text-gray-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                  ></path>
+                </svg>
+              </div>
+              <input
+                type="text"
+                id="searchInput"
+                oninput="handleSearch(this.value)"
+                class="block w-full p-2 pr-10 text-sm text-gray-900 border border-gray-200 rounded-lg bg-white focus:ring-purple-500 focus:border-purple-500"
+                placeholder="بحث باسم الطالب..."
+              />
+            </div>
+
             <button
               onclick="toggleSelectAll()"
-              class="text-xs bg-white border border-gray-200 px-3 py-2 rounded hover:bg-gray-50 text-gray-600 font-medium"
+              class="text-xs bg-white border border-gray-200 px-4 py-2.5 rounded-lg hover:bg-gray-50 text-gray-600 font-medium whitespace-nowrap"
             >
               تحديد الكل
             </button>
@@ -107,9 +140,9 @@
           </table>
 
           <div id="emptyState" class="hidden p-12 text-center">
-            <div class="text-4xl mb-2">🎉</div>
+            <div class="text-4xl mb-2">🔍</div>
             <p class="text-gray-500 font-medium">
-              جميع الطلاب لديهم هذا المقياس بالفعل.
+              لا يوجد طلاب يطابقون بحثك أو جميعهم يملكون هذا الاختبار.
             </p>
           </div>
         </div>
@@ -120,9 +153,13 @@
       id="checkoutBar"
       class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] p-4 transform translate-y-full transition-transform duration-300 z-50"
     >
-      <div class="max-w-7xl mx-auto flex justify-between items-center">
-        <div class="flex items-center gap-4">
-          <div class="bg-purple-100 p-2 rounded-lg text-purple-600">
+      <div
+        class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4"
+      >
+        <div class="flex items-center gap-4 w-full md:w-auto">
+          <div
+            class="bg-purple-100 p-2 rounded-lg text-purple-600 hidden md:block"
+          >
             <svg
               class="w-6 h-6"
               fill="none"
@@ -138,47 +175,145 @@
             </svg>
           </div>
           <div>
-            <p class="text-sm text-gray-500">تم تحديد</p>
+            <p class="text-xs text-gray-400">العدد المحدد</p>
             <p class="font-bold text-gray-800 text-lg">
               <span id="selectedCount">0</span> طالب
             </p>
           </div>
         </div>
 
-        <div class="flex items-center gap-6">
-          <div class="text-left hidden md:block">
-            <p class="text-xs text-gray-400">الإجمالي</p>
-            <p class="font-bold text-gray-800 text-lg">
-              <span id="totalCost">0</span> ر.س
-            </p>
-          </div>
-          <button
-            onclick="confirmPurchase()"
-            class="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-xl font-bold shadow-lg shadow-purple-200 transition-colors flex items-center gap-2"
-          >
-            <span>تأكيد وشراء</span>
-            <svg
-              class="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+        <div
+          class="flex flex-col md:flex-row items-center gap-4 md:gap-8 w-full md:w-auto"
+        >
+          <div class="flex items-center gap-2 w-full md:w-auto">
+            <div class="relative w-full">
+              <input
+                type="text"
+                id="couponCode"
+                placeholder="كود الخصم (KSA2030)"
+                class="w-full md:w-40 bg-gray-50 border border-gray-200 text-gray-700 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block p-2.5 uppercase"
+              />
+              <div
+                id="couponSuccess"
+                class="hidden absolute left-2 top-2.5 text-green-500"
+              >
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+              </div>
+            </div>
+            <button
+              onclick="applyCoupon()"
+              id="btnApplyCoupon"
+              class="text-white bg-gray-800 hover:bg-gray-900 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2.5"
             >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M14 5l7 7m0 0l-7 7m7-7H3"
-              ></path>
-            </svg>
+              تطبيق
+            </button>
+          </div>
+
+          <div
+            class="text-left w-full md:w-auto flex justify-between md:block px-2 md:px-0"
+          >
+            <p class="text-xs text-gray-400">الإجمالي النهائي</p>
+            <div class="flex items-baseline gap-2">
+              <span id="originalPrice" class="hidden line-through-price"></span>
+              <p class="font-bold text-gray-800 text-2xl">
+                <span id="totalCost">0</span>
+                <span class="text-sm font-normal text-gray-500">ر.س</span>
+              </p>
+            </div>
+          </div>
+
+          <button
+            id="confirmBtn"
+            onclick="confirmPurchase()"
+            class="w-full md:w-auto bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-xl font-bold shadow-lg shadow-purple-200 transition-all flex justify-center items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+          >
+            <span id="btnText">تأكيد وشراء</span>
+            <div id="btnIcon">
+              <svg
+                class="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M14 5l7 7m0 0l-7 7m7-7H3"
+                ></path>
+              </svg>
+            </div>
+            <div id="loadingIcon" class="hidden">
+              <svg
+                class="animate-spin h-5 w-5 text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  class="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  stroke-width="4"
+                ></circle>
+                <path
+                  class="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
+              </svg>
+            </div>
           </button>
         </div>
       </div>
     </div>
+    <div id="redirectModal" class="fixed inset-0 z-[100] hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity backdrop-blur-sm"></div>
+
+    <div class="fixed inset-0 z-10 overflow-y-auto">
+        <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
+            <div class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm border border-gray-100">
+                <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                    <div class="sm:flex sm:items-start">
+                        <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left w-full">
+                            <div class="mx-auto flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-full bg-green-50 mb-4 animate-bounce">
+                                <svg class="h-8 w-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
+                                </svg>
+                            </div>
+                            
+                            <h3 class="text-xl font-bold leading-6 text-gray-900 text-center" id="modal-title">جاري التحويل</h3>
+                            <div class="mt-2">
+                                <p class="text-sm text-gray-500 text-center">
+                                    سيتم نقلك إلى صفحة الدفع لإكمال العملية بأمان.
+                                </p>
+                            </div>
+
+                            <div class="mt-6 flex justify-center">
+                                <div class="flex space-x-2 space-x-reverse">
+                                    <div class="w-2 h-2 bg-purple-600 rounded-full animate-pulse"></div>
+                                    <div class="w-2 h-2 bg-purple-600 rounded-full animate-pulse delay-75"></div>
+                                    <div class="w-2 h-2 bg-purple-600 rounded-full animate-pulse delay-150"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
     <script>
-      // --- 1. إعدادات النظام (التعريفات) ---
-
-      // الأوبجكت الخاص بتعريف الاختبارات كما طلبت
+      // --- البيانات والإعدادات ---
       const info = {
         p1: {
           icon: "🎯",
@@ -191,7 +326,7 @@
           title: "مقياس مايرز-بريجز للأنماط الشخصية",
         },
         p3: {
-          icon: "💡", // أضفت أيقونة افتراضية لأنها كانت ناقصة
+          icon: "💡",
           label: "Gardner",
           title: "مقياس الذكاءات المتعددة لجاردنر",
         },
@@ -199,105 +334,88 @@
 
       // بيانات الطلاب (Mock Data)
       const studentsData = JSON.parse('<%-data %>');
-
-      // [    {
-      //         "_id": "69397ba143241c5859123b06",
-      //         "name": "حمد السليم",
-      //         "exams": ["p1", "p2"],
-      //         "totalExams": 2,
-      //     },
-      //     {
-      //         "_id": "77397ba143241c5859123b07",
-      //         "name": "سارة القحطاني",
-      //         "exams": ["p1"],
-      //         "totalExams": 1,
-      //     },
-      //     {
-      //         "_id": "88397ba143241c5859123b08",
-      //         "name": "فيصل الجهني",
-      //         "exams": [],
-      //         "totalExams": 0,
-      //     }
-      // ];
-
       let currentExam = null;
       let selectedStudentIds = new Set();
+      let searchTerm = ""; // متغير البحث
+      let discountMultiplier = 1; // 1 يعني السعر كامل، 0.8 يعني خصم 20%
       const EXAM_PRICE = 50;
 
-      // --- 2. تهيئة الصفحة (رسم الكروت) ---
+      // --- التهيئة ---
       function initPage() {
         const container = document.getElementById("cards-container");
-
-        // Loop through info keys (p1, p2, p3)
         Object.keys(info).forEach((key) => {
           const item = info[key];
-          // حساب عدد الطلاب المتاحين لهذا الاختبار
           const availableCount = studentsData.filter(
             (s) => !s.exams.includes(key)
           ).length;
-
-          const cardHTML = `
+          container.innerHTML += `
                 <div onclick="selectExamType('${key}')" id="card-${key}" class="exam-card cursor-pointer bg-white rounded-xl p-6 border-2 border-transparent hover:border-gray-200 transition-all relative group shadow-sm flex flex-col h-full">
                     <div class="flex justify-between items-start mb-4">
-                        <div class="w-12 h-12 rounded-2xl bg-gray-50 text-2xl flex items-center justify-center shadow-inner">
-                            ${item.icon}
-                        </div>
+                        <div class="w-12 h-12 rounded-2xl bg-gray-50 text-2xl flex items-center justify-center shadow-inner">${item.icon}</div>
                         <div class="check-indicator opacity-0 transform scale-50 transition-all duration-200 text-purple-600 bg-purple-50 rounded-full p-1">
                             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
                         </div>
                     </div>
-                    
                     <h3 class="font-bold text-gray-800 text-lg mb-1 leading-snug">${item.title}</h3>
                     <div class="mt-auto pt-4 flex justify-between items-center border-t border-gray-50">
                         <span class="text-xs font-semibold text-gray-400 tracking-wider">${item.label}</span>
                         <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-md">متاح: ${availableCount}</span>
                     </div>
-                </div>
-                `;
-          container.innerHTML += cardHTML;
+                </div>`;
         });
       }
 
-      // --- 3. اختيار الاختبار ---
+      // --- المنطق الأساسي ---
       function selectExamType(examKey) {
         currentExam = examKey;
         selectedStudentIds.clear();
+        searchTerm = ""; // تصفير البحث عند تغيير الاختبار
+        document.getElementById("searchInput").value = "";
+
         updateCheckoutBar();
 
-        // تحديث الستايل للكروت
         document
           .querySelectorAll(".exam-card")
           .forEach((el) => el.classList.remove("active"));
         document.getElementById(`card-${examKey}`).classList.add("active");
-
-        // تحديث العنوان باستخدام info.title
-        const examTitle = info[examKey].title;
-        document.getElementById("selectedExamTitle").innerText = examTitle;
-
-        // عرض سكشن الطلاب
+        document.getElementById("selectedExamTitle").innerText =
+          info[examKey].title;
         document.getElementById("studentsSection").classList.remove("hidden");
 
         renderTable();
       }
 
-      // --- 4. رسم الجدول ---
+      function handleSearch(val) {
+        searchTerm = val.toLowerCase();
+        renderTable(); // إعادة رسم الجدول بناءً على البحث
+      }
+
+      function getFilteredStudents() {
+        // هذه الدالة تعيد الطلاب الذين:
+        // 1. ليس لديهم الاختبار الحالي
+        // 2. واسمهم يطابق البحث
+        return studentsData.filter(
+          (student) =>
+            !student.exams.includes(currentExam) &&
+            student.name.toLowerCase().includes(searchTerm)
+        );
+      }
+
       function renderTable() {
         const tbody = document.getElementById("studentsTableBody");
         tbody.innerHTML = "";
 
-        const availableStudents = studentsData.filter(
-          (student) => !student.exams.includes(currentExam)
-        );
+        const studentsToShow = getFilteredStudents();
 
-        if (availableStudents.length === 0) {
+        if (studentsToShow.length === 0) {
           document.getElementById("emptyState").classList.remove("hidden");
-          document.querySelector("table").classList.add("hidden"); // إخفاء الهيدر
+          document.querySelector("table").classList.add("hidden");
         } else {
           document.getElementById("emptyState").classList.add("hidden");
           document.querySelector("table").classList.remove("hidden");
         }
 
-        availableStudents.forEach((student) => {
+        studentsToShow.forEach((student) => {
           const tr = document.createElement("tr");
           tr.className =
             "bg-white border-b hover:bg-gray-50 cursor-pointer transition-colors group";
@@ -306,8 +424,6 @@
           };
 
           const isSelected = selectedStudentIds.has(student._id);
-
-          // تحويل رموز الاختبارات (p1, p2) إلى (Holland, MBTI) للعرض
           const existingBadges = student.exams
             .map((examCode) => {
               const label = info[examCode] ? info[examCode].label : examCode;
@@ -315,47 +431,47 @@
             })
             .join(" ");
 
+          // --- التعديل هنا ---
+          // نتحقق: هل هناك بحث؟ إذا نعم نلون، إذا لا نعرض الاسم كما هو
+          const displayName = searchTerm
+            ? student.name.replace(
+                new RegExp(searchTerm, "gi"),
+                (match) => `<span class="bg-yellow-200">${match}</span>`
+              )
+            : student.name;
+
           tr.innerHTML = `
-                    <td class="p-4 w-4">
-                        <input type="checkbox" 
-                            onchange="toggleStudent('${student._id}')" 
-                            ${isSelected ? "checked" : ""}
-                            class="w-5 h-5 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500 focus:ring-2 cursor-pointer">
-                    </td>
-                    <td class="px-6 py-4 font-medium text-gray-900">
-                        <div class="flex items-center gap-3">
-                            <div class="w-9 h-9 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-sm border border-indigo-100">
-                                ${student.name.charAt(0)}
-                            </div>
-                            ${student.name}
-                        </div>
-                    </td>
-                    <td class="px-6 py-4">
-                        <div class="flex gap-1 flex-wrap">
-                            ${
-                              existingBadges ||
-                              '<span class="text-xs text-gray-300">لا يوجد اختبارات سابقة</span>'
-                            }
-                        </div>
-                    </td>
-                    <td class="px-6 py-4 text-gray-400 text-xs">${
-                      student.totalExams
-                    }</td>
-                    <td class="px-6 py-4">
-                        <span class="bg-green-50 text-green-700 text-xs px-2 py-1 rounded border border-green-100 group-hover:bg-green-100 transition-colors">متاح</span>
-                    </td>
-                `;
+            <td class="p-4 w-4">
+                <input type="checkbox" onchange="toggleStudent('${
+                  student._id
+                }')" ${
+            isSelected ? "checked" : ""
+          } class="w-5 h-5 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500 cursor-pointer">
+            </td>
+            <td class="px-6 py-4 font-medium text-gray-900">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-sm border border-indigo-100">${student.name.charAt(
+                      0
+                    )}</div>
+                    ${displayName}
+                </div>
+            </td>
+            <td class="px-6 py-4"><div class="flex gap-1 flex-wrap">${
+              existingBadges ||
+              '<span class="text-xs text-gray-300">لا يوجد</span>'
+            }</div></td>
+            <td class="px-6 py-4 text-gray-400 text-xs">${
+              student.totalExams
+            }</td>
+            <td class="px-6 py-4"><span class="bg-green-50 text-green-700 text-xs px-2 py-1 rounded border border-green-100">متاح</span></td>
+        `;
           tbody.appendChild(tr);
         });
       }
-
-      // --- 5. منطق التحديد والشريط السفلي ---
       function toggleStudent(id) {
-        if (selectedStudentIds.has(id)) {
-          selectedStudentIds.delete(id);
-        } else {
-          selectedStudentIds.add(id);
-        }
+        if (selectedStudentIds.has(id)) selectedStudentIds.delete(id);
+        else selectedStudentIds.add(id);
+
         const checkbox = document.querySelector(
           `input[onchange="toggleStudent('${id}')"]`
         );
@@ -364,49 +480,181 @@
       }
 
       function toggleSelectAll() {
-        const availableStudents = studentsData.filter(
-          (student) => !student.exams.includes(currentExam)
-        );
-        const allSelected = availableStudents.every((s) =>
+        // نحدد فقط الطلاب الظاهرين حالياً (المفلترين بالبحث)
+        const visibleStudents = getFilteredStudents();
+        const allVisibleSelected = visibleStudents.every((s) =>
           selectedStudentIds.has(s._id)
         );
 
-        if (allSelected) {
-          selectedStudentIds.clear();
+        if (allVisibleSelected) {
+          // إلغاء تحديد الظاهرين فقط
+          visibleStudents.forEach((s) => selectedStudentIds.delete(s._id));
         } else {
-          availableStudents.forEach((s) => selectedStudentIds.add(s._id));
+          // تحديد الظاهرين
+          visibleStudents.forEach((s) => selectedStudentIds.add(s._id));
         }
         renderTable();
         updateCheckoutBar();
       }
 
+      // --- منطق الكوبون والحساب ---
+      function applyCoupon() {
+        const input = document.getElementById("couponCode");
+        const btn = document.getElementById("btnApplyCoupon");
+        const code = input.value.trim().toUpperCase();
+
+        // تحقق وهمي من الكوبون (يمكنك تغييره لاستدعاء API)
+        if (code === "KSA2030") {
+          discountMultiplier = 0.8; // خصم 20%
+
+          // تحديث شكل الحقل ليدل على النجاح
+          input.disabled = true;
+          input.classList.add(
+            "bg-green-50",
+            "text-green-700",
+            "border-green-200"
+          );
+          document.getElementById("couponSuccess").classList.remove("hidden");
+          btn.innerText = "تم الخصم";
+          btn.classList.replace("bg-gray-800", "bg-green-600");
+          btn.disabled = true;
+
+          updateCheckoutBar(); // إعادة حساب السعر
+        } else {
+          // حالة الفشل
+          input.classList.add(
+            "border-red-500",
+            "focus:border-red-500",
+            "focus:ring-red-500"
+          );
+          setTimeout(
+            () =>
+              input.classList.remove(
+                "border-red-500",
+                "focus:border-red-500",
+                "focus:ring-red-500"
+              ),
+            2000
+          );
+          alert("الكوبون غير صحيح");
+        }
+      }
+
       function updateCheckoutBar() {
         const bar = document.getElementById("checkoutBar");
         const count = selectedStudentIds.size;
+        const originalTotal = count * EXAM_PRICE;
+        const finalTotal = originalTotal * discountMultiplier;
 
         document.getElementById("selectedCount").innerText = count;
-        document.getElementById("totalCost").innerText = (
-          count * EXAM_PRICE
-        ).toLocaleString();
+
+        // التعامل مع عرض السعر قبل وبعد الخصم
+        const totalCostEl = document.getElementById("totalCost");
+        const originalPriceEl = document.getElementById("originalPrice");
+
+        totalCostEl.innerText = finalTotal.toLocaleString();
+
+        if (discountMultiplier < 1 && count > 0) {
+          originalPriceEl.innerText = originalTotal.toLocaleString();
+          originalPriceEl.classList.remove("hidden");
+          totalCostEl.classList.add("text-green-600");
+        } else {
+          originalPriceEl.classList.add("hidden");
+          totalCostEl.classList.remove("text-green-600");
+        }
 
         if (count > 0) bar.classList.remove("translate-y-full");
         else bar.classList.add("translate-y-full");
       }
 
       function confirmPurchase() {
+    const btn = document.getElementById('confirmBtn');
+    const btnText = document.getElementById('btnText');
+    const btnIcon = document.getElementById('btnIcon');
+    const loadingIcon = document.getElementById('loadingIcon');
+    const modal = document.getElementById('redirectModal');
+    // 1. تفعيل حالة التحميل للزر
+    btn.disabled = true;
+    btnText.innerText = "جاري التحقق...";
+    btnIcon.classList.add('hidden');
+    loadingIcon.classList.remove('hidden');
+    // محاكاة عملية التحقق (API Call)
+    modal.classList.remove('hidden');
+    btnText.innerText = "جاري نقلك للدفع...";
         const dataToSend = {
           exam: currentExam,
           studentIds: Array.from(selectedStudentIds),
+          coupon: document.getElementById("couponCode").value,
+          finalPrice: document.getElementById("totalCost").innerText,
         };
-
-        const examTitle = info[currentExam].title;
-        alert(
-          `✅ تم إرسال الطلب:\n\nالاختبار: ${examTitle}\nعدد الطلاب: ${selectedStudentIds.size}`
-        );
-        console.log("Payload:", dataToSend);
+        console.log(dataToSend);
+        fetch("", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(dataToSend),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.status == "success" && data.url.startsWith("http")) {
+              // إعادة التوجيه إلى صفحة الدفع
+              window.location.href = data.url;
+            } else {
+              alert("حدث خطأ أثناء معالجة الطلب. حاول مرة أخرى.");
+              resetPaymentButton(); // إعادة الزر للحالة الطبيعية
+              modal.classList.add('hidden'); // إخفاء المودال
+            }
+          });
       }
 
-      // تشغيل التهيئة عند التحميل
+      // دالة إتمام الشراء (المحدثة)
+// function confirmPurchase() {
+//     const btn = document.getElementById('confirmBtn');
+//     const btnText = document.getElementById('btnText');
+//     const btnIcon = document.getElementById('btnIcon');
+//     const loadingIcon = document.getElementById('loadingIcon');
+//     const modal = document.getElementById('redirectModal');
+//     // 1. تفعيل حالة التحميل للزر
+//     btn.disabled = true;
+//     btnText.innerText = "جاري التحقق...";
+//     btnIcon.classList.add('hidden');
+//     loadingIcon.classList.remove('hidden');
+//     // محاكاة عملية التحقق (API Call)
+//     modal.classList.remove('hidden');
+//     btnText.innerText = "جاري نقلك للدفع...";
+//     // 2. إظهار المودال بعد التحقق
+//     // تغيير نص الزر ليتناسب مع الحالة
+    
+//     setTimeout(() => {
+//         // محاكاة وقت التحويل (Redirect)
+//         setTimeout(() => {
+//             // في الوضع الحقيقي هنا تضع: window.location.href = '/payment';
+            
+//             // للتجربة فقط سنقوم بإخفاء المودال وإعادة الزر
+//             resetPaymentButton(); 
+            
+//         }, 3000); // المودال سيظهر لمدة 3 ثواني ثم يختفي
+
+//     }, 1000); // ثانية واحدة تحقق
+// }
+
+// دالة إعادة الزر والمودال للحالة الطبيعية
+function resetPaymentButton() {
+    const btn = document.getElementById('confirmBtn');
+    const btnText = document.getElementById('btnText');
+    const btnIcon = document.getElementById('btnIcon');
+    const loadingIcon = document.getElementById('loadingIcon');
+    const modal = document.getElementById('redirectModal');
+
+    if(btn) {
+        btn.disabled = false;
+        btnText.innerText = "تأكيد وشراء";
+        btnIcon.classList.remove('hidden');
+        loadingIcon.classList.add('hidden');
+        
+        // إخفاء المودال أيضاً
+        if(modal) modal.classList.add('hidden');
+    }
+}
       initPage();
     </script>
   </body>
