@@ -76,10 +76,9 @@ function isTeacher(req, res, next) {
 //   res.json(students);
 // });
 
-app.get("/adminStore", async function (req, res) {
+app.get("/adminStore", isAdmin, async function (req, res) {
   const students = await User.aggregate([
-    // {$match: { user: "test" }},
-    {$match: {}},
+    { $match: {} },
     {
       $lookup: {
         from: "exams",
@@ -107,8 +106,40 @@ app.get("/adminStore", async function (req, res) {
   ]);
   res.render("adminStore", { data: JSON.stringify(students) });
 });
-
-
+app.get("/adminStore", isTeacher, async function (req, res) {
+  const students = await User.aggregate([
+    {
+      $match: {
+        teacher: { $in: [new mongoose.Types.ObjectId(req.session.userId)] },
+      },
+    },
+    {
+      $lookup: {
+        from: "exams",
+        localField: "_id",
+        foreignField: "user",
+        as: "exams",
+      },
+    },
+    {
+      $project: {
+        name: "$name",
+        exams: "$exams.type",
+        totalExams: { $size: "$exams" },
+        newExams: {
+          $size: {
+            $filter: {
+              input: "$exams",
+              as: "exam",
+              cond: { $eq: ["$$exam.stat", "new"] },
+            },
+          },
+        },
+      },
+    },
+  ]);
+  res.render("adminStore", { data: JSON.stringify(students) });
+});
 app.post("/adminStore", express.json(), async function (req, res) {
   console.log(req.body);
   const paymentData = {
@@ -165,8 +196,6 @@ app.post("/adminStore", express.json(), async function (req, res) {
       .json({ status: "error", message: "Error creating payment session" });
   }
 });
-
-
 app.get("/", isAuthenticated, function (req, res) {
   res.redirect("home");
 });
@@ -189,11 +218,9 @@ app.get("/login", isAdmin, function (req, res) {
 app.get("/login", isTeacher, function (req, res) {
   res.redirect("/");
 });
-
 app.get("/login", function (req, res) {
   res.render("login", { collection: "users" });
 });
-
 app.get("/admin", isAdmin, function (req, res) {
   User.find()
     .then((usersFromDb) => {
@@ -249,20 +276,6 @@ app.get("/admin", isTeacher, function (req, res) {
       console.error(err);
       res.render("adminPage", { data: null });
     });
-  // const users = [{
-  //           id: x.user,
-  //           name: x.name,
-  //           phone: x.phone,
-  //           studentId: x.idNumber,
-  //           status: prog,
-  //           completion: completion,
-  //           riasec: x?.stat?.p1?.tops?.map(l => l.dim),
-  //           mbti: x?.stat?.p2?.type,
-  //           thk: x?.stat?.p3?.tops?.map(l => l.name),
-  //           startTime: +x?.stat?.start,
-  //           endTime: +x?.stat?.end
-  //       }];
-  // res.render("adminPage",{ data: null });
 });
 
 app.get("/admin", function (req, res) {
@@ -641,90 +654,105 @@ app.post(
 // app.get("/admin/Results/:id/:exam", function (req, res) {
 //   res.redirect("/admin");
 // });
-// app.get("/admin/end/:id", isAdmin, async function (req, res) {
-//   await client.connect();
-//   const db = client.db("soqy");
-//   const collection = db.collection("users");
-//   const user = await collection.findOne({ user: req.params.id });
-//   client.close();
-//   if (user) {
-//     const p1 = user.stat?.p1 ? user.stat.p1.tops : null;
-//     const p2 = user.stat?.p2 ? user.stat.p2 : null;
-//     const p3 = user.stat?.p3 ? user.stat.p3.tops : null;
-//     if (user.rate) {
-//       const rate = [
-//         {
-//           name: "الميول المهنية",
-//           val: user.rate.qus
-//             .slice(0, 3)
-//             .reduce(
-//               (accumulator, currentValue) => +accumulator + +currentValue.val,
-//               0
-//             ),
-//         },
-//         {
-//           name: "تحليل الشخصية mbti",
-//           val: user.rate.qus
-//             .slice(3, 6)
-//             .reduce(
-//               (accumulator, currentValue) => +accumulator + +currentValue.val,
-//               0
-//             ),
-//         },
-//         {
-//           name: "الذكاءات المتعددة",
-//           val: user.rate.qus
-//             .slice(6, 9)
-//             .reduce(
-//               (accumulator, currentValue) => +accumulator + +currentValue.val,
-//               0
-//             ),
-//         },
-//       ];
-//       // console.log(rate);
-//       res.render("studentPage", {
-//         id: user.user,
-//         name: user.name,
-//         p1,
-//         p2,
-//         p3,
-//         rate,
-//       });
-//       return;
-//     }
-//     res.render("studentPage", {
-//       id: user.user,
-//       name: user.name,
-//       p1,
-//       p2,
-//       p3,
-//       rate: null,
-//     });
-//   } else {
-//     res.redirect("admin");
-//   }
-// });
-// app.get("/admin/end/:id", isTeacher, async function (req, res) {
-//   await client.connect();
-//   const db = client.db("soqy");
-//   const collection = db.collection("users");
-//   const user = await collection.findOne({ user: req.params.id });
-//   client.close();
-//   if (user) {
-//     const p1 = user.stat?.p1 ? user.stat.p1.tops : null;
-//     const p2 = user.stat?.p2 ? user.stat.p2 : null;
-//     const p3 = user.stat?.p3 ? user.stat.p3.tops : null;
-//     res.render("studentPage", { id: user.user, name: user.name, p1, p2, p3 });
-//   } else {
-//     res.redirect("admin");
-//   }
-// });
-// app.get("/admin/end/:id", async function (req, res) {
-//   res.redirect("/admin");
-// });
-// app.get("/admin/end/:id", function (req, res) {
-//   res.send("not allowd");
-// });
+app.get("/admin/end/:id", isAdmin, async function (req, res) {
+  User.find({
+    teacher: { $in: new mongoose.Types.ObjectId(req.session.userId) },
+  }).then((usersFromDb) => {
+    const users = usersFromDb.map((x) => {
+      let completion = 0;
+      let prog = "";
+      return {
+        id: x._id,
+        name: x.name,
+        phone: x.phone,
+        studentId: x.user,
+        status: prog,
+        completion: completion,
+        riasec: null,
+        mbti: null,
+        thk: null,
+        startTime: null,
+        endTime: null,
+      };
+    });
+    res.render("adminPage", { data: JSON.stringify(users) });
+  });
+
+  if (user) {
+    const p1 = user.stat?.p1 ? user.stat.p1.tops : null;
+    const p2 = user.stat?.p2 ? user.stat.p2 : null;
+    const p3 = user.stat?.p3 ? user.stat.p3.tops : null;
+    if (user.rate) {
+      const rate = [
+        {
+          name: "الميول المهنية",
+          val: user.rate.qus
+            .slice(0, 3)
+            .reduce(
+              (accumulator, currentValue) => +accumulator + +currentValue.val,
+              0
+            ),
+        },
+        {
+          name: "تحليل الشخصية mbti",
+          val: user.rate.qus
+            .slice(3, 6)
+            .reduce(
+              (accumulator, currentValue) => +accumulator + +currentValue.val,
+              0
+            ),
+        },
+        {
+          name: "الذكاءات المتعددة",
+          val: user.rate.qus
+            .slice(6, 9)
+            .reduce(
+              (accumulator, currentValue) => +accumulator + +currentValue.val,
+              0
+            ),
+        },
+      ];
+      // console.log(rate);
+      res.render("studentPage", {
+        id: user.user,
+        name: user.name,
+        p1,
+        p2,
+        p3,
+        rate,
+      });
+      return;
+    }
+    res.render("studentPage", {
+      id: user.user,
+      name: user.name,
+      p1,
+      p2,
+      p3,
+      rate: null,
+    });
+  } else {
+    res.redirect("admin");
+  }
+});
+app.get("/admin/end/:id", isTeacher, async function (req, res) {
+  await client.connect();
+  const db = client.db("soqy");
+  const collection = db.collection("users");
+  const user = await collection.findOne({ user: req.params.id });
+  client.close();
+  if (user) {
+    const p1 = user.stat?.p1 ? user.stat.p1.tops : null;
+    const p2 = user.stat?.p2 ? user.stat.p2 : null;
+    const p3 = user.stat?.p3 ? user.stat.p3.tops : null;
+    res.render("studentPage", { id: user.user, name: user.name, p1, p2, p3 });
+  } else {
+    res.redirect("admin");
+  }
+});
+app.get("/admin/end/:id", function (req, res) {
+  res.send("not allowd");
+});
 
 // Result-Page
 
