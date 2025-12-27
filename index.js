@@ -430,11 +430,6 @@ app.get("/result/:id", async function (req, res) {
     res.send("notFound");
     return;
   }
-  // if (exam.user.toString() !== req.session.userId) {
-  //   res.send("غير مسموح");
-  //   return;
-  // }
-
   if (exam.stat === "done") {
     res.render(`${exam.type}Result`, {
       [exam.type]: JSON.stringify(exam.result),
@@ -445,6 +440,7 @@ app.get("/result/:id", async function (req, res) {
     res.send("تم بدء الاختبار مسبقاً");
   }
 });
+
 
 app.post("/exam/:id", function (req, res) {
   console.log(req.body);
@@ -475,10 +471,10 @@ app.post("/rate/:id", function (req, res) {
     });
 });
 
-app.get("/store", isAuthenticated, async (req, res) => {
+app.get("/", isAuthenticated, async (req, res) => {
   res.render("store", { exams: [] });
 });
-app.post("/payment", isAuthenticated, async (req, res) => {
+app.post("/storepayment", isAuthenticated, async (req, res) => {
   const paymentData = {
     amount: +req.body.price,
     currency: "SAR",
@@ -621,108 +617,14 @@ app.post(
   }
 );
 
-// app.get("/admin/Results/:id/:exam", isAdmin, async function (req, res) {
-//   await client.connect();
-//   const db = client.db("soqy");
-//   const collection = db.collection("users");
-//   const user = await collection.findOne({ user: req.params.id });
-//   if (user[req.params.exam]) {
-//     res.render(`${req.params.exam}Result`, {
-//       [req.params.exam]: JSON.stringify(user[req.params.exam]),
-//       name: user.name,
-//       from: "show",
-//     });
-//     return;
-//   }
-//   res.send("notFound");
-// });
-// app.get("/admin/Results/:id/:exam", isTeacher, async function (req, res) {
-//   await client.connect();
-//   const db = client.db("soqy");
-//   const collection = db.collection("users");
-//   const user = await collection.findOne({ user: req.params.id });
-//   if (user[req.params.exam]) {
-//     res.render(`${req.params.exam}Result`, {
-//       [req.params.exam]: JSON.stringify(user[req.params.exam]),
-//       name: user.name,
-//       from: "show",
-//     });
-//     return;
-//   }
-//   res.send("notFound");
-// });
-// app.get("/admin/Results/:id/:exam", function (req, res) {
-//   res.redirect("/admin");
-// });
-app.get("/admin/end/:id", isAdmin, async function (req, res) {
-  User.find({
-    teacher: { $in: new mongoose.Types.ObjectId(req.session.userId) },
-  }).then((usersFromDb) => {
-    const users = usersFromDb.map((x) => {
-      let completion = 0;
-      let prog = "";
-      return {
-        id: x._id,
-        name: x.name,
-        phone: x.phone,
-        studentId: x.user,
-        status: prog,
-        completion: completion,
-        riasec: null,
-        mbti: null,
-        thk: null,
-        startTime: null,
-        endTime: null,
-      };
-    });
-    res.render("adminPage", { data: JSON.stringify(users) });
-  });
+app.get("/admin/end/:id", async function (req, res) {
+  const user = await User.findById(req.params.id);
 
   if (user) {
-    const p1 = user.stat?.p1 ? user.stat.p1.tops : null;
-    const p2 = user.stat?.p2 ? user.stat.p2 : null;
-    const p3 = user.stat?.p3 ? user.stat.p3.tops : null;
-    if (user.rate) {
-      const rate = [
-        {
-          name: "الميول المهنية",
-          val: user.rate.qus
-            .slice(0, 3)
-            .reduce(
-              (accumulator, currentValue) => +accumulator + +currentValue.val,
-              0
-            ),
-        },
-        {
-          name: "تحليل الشخصية mbti",
-          val: user.rate.qus
-            .slice(3, 6)
-            .reduce(
-              (accumulator, currentValue) => +accumulator + +currentValue.val,
-              0
-            ),
-        },
-        {
-          name: "الذكاءات المتعددة",
-          val: user.rate.qus
-            .slice(6, 9)
-            .reduce(
-              (accumulator, currentValue) => +accumulator + +currentValue.val,
-              0
-            ),
-        },
-      ];
-      // console.log(rate);
-      res.render("studentPage", {
-        id: user.user,
-        name: user.name,
-        p1,
-        p2,
-        p3,
-        rate,
-      });
-      return;
-    }
+    exams = await Exam.find({ user: user._id, stat: "done" });
+    const p1 = exams.find((e) => e.type === "p1") || null;
+    const p2 = exams.find((e) => e.type === "p2") || null;
+    const p3 = exams.find((e) => e.type === "p3") || null;
     res.render("studentPage", {
       id: user.user,
       name: user.name,
@@ -735,23 +637,28 @@ app.get("/admin/end/:id", isAdmin, async function (req, res) {
     res.redirect("admin");
   }
 });
-app.get("/admin/end/:id", isTeacher, async function (req, res) {
-  await client.connect();
-  const db = client.db("soqy");
-  const collection = db.collection("users");
-  const user = await collection.findOne({ user: req.params.id });
-  client.close();
-  if (user) {
-    const p1 = user.stat?.p1 ? user.stat.p1.tops : null;
-    const p2 = user.stat?.p2 ? user.stat.p2 : null;
-    const p3 = user.stat?.p3 ? user.stat.p3.tops : null;
-    res.render("studentPage", { id: user.user, name: user.name, p1, p2, p3 });
-  } else {
-    res.redirect("admin");
+
+app.get("/admin/Result/:id", async function (req, res) {
+  const examId = req.params.id;
+  let exam = null;
+  try {
+    exam = await Exam.findById(examId).populate("user");
+  } catch (error) {
+    exam = null;
   }
-});
-app.get("/admin/end/:id", function (req, res) {
-  res.send("not allowd");
+  if (!exam) {
+    res.send("notFound");
+    return;
+  }
+  if (exam.stat === "done") {
+    res.render(`${exam.type}Result`, {
+      [exam.type]: JSON.stringify(exam.result),
+      name: exam.user.name,
+      from: "show",
+    });
+  } else {
+    res.send("تم بدء الاختبار مسبقاً");
+  }
 });
 
 // Result-Page
@@ -805,20 +712,21 @@ app.get("/admin/end/:id", function (req, res) {
 //     });
 // });
 
-app.post("/deleteStudent", async function (req, res) {
-  await client.connect();
-  const db = client.db("soqy");
-  const collection = db.collection("users");
-  // console.log(req.body.user)
-  await collection
-    .deleteOne({ user: req.body.user })
-    .then(() => {
-      res.send("deleted");
-    })
-    .catch((err) => {
-      res.send("notFound");
-    });
-});
+// app.post("/deleteStudent", async function (req, res) {
+//   await client.connect();
+//   const db = client.db("soqy");
+//   const collection = db.collection("users");
+//   // console.log(req.body.user)
+//   await collection
+//     .deleteOne({ user: req.body.user })
+//     .then(() => {
+//       res.send("deleted");
+//     })
+//     .catch((err) => {
+//       res.send("notFound");
+//     });
+// });
+
 app.post(
   "/login",
   express.urlencoded({ extended: false }),
