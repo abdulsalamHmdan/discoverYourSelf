@@ -1195,20 +1195,19 @@
             console.log(top3)
             var data = new URLSearchParams();
             data.append('data', JSON.stringify({ tops: top3, time: testState.questionEndTime }));
-            data.append('type', 'stat.p1');
+            data.append('type', 'stating');
             data.append('ob', '1');
-                // fetch('', {
-                //     method: 'POST',
-                //     headers: {
-                //         'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-                //     },
-                //     body: data
-                // }).then(() => {
-                //     // location.reload()
-                // }).catch(() => {
-                //     console.log("error")
+                fetch('', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                    },
+                    body: data
+                }).then(() => {
+                }).catch(() => {
+                    console.log("error")
 
-                // })
+                })
             container.appendChild(dimensionsContainer);
         }
 
@@ -1791,10 +1790,6 @@
             document.body.appendChild(modal);
         }
 
-        // // إعادة المقياس
-        // function restartTest() {
-        //     location.href = "/rate/<%=examId%>";
-        // }
 
 
 

@@ -23,6 +23,10 @@ const examSchema = new mongoose.Schema(
       type: Object,
       default: null,
     },
+    short: {
+      type: Object,
+      default: null,
+    },
     rate: {
       type: Object,
       default: null,

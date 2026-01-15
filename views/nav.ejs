@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+        <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet" />
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['Tajawal', 'sans-serif'],
+        },
+        colors: {
+          primary: 'oklch(0.55 0.22 260)',
+          secondary: 'oklch(0.95 0.03 280)',
+        }
+      }
+    }
+  }
+</script>
+
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+    body {
+        padding-top: 100px;
+    }
+</style>
+
+<link rel="stylesheet" href="/css/baserah-style.css">
+</head>
+<body class="bg-gray-50 text-gray-900 font-sans overflow-x-hidden">
+
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4 bg-white/90 backdrop-blur-sm">
+        <div class="container mx-auto px-4 lg:px-8 flex items-center justify-between">
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="flex flex-col items-center">
+                    <div class="relative w-12 h-10">
+                        <svg width="100%" height="100%" viewBox="0 0 50 40" class="text-orange-500">
+                            <text x="5" y="32" fontSize="28" fontWeight="bold" fill="url(#logoGradient)" style="font-family: 'Tajawal'">بصيرة</text>
+                            <defs>
+                                <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stopColor="#f97316" />
+                                    <stop offset="100%" stopColor="#ea580c" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <span class="text-[10px] text-gray-500 -mt-1">مقياس بصيرة</span>
+                </div>
+            </a>
+
+            <div class="hidden lg:flex items-center gap-6">
+                <a href="#home" class="nav-link text-purple-600 font-medium">الرئيسية</a>
+                <a href="#about" class="nav-link text-gray-600 hover:text-purple-600 transition">عن المقياس</a>
+                <a href="#pillars" class="nav-link text-gray-600 hover:text-purple-600 transition">محاور بصيرة</a>
+                <a href="#start" class="nav-link text-gray-600 hover:text-purple-600 transition">بدء المقياس</a>
+                <a href="#faq" class="nav-link text-gray-600 hover:text-purple-600 transition">الأسئلة الشائعة</a>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <a href="/login" class="hidden sm:flex items-center gap-2 px-6 py-2.5 bg-gradient-to-l from-purple-600 to-indigo-600 text-white text-sm font-semibold rounded-xl shadow-lg hover:shadow-purple-500/50 transition-all">
+                    تسجيل الدخول
+                </a>
+                <button id="mobile-menu-btn" class="lg:hidden p-2 rounded-lg bg-gray-100 hover:bg-gray-200">
+                    <i data-lucide="menu" class="w-6 h-6 text-gray-700"></i>
+                </button>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="hidden absolute top-full left-0 right-0 bg-white border-b border-gray-100 shadow-xl p-4 flex-col gap-2">
+            <a href="#home" class="mobile-link block px-4 py-3 rounded-xl bg-purple-50 text-purple-600 font-medium">الرئيسية</a>
+            <a href="#about" class="mobile-link block px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50">عن المقياس</a>
+            <a href="#pillars" class="mobile-link block px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50">محاور بصيرة</a>
+            <a href="#start" class="mobile-link block px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50">بدء المقياس</a>
+            <a href="#faq" class="mobile-link block px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50">الأسئلة الشائعة</a>
+            <a href="/login" class="block mt-2 px-4 py-3 bg-gradient-to-l from-purple-600 to-indigo-600 text-white text-center font-semibold rounded-xl">تسجيل الدخول</a>
+        </div>
+    </nav>
+        <script src="/js/baserah-script.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

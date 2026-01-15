@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مقياس بصيرة - اكتشف ذاتك</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet" />
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['Tajawal', 'sans-serif'],
+        },
+        colors: {
+          primary: 'oklch(0.55 0.22 260)',
+          secondary: 'oklch(0.95 0.03 280)',
+        }
+      }
+    }
+  }
+</script>
+
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<link rel="stylesheet" href="/css/baserah-style.css">
+    </head>
+<body class="bg-gray-50 text-gray-900 font-sans overflow-x-hidden">
+
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4 bg-white/90 backdrop-blur-sm">
+        <div class="container mx-auto px-4 lg:px-8 flex items-center justify-between">
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="flex flex-col items-center">
+                    <div class="relative w-12 h-10">
+                        <svg width="100%" height="100%" viewBox="0 0 50 40" class="text-orange-500">
+                            <text x="5" y="32" fontSize="28" fontWeight="bold" fill="url(#logoGradient)" style="font-family: 'Tajawal'">بصيرة</text>
+                            <defs>
+                                <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stopColor="#f97316" />
+                                    <stop offset="100%" stopColor="#ea580c" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <span class="text-[10px] text-gray-500 -mt-1">مقياس بصيرة</span>
+                </div>
+            </a>
+
+            <div class="hidden lg:flex items-center gap-6">
+                <a href="#home" class="nav-link text-purple-600 font-medium">الرئيسية</a>
+                <a href="#about" class="nav-link text-gray-600 hover:text-purple-600 transition">عن المقياس</a>
+                <a href="#pillars" class="nav-link text-gray-600 hover:text-purple-600 transition">محاور بصيرة</a>
+                <a href="#start" class="nav-link text-gray-600 hover:text-purple-600 transition">بدء المقياس</a>
+                <a href="#faq" class="nav-link text-gray-600 hover:text-purple-600 transition">الأسئلة الشائعة</a>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <a href="/login" class="hidden sm:flex items-center gap-2 px-6 py-2.5 bg-gradient-to-l from-purple-600 to-indigo-600 text-white text-sm font-semibold rounded-xl shadow-lg hover:shadow-purple-500/50 transition-all">
+                    تسجيل الدخول
+                </a>
+                <button id="mobile-menu-btn" class="lg:hidden p-2 rounded-lg bg-gray-100 hover:bg-gray-200">
+                    <i data-lucide="menu" class="w-6 h-6 text-gray-700"></i>
+                </button>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="hidden absolute top-full left-0 right-0 bg-white border-b border-gray-100 shadow-xl p-4 flex-col gap-2">
+            <a href="#home" class="mobile-link block px-4 py-3 rounded-xl bg-purple-50 text-purple-600 font-medium">الرئيسية</a>
+            <a href="#about" class="mobile-link block px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50">عن المقياس</a>
+            <a href="#pillars" class="mobile-link block px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50">محاور بصيرة</a>
+            <a href="#start" class="mobile-link block px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50">بدء المقياس</a>
+            <a href="#faq" class="mobile-link block px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50">الأسئلة الشائعة</a>
+            <a href="/login" class="block mt-2 px-4 py-3 bg-gradient-to-l from-purple-600 to-indigo-600 text-white text-center font-semibold rounded-xl">تسجيل الدخول</a>
+        </div>
+    </nav>
+
+    <section id="home" class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 baserah-bg">
+        <div class="absolute inset-0 overflow-hidden pointer-events-none">
+            <div class="absolute top-20 right-10 w-64 h-64 rounded-full bg-white/5 float-animation"></div>
+            <div class="absolute bottom-20 left-10 w-96 h-96 rounded-full bg-white/5 float-animation" style="animation-delay: 2s;"></div>
+        </div>
+
+        <div class="container mx-auto px-4 relative z-10 text-center reveal-up">
+            <div class="inline-flex items-center justify-center w-20 h-20 bg-white rounded-2xl shadow-xl mb-8">
+                <svg width="50" height="40" viewBox="0 0 60 50">
+                    <ellipse cx="30" cy="25" rx="25" ry="18" fill="none" stroke="#f97316" strokeWidth="3"/>
+                    <circle cx="30" cy="25" r="10" fill="#f97316"/>
+                    <circle cx="30" cy="25" r="5" fill="#1e1b4b"/>
+                    <circle cx="33" cy="22" r="2" fill="white"/>
+                </svg>
+            </div>
+
+            <div class="mb-8 flex justify-center">
+                <div class="inline-flex items-center gap-2 px-5 py-2 bg-white/20 backdrop-blur-sm rounded-full text-white text-sm">
+                    <span class="w-2 h-2 bg-orange-400 rounded-full animate-pulse"></span>
+                    منظومة متكاملة لاكتشاف الذات
+                </div>
+            </div>
+
+            <h1 class="text-5xl sm:text-6xl lg:text-7xl font-bold text-white mb-6">
+                مقياس <span class="text-orange-400">بصيرة</span>
+            </h1>
+            <p class="text-xl sm:text-2xl text-white/90 mb-4">منظومة متكاملة لاكتشاف أنماط الشخصية والميول والذكاءات</p>
+            <p class="text-lg text-orange-300 mb-10 font-medium">رؤية واضحة… تعطي حياة أوضح</p>
+
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
+                <a href="#start" class="flex items-center gap-2 px-8 py-4 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl shadow-lg transition-transform hover:-translate-y-1">
+                    ابدأ رحلة الاكتشاف
+                    <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                </a>
+                <a href="#about" class="flex items-center gap-2 px-8 py-4 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white font-semibold rounded-xl border border-white/30 transition-transform hover:-translate-y-1">
+                    تعرّف على المقياس
+                </a>
+            </div>
+
+            <div class="grid grid-cols-3 gap-6 max-w-2xl mx-auto text-white">
+                <div>
+                    <div class="flex items-center justify-center gap-2 mb-2">
+                        <i data-lucide="users" class="text-orange-400 w-5 h-5"></i>
+                        <span class="text-3xl font-bold">+10,000</span>
+                    </div>
+                    <span class="text-white/70 text-sm">مستخدم</span>
+                </div>
+                <div>
+                    <div class="flex items-center justify-center gap-2 mb-2">
+                        <i data-lucide="layers" class="text-orange-400 w-5 h-5"></i>
+                        <span class="text-3xl font-bold">3</span>
+                    </div>
+                    <span class="text-white/70 text-sm">محاور متكاملة</span>
+                </div>
+                <div>
+                    <div class="flex items-center justify-center gap-2 mb-2">
+                        <i data-lucide="clock" class="text-orange-400 w-5 h-5"></i>
+                        <span class="text-3xl font-bold">15</span>
+                    </div>
+                    <span class="text-white/70 text-sm">دقيقة فقط</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="py-24 bg-gray-50">
+        <div class="container mx-auto px-4 reveal-up">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center justify-center w-16 h-16 mb-6 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-2xl shadow-lg">
+                    <i data-lucide="eye" class="w-8 h-8 text-white"></i>
+                </div>
+                <h2 class="text-4xl font-bold text-gray-800 mb-6">ما هو مقياس <span class="text-orange-500">بصيرة</span>؟</h2>
+                <div class="max-w-3xl mx-auto bg-white rounded-2xl p-8 shadow-lg">
+                    <p class="text-lg text-gray-600 leading-relaxed mb-4">مقياس بصيرة هو أداة معرفية مقنّنة تهدف إلى فهم الذات من خلال ثلاثة محاور رئيسية:</p>
+                    <p class="text-xl font-semibold text-purple-600 mb-4">الطبيعة الشخصية – الميول المهنية – أنماط الذكاءات</p>
+                    <p class="text-gray-600 leading-relaxed">إنه ليس مقياسًا عابرًا، بل مرآة موضوعية تساعد الفرد على اكتشاف نقاط قوته.</p>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all text-center group">
+                    <div class="inline-flex items-center justify-center w-16 h-16 mb-6 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-2xl text-white group-hover:scale-110 transition-transform">
+                        <i data-lucide="eye" class="w-8 h-8"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">رؤية عميقة</h3>
+                    <p class="text-gray-600">فهم شامل لطبيعتك الشخصية وأسلوبك في التفكير والتفاعل مع العالم</p>
+                </div>
+                <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all text-center group">
+                    <div class="inline-flex items-center justify-center w-16 h-16 mb-6 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-2xl text-white group-hover:scale-110 transition-transform">
+                        <i data-lucide="target" class="w-8 h-8"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">توجيه دقيق</h3>
+                    <p class="text-gray-600">تحديد المسار التعليمي والمهني الأنسب لقدراتك وميولك الحقيقية</p>
+                </div>
+                <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all text-center group">
+                    <div class="inline-flex items-center justify-center w-16 h-16 mb-6 bg-gradient-to-br from-orange-500 to-amber-600 rounded-2xl text-white group-hover:scale-110 transition-transform">
+                        <i data-lucide="lightbulb" class="w-8 h-8"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">اكتشاف الإمكانات</h3>
+                    <p class="text-gray-600">الكشف عن نقاط القوة الكامنة وأنماط الذكاء المتعددة لديك</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="pillars" class="py-24 baserah-bg relative overflow-hidden">
+        <div class="container mx-auto px-4 relative z-10 reveal-up">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-white mb-6">محاور بصيرة <span class="text-orange-400">الثلاثة</span></h2>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <div class="bg-white rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-transform hover:-translate-y-2 duration-300">
+                    <div class="relative h-48 bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center">
+                        <div class="absolute top-4 right-4 w-10 h-10 bg-white rounded-full flex items-center justify-center font-bold text-purple-600">1</div>
+                        <i data-lucide="compass" class="w-16 h-16 text-white/90"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">الميول المهنية</h3>
+                        <p class="text-sm text-purple-600 font-medium mb-4">نموذج هولاند RIASEC</p>
+                        <p class="text-gray-600 mb-6">يكشف ما يحركك من الداخل، ما يستهويك، وما المجالات التي تتوافق مع طبيعتك.</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-transform hover:-translate-y-2 duration-300">
+                    <div class="relative h-48 bg-gradient-to-br from-purple-500 to-violet-600 flex items-center justify-center">
+                        <div class="absolute top-4 right-4 w-10 h-10 bg-white rounded-full flex items-center justify-center font-bold text-purple-600">2</div>
+                        <i data-lucide="users" class="w-16 h-16 text-white/90"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">أنماط الشخصية</h3>
+                        <p class="text-sm text-purple-600 font-medium mb-4">مستند إلى MBTI</p>
+                        <p class="text-gray-600 mb-6">يساعد على فهم أسلوبك في استقبال المعلومات واتخاذ القرار.</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-transform hover:-translate-y-2 duration-300">
+                    <div class="relative h-48 bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center">
+                        <div class="absolute top-4 right-4 w-10 h-10 bg-white rounded-full flex items-center justify-center font-bold text-purple-600">3</div>
+                        <i data-lucide="brain" class="w-16 h-16 text-white/90"></i>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">أنماط الذكاءات</h3>
+                        <p class="text-sm text-purple-600 font-medium mb-4">نظرية الذكاءات المتعددة</p>
+                        <p class="text-gray-600 mb-6">يكشف عن قدراتك العقلية المتنوعة وأي أنواع الذكاء تبرز لديك.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="start" class="py-24 bg-gray-50">
+        <div class="container mx-auto px-4 text-center reveal-up">
+             <div class="inline-flex items-center justify-center w-20 h-20 mb-8 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl shadow-lg transform hover:rotate-3 transition-transform">
+                <i data-lucide="rocket" class="w-10 h-10 text-white"></i>
+            </div>
+            <h2 class="text-4xl font-bold text-gray-800 mb-6">ابدأ رحلة اكتشاف <span class="text-orange-500">ذاتك</span></h2>
+            <div class="flex flex-wrap justify-center gap-4 mb-10">
+                <div class="flex items-center gap-2 px-5 py-3 bg-white rounded-xl shadow-md">
+                    <i data-lucide="clock" class="w-5 h-5 text-purple-600"></i>
+                    <span class="text-gray-700">15-20 دقيقة فقط</span>
+                </div>
+                <div class="flex items-center gap-2 px-5 py-3 bg-white rounded-xl shadow-md">
+                    <i data-lucide="file-text" class="w-5 h-5 text-purple-600"></i>
+                    <span class="text-gray-700">تقرير تفصيلي شامل</span>
+                </div>
+            </div>
+            <a href="/login" class="inline-flex items-center gap-3 px-10 py-5 bg-gradient-to-l from-purple-600 to-indigo-600 text-white text-xl font-bold rounded-2xl shadow-xl hover:shadow-purple-500/50 transition-all hover:-translate-y-1">
+                <i data-lucide="rocket" class="w-6 h-6"></i>
+                ابدأ المقياس الآن
+            </a>
+        </div>
+    </section>
+
+    <section id="faq" class="py-24 baserah-bg">
+        <div class="container mx-auto px-4 reveal-up">
+            <div class="text-center mb-16 text-white">
+                <h2 class="text-4xl font-bold mb-6">الأسئلة <span class="text-orange-400">الشائعة</span></h2>
+            </div>
+            <div class="max-w-3xl mx-auto space-y-4">
+                <div class="faq-item bg-white rounded-xl overflow-hidden shadow-md">
+                    <button class="faq-btn w-full flex items-center justify-between p-5 text-right">
+                        <span class="text-lg font-semibold text-gray-800">ما هو مقياس بصيرة؟</span>
+                        <i data-lucide="chevron-down" class="w-5 h-5 text-purple-600 transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-content max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
+                        <div class="p-5 pt-0 text-gray-600 border-t border-gray-100 mt-2">
+                            مقياس بصيرة هو أداة معرفية شاملة تجمع بين ثلاثة محاور أساسية: أنماط الشخصية (MBTI)، الميول المهنية (Holland RIASEC)، وأنماط الذكاءات المتعددة.
+                        </div>
+                    </div>
+                </div>
+                <div class="faq-item bg-white rounded-xl overflow-hidden shadow-md">
+                    <button class="faq-btn w-full flex items-center justify-between p-5 text-right">
+                        <span class="text-lg font-semibold text-gray-800">كم يستغرق إكمال المقياس؟</span>
+                        <i data-lucide="chevron-down" class="w-5 h-5 text-purple-600 transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-content max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
+                        <div class="p-5 pt-0 text-gray-600 border-t border-gray-100 mt-2">
+                            يستغرق إكمال المقياس بشكل كامل حوالي 15-20 دقيقة. ننصح بإكماله في جلسة واحدة.
+                        </div>
+                    </div>
+                </div>
+                 <div class="faq-item bg-white rounded-xl overflow-hidden shadow-md">
+                    <button class="faq-btn w-full flex items-center justify-between p-5 text-right">
+                        <span class="text-lg font-semibold text-gray-800">هل النتائج دقيقة؟</span>
+                        <i data-lucide="chevron-down" class="w-5 h-5 text-purple-600 transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-content max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
+                        <div class="p-5 pt-0 text-gray-600 border-t border-gray-100 mt-2">
+                           نعم، يعتمد المقياس على نظريات علمية معتمدة عالمياً وتمت مواءمته للبيئة العربية.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-900 text-white py-16">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between gap-8 border-b border-gray-800 pb-8 mb-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-2">مقياس بصيرة</h3>
+                    <p class="text-gray-400 max-w-sm">منظومة متكاملة لاكتشاف أنماط الشخصية والميول والذكاءات.</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold text-orange-400 mb-4">تواصل معنا</h4>
+                    <a href="mailto:info@baserah.app" class="flex items-center gap-2 text-gray-400 hover:text-white">
+                        <i data-lucide="mail" class="w-4 h-4"></i> info@baserah.app
+                    </a>
+                </div>
+            </div>
+            <div class="text-center text-gray-500 text-sm">
+                © <span id="year"></span> مقياس بصيرة. جميع الحقوق محفوظة.
+            </div>
+        </div>
+    </footer>
+
+    <script src="/js/baserah-script.js"></script>
+    <script>
+        // تفعيل الأيقونات
+        lucide.createIcons();
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>

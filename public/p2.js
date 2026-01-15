@@ -1,643 +1,859 @@
-        // Test state
-        let startTheTime;
-        let currentQuestion = 0;
-        let answers = [];
-        let scores = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
-        let userName = "";
-        let currentPath = 0;
-        let completedPaths = [];
-        let allPathAnswers = {};
-        let currentQuestions = [];
-        let questionStartTime = 0;
-        let timerInterval;
-        let totalStartTime = 0;
-        let questionTimes = [];
-        let fastestQuestion = null;
-        let slowestQuestion = null;
-        let warningShown = false;
-        let currentRanking = {};
-        let selectedCheckboxes = [];
-        let quickAnswerCount = 0;
-        let randomAnswerPattern = 0;
-        let contradictionFlags = [];
-        let lastAnswerTime = 0;
-        let consistencyScore = 100;
-        let focusBreaksShown = [];
-        let testState;
+// Test state
+let startTheTime;
+let currentQuestion = 0;
+let answers = [];
+let scores = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
+let userName = "";
+let currentPath = 0;
+let completedPaths = [];
+let allPathAnswers = {};
+let currentQuestions = [];
+let questionStartTime = 0;
+let timerInterval;
+let totalStartTime = 0;
+let questionTimes = [];
+let fastestQuestion = null;
+let slowestQuestion = null;
+let warningShown = false;
+let currentRanking = {};
+let selectedCheckboxes = [];
+let quickAnswerCount = 0;
+let randomAnswerPattern = 0;
+let contradictionFlags = [];
+let lastAnswerTime = 0;
+let consistencyScore = 100;
+let focusBreaksShown = [];
+let testState;
 
-        // Path 1: Comprehensive (24 questions)
-        const path1Questions = [
-            // E vs I (6 questions)
-            {
-                question: "في المناسبات الاجتماعية، أشعر بالراحة أكثر عندما:",
-                type: "binary",
-                options: [
-                    { text: "أتفاعل مع أشخاص كثيرين ومتنوعين", dimension: "E" },
-                    { text: "أتحدث مع مجموعة صغيرة من الأصدقاء المقربين", dimension: "I" }
-                ]
-            },
-            {
-                question: "عندما أحتاج لاستعادة طاقتي بعد يوم طويل، أفضل:",
-                type: "binary",
-                options: [
-                    { text: "الخروج والتفاعل مع الآخرين في أنشطة اجتماعية", dimension: "E" },
-                    { text: "قضاء وقت هادئ بمفردي في المنزل", dimension: "I" }
-                ]
-            },
-            {
-                question: "في العمل الجماعي، أميل إلى:",
-                type: "binary",
-                options: [
-                    { text: "التفكير بصوت عالٍ ومشاركة الأفكار فوراً", dimension: "E" },
-                    { text: "التفكير بهدوء قبل مشاركة أفكاري", dimension: "I" }
-                ]
-            },
-            {
-                question: "أشعر بالحيوية أكثر عندما:",
-                type: "binary",
-                options: [
-                    { text: "أكون محاطاً بالناس والأنشطة", dimension: "E" },
-                    { text: "أكون في بيئة هادئة ومركزة", dimension: "I" }
-                ]
-            },
-            {
-                question: "عند مواجهة مشكلة، أفضل:",
-                type: "binary",
-                options: [
-                    { text: "مناقشتها مع الآخرين للحصول على آرائهم", dimension: "E" },
-                    { text: "التفكير فيها بمفردي أولاً", dimension: "I" }
-                ]
-            },
-            {
-                question: "في الاجتماعات، أميل إلى:",
-                type: "binary",
-                options: [
-                    { text: "المشاركة والتعليق بشكل تلقائي", dimension: "E" },
-                    { text: "الاستماع أكثر والتحدث عند الضرورة", dimension: "I" }
-                ]
-            },
+// Path 1: Comprehensive (24 questions)
+const path1Questions = [
+  // E vs I (6 questions)
+  {
+    question: "في المناسبات الاجتماعية، أشعر بالراحة أكثر عندما:",
+    type: "binary",
+    options: [
+      { text: "أتفاعل مع أشخاص كثيرين ومتنوعين", dimension: "E" },
+      { text: "أتحدث مع مجموعة صغيرة من الأصدقاء المقربين", dimension: "I" },
+    ],
+  },
+  {
+    question: "عندما أحتاج لاستعادة طاقتي بعد يوم طويل، أفضل:",
+    type: "binary",
+    options: [
+      { text: "الخروج والتفاعل مع الآخرين في أنشطة اجتماعية", dimension: "E" },
+      { text: "قضاء وقت هادئ بمفردي في المنزل", dimension: "I" },
+    ],
+  },
+  {
+    question: "في العمل الجماعي، أميل إلى:",
+    type: "binary",
+    options: [
+      { text: "التفكير بصوت عالٍ ومشاركة الأفكار فوراً", dimension: "E" },
+      { text: "التفكير بهدوء قبل مشاركة أفكاري", dimension: "I" },
+    ],
+  },
+  {
+    question: "أشعر بالحيوية أكثر عندما:",
+    type: "binary",
+    options: [
+      { text: "أكون محاطاً بالناس والأنشطة", dimension: "E" },
+      { text: "أكون في بيئة هادئة ومركزة", dimension: "I" },
+    ],
+  },
+  {
+    question: "عند مواجهة مشكلة، أفضل:",
+    type: "binary",
+    options: [
+      { text: "مناقشتها مع الآخرين للحصول على آرائهم", dimension: "E" },
+      { text: "التفكير فيها بمفردي أولاً", dimension: "I" },
+    ],
+  },
+  {
+    question: "في الاجتماعات، أميل إلى:",
+    type: "binary",
+    options: [
+      { text: "المشاركة والتعليق بشكل تلقائي", dimension: "E" },
+      { text: "الاستماع أكثر والتحدث عند الضرورة", dimension: "I" },
+    ],
+  },
 
-            // S vs N (6 questions)
-            {
-                question: "عند تعلم شيء جديد، أفضل:",
-                type: "binary",
-                options: [
-                    { text: "البدء بالتفاصيل والحقائق الملموسة", dimension: "S" },
-                    { text: "فهم الصورة الكبيرة والمفاهيم العامة", dimension: "N" }
-                ]
-            },
-            {
-                question: "أثق أكثر في:",
-                type: "binary",
-                options: [
-                    { text: "الخبرة العملية والتجارب المثبتة", dimension: "S" },
-                    { text: "الحدس والإمكانيات المستقبلية", dimension: "N" }
-                ]
-            },
-            {
-                question: "عند حل المشاكل، أركز على:",
-                type: "binary",
-                options: [
-                    { text: "الحلول العملية المجربة", dimension: "S" },
-                    { text: "الحلول الإبداعية والمبتكرة", dimension: "N" }
-                ]
-            },
-            {
-                question: "أستمتع أكثر بالأعمال التي:",
-                type: "binary",
-                options: [
-                    { text: "تتطلب دقة في التفاصيل والتنفيذ", dimension: "S" },
-                    { text: "تتطلب رؤية وتخطيط للمستقبل", dimension: "N" }
-                ]
-            },
-            {
-                question: "عند قراءة التعليمات، أميل إلى:",
-                type: "binary",
-                options: [
-                    { text: "اتباعها خطوة بخطوة بدقة", dimension: "S" },
-                    { text: "فهم الهدف العام والارتجال", dimension: "N" }
-                ]
-            },
-            {
-                question: "أفضل المحادثات التي تدور حول:",
-                type: "binary",
-                options: [
-                    { text: "الأحداث الحالية والتجارب الواقعية", dimension: "S" },
-                    { text: "الأفكار والاحتمالات المستقبلية", dimension: "N" }
-                ]
-            },
+  // S vs N (6 questions)
+  {
+    question: "عند تعلم شيء جديد، أفضل:",
+    type: "binary",
+    options: [
+      { text: "البدء بالتفاصيل والحقائق الملموسة", dimension: "S" },
+      { text: "فهم الصورة الكبيرة والمفاهيم العامة", dimension: "N" },
+    ],
+  },
+  {
+    question: "أثق أكثر في:",
+    type: "binary",
+    options: [
+      { text: "الخبرة العملية والتجارب المثبتة", dimension: "S" },
+      { text: "الحدس والإمكانيات المستقبلية", dimension: "N" },
+    ],
+  },
+  {
+    question: "عند حل المشاكل، أركز على:",
+    type: "binary",
+    options: [
+      { text: "الحلول العملية المجربة", dimension: "S" },
+      { text: "الحلول الإبداعية والمبتكرة", dimension: "N" },
+    ],
+  },
+  {
+    question: "أستمتع أكثر بالأعمال التي:",
+    type: "binary",
+    options: [
+      { text: "تتطلب دقة في التفاصيل والتنفيذ", dimension: "S" },
+      { text: "تتطلب رؤية وتخطيط للمستقبل", dimension: "N" },
+    ],
+  },
+  {
+    question: "عند قراءة التعليمات، أميل إلى:",
+    type: "binary",
+    options: [
+      { text: "اتباعها خطوة بخطوة بدقة", dimension: "S" },
+      { text: "فهم الهدف العام والارتجال", dimension: "N" },
+    ],
+  },
+  {
+    question: "أفضل المحادثات التي تدور حول:",
+    type: "binary",
+    options: [
+      { text: "الأحداث الحالية والتجارب الواقعية", dimension: "S" },
+      { text: "الأفكار والاحتمالات المستقبلية", dimension: "N" },
+    ],
+  },
 
-            // T vs F (6 questions)
-            {
-                question: "عند اتخاذ قرار مهم، أعطي الأولوية لـ:",
-                type: "binary",
-                options: [
-                    { text: "التحليل المنطقي والحقائق الموضوعية", dimension: "T" },
-                    { text: "القيم الشخصية وتأثير القرار على الآخرين", dimension: "F" }
-                ]
-            },
-            {
-                question: "في النقاشات، أركز على:",
-                type: "binary",
-                options: [
-                    { text: "الحجج المنطقية والأدلة", dimension: "T" },
-                    { text: "مشاعر الأشخاص ووجهات نظرهم", dimension: "F" }
-                ]
-            },
-            {
-                question: "عند تقييم الأداء، أهتم أكثر بـ:",
-                type: "binary",
-                options: [
-                    { text: "الكفاءة والنتائج المحققة", dimension: "T" },
-                    { text: "الجهد المبذول والظروف الشخصية", dimension: "F" }
-                ]
-            },
-            {
-                question: "أشعر بالرضا أكثر عندما:",
-                type: "binary",
-                options: [
-                    { text: "أحل مشكلة معقدة بطريقة منطقية", dimension: "T" },
-                    { text: "أساعد شخصاً في تحسين حالته", dimension: "F" }
-                ]
-            },
-            {
-                question: "في بيئة العمل، أقدر:",
-                type: "binary",
-                options: [
-                    { text: "العدالة والمعايير الموحدة", dimension: "T" },
-                    { text: "التفهم والمرونة مع الظروف الفردية", dimension: "F" }
-                ]
-            },
-            {
-                question: "عند تقديم النقد، أميل إلى:",
-                type: "binary",
-                options: [
-                    { text: "التركيز على الأخطاء والحلول المنطقية", dimension: "T" },
-                    { text: "مراعاة مشاعر الشخص وتقديم الدعم", dimension: "F" }
-                ]
-            },
+  // T vs F (6 questions)
+  {
+    question: "عند اتخاذ قرار مهم، أعطي الأولوية لـ:",
+    type: "binary",
+    options: [
+      { text: "التحليل المنطقي والحقائق الموضوعية", dimension: "T" },
+      { text: "القيم الشخصية وتأثير القرار على الآخرين", dimension: "F" },
+    ],
+  },
+  {
+    question: "في النقاشات، أركز على:",
+    type: "binary",
+    options: [
+      { text: "الحجج المنطقية والأدلة", dimension: "T" },
+      { text: "مشاعر الأشخاص ووجهات نظرهم", dimension: "F" },
+    ],
+  },
+  {
+    question: "عند تقييم الأداء، أهتم أكثر بـ:",
+    type: "binary",
+    options: [
+      { text: "الكفاءة والنتائج المحققة", dimension: "T" },
+      { text: "الجهد المبذول والظروف الشخصية", dimension: "F" },
+    ],
+  },
+  {
+    question: "أشعر بالرضا أكثر عندما:",
+    type: "binary",
+    options: [
+      { text: "أحل مشكلة معقدة بطريقة منطقية", dimension: "T" },
+      { text: "أساعد شخصاً في تحسين حالته", dimension: "F" },
+    ],
+  },
+  {
+    question: "في بيئة العمل، أقدر:",
+    type: "binary",
+    options: [
+      { text: "العدالة والمعايير الموحدة", dimension: "T" },
+      { text: "التفهم والمرونة مع الظروف الفردية", dimension: "F" },
+    ],
+  },
+  {
+    question: "عند تقديم النقد، أميل إلى:",
+    type: "binary",
+    options: [
+      { text: "التركيز على الأخطاء والحلول المنطقية", dimension: "T" },
+      { text: "مراعاة مشاعر الشخص وتقديم الدعم", dimension: "F" },
+    ],
+  },
 
-            // J vs P (6 questions)
-            {
-                question: "أفضل أن تكون خططي:",
-                type: "binary",
-                options: [
-                    { text: "محددة ومنظمة مع جدول زمني واضح", dimension: "J" },
-                    { text: "مرنة وقابلة للتعديل حسب الظروف", dimension: "P" }
-                ]
-            },
-            {
-                question: "في المشاريع، أفضل:",
-                type: "binary",
-                options: [
-                    { text: "إنهاء المهام مبكراً وتجنب ضغط الوقت", dimension: "J" },
-                    { text: "العمل تحت ضغط الوقت للحصول على أفضل النتائج", dimension: "P" }
-                ]
-            },
-            {
-                question: "عند التسوق، أميل إلى:",
-                type: "binary",
-                options: [
-                    { text: "إعداد قائمة محددة والالتزام بها", dimension: "J" },
-                    { text: "التجول واستكشاف الخيارات المتاحة", dimension: "P" }
-                ]
-            },
-            {
-                question: "أشعر بالراحة أكثر عندما:",
-                type: "binary",
-                options: [
-                    { text: "تكون الأمور مقررة ومحسومة", dimension: "J" },
-                    { text: "تبقى الخيارات مفتوحة للتغيير", dimension: "P" }
-                ]
-            },
-            {
-                question: "في إدارة الوقت، أفضل:",
-                type: "binary",
-                options: [
-                    { text: "جدولة المهام والالتزام بالمواعيد", dimension: "J" },
-                    { text: "المرونة والتكيف مع ما يحدث", dimension: "P" }
-                ]
-            },
-            {
-                question: "عند السفر، أفضل:",
-                type: "binary",
-                options: [
-                    { text: "التخطيط المسبق وحجز كل شيء مقدماً", dimension: "J" },
-                    { text: "الذهاب بروح المغامرة واتخاذ القرارات أثناء السفر", dimension: "P" }
-                ]
-            }
-        ];
+  // J vs P (6 questions)
+  {
+    question: "أفضل أن تكون خططي:",
+    type: "binary",
+    options: [
+      { text: "محددة ومنظمة مع جدول زمني واضح", dimension: "J" },
+      { text: "مرنة وقابلة للتعديل حسب الظروف", dimension: "P" },
+    ],
+  },
+  {
+    question: "في المشاريع، أفضل:",
+    type: "binary",
+    options: [
+      { text: "إنهاء المهام مبكراً وتجنب ضغط الوقت", dimension: "J" },
+      { text: "العمل تحت ضغط الوقت للحصول على أفضل النتائج", dimension: "P" },
+    ],
+  },
+  {
+    question: "عند التسوق، أميل إلى:",
+    type: "binary",
+    options: [
+      { text: "إعداد قائمة محددة والالتزام بها", dimension: "J" },
+      { text: "التجول واستكشاف الخيارات المتاحة", dimension: "P" },
+    ],
+  },
+  {
+    question: "أشعر بالراحة أكثر عندما:",
+    type: "binary",
+    options: [
+      { text: "تكون الأمور مقررة ومحسومة", dimension: "J" },
+      { text: "تبقى الخيارات مفتوحة للتغيير", dimension: "P" },
+    ],
+  },
+  {
+    question: "في إدارة الوقت، أفضل:",
+    type: "binary",
+    options: [
+      { text: "جدولة المهام والالتزام بالمواعيد", dimension: "J" },
+      { text: "المرونة والتكيف مع ما يحدث", dimension: "P" },
+    ],
+  },
+  {
+    question: "عند السفر، أفضل:",
+    type: "binary",
+    options: [
+      { text: "التخطيط المسبق وحجز كل شيء مقدماً", dimension: "J" },
+      {
+        text: "الذهاب بروح المغامرة واتخاذ القرارات أثناء السفر",
+        dimension: "P",
+      },
+    ],
+  },
+];
 
-        // Path 2: Quick (10 questions) - مقياس من 1 إلى 5
-        const path2Questions = [
-            {
-                question: "عند الشعور بالتعب والإرهاق، ما مدى تفضيلك للأنشطة الاجتماعية مقابل الوقت المنفرد؟",
-                type: "scale",
-                scaleType: "EI",
-                leftLabel: "أفضل الهدوء والعزلة التامة (انطوائي)",
-                rightLabel: "أفضل الأنشطة الاجتماعية والتفاعل (انبساطي)"
-            },
-            {
-                question: "عند اتخاذ قرار مهم، ما مدى اعتمادك على الحقائق الملموسة مقابل الحدس والإمكانيات؟",
-                type: "scale",
-                scaleType: "SN",
-                leftLabel: "أعتمد على الحقائق والتجارب (حسّي)",
-                rightLabel: "أعتمد على الحدس والإمكانيات (حدسي)"
-            },
-            {
-                question: "في المواقف الصعبة، ما مدى اعتمادك على التحليل المنطقي مقابل مراعاة المشاعر؟",
-                type: "scale",
-                scaleType: "TF",
-                leftLabel: "أعتمد على المنطق والتحليل (تفكير)",
-                rightLabel: "أراعي المشاعر والقيم (شعور)"
-            },
-            {
-                question: "في تنظيم حياتك اليومية، ما مدى تفضيلك للتخطيط المسبق مقابل المرونة؟",
-                type: "scale",
-                scaleType: "JP",
-                leftLabel: "أفضل التخطيط والجداول الثابتة (حكم)",
-                rightLabel: "أفضل المرونة والتكيف (إدراك)"
-            },
-            {
-                question: "في المناسبات الاجتماعية الكبيرة، ما مدى شعورك بالراحة والحيوية؟",
-                type: "scale",
-                scaleType: "EI",
-                leftLabel: "أشعر بالتعب وأفضل المغادرة مبكراً (انطوائي)",
-                rightLabel: "أشعر بالحيوية وأستمتع بالتفاعل (انبساطي)"
-            },
-            {
-                question: "عند مواجهة مشكلة جديدة، ما مدى اعتمادك على الخبرة السابقة مقابل الحلول الإبداعية؟",
-                type: "scale",
-                scaleType: "SN",
-                leftLabel: "أعتمد على الخبرة والطرق المجربة (حسّي)",
-                rightLabel: "أبحث عن حلول إبداعية جديدة (حدسي)"
-            },
-            {
-                question: "عند حل النزاعات، ما مدى تركيزك على العدالة مقابل الحفاظ على المشاعر؟",
-                type: "scale",
-                scaleType: "TF",
-                leftLabel: "أركز على العدالة والحق (تفكير)",
-                rightLabel: "أركز على المشاعر والانسجام (شعور)"
-            },
-            {
-                question: "في إنجاز المشاريع، ما مدى تفضيلك للإنهاء المبكر مقابل العمل تحت الضغط؟",
-                type: "scale",
-                scaleType: "JP",
-                leftLabel: "أفضل الإنهاء المبكر والتخطيط (حكم)",
-                rightLabel: "أعمل بكفاءة أكبر تحت الضغط (إدراك)"
-            },
-            {
-                question: "في المناقشات، ما مدى تفضيلك للتفكير الصامت مقابل التفكير بصوت عالٍ؟",
-                type: "scale",
-                scaleType: "EI",
-                leftLabel: "أفكر بصمت ثم أتحدث (انطوائي)",
-                rightLabel: "أفكر بصوت عالٍ أثناء الحديث (انبساطي)"
-            },
-            {
-                question: "في التعلم والعمل، ما مدى تفضيلك للأساليب التقليدية مقابل الطرق المبتكرة؟",
-                type: "scale",
-                scaleType: "SN",
-                leftLabel: "أفضل الأساليب المجربة والتقليدية (حسّي)",
-                rightLabel: "أفضل الطرق المبتكرة والجديدة (حدسي)"
-            }
-        ];
+// Path 2: Quick (10 questions) - مقياس من 1 إلى 5
+const path2Questions = [
+  {
+    question:
+      "عند الشعور بالتعب والإرهاق، ما مدى تفضيلك للأنشطة الاجتماعية مقابل الوقت المنفرد؟",
+    type: "scale",
+    scaleType: "EI",
+    leftLabel: "أفضل الهدوء والعزلة التامة (انطوائي)",
+    rightLabel: "أفضل الأنشطة الاجتماعية والتفاعل (انبساطي)",
+  },
+  {
+    question:
+      "عند اتخاذ قرار مهم، ما مدى اعتمادك على الحقائق الملموسة مقابل الحدس والإمكانيات؟",
+    type: "scale",
+    scaleType: "SN",
+    leftLabel: "أعتمد على الحقائق والتجارب (حسّي)",
+    rightLabel: "أعتمد على الحدس والإمكانيات (حدسي)",
+  },
+  {
+    question:
+      "في المواقف الصعبة، ما مدى اعتمادك على التحليل المنطقي مقابل مراعاة المشاعر؟",
+    type: "scale",
+    scaleType: "TF",
+    leftLabel: "أعتمد على المنطق والتحليل (تفكير)",
+    rightLabel: "أراعي المشاعر والقيم (شعور)",
+  },
+  {
+    question:
+      "في تنظيم حياتك اليومية، ما مدى تفضيلك للتخطيط المسبق مقابل المرونة؟",
+    type: "scale",
+    scaleType: "JP",
+    leftLabel: "أفضل التخطيط والجداول الثابتة (حكم)",
+    rightLabel: "أفضل المرونة والتكيف (إدراك)",
+  },
+  {
+    question: "في المناسبات الاجتماعية الكبيرة، ما مدى شعورك بالراحة والحيوية؟",
+    type: "scale",
+    scaleType: "EI",
+    leftLabel: "أشعر بالتعب وأفضل المغادرة مبكراً (انطوائي)",
+    rightLabel: "أشعر بالحيوية وأستمتع بالتفاعل (انبساطي)",
+  },
+  {
+    question:
+      "عند مواجهة مشكلة جديدة، ما مدى اعتمادك على الخبرة السابقة مقابل الحلول الإبداعية؟",
+    type: "scale",
+    scaleType: "SN",
+    leftLabel: "أعتمد على الخبرة والطرق المجربة (حسّي)",
+    rightLabel: "أبحث عن حلول إبداعية جديدة (حدسي)",
+  },
+  {
+    question:
+      "عند حل النزاعات، ما مدى تركيزك على العدالة مقابل الحفاظ على المشاعر؟",
+    type: "scale",
+    scaleType: "TF",
+    leftLabel: "أركز على العدالة والحق (تفكير)",
+    rightLabel: "أركز على المشاعر والانسجام (شعور)",
+  },
+  {
+    question:
+      "في إنجاز المشاريع، ما مدى تفضيلك للإنهاء المبكر مقابل العمل تحت الضغط؟",
+    type: "scale",
+    scaleType: "JP",
+    leftLabel: "أفضل الإنهاء المبكر والتخطيط (حكم)",
+    rightLabel: "أعمل بكفاءة أكبر تحت الضغط (إدراك)",
+  },
+  {
+    question:
+      "في المناقشات، ما مدى تفضيلك للتفكير الصامت مقابل التفكير بصوت عالٍ؟",
+    type: "scale",
+    scaleType: "EI",
+    leftLabel: "أفكر بصمت ثم أتحدث (انطوائي)",
+    rightLabel: "أفكر بصوت عالٍ أثناء الحديث (انبساطي)",
+  },
+  {
+    question:
+      "في التعلم والعمل، ما مدى تفضيلك للأساليب التقليدية مقابل الطرق المبتكرة؟",
+    type: "scale",
+    scaleType: "SN",
+    leftLabel: "أفضل الأساليب المجربة والتقليدية (حسّي)",
+    rightLabel: "أفضل الطرق المبتكرة والجديدة (حدسي)",
+  },
+];
 
-        // Path 3: Work Focus (6 questions)
-        const path3Questions = [
-            {
-                question: "في بيئة العمل، أحقق أفضل أداء عندما:",
-                type: "binary",
-                options: [
-                    { text: "أعمل ضمن فريق متفاعل مع تبادل مستمر للأفكار", dimension: "E" },
-                    { text: "أعمل بشكل مستقل مع تركيز عميق وهدوء", dimension: "I" }
-                ]
-            },
-            {
-                question: "عند مواجهة تحديات مهنية جديدة، أميل إلى:",
-                type: "binary",
-                options: [
-                    { text: "الاعتماد على الخبرات المثبتة والإجراءات الموثوقة", dimension: "S" },
-                    { text: "استكشاف حلول مبتكرة وطرق غير تقليدية", dimension: "N" }
-                ]
-            },
-            {
-                question: "عند تقييم الأداء في العمل، أعطي الأولوية لـ:",
-                type: "binary",
-                options: [
-                    { text: "النتائج المحققة والمعايير الموضوعية للأداء", dimension: "T" },
-                    { text: "الجهد المبذول والظروف الشخصية للموظف", dimension: "F" }
-                ]
-            },
-            {
-                question: "في التعامل مع المواعيد النهائية والمشاريع:",
-                type: "binary",
-                options: [
-                    { text: "أضع خطة مفصلة وألتزم بها بدقة", dimension: "J" },
-                    { text: "أحتفظ بمرونة للتكيف مع المتغيرات", dimension: "P" }
-                ]
-            },
-            {
-                question: "أقدر أكثر في القيادة المهنية:",
-                type: "binary",
-                options: [
-                    { text: "التركيز على تحقيق الأهداف بكفاءة عالية", dimension: "T" },
-                    { text: "الاهتمام بتنمية الفريق وبناء العلاقات", dimension: "F" }
-                ]
-            },
-            {
-                question: "في اجتماعات العمل، سلوكي المعتاد هو:",
-                type: "binary",
-                options: [
-                    { text: "المبادرة بطرح الأفكار والمشاركة النشطة", dimension: "E" },
-                    { text: "الاستماع بعناية والتفكير قبل المساهمة", dimension: "I" }
-                ]
-            }
-        ];
+// Path 3: Work Focus (6 questions)
+const path3Questions = [
+  {
+    question: "في بيئة العمل، أحقق أفضل أداء عندما:",
+    type: "binary",
+    options: [
+      { text: "أعمل ضمن فريق متفاعل مع تبادل مستمر للأفكار", dimension: "E" },
+      { text: "أعمل بشكل مستقل مع تركيز عميق وهدوء", dimension: "I" },
+    ],
+  },
+  {
+    question: "عند مواجهة تحديات مهنية جديدة، أميل إلى:",
+    type: "binary",
+    options: [
+      {
+        text: "الاعتماد على الخبرات المثبتة والإجراءات الموثوقة",
+        dimension: "S",
+      },
+      { text: "استكشاف حلول مبتكرة وطرق غير تقليدية", dimension: "N" },
+    ],
+  },
+  {
+    question: "عند تقييم الأداء في العمل، أعطي الأولوية لـ:",
+    type: "binary",
+    options: [
+      { text: "النتائج المحققة والمعايير الموضوعية للأداء", dimension: "T" },
+      { text: "الجهد المبذول والظروف الشخصية للموظف", dimension: "F" },
+    ],
+  },
+  {
+    question: "في التعامل مع المواعيد النهائية والمشاريع:",
+    type: "binary",
+    options: [
+      { text: "أضع خطة مفصلة وألتزم بها بدقة", dimension: "J" },
+      { text: "أحتفظ بمرونة للتكيف مع المتغيرات", dimension: "P" },
+    ],
+  },
+  {
+    question: "أقدر أكثر في القيادة المهنية:",
+    type: "binary",
+    options: [
+      { text: "التركيز على تحقيق الأهداف بكفاءة عالية", dimension: "T" },
+      { text: "الاهتمام بتنمية الفريق وبناء العلاقات", dimension: "F" },
+    ],
+  },
+  {
+    question: "في اجتماعات العمل، سلوكي المعتاد هو:",
+    type: "binary",
+    options: [
+      { text: "المبادرة بطرح الأفكار والمشاركة النشطة", dimension: "E" },
+      { text: "الاستماع بعناية والتفكير قبل المساهمة", dimension: "I" },
+    ],
+  },
+];
 
-        // Path 4: Relationships (6 questions)
-        const path4Questions = [
-            {
-                question: "رتب هذه الأنشطة الاجتماعية حسب تفضيلك (من الأكثر إلى الأقل تفضيلاً):",
-                type: "ranking",
-                items: [
-                    { text: "حفلة كبيرة مع أشخاص جدد", dimension: "E", points: 4 },
-                    { text: "عشاء هادئ مع صديق مقرب", dimension: "I", points: 4 },
-                    { text: "نشاط جماعي منظم", dimension: "E", points: 3 },
-                    { text: "قضاء وقت منفرد في المنزل", dimension: "I", points: 3 }
-                ]
-            },
-            {
-                question: "اختر 3 خيارات أو أكثر التي تصف طريقتك في التواصل مع الآخرين:",
-                type: "checkbox",
-                minSelections: 3,
-                options: [
-                    { text: "أحب مشاركة التفاصيل اليومية", dimension: "S" },
-                    { text: "أناقش الأفكار والمفاهيم المجردة", dimension: "N" },
-                    { text: "أركز على الحقائق والأحداث", dimension: "S" },
-                    { text: "أتحدث عن الأحلام والطموحات", dimension: "N" },
-                    { text: "أفضل المحادثات العملية", dimension: "S" },
-                    { text: "أستمتع بالنقاشات الفلسفية", dimension: "N" }
-                ]
-            },
-            {
-                question: "رتب هذه الطرق لحل الخلافات حسب ما تفضله:",
-                type: "ranking",
-                items: [
-                    { text: "تحليل المشكلة منطقياً", dimension: "T", points: 4 },
-                    { text: "التركيز على مشاعر الجميع", dimension: "F", points: 4 },
-                    { text: "البحث عن حل عادل", dimension: "T", points: 3 },
-                    { text: "الحفاظ على الانسجام", dimension: "F", points: 3 }
-                ]
-            },
-            {
-                question: "اختر 3 خيارات أو أكثر التي تصف تفضيلاتك في التخطيط الاجتماعي:",
-                type: "checkbox",
-                minSelections: 3,
-                options: [
-                    { text: "أخطط للأنشطة مسبقاً", dimension: "J" },
-                    { text: "أفضل القرارات العفوية", dimension: "P" },
-                    { text: "أحب الجداول المحددة", dimension: "J" },
-                    { text: "أتكيف مع ما يحدث", dimension: "P" },
-                    { text: "أحجز الأماكن مقدماً", dimension: "J" },
-                    { text: "أقرر في اللحظة الأخيرة", dimension: "P" }
-                ]
-            },
-            {
-                question: "رتب هذه الصفات في الأصدقاء حسب أهميتها لك:",
-                type: "ranking",
-                items: [
-                    { text: "يقدم نصائح منطقية", dimension: "T", points: 4 },
-                    { text: "يتفهم مشاعري", dimension: "F", points: 4 },
-                    { text: "صادق ومباشر", dimension: "T", points: 3 },
-                    { text: "داعم ومتعاطف", dimension: "F", points: 3 }
-                ]
-            },
-            {
-                question: "اختر 3 خيارات أو أكثر التي تصف سلوكك في المناسبات الاجتماعية:",
-                type: "checkbox",
-                minSelections: 3,
-                options: [
-                    { text: "أتحدث مع أشخاص كثيرين", dimension: "E" },
-                    { text: "أركز على محادثات عميقة", dimension: "I" },
-                    { text: "أكون مركز الاهتمام", dimension: "E" },
-                    { text: "أستمع أكثر مما أتحدث", dimension: "I" },
-                    { text: "أنتقل بين المجموعات", dimension: "E" },
-                    { text: "أبقى مع نفس الأشخاص", dimension: "I" }
-                ]
-            }
-        ];
+// Path 4: Relationships (6 questions)
+const path4Questions = [
+  {
+    question:
+      "رتب هذه الأنشطة الاجتماعية حسب تفضيلك (من الأكثر إلى الأقل تفضيلاً):",
+    type: "ranking",
+    items: [
+      { text: "حفلة كبيرة مع أشخاص جدد", dimension: "E", points: 4 },
+      { text: "عشاء هادئ مع صديق مقرب", dimension: "I", points: 4 },
+      { text: "نشاط جماعي منظم", dimension: "E", points: 3 },
+      { text: "قضاء وقت منفرد في المنزل", dimension: "I", points: 3 },
+    ],
+  },
+  {
+    question: "اختر 3 خيارات أو أكثر التي تصف طريقتك في التواصل مع الآخرين:",
+    type: "checkbox",
+    minSelections: 3,
+    options: [
+      { text: "أحب مشاركة التفاصيل اليومية", dimension: "S" },
+      { text: "أناقش الأفكار والمفاهيم المجردة", dimension: "N" },
+      { text: "أركز على الحقائق والأحداث", dimension: "S" },
+      { text: "أتحدث عن الأحلام والطموحات", dimension: "N" },
+      { text: "أفضل المحادثات العملية", dimension: "S" },
+      { text: "أستمتع بالنقاشات الفلسفية", dimension: "N" },
+    ],
+  },
+  {
+    question: "رتب هذه الطرق لحل الخلافات حسب ما تفضله:",
+    type: "ranking",
+    items: [
+      { text: "تحليل المشكلة منطقياً", dimension: "T", points: 4 },
+      { text: "التركيز على مشاعر الجميع", dimension: "F", points: 4 },
+      { text: "البحث عن حل عادل", dimension: "T", points: 3 },
+      { text: "الحفاظ على الانسجام", dimension: "F", points: 3 },
+    ],
+  },
+  {
+    question: "اختر 3 خيارات أو أكثر التي تصف تفضيلاتك في التخطيط الاجتماعي:",
+    type: "checkbox",
+    minSelections: 3,
+    options: [
+      { text: "أخطط للأنشطة مسبقاً", dimension: "J" },
+      { text: "أفضل القرارات العفوية", dimension: "P" },
+      { text: "أحب الجداول المحددة", dimension: "J" },
+      { text: "أتكيف مع ما يحدث", dimension: "P" },
+      { text: "أحجز الأماكن مقدماً", dimension: "J" },
+      { text: "أقرر في اللحظة الأخيرة", dimension: "P" },
+    ],
+  },
+  {
+    question: "رتب هذه الصفات في الأصدقاء حسب أهميتها لك:",
+    type: "ranking",
+    items: [
+      { text: "يقدم نصائح منطقية", dimension: "T", points: 4 },
+      { text: "يتفهم مشاعري", dimension: "F", points: 4 },
+      { text: "صادق ومباشر", dimension: "T", points: 3 },
+      { text: "داعم ومتعاطف", dimension: "F", points: 3 },
+    ],
+  },
+  {
+    question: "اختر 3 خيارات أو أكثر التي تصف سلوكك في المناسبات الاجتماعية:",
+    type: "checkbox",
+    minSelections: 3,
+    options: [
+      { text: "أتحدث مع أشخاص كثيرين", dimension: "E" },
+      { text: "أركز على محادثات عميقة", dimension: "I" },
+      { text: "أكون مركز الاهتمام", dimension: "E" },
+      { text: "أستمع أكثر مما أتحدث", dimension: "I" },
+      { text: "أنتقل بين المجموعات", dimension: "E" },
+      { text: "أبقى مع نفس الأشخاص", dimension: "I" },
+    ],
+  },
+];
 
-        // Path 5: Validation (4 questions)
-        const path5Questions = [
-            {
-                question: "بشكل عام، أستمد طاقتي من:",
-                type: "binary",
-                options: [
-                    { text: "التفاعل الاجتماعي والأنشطة الخارجية", dimension: "E" },
-                    { text: "التأمل الداخلي والأنشطة الفردية", dimension: "I" }
-                ]
-            },
-            {
-                question: "عند مواجهة موقف جديد، أعتمد أكثر على:",
-                type: "binary",
-                options: [
-                    { text: "الخبرة السابقة والحقائق الملموسة", dimension: "S" },
-                    { text: "الحدس والإمكانيات المستقبلية", dimension: "N" }
-                ]
-            },
-            {
-                question: "في اتخاذ القرارات المهمة، الأولوية لدي:",
-                type: "binary",
-                options: [
-                    { text: "التحليل المنطقي والموضوعية", dimension: "T" },
-                    { text: "القيم الشخصية والتأثير على الآخرين", dimension: "F" }
-                ]
-            },
-            {
-                question: "أشعر بالراحة أكثر عندما تكون حياتي:",
-                type: "binary",
-                options: [
-                    { text: "منظمة ومخططة مع أهداف واضحة", dimension: "J" },
-                    { text: "مرنة ومفتوحة للفرص والتغييرات", dimension: "P" }
-                ]
-            }
-        ];
+// Path 5: Validation (4 questions)
+const path5Questions = [
+  {
+    question: "بشكل عام، أستمد طاقتي من:",
+    type: "binary",
+    options: [
+      { text: "التفاعل الاجتماعي والأنشطة الخارجية", dimension: "E" },
+      { text: "التأمل الداخلي والأنشطة الفردية", dimension: "I" },
+    ],
+  },
+  {
+    question: "عند مواجهة موقف جديد، أعتمد أكثر على:",
+    type: "binary",
+    options: [
+      { text: "الخبرة السابقة والحقائق الملموسة", dimension: "S" },
+      { text: "الحدس والإمكانيات المستقبلية", dimension: "N" },
+    ],
+  },
+  {
+    question: "في اتخاذ القرارات المهمة، الأولوية لدي:",
+    type: "binary",
+    options: [
+      { text: "التحليل المنطقي والموضوعية", dimension: "T" },
+      { text: "القيم الشخصية والتأثير على الآخرين", dimension: "F" },
+    ],
+  },
+  {
+    question: "أشعر بالراحة أكثر عندما تكون حياتي:",
+    type: "binary",
+    options: [
+      { text: "منظمة ومخططة مع أهداف واضحة", dimension: "J" },
+      { text: "مرنة ومفتوحة للفرص والتغييرات", dimension: "P" },
+    ],
+  },
+];
 
-        // Personality types database
-        const personalityTypes = {
-            "ENFP": {
-                name: "المُلهِم المبدع",
-                strengths: ["متحمس ومبدع", "ممتاز في التواصل", "مرن ومتكيف", "يلهم الآخرين", "متفائل وإيجابي"],
-                improvements: ["قد يفتقر للتركيز", "يحتاج لتطوير المثابرة", "قد يتجنب التفاصيل الروتينية", "يحتاج لتحسين إدارة الوقت"],
-                work: "يزدهر في البيئات الإبداعية والتعاونية، مثل التسويق والإعلام والاستشارات والتدريب",
-                study: "يفضل التعلم التفاعلي والمشاريع الجماعية والمواضيع المتنوعة والنقاشات المفتوحة",
-                relationships: "اجتماعي ومتفهم، يقدر العلاقات العميقة والنقاشات المعنوية ويحب مساعدة الآخرين"
-            },
-            "INTJ": {
-                name: "المهندس المعماري",
-                strengths: ["استراتيجي ومخطط", "مستقل ومركز", "مبدع في حل المشاكل", "يسعى للتميز", "واثق من نفسه"],
-                improvements: ["قد يبدو منعزلاً", "يحتاج لتطوير المرونة", "قد يتجاهل المشاعر أحياناً", "غير صبور مع عدم الكفاءة"],
-                work: "ممتاز في الأدوار الاستراتيجية والتقنية مثل الهندسة والبحث والإدارة العليا والتخطيط",
-                study: "يفضل التعلم المستقل والمواضيع المعقدة والتحليل العميق والتخصص الدقيق",
-                relationships: "يقدر العلاقات القليلة والعميقة، ويحتاج لشريك يحترم استقلاليته وأهدافه"
-            },
-            "ENFJ": {
-                name: "المعلم الملهم",
-                strengths: ["قائد طبيعي", "متفهم ومتعاطف", "ممتاز في التحفيز", "يطور الآخرين", "رؤية واضحة"],
-                improvements: ["قد يهمل احتياجاته الشخصية", "حساس للنقد", "قد يكون مثالياً أكثر من اللازم", "يحتاج لتعلم قول لا"],
-                work: "يتفوق في التعليم والإرشاد والموارد البشرية والعلاقات العامة والقيادة",
-                study: "يحب التعلم التعاوني والمواضيع الإنسانية والنقاشات الجماعية والمشاريع ذات المعنى",
-                relationships: "داعم ومخلص، يستثمر بعمق في علاقاته ويساعد الآخرين على النمو"
-            },
-            "INFP": {
-                name: "الوسيط المثالي",
-                strengths: ["مبدع وأصيل", "متفهم ومتعاطف", "مرن ومنفتح", "يقدر الأصالة", "مدفوع بالقيم"],
-                improvements: ["قد يكون حساساً جداً", "يتجنب الصراعات", "قد يؤجل المهام", "يحتاج للتحفيز الخارجي"],
-                work: "يزدهر في الكتابة والفنون والاستشارة النفسية والعمل الخيري والتصميم",
-                study: "يفضل التعلم الذاتي والمواضيع التي تتماشى مع قيمه والتعبير الإبداعي",
-                relationships: "مخلص وداعم، يقدر العمق والأصالة في العلاقات ويحترم استقلالية الآخرين"
-            },
-            "ESTJ": {
-                name: "المدير التنفيذي",
-                strengths: ["منظم وكفء", "قائد طبيعي", "عملي وواقعي", "موثوق ومسؤول", "يحقق النتائج"],
-                improvements: ["قد يكون صارماً جداً", "يقاوم التغيير أحياناً", "قد يتجاهل المشاعر", "يحتاج لتطوير المرونة"],
-                work: "يتفوق في الإدارة والأعمال والقانون والهندسة والخدمات المالية",
-                study: "يفضل التعلم المنظم والمواضيع العملية والأهداف الواضحة والتطبيق المباشر",
-                relationships: "مخلص ومسؤول، يقدر الاستقرار والتقاليد ويعمل بجد لدعم أحبائه"
-            },
-            "ISTP": {
-                name: "الحرفي المبدع",
-                strengths: ["عملي ومهاري", "مرن ومتكيف", "مستقل وهادئ", "يحل المشاكل بكفاءة", "واقعي"],
-                improvements: ["قد يكون منعزلاً", "يتجنب الالتزامات طويلة المدى", "قد يبدو غير مبالٍ", "يحتاج لتطوير التواصل"],
-                work: "يزدهر في الهندسة والحرف والرياضة والطب والتكنولوجيا",
-                study: "يفضل التعلم العملي والتجريب المباشر والمواضيع التقنية والعمل الفردي",
-                relationships: "مخلص وداعم بطريقة عملية، يقدر الحرية والاستقلالية في العلاقات"
-            },
-            "ESFP": {
-                name: "المؤدي المتحمس",
-                strengths: ["متحمس ومرح", "اجتماعي ودود", "مرن وعفوي", "يلهم الآخرين", "متفائل"],
-                improvements: ["قد يفتقر للتخطيط", "حساس للنقد", "قد يتجنب الصراعات", "يحتاج للتركيز"],
-                work: "يتفوق في الترفيه والتعليم والمبيعات والخدمات والفنون",
-                study: "يحب التعلم التفاعلي والمواضيع الممتعة والعمل الجماعي والأنشطة العملية",
-                relationships: "دافئ ومحب، يجلب الفرح والحيوية للعلاقات ويقدر اللحظات الجميلة"
-            },
-            "INFJ": {
-                name: "المدافع الحكيم",
-                strengths: ["بصيرة عميقة", "مثالي ومبدئي", "مبدع ومتفهم", "مصمم ومثابر", "يلهم التغيير"],
-                improvements: ["قد يكون مثالياً جداً", "حساس للنقد", "يحتاج لوقت وحده", "قد يتجنب الصراعات"],
-                work: "يزدهر في الاستشارة والكتابة والتعليم والعمل الخيري والفنون",
-                study: "يفضل التعلم العميق والمواضيع ذات المعنى والتأمل والبحث المستقل",
-                relationships: "مخلص وعميق، يسعى لعلاقات ذات معنى ويدعم نمو الآخرين"
-            },
-            "ESTP": {
-                name: "المقاول المغامر",
-                strengths: ["عملي ونشط", "مرن وقابل للتكيف", "اجتماعي وودود", "يحل المشاكل بسرعة", "متفائل"],
-                improvements: ["قد يفتقر للتخطيط طويل المدى", "يمل من الروتين", "قد يتخذ قرارات متسرعة", "يحتاج للصبر"],
-                work: "يتفوق في المبيعات والرياضة والطوارئ والأعمال والترفيه",
-                study: "يفضل التعلم العملي والتفاعلي والمواضيع التطبيقية والأنشطة الجماعية",
-                relationships: "مرح وعفوي، يجلب الحيوية والمتعة للعلاقات ويقدر اللحظة الحالية"
-            },
-            "ISFP": {
-                name: "المغامر الفنان",
-                strengths: ["مبدع وحساس", "مرن ومنفتح", "متفهم ومتعاطف", "يقدر الجمال", "هادئ ومتواضع"],
-                improvements: ["قد يكون حساساً جداً", "يتجنب الصراعات", "قد يؤجل القرارات", "يحتاج للتحفيز"],
-                work: "يزدهر في الفنون والتصميم والصحة والتعليم والخدمات الاجتماعية",
-                study: "يفضل التعلم الذاتي والمواضيع الإبداعية والبيئة الداعمة والتعبير الشخصي",
-                relationships: "مخلص ومتفهم، يقدر الأصالة والعمق في العلاقات ويدعم أحلام الآخرين"
-            },
-            "ENTJ": {
-                name: "القائد الطموح",
-                strengths: ["قائد طبيعي", "استراتيجي وحاسم", "واثق ومصمم", "يحفز الآخرين", "كفء ومنظم"],
-                improvements: ["قد يكون صارماً جداً", "غير صبور مع عدم الكفاءة", "قد يتجاهل المشاعر", "يحتاج للاستماع أكثر"],
-                work: "يتفوق في القيادة والإدارة والأعمال والاستشارات والسياسة",
-                study: "يفضل التحدي الفكري والمواضيع المعقدة والقيادة في المشاريع والأهداف الطموحة",
-                relationships: "مخلص وداعم، يشجع النمو والتطور ويقدر الشراكة القوية"
-            },
-            "INTP": {
-                name: "المفكر المنطقي",
-                strengths: ["مفكر عميق", "مبدع ومبتكر", "مستقل ومرن", "يحب التعلم", "موضوعي ومنطقي"],
-                improvements: ["قد يكون منعزلاً", "يؤجل القرارات أحياناً", "قد يتجاهل المشاعر", "يحتاج للتحفيز العملي"],
-                work: "يزدهر في البحث والتطوير والتكنولوجيا والأكاديميا والتحليل",
-                study: "يفضل التعلم المستقل والمواضيع المعقدة والنظريات والاستكشاف الفكري",
-                relationships: "مخلص وداعم فكرياً، يقدر الاستقلالية والعمق في النقاشات"
-            },
-            "ESFJ": {
-                name: "المساعد المخلص",
-                strengths: ["متعاطف ومهتم", "منظم وموثوق", "اجتماعي ودود", "يدعم الآخرين", "عملي ومسؤول"],
-                improvements: ["قد يهمل احتياجاته الشخصية", "حساس للنقد", "يقاوم التغيير أحياناً", "يحتاج للتقدير"],
-                work: "يتفوق في التعليم والصحة والخدمات والموارد البشرية والعمل الاجتماعي",
-                study: "يفضل التعلم التعاوني والمواضيع العملية والبيئة الداعمة والتطبيق المباشر",
-                relationships: "مخلص ومتفاني، يهتم بسعادة الآخرين ويخلق بيئة دافئة ومرحبة"
-            },
-            "ISFJ": {
-                name: "المدافع المخلص",
-                strengths: ["مخلص ومتفاني", "متعاطف ومتفهم", "عملي وموثوق", "صبور ومثابر", "متواضع ومتعاون"],
-                improvements: ["قد يهمل احتياجاته الشخصية", "يتجنب الصراعات", "حساس للنقد", "يقاوم التغيير"],
-                work: "يزدهر في الصحة والتعليم والخدمات والإدارة والعمل الاجتماعي",
-                study: "يفضل التعلم المنظم والمواضيع العملية والبيئة الهادئة والدعم الشخصي",
-                relationships: "مخلص وداعم، يهتم بتفاصيل حياة الآخرين ويقدم الدعم العملي والعاطفي"
-            },
-            "ENTP": {
-                name: "المناقش المبدع",
-                strengths: ["مبدع ومبتكر", "ذكي وسريع البديهة", "متحمس ومتفائل", "مرن ومتكيف", "يحب التحدي"],
-                improvements: ["قد يفتقر للمتابعة", "يمل من الروتين", "قد يتجاهل التفاصيل", "يحتاج للتركيز"],
-                work: "يتفوق في ريادة الأعمال والاستشارات والتسويق والإعلام والابتكار",
-                study: "يفضل التعلم التفاعلي والمواضيع المتنوعة والنقاشات والمشاريع الإبداعية",
-                relationships: "مثير ومحفز، يجلب الأفكار الجديدة والطاقة الإيجابية للعلاقات"
-            },
-            "ISTJ": {
-                name: "المنطقي المسؤول",
-                strengths: ["موثوق ومسؤول", "منظم ومنهجي", "عملي وواقعي", "مثابر ومصمم", "مخلص ومتفاني"],
-                improvements: ["قد يقاوم التغيير", "يحتاج لتطوير المرونة", "قد يتجاهل الإمكانيات الجديدة", "يحتاج للانفتاح"],
-                work: "يتفوق في المحاسبة والإدارة والقانون والطب والخدمات الحكومية",
-                study: "يفضل التعلم المنظم والمواضيع العملية والطرق التقليدية والأهداف الواضحة",
-                relationships: "مخلص وموثوق، يقدر الاستقرار والتقاليد ويدعم أحبائه بطريقة عملية"
-            }
-        };
+// Personality types database
+const personalityTypes = {
+  ENFP: {
+    name: "المُلهِم المبدع",
+    strengths: [
+      "متحمس ومبدع",
+      "ممتاز في التواصل",
+      "مرن ومتكيف",
+      "يلهم الآخرين",
+      "متفائل وإيجابي",
+    ],
+    improvements: [
+      "قد يفتقر للتركيز",
+      "يحتاج لتطوير المثابرة",
+      "قد يتجنب التفاصيل الروتينية",
+      "يحتاج لتحسين إدارة الوقت",
+    ],
+    work: "يزدهر في البيئات الإبداعية والتعاونية، مثل التسويق والإعلام والاستشارات والتدريب",
+    study:
+      "يفضل التعلم التفاعلي والمشاريع الجماعية والمواضيع المتنوعة والنقاشات المفتوحة",
+    relationships:
+      "اجتماعي ومتفهم، يقدر العلاقات العميقة والنقاشات المعنوية ويحب مساعدة الآخرين",
+  },
+  INTJ: {
+    name: "المهندس المعماري",
+    strengths: [
+      "استراتيجي ومخطط",
+      "مستقل ومركز",
+      "مبدع في حل المشاكل",
+      "يسعى للتميز",
+      "واثق من نفسه",
+    ],
+    improvements: [
+      "قد يبدو منعزلاً",
+      "يحتاج لتطوير المرونة",
+      "قد يتجاهل المشاعر أحياناً",
+      "غير صبور مع عدم الكفاءة",
+    ],
+    work: "ممتاز في الأدوار الاستراتيجية والتقنية مثل الهندسة والبحث والإدارة العليا والتخطيط",
+    study:
+      "يفضل التعلم المستقل والمواضيع المعقدة والتحليل العميق والتخصص الدقيق",
+    relationships:
+      "يقدر العلاقات القليلة والعميقة، ويحتاج لشريك يحترم استقلاليته وأهدافه",
+  },
+  ENFJ: {
+    name: "المعلم الملهم",
+    strengths: [
+      "قائد طبيعي",
+      "متفهم ومتعاطف",
+      "ممتاز في التحفيز",
+      "يطور الآخرين",
+      "رؤية واضحة",
+    ],
+    improvements: [
+      "قد يهمل احتياجاته الشخصية",
+      "حساس للنقد",
+      "قد يكون مثالياً أكثر من اللازم",
+      "يحتاج لتعلم قول لا",
+    ],
+    work: "يتفوق في التعليم والإرشاد والموارد البشرية والعلاقات العامة والقيادة",
+    study:
+      "يحب التعلم التعاوني والمواضيع الإنسانية والنقاشات الجماعية والمشاريع ذات المعنى",
+    relationships:
+      "داعم ومخلص، يستثمر بعمق في علاقاته ويساعد الآخرين على النمو",
+  },
+  INFP: {
+    name: "الوسيط المثالي",
+    strengths: [
+      "مبدع وأصيل",
+      "متفهم ومتعاطف",
+      "مرن ومنفتح",
+      "يقدر الأصالة",
+      "مدفوع بالقيم",
+    ],
+    improvements: [
+      "قد يكون حساساً جداً",
+      "يتجنب الصراعات",
+      "قد يؤجل المهام",
+      "يحتاج للتحفيز الخارجي",
+    ],
+    work: "يزدهر في الكتابة والفنون والاستشارة النفسية والعمل الخيري والتصميم",
+    study: "يفضل التعلم الذاتي والمواضيع التي تتماشى مع قيمه والتعبير الإبداعي",
+    relationships:
+      "مخلص وداعم، يقدر العمق والأصالة في العلاقات ويحترم استقلالية الآخرين",
+  },
+  ESTJ: {
+    name: "المدير التنفيذي",
+    strengths: [
+      "منظم وكفء",
+      "قائد طبيعي",
+      "عملي وواقعي",
+      "موثوق ومسؤول",
+      "يحقق النتائج",
+    ],
+    improvements: [
+      "قد يكون صارماً جداً",
+      "يقاوم التغيير أحياناً",
+      "قد يتجاهل المشاعر",
+      "يحتاج لتطوير المرونة",
+    ],
+    work: "يتفوق في الإدارة والأعمال والقانون والهندسة والخدمات المالية",
+    study:
+      "يفضل التعلم المنظم والمواضيع العملية والأهداف الواضحة والتطبيق المباشر",
+    relationships:
+      "مخلص ومسؤول، يقدر الاستقرار والتقاليد ويعمل بجد لدعم أحبائه",
+  },
+  ISTP: {
+    name: "الحرفي المبدع",
+    strengths: [
+      "عملي ومهاري",
+      "مرن ومتكيف",
+      "مستقل وهادئ",
+      "يحل المشاكل بكفاءة",
+      "واقعي",
+    ],
+    improvements: [
+      "قد يكون منعزلاً",
+      "يتجنب الالتزامات طويلة المدى",
+      "قد يبدو غير مبالٍ",
+      "يحتاج لتطوير التواصل",
+    ],
+    work: "يزدهر في الهندسة والحرف والرياضة والطب والتكنولوجيا",
+    study:
+      "يفضل التعلم العملي والتجريب المباشر والمواضيع التقنية والعمل الفردي",
+    relationships:
+      "مخلص وداعم بطريقة عملية، يقدر الحرية والاستقلالية في العلاقات",
+  },
+  ESFP: {
+    name: "المؤدي المتحمس",
+    strengths: [
+      "متحمس ومرح",
+      "اجتماعي ودود",
+      "مرن وعفوي",
+      "يلهم الآخرين",
+      "متفائل",
+    ],
+    improvements: [
+      "قد يفتقر للتخطيط",
+      "حساس للنقد",
+      "قد يتجنب الصراعات",
+      "يحتاج للتركيز",
+    ],
+    work: "يتفوق في الترفيه والتعليم والمبيعات والخدمات والفنون",
+    study:
+      "يحب التعلم التفاعلي والمواضيع الممتعة والعمل الجماعي والأنشطة العملية",
+    relationships:
+      "دافئ ومحب، يجلب الفرح والحيوية للعلاقات ويقدر اللحظات الجميلة",
+  },
+  INFJ: {
+    name: "المدافع الحكيم",
+    strengths: [
+      "بصيرة عميقة",
+      "مثالي ومبدئي",
+      "مبدع ومتفهم",
+      "مصمم ومثابر",
+      "يلهم التغيير",
+    ],
+    improvements: [
+      "قد يكون مثالياً جداً",
+      "حساس للنقد",
+      "يحتاج لوقت وحده",
+      "قد يتجنب الصراعات",
+    ],
+    work: "يزدهر في الاستشارة والكتابة والتعليم والعمل الخيري والفنون",
+    study: "يفضل التعلم العميق والمواضيع ذات المعنى والتأمل والبحث المستقل",
+    relationships: "مخلص وعميق، يسعى لعلاقات ذات معنى ويدعم نمو الآخرين",
+  },
+  ESTP: {
+    name: "المقاول المغامر",
+    strengths: [
+      "عملي ونشط",
+      "مرن وقابل للتكيف",
+      "اجتماعي وودود",
+      "يحل المشاكل بسرعة",
+      "متفائل",
+    ],
+    improvements: [
+      "قد يفتقر للتخطيط طويل المدى",
+      "يمل من الروتين",
+      "قد يتخذ قرارات متسرعة",
+      "يحتاج للصبر",
+    ],
+    work: "يتفوق في المبيعات والرياضة والطوارئ والأعمال والترفيه",
+    study: "يفضل التعلم العملي والتفاعلي والمواضيع التطبيقية والأنشطة الجماعية",
+    relationships:
+      "مرح وعفوي، يجلب الحيوية والمتعة للعلاقات ويقدر اللحظة الحالية",
+  },
+  ISFP: {
+    name: "المغامر الفنان",
+    strengths: [
+      "مبدع وحساس",
+      "مرن ومنفتح",
+      "متفهم ومتعاطف",
+      "يقدر الجمال",
+      "هادئ ومتواضع",
+    ],
+    improvements: [
+      "قد يكون حساساً جداً",
+      "يتجنب الصراعات",
+      "قد يؤجل القرارات",
+      "يحتاج للتحفيز",
+    ],
+    work: "يزدهر في الفنون والتصميم والصحة والتعليم والخدمات الاجتماعية",
+    study:
+      "يفضل التعلم الذاتي والمواضيع الإبداعية والبيئة الداعمة والتعبير الشخصي",
+    relationships:
+      "مخلص ومتفهم، يقدر الأصالة والعمق في العلاقات ويدعم أحلام الآخرين",
+  },
+  ENTJ: {
+    name: "القائد الطموح",
+    strengths: [
+      "قائد طبيعي",
+      "استراتيجي وحاسم",
+      "واثق ومصمم",
+      "يحفز الآخرين",
+      "كفء ومنظم",
+    ],
+    improvements: [
+      "قد يكون صارماً جداً",
+      "غير صبور مع عدم الكفاءة",
+      "قد يتجاهل المشاعر",
+      "يحتاج للاستماع أكثر",
+    ],
+    work: "يتفوق في القيادة والإدارة والأعمال والاستشارات والسياسة",
+    study:
+      "يفضل التحدي الفكري والمواضيع المعقدة والقيادة في المشاريع والأهداف الطموحة",
+    relationships: "مخلص وداعم، يشجع النمو والتطور ويقدر الشراكة القوية",
+  },
+  INTP: {
+    name: "المفكر المنطقي",
+    strengths: [
+      "مفكر عميق",
+      "مبدع ومبتكر",
+      "مستقل ومرن",
+      "يحب التعلم",
+      "موضوعي ومنطقي",
+    ],
+    improvements: [
+      "قد يكون منعزلاً",
+      "يؤجل القرارات أحياناً",
+      "قد يتجاهل المشاعر",
+      "يحتاج للتحفيز العملي",
+    ],
+    work: "يزدهر في البحث والتطوير والتكنولوجيا والأكاديميا والتحليل",
+    study: "يفضل التعلم المستقل والمواضيع المعقدة والنظريات والاستكشاف الفكري",
+    relationships: "مخلص وداعم فكرياً، يقدر الاستقلالية والعمق في النقاشات",
+  },
+  ESFJ: {
+    name: "المساعد المخلص",
+    strengths: [
+      "متعاطف ومهتم",
+      "منظم وموثوق",
+      "اجتماعي ودود",
+      "يدعم الآخرين",
+      "عملي ومسؤول",
+    ],
+    improvements: [
+      "قد يهمل احتياجاته الشخصية",
+      "حساس للنقد",
+      "يقاوم التغيير أحياناً",
+      "يحتاج للتقدير",
+    ],
+    work: "يتفوق في التعليم والصحة والخدمات والموارد البشرية والعمل الاجتماعي",
+    study:
+      "يفضل التعلم التعاوني والمواضيع العملية والبيئة الداعمة والتطبيق المباشر",
+    relationships: "مخلص ومتفاني، يهتم بسعادة الآخرين ويخلق بيئة دافئة ومرحبة",
+  },
+  ISFJ: {
+    name: "المدافع المخلص",
+    strengths: [
+      "مخلص ومتفاني",
+      "متعاطف ومتفهم",
+      "عملي وموثوق",
+      "صبور ومثابر",
+      "متواضع ومتعاون",
+    ],
+    improvements: [
+      "قد يهمل احتياجاته الشخصية",
+      "يتجنب الصراعات",
+      "حساس للنقد",
+      "يقاوم التغيير",
+    ],
+    work: "يزدهر في الصحة والتعليم والخدمات والإدارة والعمل الاجتماعي",
+    study: "يفضل التعلم المنظم والمواضيع العملية والبيئة الهادئة والدعم الشخصي",
+    relationships:
+      "مخلص وداعم، يهتم بتفاصيل حياة الآخرين ويقدم الدعم العملي والعاطفي",
+  },
+  ENTP: {
+    name: "المناقش المبدع",
+    strengths: [
+      "مبدع ومبتكر",
+      "ذكي وسريع البديهة",
+      "متحمس ومتفائل",
+      "مرن ومتكيف",
+      "يحب التحدي",
+    ],
+    improvements: [
+      "قد يفتقر للمتابعة",
+      "يمل من الروتين",
+      "قد يتجاهل التفاصيل",
+      "يحتاج للتركيز",
+    ],
+    work: "يتفوق في ريادة الأعمال والاستشارات والتسويق والإعلام والابتكار",
+    study:
+      "يفضل التعلم التفاعلي والمواضيع المتنوعة والنقاشات والمشاريع الإبداعية",
+    relationships:
+      "مثير ومحفز، يجلب الأفكار الجديدة والطاقة الإيجابية للعلاقات",
+  },
+  ISTJ: {
+    name: "المنطقي المسؤول",
+    strengths: [
+      "موثوق ومسؤول",
+      "منظم ومنهجي",
+      "عملي وواقعي",
+      "مثابر ومصمم",
+      "مخلص ومتفاني",
+    ],
+    improvements: [
+      "قد يقاوم التغيير",
+      "يحتاج لتطوير المرونة",
+      "قد يتجاهل الإمكانيات الجديدة",
+      "يحتاج للانفتاح",
+    ],
+    work: "يتفوق في المحاسبة والإدارة والقانون والطب والخدمات الحكومية",
+    study:
+      "يفضل التعلم المنظم والمواضيع العملية والطرق التقليدية والأهداف الواضحة",
+    relationships:
+      "مخلص وموثوق، يقدر الاستقرار والتقاليد ويدعم أحبائه بطريقة عملية",
+  },
+};
 
-        const pathNames = {
-            1: "المسار الشامل",
-            2: "المسار السريع",
-            3: "مسار العمل",
-            4: "مسار العلاقات",
-            5: "مسار التأكيد"
-        };
+const pathNames = {
+  1: "المسار الشامل",
+  2: "المسار السريع",
+  3: "مسار العمل",
+  4: "مسار العلاقات",
+  5: "مسار التأكيد",
+};
 
-        // Initialize real visitor tracking
-        let realVisitorCount = 1;
-        let completedTestsCount = 1;
+// Initialize real visitor tracking
+let realVisitorCount = 1;
+let completedTestsCount = 1;
 
-        function startTest() {
-            // تعيين اسم ثابت شرقي
-            userName = '<%=name%>';
-            startTheTime = Date.now();
+function startTest() {
+  // تعيين اسم ثابت شرقي
+  userName = "<%=name%>";
+  startTheTime = Date.now();
 
-            // التحقق من وجود تقدم محفوظ
-            // const hasSavedProgress = checkForSavedProgress();
+  // التحقق من وجود تقدم محفوظ
+  // const hasSavedProgress = checkForSavedProgress();
 
-            // if (hasSavedProgress) {
-            //     showResumeTestDialog();
-            //     return;
-            // }
+  // if (hasSavedProgress) {
+  //     showResumeTestDialog();
+  //     return;
+  // }
 
-            // بدء اختبار جديد
-            startNewTest();
-        }
+  // بدء اختبار جديد
+  startNewTest();
+}
 
-        // function checkForSavedProgress() {
-        //     try {
-        //         const storageKey = `personality_test_${userName}_progress`;
-        //         const savedProgress = localStorage.getItem(storageKey);
-        //         return savedProgress !== null;
-        //     } catch (e) {
-        //         return false;
-        //     }
-        // }
+// function checkForSavedProgress() {
+//     try {
+//         const storageKey = `personality_test_${userName}_progress`;
+//         const savedProgress = localStorage.getItem(storageKey);
+//         return savedProgress !== null;
+//     } catch (e) {
+//         return false;
+//     }
+// }
 
-        function showResumeTestDialog() {
-            const modal = document.createElement('div');
-            modal.className = 'fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50';
-            modal.innerHTML = `
+function showResumeTestDialog() {
+  const modal = document.createElement("div");
+  modal.className =
+    "fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50";
+  modal.innerHTML = `
                 <div class="bg-white rounded-2xl p-8 max-w-lg mx-4 text-center shadow-2xl">
                     <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
                         <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -680,58 +896,58 @@
                     </div>
                 </div>
             `;
-            document.body.appendChild(modal);
-        }
+  document.body.appendChild(modal);
+}
 
+function startFreshTest() {
+  closeResumeDialog();
 
-        function startFreshTest() {
-            closeResumeDialog();
+  // حذف التقدم المحفوظ السابق
+  clearAllSavedData();
 
-            // حذف التقدم المحفوظ السابق
-            clearAllSavedData();
+  // بدء اختبار جديد
+  startNewTest();
+}
 
-            // بدء اختبار جديد
-            startNewTest();
-        }
+function startNewTest() {
+  // Smooth transition
+  document.getElementById("welcomeScreen").classList.add("fade-out");
+  setTimeout(() => {
+    document.getElementById("welcomeScreen").classList.add("hidden");
+    document.getElementById("testScreen").classList.remove("hidden");
+    document.getElementById("testScreen").classList.add("fade-in");
+    document.getElementById("progressContainer").classList.remove("hidden");
+  }, 400);
 
-        function startNewTest() {
-            // Smooth transition
-            document.getElementById('welcomeScreen').classList.add('fade-out');
-            setTimeout(() => {
-                document.getElementById('welcomeScreen').classList.add('hidden');
-                document.getElementById('testScreen').classList.remove('hidden');
-                document.getElementById('testScreen').classList.add('fade-in');
-                document.getElementById('progressContainer').classList.remove('hidden');
-            }, 400);
+  // Initialize test state
+  currentPath = 1;
+  currentQuestion = 0;
+  answers = [];
+  scores = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
+  completedPaths = [];
+  allPathAnswers = {};
+  totalStartTime = Date.now();
+  questionTimes = [];
+  fastestQuestion = null;
+  slowestQuestion = null;
+  warningShown = false;
 
-            // Initialize test state
-            currentPath = 1;
-            currentQuestion = 0;
-            answers = [];
-            scores = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
-            completedPaths = [];
-            allPathAnswers = {};
-            totalStartTime = Date.now();
-            questionTimes = [];
-            fastestQuestion = null;
-            slowestQuestion = null;
-            warningShown = false;
+  // Start with path 1
+  startPath(1);
+}
 
-            // Start with path 1
-            startPath(1);
-        }
+function closeResumeDialog() {
+  const modal = document.querySelector(".fixed.inset-0");
+  if (modal) {
+    modal.remove();
+  }
+}
 
-        function closeResumeDialog() {
-            const modal = document.querySelector('.fixed.inset-0');
-            if (modal) {
-                modal.remove();
-            }
-        }
-
-        function showResumedMessage() {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = 'fixed top-4 right-4 bg-blue-500 text-white px-6 py-4 rounded-lg shadow-lg z-50 max-w-sm';
-            messageDiv.innerHTML = `
+function showResumedMessage() {
+  const messageDiv = document.createElement("div");
+  messageDiv.className =
+    "fixed top-4 right-4 bg-blue-500 text-white px-6 py-4 rounded-lg shadow-lg z-50 max-w-sm";
+  messageDiv.innerHTML = `
                 <div class="flex items-center">
                     <svg class="w-6 h-6 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -742,132 +958,151 @@
                     </div>
                 </div>
             `;
-            document.body.appendChild(messageDiv);
+  document.body.appendChild(messageDiv);
 
-            setTimeout(() => {
-                if (messageDiv.parentNode) {
-                    messageDiv.parentNode.removeChild(messageDiv);
-                }
-            }, 4000);
-        }
+  setTimeout(() => {
+    if (messageDiv.parentNode) {
+      messageDiv.parentNode.removeChild(messageDiv);
+    }
+  }, 4000);
+}
 
-        function startPath(pathNumber) {
-            // console.log(`Starting path ${pathNumber}. Completed paths: [${completedPaths.join(', ')}]`);
+function startPath(pathNumber) {
+  // console.log(`Starting path ${pathNumber}. Completed paths: [${completedPaths.join(', ')}]`);
 
-            currentPath = pathNumber;
-            currentQuestion = 0;
-            answers = [];
-            currentRanking = {};
-            selectedCheckboxes = [];
+  currentPath = pathNumber;
+  currentQuestion = 0;
+  answers = [];
+  currentRanking = {};
+  selectedCheckboxes = [];
 
-            // Set current questions based on path
-            switch (pathNumber) {
-                case 1: currentQuestions = path1Questions; break;
-                case 2: currentQuestions = path2Questions; break;
-                case 3: currentQuestions = path3Questions; break;
-                case 4: currentQuestions = path4Questions; break;
-                case 5: currentQuestions = path5Questions; break;
+  // Set current questions based on path
+  switch (pathNumber) {
+    case 1:
+      currentQuestions = path1Questions;
+      break;
+    case 2:
+      currentQuestions = path2Questions;
+      break;
+    case 3:
+      currentQuestions = path3Questions;
+      break;
+    case 4:
+      currentQuestions = path4Questions;
+      break;
+    case 5:
+      currentQuestions = path5Questions;
+      break;
+  }
+
+  // console.log(`Path ${pathNumber} has ${currentQuestions.length} questions`);
+
+  // Load any saved answers for this path
+  // loadSavedAnswersForPath(pathNumber);
+
+  updatePathIndicator();
+  showQuestion();
+}
+
+function loadSavedAnswersForPath(pathNumber) {
+  const savedAnswers = loadAnswersFromStorage();
+  const pathAnswers = [];
+
+  // Load all answers for this path
+  for (let i = 0; i < currentQuestions.length; i++) {
+    const answerKey = `path_${pathNumber}_q_${i}`;
+    if (savedAnswers[answerKey]) {
+      pathAnswers.push(savedAnswers[answerKey]);
+
+      // Restore scores
+      const answer = savedAnswers[answerKey];
+      if (answer.dimension) {
+        if (typeof answer.dimension === "string") {
+          scores[answer.dimension]++;
+        } else if (
+          typeof answer.dimension === "object" ||
+          answer.dimension.includes(":")
+        ) {
+          try {
+            let dimensionScores;
+            if (answer.dimension.includes(":")) {
+              dimensionScores = {};
+              const parts = answer.dimension.split(",");
+              parts.forEach((part) => {
+                const [dim, score] = part.split(":");
+                dimensionScores[dim] = parseInt(score);
+              });
+            } else {
+              dimensionScores = JSON.parse(answer.dimension);
             }
-
-            // console.log(`Path ${pathNumber} has ${currentQuestions.length} questions`);
-
-            // Load any saved answers for this path
-            // loadSavedAnswersForPath(pathNumber);
-
-            updatePathIndicator();
-            showQuestion();
+            Object.keys(dimensionScores).forEach((dim) => {
+              scores[dim] += dimensionScores[dim] || 0;
+            });
+          } catch (e) {
+            // console.log('Could not restore scores');
+          }
         }
+      }
+    }
+  }
 
-        function loadSavedAnswersForPath(pathNumber) {
-            const savedAnswers = loadAnswersFromStorage();
-            const pathAnswers = [];
+  // Add to current answers and question times
+  answers.push(...pathAnswers);
+  questionTimes.push(...pathAnswers);
+}
 
-            // Load all answers for this path
-            for (let i = 0; i < currentQuestions.length; i++) {
-                const answerKey = `path_${pathNumber}_q_${i}`;
-                if (savedAnswers[answerKey]) {
-                    pathAnswers.push(savedAnswers[answerKey]);
+// وظيفة خلط الإجابات عشوائياً
+function shuffleArray(array) {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
 
-                    // Restore scores
-                    const answer = savedAnswers[answerKey];
-                    if (answer.dimension) {
-                        if (typeof answer.dimension === 'string') {
-                            scores[answer.dimension]++;
-                        } else if (typeof answer.dimension === 'object' || answer.dimension.includes(':')) {
-                            try {
-                                let dimensionScores;
-                                if (answer.dimension.includes(':')) {
-                                    dimensionScores = {};
-                                    const parts = answer.dimension.split(',');
-                                    parts.forEach(part => {
-                                        const [dim, score] = part.split(':');
-                                        dimensionScores[dim] = parseInt(score);
-                                    });
-                                } else {
-                                    dimensionScores = JSON.parse(answer.dimension);
-                                }
-                                Object.keys(dimensionScores).forEach(dim => {
-                                    scores[dim] += dimensionScores[dim] || 0;
-                                });
-                            } catch (e) {
-                                // console.log('Could not restore scores');
-                            }
-                        }
-                    }
-                }
-            }
+function showQuestion() {
+  const question = currentQuestions[currentQuestion];
+  const container = document.getElementById("questionContainer");
 
-            // Add to current answers and question times
-            answers.push(...pathAnswers);
-            questionTimes.push(...pathAnswers);
-        }
+  questionStartTime = Date.now();
+  startTimer();
+  updateProgress();
+  updatePathIndicator();
+  updateBackButton();
 
-        // وظيفة خلط الإجابات عشوائياً
-        function shuffleArray(array) {
-            const shuffled = [...array];
-            for (let i = shuffled.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-            }
-            return shuffled;
-        }
+  // Path colors
+  const pathColors = {
+    1: "blue",
+    2: "green",
+    3: "purple",
+    4: "pink",
+    5: "orange",
+  };
+  const color = pathColors[currentPath];
 
-        function showQuestion() {
-            const question = currentQuestions[currentQuestion];
-            const container = document.getElementById('questionContainer');
+  // Find previous answer for this question (check both current answers and saved answers)
+  let previousAnswer = answers.find(
+    (a) => a.questionIndex === currentQuestion && a.path === currentPath
+  );
 
-            questionStartTime = Date.now();
-            startTimer();
-            updateProgress();
-            updatePathIndicator();
-            updateBackButton();
+  // If not found in current answers, check saved answers
+  if (!previousAnswer) {
+    const savedAnswers = loadAnswersFromStorage();
+    const answerKey = `path_${currentPath}_q_${currentQuestion}`;
+    previousAnswer = savedAnswers[answerKey];
 
-            // Path colors
-            const pathColors = {
-                1: "blue", 2: "green", 3: "purple", 4: "pink", 5: "orange"
-            };
-            const color = pathColors[currentPath];
+    // If found in saved answers, add it to current answers
+    if (previousAnswer) {
+      answers.push(previousAnswer);
+      questionTimes.push(previousAnswer);
+    }
+  }
 
-            // Find previous answer for this question (check both current answers and saved answers)
-            let previousAnswer = answers.find(a => a.questionIndex === currentQuestion && a.path === currentPath);
-
-            // If not found in current answers, check saved answers
-            if (!previousAnswer) {
-                const savedAnswers = loadAnswersFromStorage();
-                const answerKey = `path_${currentPath}_q_${currentQuestion}`;
-                previousAnswer = savedAnswers[answerKey];
-
-                // If found in saved answers, add it to current answers
-                if (previousAnswer) {
-                    answers.push(previousAnswer);
-                    questionTimes.push(previousAnswer);
-                }
-            }
-
-            // Add fade effect
-            container.classList.add('fade-out');
-            setTimeout(() => {
-                let html = `
+  // Add fade effect
+  container.classList.add("fade-out");
+  setTimeout(() => {
+    let html = `
                     <div class="relative min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 -m-8 p-8">
                         <!-- Background Pattern -->
                         <div class="absolute inset-0 opacity-5">
@@ -886,7 +1121,9 @@
                                     <div id="questionTimer" class="timer-display flex-shrink-0">⏱️ 00:00</div>
                                 </div>
                                 
-                                ${previousAnswer ? `
+                                ${
+                                  previousAnswer
+                                    ? `
                                     <div class="mb-6 bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200 rounded-xl p-4">
                                         <div class="flex items-center justify-center text-green-700 mb-2">
                                             <svg class="w-6 h-6 ml-2" fill="currentColor" viewBox="0 0 20 20">
@@ -903,7 +1140,9 @@
                                             </div>
                                         </div>
                                     </div>
-                                ` : ''}
+                                `
+                                    : ""
+                                }
                                 
                                 <!-- Navigation Buttons -->
                                 <div class="flex justify-between items-center mb-6">
@@ -912,7 +1151,11 @@
                                         ← السؤال السابق
                                     </button>
                                     <div class="text-sm text-gray-600 text-center px-4">
-                                        ${previousAnswer ? '✅ تم الإجابة مسبقاً - انقر على إجابة جديدة للتغيير والانتقال' : 'انقر على إجابتك للانتقال التلقائي للسؤال التالي'}
+                                        ${
+                                          previousAnswer
+                                            ? "✅ تم الإجابة مسبقاً - انقر على إجابة جديدة للتغيير والانتقال"
+                                            : "انقر على إجابتك للانتقال التلقائي للسؤال التالي"
+                                        }
                                     </div>
                                     <button onclick="showReturnToInstructionsDialog()" 
                                             class="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-bold py-3 px-6 rounded-xl transition duration-300 shadow-lg transform hover:scale-105">
@@ -921,21 +1164,29 @@
                                 </div>
                 `;
 
-                // Different question types
-                if (question.type === 'scale') {
-                    html += showScaleQuestion(question, color, previousAnswer);
-                } else if (question.type === 'ranking') {
-                    html += showRankingQuestion(question, color, previousAnswer);
-                } else if (question.type === 'checkbox') {
-                    html += showCheckboxQuestion(question, color, previousAnswer);
-                } else {
-                    // Default binary questions with random shuffling
-                    const shuffledOptions = shuffleArray(question.options.map((option, index) => ({ ...option, originalIndex: index })));
-                    html += `<div class="space-y-6">`;
-                    shuffledOptions.forEach((option, displayIndex) => {
-                        const isSelected = previousAnswer && previousAnswer.optionIndex === option.originalIndex;
-                        const selectedClass = isSelected ? 'selected-option' : 'border-indigo-200 bg-gradient-to-r from-white to-indigo-50 text-gray-700 hover:border-indigo-400 hover:from-indigo-50 hover:to-indigo-100 hover:shadow-xl';
-                        html += `
+    // Different question types
+    if (question.type === "scale") {
+      html += showScaleQuestion(question, color, previousAnswer);
+    } else if (question.type === "ranking") {
+      html += showRankingQuestion(question, color, previousAnswer);
+    } else if (question.type === "checkbox") {
+      html += showCheckboxQuestion(question, color, previousAnswer);
+    } else {
+      // Default binary questions with random shuffling
+      const shuffledOptions = shuffleArray(
+        question.options.map((option, index) => ({
+          ...option,
+          originalIndex: index,
+        }))
+      );
+      html += `<div class="space-y-6">`;
+      shuffledOptions.forEach((option, displayIndex) => {
+        const isSelected =
+          previousAnswer && previousAnswer.optionIndex === option.originalIndex;
+        const selectedClass = isSelected
+          ? "selected-option"
+          : "border-indigo-200 bg-gradient-to-r from-white to-indigo-50 text-gray-700 hover:border-indigo-400 hover:from-indigo-50 hover:to-indigo-100 hover:shadow-xl";
+        html += `
                             <button onclick="selectOption('${option.dimension}', ${option.originalIndex}, this, ${displayIndex})" 
                                     class="w-full p-5 text-right border-2 ${selectedClass} rounded-xl transition-all duration-300 text-lg leading-relaxed transform hover:scale-[1.01] shadow-md backdrop-blur-sm relative overflow-hidden group"
                                     data-option-id="${option.originalIndex}">
@@ -946,72 +1197,82 @@
                                 </div>
                             </button>
                         `;
-                    });
-                    html += `</div>`;
-                }
+      });
+      html += `</div>`;
+    }
 
-                html += `</div>
+    html += `</div>
                             </div>
                         </div>
                     </div>`;
-                container.innerHTML = html;
-                container.classList.remove('fade-out');
-                container.classList.add('fade-in');
+    container.innerHTML = html;
+    container.classList.remove("fade-out");
+    container.classList.add("fade-in");
 
-                // Restore previous selections for complex question types
-                if (previousAnswer) {
-                    restorePreviousAnswer(question, previousAnswer);
-                }
-            }, 200);
+    // Restore previous selections for complex question types
+    if (previousAnswer) {
+      restorePreviousAnswer(question, previousAnswer);
+    }
+  }, 200);
+}
+
+function restorePreviousAnswer(question, previousAnswer) {
+  setTimeout(() => {
+    if (question.type === "ranking" && previousAnswer.optionIndex) {
+      try {
+        const ranking = JSON.parse(previousAnswer.optionIndex);
+        Object.keys(ranking).forEach((itemIndex) => {
+          const rank = ranking[itemIndex];
+          setRank(parseInt(itemIndex), rank);
+        });
+      } catch (e) {
+        // console.log('Could not restore ranking');
+      }
+    } else if (question.type === "checkbox" && previousAnswer.answer) {
+      const selectedAnswers = previousAnswer.answer.split(", ");
+      const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+      checkboxes.forEach((checkbox) => {
+        const label = checkbox.closest(".checkbox-item");
+        const text = label.querySelector("span").textContent;
+        if (selectedAnswers.includes(text)) {
+          checkbox.checked = true;
+          handleCheckboxChange(checkbox, question.minSelections || 1);
         }
+      });
+    }
 
-        function restorePreviousAnswer(question, previousAnswer) {
-            setTimeout(() => {
-                if (question.type === 'ranking' && previousAnswer.optionIndex) {
-                    try {
-                        const ranking = JSON.parse(previousAnswer.optionIndex);
-                        Object.keys(ranking).forEach(itemIndex => {
-                            const rank = ranking[itemIndex];
-                            setRank(parseInt(itemIndex), rank);
-                        });
-                    } catch (e) {
-                        // console.log('Could not restore ranking');
-                    }
-                } else if (question.type === 'checkbox' && previousAnswer.answer) {
-                    const selectedAnswers = previousAnswer.answer.split(', ');
-                    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-                    checkboxes.forEach(checkbox => {
-                        const label = checkbox.closest('.checkbox-item');
-                        const text = label.querySelector('span').textContent;
-                        if (selectedAnswers.includes(text)) {
-                            checkbox.checked = true;
-                            handleCheckboxChange(checkbox, question.minSelections || 1);
-                        }
-                    });
-                }
+    // لا حاجة لإظهار زر التالي - الانتقال تلقائي
+  }, 100);
+}
 
-                // لا حاجة لإظهار زر التالي - الانتقال تلقائي
-            }, 100);
-        }
-
-        function showScaleQuestion(question, color, previousAnswer) {
-            return `
+function showScaleQuestion(question, color, previousAnswer) {
+  return `
                 <div class="bg-gradient-to-br from-indigo-50 to-purple-50 p-8 rounded-2xl border-2 border-indigo-200 shadow-lg">
                     <div class="flex justify-between items-center mb-6 text-base text-gray-700 font-medium">
-                        <span class="text-right bg-white px-4 py-2 rounded-xl shadow-sm">${question.leftLabel}</span>
-                        <span class="text-left bg-white px-4 py-2 rounded-xl shadow-sm">${question.rightLabel}</span>
+                        <span class="text-right bg-white px-4 py-2 rounded-xl shadow-sm">${
+                          question.leftLabel
+                        }</span>
+                        <span class="text-left bg-white px-4 py-2 rounded-xl shadow-sm">${
+                          question.rightLabel
+                        }</span>
                     </div>
                     <div class="flex justify-center items-center space-x-6 space-x-reverse mb-6">
-                        ${[1, 2, 3, 4, 5].map(value => {
-                const isSelected = previousAnswer && previousAnswer.optionIndex === value;
-                const selectedClass = isSelected ? 'scale-selected' : 'border-indigo-300 bg-white text-gray-700 hover:border-indigo-500 hover:bg-indigo-50 hover:shadow-lg';
-                return `
+                        ${[1, 2, 3, 4, 5]
+                          .map((value) => {
+                            const isSelected =
+                              previousAnswer &&
+                              previousAnswer.optionIndex === value;
+                            const selectedClass = isSelected
+                              ? "scale-selected"
+                              : "border-indigo-300 bg-white text-gray-700 hover:border-indigo-500 hover:bg-indigo-50 hover:shadow-lg";
+                            return `
                                 <button onclick="selectScaleOption('${question.scaleType}', ${value}, this)" 
                                         class="w-16 h-16 rounded-full border-3 ${selectedClass} transition-all duration-300 font-bold text-xl transform hover:scale-110 shadow-md">
                                     ${value}
                                 </button>
                             `;
-            }).join('')}
+                          })
+                          .join("")}
                     </div>
                     <div class="flex justify-between text-sm text-gray-600 font-medium">
                         <span class="bg-white px-3 py-1 rounded-full">1</span>
@@ -1022,436 +1283,574 @@
                     </div>
                 </div>
             `;
-        }
+}
 
-        function showRankingQuestion(question, color) {
-            return `
+function showRankingQuestion(question, color) {
+  return `
                 <div class="bg-gradient-to-br from-indigo-50 to-purple-50 p-8 rounded-2xl border-2 border-indigo-200 shadow-lg">
                     <p class="text-lg text-gray-700 mb-6 text-center font-medium bg-white px-4 py-2 rounded-xl shadow-sm">انقر على الأرقام لترتيب العناصر: <span class="text-s text-red-700 mb-2 text-center font-small " style="
     font-size: x-small;
 ">تنبيه : ( اجعل الجوال بالعرض )</span> </p>
                     <div id="rankingItems" class="space-y-4">
-                        ${question.items.map((item, index) => `
+                        ${question.items
+                          .map(
+                            (item, index) => `
                             <div class="ranking-item flex items-center bg-white/80 backdrop-blur-sm p-6 rounded-2xl border-2 border-indigo-200 shadow-lg hover:shadow-xl transition-all duration-300" 
-                                 data-dimension="${item.dimension}" data-points="${item.points}" data-index="${index}">
+                                 data-dimension="${
+                                   item.dimension
+                                 }" data-points="${
+                              item.points
+                            }" data-index="${index}">
                                 <div class="flex space-x-3 space-x-reverse ml-6">
-                                    ${[1, 2, 3, 4].map(rank => `
+                                    ${[1, 2, 3, 4]
+                                      .map(
+                                        (rank) => `
                                         <button onclick="setRank(${index}, ${rank})" 
                                                 class="rank-btn w-12 h-12 rounded-full border-3 border-indigo-300 text-lg font-bold hover:border-indigo-500 hover:bg-indigo-50 transition-all duration-300 transform hover:scale-110">
                                             ${rank}
                                         </button>
-                                    `).join('')}
+                                    `
+                                      )
+                                      .join("")}
                                 </div>
-                                <span class="flex-1 text-right text-lg font-medium text-gray-800">${item.text}</span>
+                                <span class="flex-1 text-right text-lg font-medium text-gray-800">${
+                                  item.text
+                                }</span>
                                 <span class="rank-display w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-600 font-bold text-xl shadow-md">-</span>
                             </div>
-                        `).join('')}
+                        `
+                          )
+                          .join("")}
                     </div>
                     <button onclick="submitRanking()" ondblclick="submitRankingAndNext()"
                             class="mt-6 w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold py-4 px-8 rounded-2xl transition-all duration-300 opacity-50 cursor-not-allowed shadow-lg transform hover:scale-105" 
                             id="submitRankingBtn" disabled>
-                        ${currentPath >= 4 ? 'تأكيد الترتيب (انقر مرتين للانتقال)' : 'تأكيد الترتيب'}
+                        ${
+                          currentPath >= 4
+                            ? "تأكيد الترتيب (انقر مرتين للانتقال)"
+                            : "تأكيد الترتيب"
+                        }
                     </button>
                 </div>
             `;
-        }
+}
 
-        function showCheckboxQuestion(question, color) {
-            const minSelections = question.minSelections || 1;
-            return `
+function showCheckboxQuestion(question, color) {
+  const minSelections = question.minSelections || 1;
+  return `
                 <div class="bg-gradient-to-br from-indigo-50 to-purple-50 p-8 rounded-2xl border-2 border-indigo-200 shadow-lg">
                     <p class="text-lg text-gray-700 mb-6 text-center font-medium bg-white px-4 py-2 rounded-xl shadow-sm">اختر ${minSelections} خيارات أو أكثر:</p>
                     <div class="grid md:grid-cols-2 gap-4">
-                        ${question.options.map((option, index) => `
+                        ${question.options
+                          .map(
+                            (option, index) => `
                             <label class="checkbox-item flex items-center bg-white/80 backdrop-blur-sm p-6 rounded-2xl border-2 border-indigo-200 cursor-pointer hover:border-indigo-500 hover:bg-indigo-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
                                    data-dimension="${option.dimension}" data-index="${index}">
                                 <input type="checkbox" class="ml-4 w-6 h-6 text-indigo-600 rounded-lg border-2 border-indigo-300" onchange="handleCheckboxChange(this, ${minSelections})">
                                 <span class="flex-1 text-right text-lg font-medium text-gray-800">${option.text}</span>
                             </label>
-                        `).join('')}
+                        `
+                          )
+                          .join("")}
                     </div>
                     <button ondblclick="submitCheckboxesAndNext(${minSelections})"
                             class="mt-6 w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold py-4 px-8 rounded-2xl transition-all duration-300 opacity-50 cursor-not-allowed shadow-lg transform hover:scale-105" 
                             id="submitCheckboxBtn" disabled>
-                        <span id="checkboxBtnText" class="text-lg">${currentPath >= 4 ? `اختر ${minSelections} خيارات على الأقل (انقر مرتين للانتقال)` : `اختر ${minSelections} خيارات على الأقل`}</span>
+                        <span id="checkboxBtnText" class="text-lg">${
+                          currentPath >= 4
+                            ? `اختر ${minSelections} خيارات على الأقل (انقر مرتين للانتقال)`
+                            : `اختر ${minSelections} خيارات على الأقل`
+                        }</span>
                     </button>
                 </div>
             `;
+}
+
+function selectScaleOption(scaleType, value, buttonElement) {
+  stopTimer();
+  const timeSpent = Math.floor((Date.now() - questionStartTime) / 1000);
+
+  // Reset all scale buttons
+  const allButtons = document.querySelectorAll(
+    "#questionContainer .bg-gray-50 button"
+  );
+  allButtons.forEach((btn) => {
+    btn.classList.remove("scale-selected");
+    btn.classList.add("border-gray-300", "bg-white", "text-gray-700");
+  });
+
+  // Apply selection styling
+  buttonElement.classList.add("scale-selected");
+  buttonElement.classList.remove(
+    "border-gray-300",
+    "bg-white",
+    "text-gray-700"
+  );
+
+  // Calculate dimension scores
+  let dimension1, dimension2;
+  switch (scaleType) {
+    case "EI":
+      dimension1 = "I";
+      dimension2 = "E";
+      break;
+    case "SN":
+      dimension1 = "S";
+      dimension2 = "N";
+      break;
+    case "TF":
+      dimension1 = "T";
+      dimension2 = "F";
+      break;
+    case "JP":
+      dimension1 = "J";
+      dimension2 = "P";
+      break;
+  }
+
+  const score1 = 6 - value;
+  const score2 = value - 1;
+
+  scores[dimension1] += score1 || 0;
+  scores[dimension2] += score2 || 0;
+  console.log(scores);
+
+  recordAnswer(
+    timeSpent,
+    `${dimension1}:${score1},${dimension2}:${score2}`,
+    value,
+    `مقياس ${value}/5`
+  );
+
+  // الانتقال التلقائي للسؤال التالي
+  setTimeout(() => {
+    nextQuestion();
+  }, 800);
+}
+
+function setRank(itemIndex, rank) {
+  // Remove this rank from other items
+  Object.keys(currentRanking).forEach((key) => {
+    if (currentRanking[key] === rank) {
+      delete currentRanking[key];
+      document.querySelector(
+        `[data-index="${key}"] .rank-display`
+      ).textContent = "-";
+      document
+        .querySelectorAll(`[data-index="${key}"] .rank-btn`)
+        .forEach((btn) => {
+          btn.classList.remove("bg-blue-500", "text-white");
+          btn.classList.add("border-gray-300");
+        });
+    }
+  });
+
+  // Set new rank
+  currentRanking[itemIndex] = rank;
+  document.querySelector(
+    `[data-index="${itemIndex}"] .rank-display`
+  ).textContent = rank;
+
+  // Update button styling
+  document
+    .querySelectorAll(`[data-index="${itemIndex}"] .rank-btn`)
+    .forEach((btn) => {
+      btn.classList.remove("bg-blue-500", "text-white");
+      btn.classList.add("border-gray-300");
+    });
+
+  const selectedBtn = document.querySelector(
+    `[data-index="${itemIndex}"] .rank-btn:nth-child(${rank})`
+  );
+  selectedBtn.classList.add("bg-blue-500", "text-white");
+  selectedBtn.classList.remove("border-gray-300");
+
+  // Check if all items are ranked
+  const totalItems = document.querySelectorAll(".ranking-item").length;
+  if (Object.keys(currentRanking).length === totalItems) {
+    document.getElementById("submitRankingBtn").disabled = false;
+    document
+      .getElementById("submitRankingBtn")
+      .classList.remove("opacity-50", "cursor-not-allowed");
+  }
+}
+
+function submitRanking() {
+  stopTimer();
+  const timeSpent = Math.floor((Date.now() - questionStartTime) / 1000);
+
+  const items = document.querySelectorAll(".ranking-item");
+  let dimensionScores = {};
+
+  items.forEach((item, index) => {
+    const dimension = item.dataset.dimension;
+    const points = parseInt(item.dataset.points);
+    const rank = currentRanking[index];
+    const score = (5 - rank) * points;
+
+    if (!dimensionScores[dimension]) dimensionScores[dimension] = 0;
+    dimensionScores[dimension] += score;
+  });
+
+  Object.keys(dimensionScores).forEach((dim) => {
+    scores[dim] += dimensionScores[dim] || 0;
+  });
+
+  recordAnswer(
+    timeSpent,
+    JSON.stringify(dimensionScores),
+    JSON.stringify(currentRanking),
+    "ترتيب مخصص"
+  );
+  currentRanking = {};
+}
+
+function submitRankingAndNext() {
+  submitRanking();
+  // إضافة تأثير بصري
+  const btn = document.getElementById("submitRankingBtn");
+  if (btn && !btn.disabled) {
+    btn.style.transform = "scale(1.05)";
+    btn.style.boxShadow = "0 0 20px rgba(59, 130, 246, 0.6)";
+
+    setTimeout(() => {
+      nextQuestion();
+    }, 300);
+  }
+}
+
+function handleCheckboxChange(checkbox, minSelections) {
+  const checkedBoxes = document.querySelectorAll(
+    'input[type="checkbox"]:checked'
+  );
+  const submitBtn = document.getElementById("submitCheckboxBtn");
+  const btnText = document.getElementById("checkboxBtnText");
+
+  // Update button state
+  if (checkedBoxes.length >= minSelections) {
+    submitBtn.disabled = false;
+    submitBtn.classList.remove("opacity-50", "cursor-not-allowed");
+    btnText.textContent =
+      currentPath >= 4
+        ? `تأكيد الاختيار (${checkedBoxes.length} محدد) - انقر مرتين للانتقال`
+        : `تأكيد الاختيار (${checkedBoxes.length} محدد)`;
+  } else {
+    submitBtn.disabled = true;
+    submitBtn.classList.add("opacity-50", "cursor-not-allowed");
+    const remaining = minSelections - checkedBoxes.length;
+    btnText.textContent =
+      currentPath >= 4
+        ? `اختر ${remaining} خيار إضافي على الأقل (انقر مرتين للانتقال)`
+        : `اختر ${remaining} خيار إضافي على الأقل`;
+  }
+
+  // Update visual styling
+  const label = checkbox.closest(".checkbox-item");
+  if (checkbox.checked) {
+    label.classList.add("checkbox-selected");
+    label.classList.remove("border-gray-200");
+  } else {
+    label.classList.remove("checkbox-selected");
+    label.classList.add("border-gray-200");
+  }
+}
+
+function submitCheckboxes(minSelections) {
+  stopTimer();
+  const timeSpent = Math.floor((Date.now() - questionStartTime) / 1000);
+
+  const checkedBoxes = document.querySelectorAll(
+    'input[type="checkbox"]:checked'
+  );
+
+  if (checkedBoxes.length < minSelections) {
+    // alert(`يجب اختيار ${minSelections} خيارات على الأقل`);
+    return;
+  }
+
+  let dimensionScores = {};
+  let selectedAnswers = [];
+
+  checkedBoxes.forEach((checkbox) => {
+    const label = checkbox.closest(".checkbox-item");
+    const dimension = label.dataset.dimension;
+    const text = label.querySelector("span").textContent;
+
+    selectedAnswers.push(text);
+
+    if (!dimensionScores[dimension]) dimensionScores[dimension] = 0;
+    dimensionScores[dimension] += 1;
+  });
+
+  Object.keys(dimensionScores).forEach((dim) => {
+    scores[dim] += dimensionScores[dim] || 0;
+  });
+
+  recordAnswer(
+    timeSpent,
+    JSON.stringify(dimensionScores),
+    selectedAnswers.length,
+    selectedAnswers.join(", ")
+  );
+}
+
+function submitCheckboxesAndNext(minSelections) {
+  submitCheckboxes(minSelections);
+  // إضافة تأثير بصري
+  const btn = document.getElementById("submitCheckboxBtn");
+  if (btn && !btn.disabled) {
+    btn.style.transform = "scale(1.05)";
+    btn.style.boxShadow = "0 0 20px rgba(59, 130, 246, 0.6)";
+    setTimeout(() => {
+      nextQuestion();
+    }, 300);
+  }
+}
+
+function selectOption(dimension, optionIndex, buttonElement, displayIndex) {
+  stopTimer();
+  const timeSpent = Math.floor((Date.now() - questionStartTime) / 1000);
+
+  // Reset all buttons - إزالة التحديد من جميع الأزرار
+  const allButtons = document.querySelectorAll(
+    "#questionContainer button[data-option-id]"
+  );
+  allButtons.forEach((btn) => {
+    btn.classList.remove("selected-option");
+    btn.classList.add(
+      "border-indigo-200",
+      "bg-gradient-to-r",
+      "from-white",
+      "to-indigo-50",
+      "text-gray-700",
+      "hover:border-indigo-400",
+      "hover:from-indigo-50",
+      "hover:to-indigo-100",
+      "hover:shadow-xl"
+    );
+  });
+
+  // Apply selection styling to clicked button only
+  buttonElement.classList.add("selected-option");
+  buttonElement.classList.remove(
+    "border-indigo-200",
+    "bg-gradient-to-r",
+    "from-white",
+    "to-indigo-50",
+    "text-gray-700",
+    "hover:border-indigo-400",
+    "hover:from-indigo-50",
+    "hover:to-indigo-100",
+    "hover:shadow-xl"
+  );
+
+  scores[dimension]++;
+
+  const currentQ = currentQuestions[currentQuestion];
+  recordAnswer(
+    timeSpent,
+    dimension,
+    optionIndex,
+    currentQ.options[optionIndex].text
+  );
+
+  // إضافة تأثير بصري للنقر
+  buttonElement.style.transform = "scale(1.05)";
+  buttonElement.style.boxShadow = "0 0 20px rgba(59, 130, 246, 0.6)";
+
+  // الانتقال التلقائي للسؤال التالي بعد نقرة واحدة
+  setTimeout(() => {
+    nextQuestion();
+  }, 800);
+}
+
+function recordAnswer(timeSpent, dimension, optionIndex, answerText) {
+  const currentQ = currentQuestions[currentQuestion];
+
+  // Detect quick/random answers
+  detectQuickAnswers(timeSpent);
+  detectRandomPattern(optionIndex);
+
+  // Remove existing answer for this question if it exists
+  answers = answers.filter(
+    (a) => !(a.questionIndex === currentQuestion && a.path === currentPath)
+  );
+  questionTimes = questionTimes.filter(
+    (q) => !(q.questionIndex === currentQuestion && q.path === currentPath)
+  );
+
+  // Remove previous scores for this question
+  removePreviousScores(currentQuestion, currentPath);
+
+  const questionData = {
+    questionIndex: currentQuestion,
+    dimension: dimension,
+    optionIndex: optionIndex,
+    question: currentQ.question,
+    answer: answerText,
+    timeSpent: timeSpent,
+    path: currentPath,
+    type: currentQ.type,
+  };
+
+  answers.push(questionData);
+  questionTimes.push(questionData);
+
+  // Update fastest/slowest tracking
+  if (!fastestQuestion || timeSpent < fastestQuestion.timeSpent) {
+    fastestQuestion = questionData;
+  }
+  if (!slowestQuestion || timeSpent > slowestQuestion.timeSpent) {
+    slowestQuestion = questionData;
+  }
+
+  // Check for focus break after 15 questions
+  // const totalAnswered = Object.values(allPathAnswers).reduce((sum, pathAnswers) => sum + pathAnswers.length, 0) + answers.length;
+  // if (totalAnswered === 15 && !focusBreaksShown.includes('mid-test')) {
+  //     // showFocusBreak('mid-test', 'استراحة منتصف الاختبار', 'لقد أجبت على 15 سؤالاً. خذ نفساً عميقاً واسترخ قليلاً قبل المتابعة.');
+  //     return;
+  // }
+}
+
+function removePreviousScores(questionIndex, pathNum) {
+  // البحث عن الإجابة السابقة لهذا السؤال المحدد
+  const allAnswers = getAllAnswers();
+  const existingAnswer = allAnswers.find(
+    (a) => a.questionIndex === questionIndex && a.path === pathNum
+  );
+
+  if (!existingAnswer || !existingAnswer.dimension) {
+    return; // لا توجد إجابة سابقة
+  }
+
+  if (typeof existingAnswer.dimension === "string") {
+    // إجابة بسيطة (بُعد واحد)
+    if (scores[existingAnswer.dimension] > 0) {
+      scores[existingAnswer.dimension]--;
+    }
+  } else if (
+    existingAnswer.dimension.includes(":") ||
+    typeof existingAnswer.dimension === "object"
+  ) {
+    // إجابة معقدة (مقياس، ترتيب، خيارات متعددة)
+    try {
+      let dimensionScores;
+
+      if (existingAnswer.dimension.includes(":")) {
+        // تنسيق المقياس: "E:2,I:3"
+        dimensionScores = {};
+        const parts = existingAnswer.dimension.split(",");
+        parts.forEach((part) => {
+          const [dim, score] = part.split(":");
+          if (dim && score && scores.hasOwnProperty(dim)) {
+            dimensionScores[dim] = parseInt(score) || 0;
+          }
+        });
+      } else {
+        // تنسيق JSON
+        dimensionScores = JSON.parse(existingAnswer.dimension);
+      }
+
+      // خصم النقاط
+      Object.keys(dimensionScores).forEach((dim) => {
+        if (scores.hasOwnProperty(dim)) {
+          const previousScore = scores[dim];
+          scores[dim] =
+            Math.max(0, scores[dim] - dimensionScores[dim]) || scores[dim];
         }
-
-        function selectScaleOption(scaleType, value, buttonElement) {
-            stopTimer();
-            const timeSpent = Math.floor((Date.now() - questionStartTime) / 1000);
-
-            // Reset all scale buttons
-            const allButtons = document.querySelectorAll('#questionContainer .bg-gray-50 button');
-            allButtons.forEach(btn => {
-                btn.classList.remove('scale-selected');
-                btn.classList.add('border-gray-300', 'bg-white', 'text-gray-700');
-            });
-
-            // Apply selection styling
-            buttonElement.classList.add('scale-selected');
-            buttonElement.classList.remove('border-gray-300', 'bg-white', 'text-gray-700');
-
-            // Calculate dimension scores
-            let dimension1, dimension2;
-            switch (scaleType) {
-                case 'EI': dimension1 = 'I'; dimension2 = 'E'; break;
-                case 'SN': dimension1 = 'S'; dimension2 = 'N'; break;
-                case 'TF': dimension1 = 'T'; dimension2 = 'F'; break;
-                case 'JP': dimension1 = 'J'; dimension2 = 'P'; break;
-            }
-
-            const score1 = 6 - value;
-            const score2 = value - 1;
-
-            scores[dimension1] += score1 || 0;
-            scores[dimension2] += score2 || 0;
-            console.log(scores)
-
-            recordAnswer(timeSpent, `${dimension1}:${score1},${dimension2}:${score2}`, value, `مقياس ${value}/5`);
-
-            // الانتقال التلقائي للسؤال التالي
-            setTimeout(() => {
-                nextQuestion();
-            }, 800);
-        }
-
-        function setRank(itemIndex, rank) {
-            // Remove this rank from other items
-            Object.keys(currentRanking).forEach(key => {
-                if (currentRanking[key] === rank) {
-                    delete currentRanking[key];
-                    document.querySelector(`[data-index="${key}"] .rank-display`).textContent = '-';
-                    document.querySelectorAll(`[data-index="${key}"] .rank-btn`).forEach(btn => {
-                        btn.classList.remove('bg-blue-500', 'text-white');
-                        btn.classList.add('border-gray-300');
-                    });
-                }
-            });
-
-            // Set new rank
-            currentRanking[itemIndex] = rank;
-            document.querySelector(`[data-index="${itemIndex}"] .rank-display`).textContent = rank;
-
-            // Update button styling
-            document.querySelectorAll(`[data-index="${itemIndex}"] .rank-btn`).forEach(btn => {
-                btn.classList.remove('bg-blue-500', 'text-white');
-                btn.classList.add('border-gray-300');
-            });
-
-            const selectedBtn = document.querySelector(`[data-index="${itemIndex}"] .rank-btn:nth-child(${rank})`);
-            selectedBtn.classList.add('bg-blue-500', 'text-white');
-            selectedBtn.classList.remove('border-gray-300');
-
-            // Check if all items are ranked
-            const totalItems = document.querySelectorAll('.ranking-item').length;
-            if (Object.keys(currentRanking).length === totalItems) {
-                document.getElementById('submitRankingBtn').disabled = false;
-                document.getElementById('submitRankingBtn').classList.remove('opacity-50', 'cursor-not-allowed');
-            }
-        }
-
-        function submitRanking() {
-            stopTimer();
-            const timeSpent = Math.floor((Date.now() - questionStartTime) / 1000);
-
-            const items = document.querySelectorAll('.ranking-item');
-            let dimensionScores = {};
-
-            items.forEach((item, index) => {
-                const dimension = item.dataset.dimension;
-                const points = parseInt(item.dataset.points);
-                const rank = currentRanking[index];
-                const score = (5 - rank) * points;
-
-                if (!dimensionScores[dimension]) dimensionScores[dimension] = 0;
-                dimensionScores[dimension] += score;
-            });
-
-            Object.keys(dimensionScores).forEach(dim => {
-                scores[dim] += dimensionScores[dim] || 0;
-            });
-
-            recordAnswer(timeSpent, JSON.stringify(dimensionScores), JSON.stringify(currentRanking), 'ترتيب مخصص');
-            currentRanking = {};
-        }
-
-        function submitRankingAndNext() {
-            submitRanking();
-            // إضافة تأثير بصري
-            const btn = document.getElementById('submitRankingBtn');
-            if (btn && !btn.disabled) {
-                btn.style.transform = 'scale(1.05)';
-                btn.style.boxShadow = '0 0 20px rgba(59, 130, 246, 0.6)';
-
-                setTimeout(() => {
-                    nextQuestion();
-                }, 300);
-            }
-        }
-
-        function handleCheckboxChange(checkbox, minSelections) {
-            const checkedBoxes = document.querySelectorAll('input[type="checkbox"]:checked');
-            const submitBtn = document.getElementById('submitCheckboxBtn');
-            const btnText = document.getElementById('checkboxBtnText');
-
-            // Update button state
-            if (checkedBoxes.length >= minSelections) {
-                submitBtn.disabled = false;
-                submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-                btnText.textContent = currentPath >= 4 ? `تأكيد الاختيار (${checkedBoxes.length} محدد) - انقر مرتين للانتقال` : `تأكيد الاختيار (${checkedBoxes.length} محدد)`;
-            } else {
-                submitBtn.disabled = true;
-                submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
-                const remaining = minSelections - checkedBoxes.length;
-                btnText.textContent = currentPath >= 4 ? `اختر ${remaining} خيار إضافي على الأقل (انقر مرتين للانتقال)` : `اختر ${remaining} خيار إضافي على الأقل`;
-            }
-
-            // Update visual styling
-            const label = checkbox.closest('.checkbox-item');
-            if (checkbox.checked) {
-                label.classList.add('checkbox-selected');
-                label.classList.remove('border-gray-200');
-            } else {
-                label.classList.remove('checkbox-selected');
-                label.classList.add('border-gray-200');
-            }
-        }
-
-        function submitCheckboxes(minSelections) {
-            stopTimer();
-            const timeSpent = Math.floor((Date.now() - questionStartTime) / 1000);
-
-            const checkedBoxes = document.querySelectorAll('input[type="checkbox"]:checked');
-
-            if (checkedBoxes.length < minSelections) {
-                // alert(`يجب اختيار ${minSelections} خيارات على الأقل`);
-                return;
-            }
-
-            let dimensionScores = {};
-            let selectedAnswers = [];
-
-            checkedBoxes.forEach(checkbox => {
-                const label = checkbox.closest('.checkbox-item');
-                const dimension = label.dataset.dimension;
-                const text = label.querySelector('span').textContent;
-
-                selectedAnswers.push(text);
-
-                if (!dimensionScores[dimension]) dimensionScores[dimension] = 0;
-                dimensionScores[dimension] += 1;
-            });
-
-            Object.keys(dimensionScores).forEach(dim => {
-                scores[dim] += dimensionScores[dim] || 0;
-            });
-
-            recordAnswer(timeSpent, JSON.stringify(dimensionScores), selectedAnswers.length, selectedAnswers.join(', '));
-        }
-
-        function submitCheckboxesAndNext(minSelections) {
-            submitCheckboxes(minSelections);
-            // إضافة تأثير بصري
-            const btn = document.getElementById('submitCheckboxBtn');
-            if (btn && !btn.disabled) {
-                btn.style.transform = 'scale(1.05)';
-                btn.style.boxShadow = '0 0 20px rgba(59, 130, 246, 0.6)';
-                setTimeout(() => {
-                    nextQuestion();
-                }, 300);
-            }
-        }
-
-        function selectOption(dimension, optionIndex, buttonElement, displayIndex) {
-            stopTimer();
-            const timeSpent = Math.floor((Date.now() - questionStartTime) / 1000);
-
-            // Reset all buttons - إزالة التحديد من جميع الأزرار
-            const allButtons = document.querySelectorAll('#questionContainer button[data-option-id]');
-            allButtons.forEach(btn => {
-                btn.classList.remove('selected-option');
-                btn.classList.add('border-indigo-200', 'bg-gradient-to-r', 'from-white', 'to-indigo-50', 'text-gray-700', 'hover:border-indigo-400', 'hover:from-indigo-50', 'hover:to-indigo-100', 'hover:shadow-xl');
-            });
-
-            // Apply selection styling to clicked button only
-            buttonElement.classList.add('selected-option');
-            buttonElement.classList.remove('border-indigo-200', 'bg-gradient-to-r', 'from-white', 'to-indigo-50', 'text-gray-700', 'hover:border-indigo-400', 'hover:from-indigo-50', 'hover:to-indigo-100', 'hover:shadow-xl');
-
-            scores[dimension]++;
-
-            const currentQ = currentQuestions[currentQuestion];
-            recordAnswer(timeSpent, dimension, optionIndex, currentQ.options[optionIndex].text);
-
-            // إضافة تأثير بصري للنقر
-            buttonElement.style.transform = 'scale(1.05)';
-            buttonElement.style.boxShadow = '0 0 20px rgba(59, 130, 246, 0.6)';
-
-            // الانتقال التلقائي للسؤال التالي بعد نقرة واحدة
-            setTimeout(() => {
-                nextQuestion();
-            }, 800);
-        }
-
-        function recordAnswer(timeSpent, dimension, optionIndex, answerText) {
-            const currentQ = currentQuestions[currentQuestion];
-
-            // Detect quick/random answers
-            detectQuickAnswers(timeSpent);
-            detectRandomPattern(optionIndex);
-
-            // Remove existing answer for this question if it exists
-            answers = answers.filter(a => !(a.questionIndex === currentQuestion && a.path === currentPath));
-            questionTimes = questionTimes.filter(q => !(q.questionIndex === currentQuestion && q.path === currentPath));
-
-            // Remove previous scores for this question
-            removePreviousScores(currentQuestion, currentPath);
-
-            const questionData = {
-                questionIndex: currentQuestion,
-                dimension: dimension,
-                optionIndex: optionIndex,
-                question: currentQ.question,
-                answer: answerText,
-                timeSpent: timeSpent,
-                path: currentPath,
-                type: currentQ.type
-            };
-
-            answers.push(questionData);
-            questionTimes.push(questionData);
-
-            // Update fastest/slowest tracking
-            if (!fastestQuestion || timeSpent < fastestQuestion.timeSpent) {
-                fastestQuestion = questionData;
-            }
-            if (!slowestQuestion || timeSpent > slowestQuestion.timeSpent) {
-                slowestQuestion = questionData;
-            }
-
-            // Check for focus break after 15 questions
-            // const totalAnswered = Object.values(allPathAnswers).reduce((sum, pathAnswers) => sum + pathAnswers.length, 0) + answers.length;
-            // if (totalAnswered === 15 && !focusBreaksShown.includes('mid-test')) {
-            //     // showFocusBreak('mid-test', 'استراحة منتصف الاختبار', 'لقد أجبت على 15 سؤالاً. خذ نفساً عميقاً واسترخ قليلاً قبل المتابعة.');
-            //     return;
-            // }
-
-        }
-
-        function removePreviousScores(questionIndex, pathNum) {
-            // البحث عن الإجابة السابقة لهذا السؤال المحدد
-            const allAnswers = getAllAnswers();
-            const existingAnswer = allAnswers.find(a => a.questionIndex === questionIndex && a.path === pathNum);
-
-            if (!existingAnswer || !existingAnswer.dimension) {
-                return; // لا توجد إجابة سابقة
-            }
-
-            if (typeof existingAnswer.dimension === 'string') {
-                // إجابة بسيطة (بُعد واحد)
-                if (scores[existingAnswer.dimension] > 0) {
-                    scores[existingAnswer.dimension]--;
-                }
-            } else if (existingAnswer.dimension.includes(':') || typeof existingAnswer.dimension === 'object') {
-                // إجابة معقدة (مقياس، ترتيب، خيارات متعددة)
-                try {
-                    let dimensionScores;
-
-                    if (existingAnswer.dimension.includes(':')) {
-                        // تنسيق المقياس: "E:2,I:3"
-                        dimensionScores = {};
-                        const parts = existingAnswer.dimension.split(',');
-                        parts.forEach(part => {
-                            const [dim, score] = part.split(':');
-                            if (dim && score && scores.hasOwnProperty(dim)) {
-                                dimensionScores[dim] = parseInt(score) || 0;
-                            }
-                        });
-                    } else {
-                        // تنسيق JSON
-                        dimensionScores = JSON.parse(existingAnswer.dimension);
-                    }
-
-                    // خصم النقاط
-                    Object.keys(dimensionScores).forEach(dim => {
-                        if (scores.hasOwnProperty(dim)) {
-                            const previousScore = scores[dim];
-                            scores[dim] = Math.max(0, scores[dim] - dimensionScores[dim]) || scores[dim];
-                        }
-                    });
-                    console.log("lllllll", scores)
-
-                } catch (e) {
-                    console.error('خطأ في إزالة النقاط السابقة:', e);
-                }
-            }
-
-        }
-
-        function loadAnswersFromStorage() {
-            try {
-                const storageKey = `personality_test_${userName}_answers`;
-                const savedAnswers = JSON.parse(localStorage.getItem(storageKey) || '{}');
-                return savedAnswers;
-            } catch (e) {
-                return {};
-            }
-        }
-
-        function getAllAnswers() {
-            const allAnswers = [...answers];
-            Object.values(allPathAnswers).forEach(pathAnswers => {
-                allAnswers.push(...pathAnswers);
-            });
-            return allAnswers;
-        }
-
-        function detectQuickAnswers(timeSpent) {
-            if (timeSpent < 3) { // أقل من 3 ثوانٍ
-                quickAnswerCount++;
-                // إظهار التنبيه مرة واحدة فقط عند الوصول لـ 5 إجابات سريعة
-                if (quickAnswerCount === 5 && !focusBreaksShown.includes('quick-answers-warning')) {
-                    showFocusBreak('quick-answers-warning', '⚡ تنبيه: إجابات سريعة متكررة', 'لاحظنا أنك تجيب بسرعة كبيرة على عدة أسئلة (أقل من 3 ثوانٍ). هذا قد يؤثر على دقة النتائج. يرجى أخذ وقت كافٍ لقراءة كل سؤال والتفكير في إجابتك بعناية للحصول على تحليل دقيق لشخصيتك.');
-                }
-            }
-            lastAnswerTime = timeSpent;
-        }
-
-        function detectRandomPattern(optionIndex) {
-            // كشف النمط العشوائي (نفس الخيار متكرر أو تناوب منتظم)
-            const recentAnswers = answers.slice(-5).map(a => a.optionIndex);
-            recentAnswers.push(optionIndex);
-
-            // نفس الخيار 5 مرات متتالية - تنبيه واحد فقط
-            if (recentAnswers.length >= 5 && recentAnswers.every(opt => opt === recentAnswers[0])) {
-                if (!focusBreaksShown.includes('same-pattern-warning')) {
-                    randomAnswerPattern++;
-                    showFocusBreak('same-pattern-warning', '🎯 تنبيه: نمط إجابة متكرر', 'لاحظنا أنك تختار نفس الإجابة (الأولى أو الثانية) بشكل متكرر لعدة أسئلة متتالية. هذا قد يشير إلى عدم قراءة الأسئلة بعناية. يرجى قراءة كل سؤال والإجابة بصدق حسب شخصيتك الحقيقية للحصول على نتائج دقيقة.');
-                }
-            }
-
-            // كشف التناوب المنتظم (1-2-1-2-1 أو 2-1-2-1-2) - تنبيه واحد فقط
-            if (recentAnswers.length >= 5) {
-                const isAlternating = recentAnswers.every((opt, index) => {
-                    if (index === 0) return true;
-                    return opt !== recentAnswers[index - 1];
-                });
-
-                if (isAlternating && !focusBreaksShown.includes('alternating-pattern-warning')) {
-                    randomAnswerPattern++;
-                    showFocusBreak('alternating-pattern-warning', '🔄 تنبيه: نمط تناوب منتظم', 'لاحظنا أنك تتناوب بين الإجابة الأولى والثانية بشكل منتظم لعدة أسئلة. هذا يشير إلى إجابة عشوائية. يرجى قراءة كل سؤال بعناية والإجابة حسب شخصيتك الحقيقية.');
-                }
-            }
-        }
-
-        function showFocusBreak(type, title, message) {
-            focusBreaksShown.push(type);
-
-            const modal = document.createElement('div');
-            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
-            modal.innerHTML = `
+      });
+      console.log("lllllll", scores);
+    } catch (e) {
+      console.error("خطأ في إزالة النقاط السابقة:", e);
+    }
+  }
+}
+
+function loadAnswersFromStorage() {
+  try {
+    const storageKey = `personality_test_${userName}_answers`;
+    const savedAnswers = JSON.parse(localStorage.getItem(storageKey) || "{}");
+    return savedAnswers;
+  } catch (e) {
+    return {};
+  }
+}
+
+function getAllAnswers() {
+  const allAnswers = [...answers];
+  Object.values(allPathAnswers).forEach((pathAnswers) => {
+    allAnswers.push(...pathAnswers);
+  });
+  return allAnswers;
+}
+
+function detectQuickAnswers(timeSpent) {
+  if (timeSpent < 3) {
+    // أقل من 3 ثوانٍ
+    quickAnswerCount++;
+    // إظهار التنبيه مرة واحدة فقط عند الوصول لـ 5 إجابات سريعة
+    if (
+      quickAnswerCount === 5 &&
+      !focusBreaksShown.includes("quick-answers-warning")
+    ) {
+      showFocusBreak(
+        "quick-answers-warning",
+        "⚡ تنبيه: إجابات سريعة متكررة",
+        "لاحظنا أنك تجيب بسرعة كبيرة على عدة أسئلة (أقل من 3 ثوانٍ). هذا قد يؤثر على دقة النتائج. يرجى أخذ وقت كافٍ لقراءة كل سؤال والتفكير في إجابتك بعناية للحصول على تحليل دقيق لشخصيتك."
+      );
+    }
+  }
+  lastAnswerTime = timeSpent;
+}
+
+function detectRandomPattern(optionIndex) {
+  // كشف النمط العشوائي (نفس الخيار متكرر أو تناوب منتظم)
+  const recentAnswers = answers.slice(-5).map((a) => a.optionIndex);
+  recentAnswers.push(optionIndex);
+
+  // نفس الخيار 5 مرات متتالية - تنبيه واحد فقط
+  if (
+    recentAnswers.length >= 5 &&
+    recentAnswers.every((opt) => opt === recentAnswers[0])
+  ) {
+    if (!focusBreaksShown.includes("same-pattern-warning")) {
+      randomAnswerPattern++;
+      showFocusBreak(
+        "same-pattern-warning",
+        "🎯 تنبيه: نمط إجابة متكرر",
+        "لاحظنا أنك تختار نفس الإجابة (الأولى أو الثانية) بشكل متكرر لعدة أسئلة متتالية. هذا قد يشير إلى عدم قراءة الأسئلة بعناية. يرجى قراءة كل سؤال والإجابة بصدق حسب شخصيتك الحقيقية للحصول على نتائج دقيقة."
+      );
+    }
+  }
+
+  // كشف التناوب المنتظم (1-2-1-2-1 أو 2-1-2-1-2) - تنبيه واحد فقط
+  if (recentAnswers.length >= 5) {
+    const isAlternating = recentAnswers.every((opt, index) => {
+      if (index === 0) return true;
+      return opt !== recentAnswers[index - 1];
+    });
+
+    if (
+      isAlternating &&
+      !focusBreaksShown.includes("alternating-pattern-warning")
+    ) {
+      randomAnswerPattern++;
+      showFocusBreak(
+        "alternating-pattern-warning",
+        "🔄 تنبيه: نمط تناوب منتظم",
+        "لاحظنا أنك تتناوب بين الإجابة الأولى والثانية بشكل منتظم لعدة أسئلة. هذا يشير إلى إجابة عشوائية. يرجى قراءة كل سؤال بعناية والإجابة حسب شخصيتك الحقيقية."
+      );
+    }
+  }
+}
+
+function showFocusBreak(type, title, message) {
+  focusBreaksShown.push(type);
+
+  const modal = document.createElement("div");
+  modal.className =
+    "fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50";
+  modal.innerHTML = `
                 <div class="bg-white rounded-lg p-8 max-w-md mx-4 text-center">
                     <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
                         <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1472,35 +1871,38 @@
                     </div>
                 </div>
             `;
-            document.body.appendChild(modal);
-        }
-        function closeFocusBreak() {
-            const modal = document.querySelector('.fixed.inset-0');
-            if (modal) {
-                modal.remove();
-            }
-        }
+  document.body.appendChild(modal);
+}
+function closeFocusBreak() {
+  const modal = document.querySelector(".fixed.inset-0");
+  if (modal) {
+    modal.remove();
+  }
+}
 
-        function nextQuestion() {
-            // Check if current question is answered
-            const currentAnswer = answers.find(a => a.questionIndex === currentQuestion && a.path === currentPath);
-            if (!currentAnswer) {
-                return;
-            }
+function nextQuestion() {
+  // Check if current question is answered
+  const currentAnswer = answers.find(
+    (a) => a.questionIndex === currentQuestion && a.path === currentPath
+  );
+  if (!currentAnswer) {
+    return;
+  }
 
-            currentQuestion++;
+  currentQuestion++;
 
-            if (currentQuestion >= currentQuestions.length) {
-                // Path completed - save current path answers
-                completedPaths.push(currentPath);
-                allPathAnswers[currentPath] = [...answers];
+  if (currentQuestion >= currentQuestions.length) {
+    // Path completed - save current path answers
+    completedPaths.push(currentPath);
+    allPathAnswers[currentPath] = [...answers];
 
-                // Check if all 5 paths are completed
-                if (completedPaths.length >= 5) {
-                    // إظهار رسالة إكمال سريعة
-                    const completionMessage = document.createElement('div');
-                    completionMessage.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
-                    completionMessage.innerHTML = `
+    // Check if all 5 paths are completed
+    if (completedPaths.length >= 5) {
+      // إظهار رسالة إكمال سريعة
+      const completionMessage = document.createElement("div");
+      completionMessage.className =
+        "fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50";
+      completionMessage.innerHTML = `
                         <div class="bg-white rounded-2xl p-8 text-center shadow-2xl max-w-md mx-4">
                             <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                                 <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1514,103 +1916,101 @@
                             </div>
                         </div>
                     `;
-                    document.body.appendChild(completionMessage);
+      document.body.appendChild(completionMessage);
 
+      // عرض النتائج
+      testState = {
+        currentQuestion: currentQuestion,
+        answers: answers,
+        scores: scores,
+        userName: "<%=name%>",
+        currentPath: currentPath,
+        completedPaths: completedPaths,
+        allPathAnswers: allPathAnswers,
+        currentQuestions: currentQuestions,
+        questionStartTime: questionStartTime,
+        timerInterval: timerInterval,
+        totalStartTime: totalStartTime,
+        questionTimes: questionTimes,
+        fastestQuestion: fastestQuestion,
+        slowestQuestion: slowestQuestion,
+        warningShown: warningShown,
+        currentRanking: currentRanking,
+        selectedCheckboxes: selectedCheckboxes,
+        quickAnswerCount: quickAnswerCount,
+        randomAnswerPattern: randomAnswerPattern,
+        contradictionFlags: contradictionFlags,
+        lastAnswerTime: lastAnswerTime,
+        consistencyScore: consistencyScore,
+        focusBreaksShown: focusBreaksShown,
+      };
+      testState.endTime = Date.now() - startTheTime;
+      var data = new URLSearchParams();
+      data.append("data", JSON.stringify(testState));
+      data.append("type", "exam");
+      data.append("ob", "1");
+      fetch("", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+        },
+        body: data,
+      })
+        .then(() => {
+          // إزالة رسالة الإكمال
+          if (completionMessage.parentNode) {
+            completionMessage.parentNode.removeChild(completionMessage);
+          }
+          showResults();
+        })
+        .catch(() => {
+          // إزالة رسالة الإكمال
+          if (completionMessage.parentNode) {
+            completionMessage.parentNode.removeChild(completionMessage);
+          }
+          alert("حصلت مشكلة في حفظ البيانات قد تضطر الى اعادة الاختبار");
+          showResults();
+        });
 
-                    // عرض النتائج
-                    testState = {
-                        currentQuestion: currentQuestion,
-                        answers: answers,
-                        scores: scores,
-                        userName: '<%=name%>',
-                        currentPath: currentPath,
-                        completedPaths: completedPaths,
-                        allPathAnswers: allPathAnswers,
-                        currentQuestions: currentQuestions,
-                        questionStartTime: questionStartTime,
-                        timerInterval: timerInterval,
-                        totalStartTime: totalStartTime,
-                        questionTimes: questionTimes,
-                        fastestQuestion: fastestQuestion,
-                        slowestQuestion: slowestQuestion,
-                        warningShown: warningShown,
-                        currentRanking: currentRanking,
-                        selectedCheckboxes: selectedCheckboxes,
-                        quickAnswerCount: quickAnswerCount,
-                        randomAnswerPattern: randomAnswerPattern,
-                        contradictionFlags: contradictionFlags,
-                        lastAnswerTime: lastAnswerTime,
-                        consistencyScore: consistencyScore,
-                        focusBreaksShown: focusBreaksShown
-                    };
-                    testState.endTime = Date.now() - startTheTime;
-                    var data = new URLSearchParams();
-                    data.append('data', JSON.stringify(testState));
-                    data.append('type', 'exam');
-                    data.append('ob', '1');
-                    fetch('', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-                        },
-                        body: data
-                    }).then(() => {
-                        // إزالة رسالة الإكمال
-                        if (completionMessage.parentNode) {
-                            completionMessage.parentNode.removeChild(completionMessage);
-                        }
-                        showResults();
+      return;
+    }
 
-                    }).catch(() => {
-                        // إزالة رسالة الإكمال
-                        if (completionMessage.parentNode) {
-                            completionMessage.parentNode.removeChild(completionMessage);
-                        }
-                        alert("حصلت مشكلة في حفظ البيانات قد تضطر الى اعادة الاختبار")
-                        showResults();
+    // Show path completion confirmation dialog
+    showPathCompletionDialog();
+    return;
+  }
 
+  // Continue with current path
+  showQuestion();
+}
 
+function getNextPath() {
+  // البحث عن أول مسار غير مكتمل
+  for (let i = 1; i <= 5; i++) {
+    if (!completedPaths.includes(i)) {
+      return i;
+    }
+  }
+  return null;
+}
 
-                    })
+function showPathCompletionDialog() {
+  const pathInfo = {
+    1: { name: "المسار الشامل", icon: "📊", color: "blue", questions: 24 },
+    2: { name: "المسار السريع", icon: "⚡", color: "green", questions: 10 },
+    3: { name: "مسار العمل", icon: "💼", color: "purple", questions: 6 },
+    4: { name: "مسار العلاقات", icon: "❤️", color: "pink", questions: 6 },
+    5: { name: "مسار التأكيد", icon: "✓", color: "orange", questions: 4 },
+  };
 
-                    return;
-                }
+  const currentPathInfo = pathInfo[currentPath];
+  const nextPath = getNextPath();
+  const nextPathInfo = nextPath ? pathInfo[nextPath] : null;
 
-                // Show path completion confirmation dialog
-                showPathCompletionDialog();
-                return;
-            }
-
-            // Continue with current path
-            showQuestion();
-        }
-
-        function getNextPath() {
-            // البحث عن أول مسار غير مكتمل
-            for (let i = 1; i <= 5; i++) {
-                if (!completedPaths.includes(i)) {
-                    return i;
-                }
-            }
-            return null;
-        }
-
-        function showPathCompletionDialog() {
-            const pathInfo = {
-                1: { name: "المسار الشامل", icon: "📊", color: "blue", questions: 24 },
-                2: { name: "المسار السريع", icon: "⚡", color: "green", questions: 10 },
-                3: { name: "مسار العمل", icon: "💼", color: "purple", questions: 6 },
-                4: { name: "مسار العلاقات", icon: "❤️", color: "pink", questions: 6 },
-                5: { name: "مسار التأكيد", icon: "✓", color: "orange", questions: 4 }
-            };
-
-            const currentPathInfo = pathInfo[currentPath];
-            const nextPath = getNextPath();
-            const nextPathInfo = nextPath ? pathInfo[nextPath] : null;
-
-            const modal = document.createElement('div');
-            modal.className = 'fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50';
-            modal.innerHTML = `
+  const modal = document.createElement("div");
+  modal.className =
+    "fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50";
+  modal.innerHTML = `
                 <div class="bg-white rounded-2xl p-8 max-w-lg mx-4 text-center shadow-2xl">
                     <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
                         <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1618,48 +2018,70 @@
                         </svg>
                     </div>
                     
-                    <h3 class="text-2xl font-bold text-gray-800 mb-4">🎉 تم إنهاء ${currentPathInfo.name} بنجاح!</h3>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">🎉 تم إنهاء ${
+                      currentPathInfo.name
+                    } بنجاح!</h3>
                     
                     <div class="bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200 rounded-xl p-4 mb-6">
                         <div class="flex items-center justify-center mb-3">
-                            <span class="text-2xl ml-2">${currentPathInfo.icon}</span>
-                            <span class="font-bold text-green-800 text-lg">${currentPathInfo.name}</span>
+                            <span class="text-2xl ml-2">${
+                              currentPathInfo.icon
+                            }</span>
+                            <span class="font-bold text-green-800 text-lg">${
+                              currentPathInfo.name
+                            }</span>
                         </div>
                         <div class="text-green-700 text-sm">
-                            ✅ تم الإجابة على ${currentPathInfo.questions} سؤال<br>
+                            ✅ تم الإجابة على ${
+                              currentPathInfo.questions
+                            } سؤال<br>
                             📊 تم إكمال ${completedPaths.length} من 5 مسارات
                         </div>
                     </div>
                     
-                    ${nextPathInfo ? `
+                    ${
+                      nextPathInfo
+                        ? `
                         <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-xl p-4 mb-6">
                             <div class="flex items-center justify-center mb-3">
-                                <span class="text-2xl ml-2">${nextPathInfo.icon}</span>
-                                <span class="font-bold text-blue-800 text-lg">المسار التالي: ${nextPathInfo.name}</span>
+                                <span class="text-2xl ml-2">${
+                                  nextPathInfo.icon
+                                }</span>
+                                <span class="font-bold text-blue-800 text-lg">المسار التالي: ${
+                                  nextPathInfo.name
+                                }</span>
                             </div>
                             <div class="text-blue-700 text-sm">
                                 📝 ${nextPathInfo.questions} سؤال في انتظارك<br>
-                                ⏱️ الوقت المتوقع: ${Math.ceil(nextPathInfo.questions * 0.5)} دقيقة
+                                ⏱️ الوقت المتوقع: ${Math.ceil(
+                                  nextPathInfo.questions * 0.5
+                                )} دقيقة
                             </div>
                         </div>
-                    ` : ''}
+                    `
+                        : ""
+                    }
                     
                     <p class="text-gray-600 mb-6 leading-relaxed">
                         هل تريد الانتقال للمسار التالي أم مراجعة إجاباتك في المسار الحالي؟
                     </p>
                     
                     <div class="space-y-3">
-                        ${nextPathInfo ? `
+                        ${
+                          nextPathInfo
+                            ? `
                             <button onclick="proceedToNextPath()" 
                                     class="w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white font-bold py-4 px-6 rounded-xl transition duration-300 transform hover:scale-105 shadow-lg">
                                 🚀 الانتقال إلى ${nextPathInfo.name}
                             </button>
-                        ` : `
+                        `
+                            : `
                             <button onclick="showResults()" 
                                     class="w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white font-bold py-4 px-6 rounded-xl transition duration-300 transform hover:scale-105 shadow-lg">
                                 🎉 عرض النتيجة النهائية
                             </button>
-                        `}
+                        `
+                        }
                         
                         <button onclick="reviewCurrentPath()" 
                                 class="w-full bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-white font-bold py-4 px-6 rounded-xl transition duration-300 transform hover:scale-105 shadow-lg">
@@ -1667,67 +2089,76 @@
                         </button>
                         
                         <div class="text-xs text-gray-500 mt-4 leading-relaxed">
-                            💡 <strong>نصيحة:</strong> ${nextPathInfo ? 'يمكنك مراجعة إجاباتك وتعديلها في أي وقت قبل الانتقال للمسار التالي' : 'تم إكمال جميع المسارات! يمكنك مراجعة إجاباتك أو عرض النتيجة النهائية مباشرة'}
+                            💡 <strong>نصيحة:</strong> ${
+                              nextPathInfo
+                                ? "يمكنك مراجعة إجاباتك وتعديلها في أي وقت قبل الانتقال للمسار التالي"
+                                : "تم إكمال جميع المسارات! يمكنك مراجعة إجاباتك أو عرض النتيجة النهائية مباشرة"
+                            }
                         </div>
                     </div>
                 </div>
             `;
-            document.body.appendChild(modal);
-        }
+  document.body.appendChild(modal);
+}
 
-        function proceedToNextPath() {
-            closePathCompletionDialog();
+function proceedToNextPath() {
+  closePathCompletionDialog();
 
-            const nextPath = getNextPath();
-            if (nextPath) {
-                // Reset for next path and start immediately
-                currentQuestion = 0;
-                answers = [];
-                startPath(nextPath);
-            } else {
-                // No more paths - show results directly
-                showResults();
-            }
-        }
+  const nextPath = getNextPath();
+  if (nextPath) {
+    // Reset for next path and start immediately
+    currentQuestion = 0;
+    answers = [];
+    startPath(nextPath);
+  } else {
+    // No more paths - show results directly
+    showResults();
+  }
+}
 
-        function reviewCurrentPath() {
-            closePathCompletionDialog();
+function reviewCurrentPath() {
+  closePathCompletionDialog();
 
-            // Remove current path from completed paths temporarily for review
-            const pathIndex = completedPaths.indexOf(currentPath);
-            if (pathIndex > -1) {
-                completedPaths.splice(pathIndex, 1);
-            }
+  // Remove current path from completed paths temporarily for review
+  const pathIndex = completedPaths.indexOf(currentPath);
+  if (pathIndex > -1) {
+    completedPaths.splice(pathIndex, 1);
+  }
 
-            // Reset to beginning of current path for review
-            currentQuestion = 0;
-            answers = allPathAnswers[currentPath] || [];
+  // Reset to beginning of current path for review
+  currentQuestion = 0;
+  answers = allPathAnswers[currentPath] || [];
 
-            showQuestion();
-        }
+  showQuestion();
+}
 
-        function closePathCompletionDialog() {
-            const modal = document.querySelector('.fixed.inset-0');
-            if (modal) {
-                modal.remove();
-            }
-        }
+function closePathCompletionDialog() {
+  const modal = document.querySelector(".fixed.inset-0");
+  if (modal) {
+    modal.remove();
+  }
+}
 
-        function showReturnToInstructionsDialog() {
-            const totalAnswered = Object.values(allPathAnswers).reduce((sum, pathAnswers) => sum + pathAnswers.length, 0) + answers.length;
-            const currentPathInfo = {
-                1: { name: "المسار الشامل", icon: "📊" },
-                2: { name: "المسار السريع", icon: "⚡" },
-                3: { name: "مسار العمل", icon: "💼" },
-                4: { name: "مسار العلاقات", icon: "❤️" },
-                5: { name: "مسار التأكيد", icon: "✓" }
-            };
+function showReturnToInstructionsDialog() {
+  const totalAnswered =
+    Object.values(allPathAnswers).reduce(
+      (sum, pathAnswers) => sum + pathAnswers.length,
+      0
+    ) + answers.length;
+  const currentPathInfo = {
+    1: { name: "المسار الشامل", icon: "📊" },
+    2: { name: "المسار السريع", icon: "⚡" },
+    3: { name: "مسار العمل", icon: "💼" },
+    4: { name: "مسار العلاقات", icon: "❤️" },
+    5: { name: "مسار التأكيد", icon: "✓" },
+  };
 
-            const pathInfo = currentPathInfo[currentPath];
+  const pathInfo = currentPathInfo[currentPath];
 
-            const modal = document.createElement('div');
-            modal.className = 'fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50';
-            modal.innerHTML = `
+  const modal = document.createElement("div");
+  modal.className =
+    "fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50";
+  modal.innerHTML = `
                 <div class="bg-white rounded-2xl p-8 max-w-lg mx-4 text-center shadow-2xl">
                     <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-6">
                         <svg class="w-8 h-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1741,12 +2172,18 @@
                     <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-xl p-4 mb-6">
                         <div class="flex items-center justify-center mb-3">
                             <span class="text-xl ml-2">${pathInfo.icon}</span>
-                            <span class="font-bold text-blue-800">${pathInfo.name}</span>
+                            <span class="font-bold text-blue-800">${
+                              pathInfo.name
+                            }</span>
                         </div>
                         <div class="text-blue-700 text-sm space-y-1">
-                            <div>📊 السؤال الحالي: ${currentQuestion + 1} من ${currentQuestions.length}</div>
+                            <div>📊 السؤال الحالي: ${currentQuestion + 1} من ${
+    currentQuestions.length
+  }</div>
                             <div>✅ إجمالي الإجابات: ${totalAnswered} سؤال</div>
-                            <div>🛤️ المسارات المكتملة: ${completedPaths.length} من 5</div>
+                            <div>🛤️ المسارات المكتملة: ${
+                              completedPaths.length
+                            } من 5</div>
                         </div>
                     </div>
                     
@@ -1776,94 +2213,96 @@
                     </div>
                 </div>
             `;
-            document.body.appendChild(modal);
-        }
+  document.body.appendChild(modal);
+}
 
-        function returnToInstructionsWithSave() {
-            // حفظ التقدم الحالي
-            saveCurrentProgress();
+function returnToInstructionsWithSave() {
+  // حفظ التقدم الحالي
+  saveCurrentProgress();
 
-            // العودة لصفحة التعليمات
-            closeReturnToInstructionsDialog();
+  // العودة لصفحة التعليمات
+  closeReturnToInstructionsDialog();
 
-            document.getElementById('testScreen').classList.add('fade-out');
-            document.getElementById('progressContainer').classList.add('hidden');
+  document.getElementById("testScreen").classList.add("fade-out");
+  document.getElementById("progressContainer").classList.add("hidden");
 
-            setTimeout(() => {
-                document.getElementById('testScreen').classList.add('hidden');
-                document.getElementById('welcomeScreen').classList.remove('hidden');
-                document.getElementById('welcomeScreen').classList.add('fade-in');
+  setTimeout(() => {
+    document.getElementById("testScreen").classList.add("hidden");
+    document.getElementById("welcomeScreen").classList.remove("hidden");
+    document.getElementById("welcomeScreen").classList.add("fade-in");
 
-                // إظهار رسالة تأكيد الحفظ
-                showProgressSavedMessage();
-            }, 400);
-        }
+    // إظهار رسالة تأكيد الحفظ
+    showProgressSavedMessage();
+  }, 400);
+}
 
-        function returnToInstructionsWithoutSave() {
-            // تأكيد إضافي للتأكد من رغبة المستخدم
-            const confirmDelete = confirm('هل أنت متأكد من رغبتك في فقدان جميع إجاباتك والعودة للبداية؟\n\nسيتم حذف:\n- جميع إجاباتك الحالية\n- تقدمك في المسارات\n- الوقت المستغرق\n\nهذا الإجراء لا يمكن التراجع عنه!');
+function returnToInstructionsWithoutSave() {
+  // تأكيد إضافي للتأكد من رغبة المستخدم
+  const confirmDelete = confirm(
+    "هل أنت متأكد من رغبتك في فقدان جميع إجاباتك والعودة للبداية؟\n\nسيتم حذف:\n- جميع إجاباتك الحالية\n- تقدمك في المسارات\n- الوقت المستغرق\n\nهذا الإجراء لا يمكن التراجع عنه!"
+  );
 
-            if (!confirmDelete) {
-                return; // المستخدم غيّر رأيه
-            }
+  if (!confirmDelete) {
+    return; // المستخدم غيّر رأيه
+  }
 
-            // حذف جميع البيانات المحفوظة
-            clearAllSavedData();
+  // حذف جميع البيانات المحفوظة
+  clearAllSavedData();
 
-            // إعادة تعيين جميع المتغيرات
-            resetAllTestData();
+  // إعادة تعيين جميع المتغيرات
+  resetAllTestData();
 
-            // العودة لصفحة التعليمات
-            closeReturnToInstructionsDialog();
+  // العودة لصفحة التعليمات
+  closeReturnToInstructionsDialog();
 
-            document.getElementById('testScreen').classList.add('fade-out');
-            document.getElementById('progressContainer').classList.add('hidden');
+  document.getElementById("testScreen").classList.add("fade-out");
+  document.getElementById("progressContainer").classList.add("hidden");
 
-            setTimeout(() => {
-                document.getElementById('testScreen').classList.add('hidden');
-                document.getElementById('welcomeScreen').classList.remove('hidden');
-                document.getElementById('welcomeScreen').classList.add('fade-in');
+  setTimeout(() => {
+    document.getElementById("testScreen").classList.add("hidden");
+    document.getElementById("welcomeScreen").classList.remove("hidden");
+    document.getElementById("welcomeScreen").classList.add("fade-in");
 
-                // إظهار رسالة تأكيد الحذف
-                showProgressDeletedMessage();
-            }, 400);
-        }
+    // إظهار رسالة تأكيد الحذف
+    showProgressDeletedMessage();
+  }, 400);
+}
 
-        function closeReturnToInstructionsDialog() {
-            const modal = document.querySelector('.fixed.inset-0');
-            if (modal) {
-                modal.remove();
-            }
-        }
+function closeReturnToInstructionsDialog() {
+  const modal = document.querySelector(".fixed.inset-0");
+  if (modal) {
+    modal.remove();
+  }
+}
 
+function resetAllTestData() {
+  currentQuestion = 0;
+  answers = [];
+  scores = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
+  currentPath = 0;
+  completedPaths = [];
+  allPathAnswers = {};
+  currentQuestions = [];
+  totalStartTime = 0;
+  questionTimes = [];
+  fastestQuestion = null;
+  slowestQuestion = null;
+  warningShown = false;
+  currentRanking = {};
+  selectedCheckboxes = [];
+  quickAnswerCount = 0;
+  randomAnswerPattern = 0;
+  contradictionFlags = [];
+  lastAnswerTime = 0;
+  consistencyScore = 100;
+  focusBreaksShown = [];
+}
 
-        function resetAllTestData() {
-            currentQuestion = 0;
-            answers = [];
-            scores = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
-            currentPath = 0;
-            completedPaths = [];
-            allPathAnswers = {};
-            currentQuestions = [];
-            totalStartTime = 0;
-            questionTimes = [];
-            fastestQuestion = null;
-            slowestQuestion = null;
-            warningShown = false;
-            currentRanking = {};
-            selectedCheckboxes = [];
-            quickAnswerCount = 0;
-            randomAnswerPattern = 0;
-            contradictionFlags = [];
-            lastAnswerTime = 0;
-            consistencyScore = 100;
-            focusBreaksShown = [];
-        }
-
-        function showProgressSavedMessage() {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-4 rounded-lg shadow-lg z-50 max-w-sm';
-            messageDiv.innerHTML = `
+function showProgressSavedMessage() {
+  const messageDiv = document.createElement("div");
+  messageDiv.className =
+    "fixed top-4 right-4 bg-green-500 text-white px-6 py-4 rounded-lg shadow-lg z-50 max-w-sm";
+  messageDiv.innerHTML = `
                 <div class="flex items-center">
                     <svg class="w-6 h-6 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
@@ -1874,19 +2313,20 @@
                     </div>
                 </div>
             `;
-            document.body.appendChild(messageDiv);
+  document.body.appendChild(messageDiv);
 
-            setTimeout(() => {
-                if (messageDiv.parentNode) {
-                    messageDiv.parentNode.removeChild(messageDiv);
-                }
-            }, 5000);
-        }
+  setTimeout(() => {
+    if (messageDiv.parentNode) {
+      messageDiv.parentNode.removeChild(messageDiv);
+    }
+  }, 5000);
+}
 
-        function showProgressDeletedMessage() {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = 'fixed top-4 right-4 bg-red-500 text-white px-6 py-4 rounded-lg shadow-lg z-50 max-w-sm';
-            messageDiv.innerHTML = `
+function showProgressDeletedMessage() {
+  const messageDiv = document.createElement("div");
+  messageDiv.className =
+    "fixed top-4 right-4 bg-red-500 text-white px-6 py-4 rounded-lg shadow-lg z-50 max-w-sm";
+  messageDiv.innerHTML = `
                 <div class="flex items-center">
                     <svg class="w-6 h-6 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
@@ -1897,30 +2337,30 @@
                     </div>
                 </div>
             `;
-            document.body.appendChild(messageDiv);
+  document.body.appendChild(messageDiv);
 
-            setTimeout(() => {
-                if (messageDiv.parentNode) {
-                    messageDiv.parentNode.removeChild(messageDiv);
-                }
-            }, 5000);
-        }
+  setTimeout(() => {
+    if (messageDiv.parentNode) {
+      messageDiv.parentNode.removeChild(messageDiv);
+    }
+  }, 5000);
+}
 
-        function showPathTransition(nextPath) {
-            const container = document.getElementById('questionContainer');
-            const pathInfo = {
-                1: { name: "المسار الشامل", icon: "📊", color: "blue", questions: 24 },
-                2: { name: "المسار السريع", icon: "⚡", color: "green", questions: 10 },
-                3: { name: "مسار العمل", icon: "💼", color: "purple", questions: 6 },
-                4: { name: "مسار العلاقات", icon: "❤️", color: "pink", questions: 6 },
-                5: { name: "مسار التأكيد", icon: "✓", color: "orange", questions: 4 }
-            };
+function showPathTransition(nextPath) {
+  const container = document.getElementById("questionContainer");
+  const pathInfo = {
+    1: { name: "المسار الشامل", icon: "📊", color: "blue", questions: 24 },
+    2: { name: "المسار السريع", icon: "⚡", color: "green", questions: 10 },
+    3: { name: "مسار العمل", icon: "💼", color: "purple", questions: 6 },
+    4: { name: "مسار العلاقات", icon: "❤️", color: "pink", questions: 6 },
+    5: { name: "مسار التأكيد", icon: "✓", color: "orange", questions: 4 },
+  };
 
-            const info = pathInfo[nextPath];
+  const info = pathInfo[nextPath];
 
-            container.classList.add('fade-out');
-            setTimeout(() => {
-                container.innerHTML = `
+  container.classList.add("fade-out");
+  setTimeout(() => {
+    container.innerHTML = `
                     <div class="text-center py-12">
                         <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
                             <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1958,151 +2398,155 @@
                         </button>
                     </div>
                 `;
-                container.classList.remove('fade-out');
-                container.classList.add('fade-in');
-            }, 200);
+    container.classList.remove("fade-out");
+    container.classList.add("fade-in");
+  }, 200);
+}
+
+function showResults() {
+  try {
+    stopTimer();
+
+    // إخفاء شاشة الاختبار وإظهار النتائج
+    const testScreen = document.getElementById("testScreen");
+    const progressContainer = document.getElementById("progressContainer");
+    const endScreen = document.getElementById("endScreen");
+
+    if (testScreen) testScreen.classList.add("fade-out");
+
+    setTimeout(() => {
+      try {
+        if (testScreen) {
+          testScreen.classList.add("hidden");
+          testScreen.classList.remove("fade-out");
+        }
+        if (progressContainer) progressContainer.classList.add("hidden");
+        if (endScreen) {
+          endScreen.classList.remove("hidden");
+          endScreen.classList.add("fade-in");
         }
 
-        function showResults() {
-            try {
-                stopTimer();
+        populateResults();
+      } catch (error) {
+        // console.error('❌ Error in screen transition:', error);
+        // Fallback: show results directly
+        forceShowResults();
+      }
+    }, 400);
+  } catch (error) {
+    console.error("❌ Critical error in showResults:", error);
+    // Fallback: show results directly
+    forceShowResults();
+  }
+}
 
-                // إخفاء شاشة الاختبار وإظهار النتائج
-                const testScreen = document.getElementById('testScreen');
-                const progressContainer = document.getElementById('progressContainer');
-                const endScreen = document.getElementById('endScreen');
+// وظيفة احتياطية لعرض النتائج مباشرة
+function forceShowResults() {
+  // إخفاء جميع الشاشات الأخرى
+  const allScreens = ["welcomeScreen", "testScreen", "progressContainer"];
+  allScreens.forEach((screenId) => {
+    const screen = document.getElementById(screenId);
+    if (screen) {
+      screen.classList.add("hidden");
+      screen.classList.remove("fade-in", "fade-out");
+    }
+  });
+}
+let personality;
+let type;
+function populateResults() {
+  try {
+    type = calculatePersonalityType();
+    personality = personalityTypes[type];
+    const totalQuestions = Object.values(allPathAnswers).reduce(
+      (sum, pathAnswers) => sum + pathAnswers.length,
+      0
+    );
+    const totalTimeSpent = Math.round(
+      (Date.now() - totalStartTime) / 1000 / 60
+    );
+    const elements = {
+      userNameDisplay: document.getElementById("userNameDisplay"),
+      pathUsed: document.getElementById("pathUsed"),
+      personalityType: document.getElementById("personalityType"),
+      personalityName: document.getElementById("personalityName"),
+      confidenceLevel: document.getElementById("confidenceLevel"),
+      strengths: document.getElementById("strengths"),
+      improvements: document.getElementById("improvements"),
+      workAdvice: document.getElementById("workAdvice"),
+      studyAdvice: document.getElementById("studyAdvice"),
+      relationshipAdvice: document.getElementById("relationshipAdvice"),
+    };
 
-                if (testScreen) testScreen.classList.add('fade-out');
+    // تحديث العناصر الأساسية
+    if (elements.userNameDisplay) {
+      elements.userNameDisplay.innerHTML = `نمطك الشخصي يا <strong>${userName}</strong> هو:`;
+    }
 
-                setTimeout(() => {
-                    try {
-                        if (testScreen) {
-                            testScreen.classList.add('hidden');
-                            testScreen.classList.remove('fade-out');
-                        }
-                        if (progressContainer) progressContainer.classList.add('hidden');
-                        if (endScreen) {
-                            endScreen.classList.remove('hidden');
-                            endScreen.classList.add('fade-in');
-                        }
+    if (elements.pathUsed) {
+      let timingInfo = `تم إكمال جميع المسارات الخمسة (${totalQuestions} سؤال في ${totalTimeSpent} دقيقة)`;
+      elements.pathUsed.innerHTML = timingInfo;
+    }
 
+    if (elements.personalityType) {
+      elements.personalityType.textContent = type;
+    }
 
-                        populateResults();
+    if (elements.personalityName) {
+      elements.personalityName.textContent = personality.name;
+    }
 
-                    } catch (error) {
-                        // console.error('❌ Error in screen transition:', error);
-                        // Fallback: show results directly
-                        forceShowResults();
-                    }
-                }, 400);
+    const confidenceLevel = calculateConfidenceLevel();
+    if (elements.confidenceLevel) {
+      elements.confidenceLevel.textContent = confidenceLevel;
+    }
 
-            } catch (error) {
-                console.error('❌ Critical error in showResults:', error);
-                // Fallback: show results directly
-                forceShowResults();
-            }
-        }
+    if (elements.strengths) {
+      elements.strengths.innerHTML = personality.strengths
+        .map(
+          (strength) =>
+            `<li class="flex items-center"><span class="text-green-600 ml-2">✓</span>${strength}</li>`
+        )
+        .join("");
+    }
 
-        // وظيفة احتياطية لعرض النتائج مباشرة
-        function forceShowResults() {
-            // إخفاء جميع الشاشات الأخرى
-            const allScreens = ['welcomeScreen', 'testScreen', 'progressContainer'];
-            allScreens.forEach(screenId => {
-                const screen = document.getElementById(screenId);
-                if (screen) {
-                    screen.classList.add('hidden');
-                    screen.classList.remove('fade-in', 'fade-out');
-                }
-            });
+    if (elements.improvements) {
+      elements.improvements.innerHTML = personality.improvements
+        .map(
+          (improvement) =>
+            `<li class="flex items-center"><span class="text-orange-600 ml-2">→</span>${improvement}</li>`
+        )
+        .join("");
+    }
 
-        
-        }
-        let personality;
-        let type;
-        function populateResults() {
+    if (elements.workAdvice) {
+      elements.workAdvice.textContent = personality.work;
+    }
 
-            try {
-                type = calculatePersonalityType();
-                personality = personalityTypes[type];
-                const totalQuestions = Object.values(allPathAnswers).reduce((sum, pathAnswers) => sum + pathAnswers.length, 0);
-                const totalTimeSpent = Math.round((Date.now() - totalStartTime) / 1000 / 60);
-                const elements = {
-                    userNameDisplay: document.getElementById('userNameDisplay'),
-                    pathUsed: document.getElementById('pathUsed'),
-                    personalityType: document.getElementById('personalityType'),
-                    personalityName: document.getElementById('personalityName'),
-                    confidenceLevel: document.getElementById('confidenceLevel'),
-                    strengths: document.getElementById('strengths'),
-                    improvements: document.getElementById('improvements'),
-                    workAdvice: document.getElementById('workAdvice'),
-                    studyAdvice: document.getElementById('studyAdvice'),
-                    relationshipAdvice: document.getElementById('relationshipAdvice')
-                };
+    if (elements.studyAdvice) {
+      elements.studyAdvice.textContent = personality.study;
+    }
 
-                // تحديث العناصر الأساسية
-                if (elements.userNameDisplay) {
-                    elements.userNameDisplay.innerHTML = `نمطك الشخصي يا <strong>${userName}</strong> هو:`;
-                }
+    if (elements.relationshipAdvice) {
+      elements.relationshipAdvice.textContent = personality.relationships;
+    }
+    showPersonalityExplanation(type);
+    showDimensionsAnalysis();
+    showAdvancedAnalytics();
+    showPathPerformance();
+    showTimingStatistics();
+    showContradictionMarkers();
+    // إظهار رسالة نجاح للمستخدم
+    showResultsSuccessMessage();
+  } catch (error) {}
+}
 
-                if (elements.pathUsed) {
-                    let timingInfo = `تم إكمال جميع المسارات الخمسة (${totalQuestions} سؤال في ${totalTimeSpent} دقيقة)`;
-                    elements.pathUsed.innerHTML = timingInfo;
-                }
-
-                if (elements.personalityType) {
-                    elements.personalityType.textContent = type;
-                }
-
-                if (elements.personalityName) {
-                    elements.personalityName.textContent = personality.name;
-                }
-
-                const confidenceLevel = calculateConfidenceLevel();
-                if (elements.confidenceLevel) {
-                    elements.confidenceLevel.textContent = confidenceLevel;
-                }
-
-                if (elements.strengths) {
-                    elements.strengths.innerHTML = personality.strengths.map(strength =>
-                        `<li class="flex items-center"><span class="text-green-600 ml-2">✓</span>${strength}</li>`
-                    ).join('');
-                }
-
-                if (elements.improvements) {
-                    elements.improvements.innerHTML = personality.improvements.map(improvement =>
-                        `<li class="flex items-center"><span class="text-orange-600 ml-2">→</span>${improvement}</li>`
-                    ).join('');
-                }
-
-                if (elements.workAdvice) {
-                    elements.workAdvice.textContent = personality.work;
-                }
-
-                if (elements.studyAdvice) {
-                    elements.studyAdvice.textContent = personality.study;
-                }
-
-                if (elements.relationshipAdvice) {
-                    elements.relationshipAdvice.textContent = personality.relationships;
-                }
-                showPersonalityExplanation(type);
-                showDimensionsAnalysis();
-                showAdvancedAnalytics();
-                showPathPerformance();
-                showTimingStatistics();
-                showContradictionMarkers();
-                // إظهار رسالة نجاح للمستخدم
-                showResultsSuccessMessage();
-
-            } catch (error) {
-            }
-        }
-
-        // رسالة نجاح عرض النتائج
-        function showResultsSuccessMessage() {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-4 rounded-lg shadow-lg z-50 max-w-sm';
-            messageDiv.innerHTML = `
+// رسالة نجاح عرض النتائج
+function showResultsSuccessMessage() {
+  const messageDiv = document.createElement("div");
+  messageDiv.className =
+    "fixed top-4 right-4 bg-green-500 text-white px-6 py-4 rounded-lg shadow-lg z-50 max-w-sm";
+  messageDiv.innerHTML = `
                 <div class="flex items-center">
                     <svg class="w-6 h-6 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -2113,146 +2557,159 @@
                     </div>
                 </div>
             `;
-            document.body.appendChild(messageDiv);
+  document.body.appendChild(messageDiv);
 
-            setTimeout(() => {
-                if (messageDiv.parentNode) {
-                    messageDiv.parentNode.removeChild(messageDiv);
-                }
-            }, 4000);
-        }
+  setTimeout(() => {
+    if (messageDiv.parentNode) {
+      messageDiv.parentNode.removeChild(messageDiv);
+    }
+  }, 4000);
+}
 
-        // وظيفة التحقق من صحة النتائج
-        function validateResults() {
-            const issues = [];
-            let isValid = true;
+// وظيفة التحقق من صحة النتائج
+function validateResults() {
+  const issues = [];
+  let isValid = true;
 
-            // جمع جميع الإجابات للتحليل
-            const allAnswers = getAllAnswers();
-            const totalAnswers = allAnswers.length;
+  // جمع جميع الإجابات للتحليل
+  const allAnswers = getAllAnswers();
+  const totalAnswers = allAnswers.length;
 
-            // التحقق من وجود إجابات كافية
-            if (totalAnswers < 30) {
-                issues.push(`عدد الإجابات قليل: ${totalAnswers} (الحد الأدنى: 30)`);
-                isValid = false;
-            }
+  // التحقق من وجود إجابات كافية
+  if (totalAnswers < 30) {
+    issues.push(`عدد الإجابات قليل: ${totalAnswers} (الحد الأدنى: 30)`);
+    isValid = false;
+  }
 
-            // حساب الأوزان المحسنة للتحقق
-            const dimensionWeights = calculateDimensionWeights(allAnswers);
-            const totalWeights = Object.values(dimensionWeights).reduce((sum, weight) => sum + weight, 0);
+  // حساب الأوزان المحسنة للتحقق
+  const dimensionWeights = calculateDimensionWeights(allAnswers);
+  const totalWeights = Object.values(dimensionWeights).reduce(
+    (sum, weight) => sum + weight,
+    0
+  );
 
-            if (totalWeights === 0) {
-                issues.push('لا توجد نقاط موزونة محسوبة');
-                isValid = false;
-            }
+  if (totalWeights === 0) {
+    issues.push("لا توجد نقاط موزونة محسوبة");
+    isValid = false;
+  }
 
-            // التحقق من توازن الأبعاد بناءً على الأوزان المحسنة
-            const dimensions = [
-                { name: 'EI', dims: ['E', 'I'] },
-                { name: 'SN', dims: ['S', 'N'] },
-                { name: 'TF', dims: ['T', 'F'] },
-                { name: 'JP', dims: ['J', 'P'] }
-            ];
+  // التحقق من توازن الأبعاد بناءً على الأوزان المحسنة
+  const dimensions = [
+    { name: "EI", dims: ["E", "I"] },
+    { name: "SN", dims: ["S", "N"] },
+    { name: "TF", dims: ["T", "F"] },
+    { name: "JP", dims: ["J", "P"] },
+  ];
 
-            let validDimensions = 0;
-            let totalClarity = 0;
+  let validDimensions = 0;
+  let totalClarity = 0;
 
-            dimensions.forEach(dim => {
-                const result = calculateDimensionType(dim.dims, dimensionWeights);
-                const total = Object.values(result.scores).reduce((sum, score) => sum + score, 0);
+  dimensions.forEach((dim) => {
+    const result = calculateDimensionType(dim.dims, dimensionWeights);
+    const total = Object.values(result.scores).reduce(
+      (sum, score) => sum + score,
+      0
+    );
 
-                if (total === 0) {
-                    issues.push(`لا توجد بيانات في البُعد ${dim.name}`);
-                    isValid = false;
-                } else if (total < 2) {
-                    issues.push(`بيانات قليلة في البُعد ${dim.name}: ${total.toFixed(1)}`);
-                } else {
-                    validDimensions++;
-                    totalClarity += result.difference;
+    if (total === 0) {
+      issues.push(`لا توجد بيانات في البُعد ${dim.name}`);
+      isValid = false;
+    } else if (total < 2) {
+      issues.push(`بيانات قليلة في البُعد ${dim.name}: ${total.toFixed(1)}`);
+    } else {
+      validDimensions++;
+      totalClarity += result.difference;
 
-                    // تحذير للأبعاد غير الواضحة
-                    if (result.difference < 5) {
-                        issues.push(`البُعد ${dim.name} غير واضح (${result.difference.toFixed(1)}% فرق)`);
-                    }
-                }
-            });
+      // تحذير للأبعاد غير الواضحة
+      if (result.difference < 5) {
+        issues.push(
+          `البُعد ${dim.name} غير واضح (${result.difference.toFixed(1)}% فرق)`
+        );
+      }
+    }
+  });
 
-            // حساب متوسط الوضوح
-            const avgClarity = validDimensions > 0 ? totalClarity / validDimensions : 0;
+  // حساب متوسط الوضوح
+  const avgClarity = validDimensions > 0 ? totalClarity / validDimensions : 0;
 
-            // التحقق من الاتساق الزمني المحسن
-            const timings = allAnswers.map(a => a.timeSpent).filter(t => t > 0);
-            if (timings.length > 0) {
-                const avgTime = timings.reduce((sum, t) => sum + t, 0) / timings.length;
-                const veryFastCount = timings.filter(t => t < 2).length;
-                const fastRatio = veryFastCount / timings.length;
-                const verySlowCount = timings.filter(t => t > 60).length;
-                const slowRatio = verySlowCount / timings.length;
+  // التحقق من الاتساق الزمني المحسن
+  const timings = allAnswers.map((a) => a.timeSpent).filter((t) => t > 0);
+  if (timings.length > 0) {
+    const avgTime = timings.reduce((sum, t) => sum + t, 0) / timings.length;
+    const veryFastCount = timings.filter((t) => t < 2).length;
+    const fastRatio = veryFastCount / timings.length;
+    const verySlowCount = timings.filter((t) => t > 60).length;
+    const slowRatio = verySlowCount / timings.length;
 
-                if (fastRatio > 0.4) {
-                    issues.push(`نسبة عالية من الإجابات السريعة جداً: ${(fastRatio * 100).toFixed(1)}%`);
-                }
+    if (fastRatio > 0.4) {
+      issues.push(
+        `نسبة عالية من الإجابات السريعة جداً: ${(fastRatio * 100).toFixed(1)}%`
+      );
+    }
 
-                if (slowRatio > 0.2) {
-                    issues.push(`نسبة عالية من الإجابات البطيئة جداً: ${(slowRatio * 100).toFixed(1)}%`);
-                }
+    if (slowRatio > 0.2) {
+      issues.push(
+        `نسبة عالية من الإجابات البطيئة جداً: ${(slowRatio * 100).toFixed(1)}%`
+      );
+    }
 
-                if (avgTime < 4) {
-                    issues.push(`متوسط وقت الإجابة منخفض: ${avgTime.toFixed(1)} ثانية`);
-                }
-            }
+    if (avgTime < 4) {
+      issues.push(`متوسط وقت الإجابة منخفض: ${avgTime.toFixed(1)} ثانية`);
+    }
+  }
 
-            // التحقق من اكتمال المسارات
-            if (completedPaths.length < 5) {
-                issues.push(`لم يتم إكمال جميع المسارات: ${completedPaths.length}/5`);
-                isValid = false;
-            }
+  // التحقق من اكتمال المسارات
+  if (completedPaths.length < 5) {
+    issues.push(`لم يتم إكمال جميع المسارات: ${completedPaths.length}/5`);
+    isValid = false;
+  }
 
-            // التحقق من جودة الإجابات المحسن
-            if (consistencyScore < 60) {
-                issues.push(`مستوى اتساق منخفض: ${consistencyScore}%`);
-            }
+  // التحقق من جودة الإجابات المحسن
+  if (consistencyScore < 60) {
+    issues.push(`مستوى اتساق منخفض: ${consistencyScore}%`);
+  }
 
-            // التحقق من وضوح النتائج
-            if (avgClarity < 15) {
-                issues.push(`وضوح النتائج منخفض: ${avgClarity.toFixed(1)}%`);
-            }
+  // التحقق من وضوح النتائج
+  if (avgClarity < 15) {
+    issues.push(`وضوح النتائج منخفض: ${avgClarity.toFixed(1)}%`);
+  }
 
-            // التحقق من التناقضات
-            if (contradictionFlags.length > 3) {
-                issues.push(`عدد كبير من التناقضات: ${contradictionFlags.length}`);
-            }
+  // التحقق من التناقضات
+  if (contradictionFlags.length > 3) {
+    issues.push(`عدد كبير من التناقضات: ${contradictionFlags.length}`);
+  }
 
-            // التحقق من الأنماط العشوائية
-            if (randomAnswerPattern > 2) {
-                issues.push(`أنماط إجابة عشوائية مشتبهة: ${randomAnswerPattern}`);
-            }
+  // التحقق من الأنماط العشوائية
+  if (randomAnswerPattern > 2) {
+    issues.push(`أنماط إجابة عشوائية مشتبهة: ${randomAnswerPattern}`);
+  }
 
-            // التحقق من تنوع المسارات
-            const pathDiversity = new Set(allAnswers.map(a => a.path)).size;
-            if (pathDiversity < 4) {
-                issues.push(`تنوع قليل في المسارات: ${pathDiversity}/5`);
-            }
+  // التحقق من تنوع المسارات
+  const pathDiversity = new Set(allAnswers.map((a) => a.path)).size;
+  if (pathDiversity < 4) {
+    issues.push(`تنوع قليل في المسارات: ${pathDiversity}/5`);
+  }
 
-            // تقييم الجودة الإجمالية
-            let qualityScore = 100;
-            qualityScore -= (fastRatio * 30); // خصم للإجابات السريعة
-            qualityScore -= (contradictionFlags.length * 5); // خصم للتناقضات
-            qualityScore -= ((100 - consistencyScore) * 0.3); // خصم لعدم الاتساق
-            qualityScore += (avgClarity * 0.2); // مكافأة للوضوح
+  // تقييم الجودة الإجمالية
+  let qualityScore = 100;
+  qualityScore -= fastRatio * 30; // خصم للإجابات السريعة
+  qualityScore -= contradictionFlags.length * 5; // خصم للتناقضات
+  qualityScore -= (100 - consistencyScore) * 0.3; // خصم لعدم الاتساق
+  qualityScore += avgClarity * 0.2; // مكافأة للوضوح
 
-            if (qualityScore < 70) {
-                issues.push(`نقاط الجودة الإجمالية منخفضة: ${qualityScore.toFixed(1)}/100`);
-            }
+  if (qualityScore < 70) {
+    issues.push(`نقاط الجودة الإجمالية منخفضة: ${qualityScore.toFixed(1)}/100`);
+  }
 
-            return { isValid, issues, qualityScore: Math.round(qualityScore) };
-        }
+  return { isValid, issues, qualityScore: Math.round(qualityScore) };
+}
 
-        // وظيفة عرض تحذيرات الصحة
-        function showValidationWarnings(issues) {
-            const warningContainer = document.createElement('div');
-            warningContainer.className = 'bg-yellow-50 border-2 border-yellow-300 rounded-xl p-4 mb-6';
-            warningContainer.innerHTML = `
+// وظيفة عرض تحذيرات الصحة
+function showValidationWarnings(issues) {
+  const warningContainer = document.createElement("div");
+  warningContainer.className =
+    "bg-yellow-50 border-2 border-yellow-300 rounded-xl p-4 mb-6";
+  warningContainer.innerHTML = `
                 <div class="flex items-center mb-3">
                     <span class="text-2xl ml-2">⚠️</span>
                     <h4 class="text-lg font-bold text-yellow-800">تنبيه حول جودة النتائج</h4>
@@ -2260,131 +2717,160 @@
                 <div class="text-yellow-700 text-sm space-y-1">
                     <p class="font-medium mb-2">تم اكتشاف بعض المشاكل التي قد تؤثر على دقة النتائج:</p>
                     <ul class="list-disc list-inside space-y-1">
-                        ${issues.map(issue => `<li>${issue}</li>`).join('')}
+                        ${issues.map((issue) => `<li>${issue}</li>`).join("")}
                     </ul>
                     <p class="mt-3 font-medium">💡 للحصول على نتائج أكثر دقة، يُنصح بإعادة الاختبار مع قراءة الأسئلة بعناية أكبر.</p>
                 </div>
             `;
 
-            // إدراج التحذير قبل النتائج
-            const resultsContainer = document.querySelector('#personalityResult');
-            if (resultsContainer) {
-                resultsContainer.insertBefore(warningContainer, resultsContainer.firstChild);
-            }
-        }
+  // إدراج التحذير قبل النتائج
+  const resultsContainer = document.querySelector("#personalityResult");
+  if (resultsContainer) {
+    resultsContainer.insertBefore(
+      warningContainer,
+      resultsContainer.firstChild
+    );
+  }
+}
 
-        function showPersonalityExplanation(type) {
-            const explanationContainer = document.getElementById('personalityExplanation');
+function showPersonalityExplanation(type) {
+  const explanationContainer = document.getElementById(
+    "personalityExplanation"
+  );
 
-            // تحليل كل بُعد من أبعاد الشخصية
-            const dimensions = [
-                {
-                    name: 'مصدر الطاقة',
-                    icon: '⚡',
-                    e_letter: 'E',
-                    i_letter: 'I',
-                    e_name: 'الانبساط (Extraversion)',
-                    i_name: 'الانطواء (Introversion)',
-                    e_score: scores.E,
-                    i_score: scores.I,
-                    e_desc: 'تستمد طاقتك من التفاعل مع العالم الخارجي والأشخاص. تحب المناسبات الاجتماعية وتفكر بصوت عالٍ.',
-                    i_desc: 'تستمد طاقتك من العالم الداخلي والتأمل. تفضل التفكير قبل التحدث وتحتاج لوقت منفرد لإعادة شحن طاقتك.',
-                    tie_desc: 'لديك توازن بين الانبساط والانطواء. تستطيع التكيف مع المواقف الاجتماعية والهادئة بنفس الدرجة.'
-                },
-                {
-                    name: 'جمع المعلومات',
-                    icon: '🔍',
-                    e_letter: 'S',
-                    i_letter: 'N',
-                    e_name: 'الحسّي (Sensing)',
-                    i_name: 'الحدسي (Intuition)',
-                    e_score: scores.S,
-                    i_score: scores.N,
-                    e_desc: 'تركز على الحقائق والتفاصيل الملموسة. تثق في الخبرة العملية وتفضل المعلومات الواضحة والمحددة.',
-                    i_desc: 'تركز على الأنماط والإمكانيات المستقبلية. تثق في حدسك وتحب استكشاف الأفكار والمفاهيم المجردة.',
-                    tie_desc: 'تجمع بين التركيز على التفاصيل والرؤية الشاملة. تستطيع التعامل مع الحقائق والأفكار المجردة بنفس الكفاءة.'
-                },
-                {
-                    name: 'اتخاذ القرارات',
-                    icon: '⚖️',
-                    e_letter: 'T',
-                    i_letter: 'F',
-                    e_name: 'التفكير (Thinking)',
-                    i_name: 'الشعور (Feeling)',
-                    e_score: scores.T,
-                    i_score: scores.F,
-                    e_desc: 'تتخذ قراراتك بناءً على التحليل المنطقي والموضوعية. تقدر العدالة والكفاءة في اتخاذ القرارات.',
-                    i_desc: 'تتخذ قراراتك بناءً على القيم الشخصية والتأثير على الآخرين. تقدر الانسجام والتفهم في التعامل.',
-                    tie_desc: 'توازن بين المنطق والمشاعر في اتخاذ القرارات. تستطيع تقدير الجوانب الموضوعية والإنسانية معاً.'
-                },
-                {
-                    name: 'نمط الحياة',
-                    icon: '📅',
-                    e_letter: 'J',
-                    i_letter: 'P',
-                    e_name: 'الحكم (Judging)',
-                    i_name: 'الإدراك (Perceiving)',
-                    e_score: scores.J,
-                    i_score: scores.P,
-                    e_desc: 'تفضل الحياة المنظمة والمخططة. تحب اتخاذ القرارات بسرعة وإنهاء المهام في مواعيدها.',
-                    i_desc: 'تفضل الحياة المرنة والعفوية. تحب إبقاء الخيارات مفتوحة وتتكيف مع الظروف المتغيرة.',
-                    tie_desc: 'تجمع بين التنظيم والمرونة. تستطيع التخطيط عند الحاجة والتكيف مع التغييرات بسهولة.'
-                }
-            ];
+  // تحليل كل بُعد من أبعاد الشخصية
+  const dimensions = [
+    {
+      name: "مصدر الطاقة",
+      icon: "⚡",
+      e_letter: "E",
+      i_letter: "I",
+      e_name: "الانبساط (Extraversion)",
+      i_name: "الانطواء (Introversion)",
+      e_score: scores.E,
+      i_score: scores.I,
+      e_desc:
+        "تستمد طاقتك من التفاعل مع العالم الخارجي والأشخاص. تحب المناسبات الاجتماعية وتفكر بصوت عالٍ.",
+      i_desc:
+        "تستمد طاقتك من العالم الداخلي والتأمل. تفضل التفكير قبل التحدث وتحتاج لوقت منفرد لإعادة شحن طاقتك.",
+      tie_desc:
+        "لديك توازن بين الانبساط والانطواء. تستطيع التكيف مع المواقف الاجتماعية والهادئة بنفس الدرجة.",
+    },
+    {
+      name: "جمع المعلومات",
+      icon: "🔍",
+      e_letter: "S",
+      i_letter: "N",
+      e_name: "الحسّي (Sensing)",
+      i_name: "الحدسي (Intuition)",
+      e_score: scores.S,
+      i_score: scores.N,
+      e_desc:
+        "تركز على الحقائق والتفاصيل الملموسة. تثق في الخبرة العملية وتفضل المعلومات الواضحة والمحددة.",
+      i_desc:
+        "تركز على الأنماط والإمكانيات المستقبلية. تثق في حدسك وتحب استكشاف الأفكار والمفاهيم المجردة.",
+      tie_desc:
+        "تجمع بين التركيز على التفاصيل والرؤية الشاملة. تستطيع التعامل مع الحقائق والأفكار المجردة بنفس الكفاءة.",
+    },
+    {
+      name: "اتخاذ القرارات",
+      icon: "⚖️",
+      e_letter: "T",
+      i_letter: "F",
+      e_name: "التفكير (Thinking)",
+      i_name: "الشعور (Feeling)",
+      e_score: scores.T,
+      i_score: scores.F,
+      e_desc:
+        "تتخذ قراراتك بناءً على التحليل المنطقي والموضوعية. تقدر العدالة والكفاءة في اتخاذ القرارات.",
+      i_desc:
+        "تتخذ قراراتك بناءً على القيم الشخصية والتأثير على الآخرين. تقدر الانسجام والتفهم في التعامل.",
+      tie_desc:
+        "توازن بين المنطق والمشاعر في اتخاذ القرارات. تستطيع تقدير الجوانب الموضوعية والإنسانية معاً.",
+    },
+    {
+      name: "نمط الحياة",
+      icon: "📅",
+      e_letter: "J",
+      i_letter: "P",
+      e_name: "الحكم (Judging)",
+      i_name: "الإدراك (Perceiving)",
+      e_score: scores.J,
+      i_score: scores.P,
+      e_desc:
+        "تفضل الحياة المنظمة والمخططة. تحب اتخاذ القرارات بسرعة وإنهاء المهام في مواعيدها.",
+      i_desc:
+        "تفضل الحياة المرنة والعفوية. تحب إبقاء الخيارات مفتوحة وتتكيف مع الظروف المتغيرة.",
+      tie_desc:
+        "تجمع بين التنظيم والمرونة. تستطيع التخطيط عند الحاجة والتكيف مع التغييرات بسهولة.",
+    },
+  ];
 
-            let explanationHTML = '';
+  let explanationHTML = "";
 
-            dimensions.forEach((dim, index) => {
-                const total = dim.e_score + dim.i_score;
-                const e_percent = total > 0 ? Math.round((dim.e_score / total) * 100) : 50;
-                const i_percent = 100 - e_percent;
+  dimensions.forEach((dim, index) => {
+    const total = dim.e_score + dim.i_score;
+    const e_percent = total > 0 ? Math.round((dim.e_score / total) * 100) : 50;
+    const i_percent = 100 - e_percent;
 
-                let dominantType, dominantDesc, dominantPercent;
-                let isDominant = true;
+    let dominantType, dominantDesc, dominantPercent;
+    let isDominant = true;
 
-                if (dim.e_score > dim.i_score) {
-                    dominantType = dim.e_name;
-                    dominantDesc = dim.e_desc;
-                    dominantPercent = e_percent;
-                } else if (dim.i_score > dim.e_score) {
-                    dominantType = dim.i_name;
-                    dominantDesc = dim.i_desc;
-                    dominantPercent = i_percent;
-                } else {
-                    dominantType = `${dim.e_name} / ${dim.i_name}`;
-                    dominantDesc = dim.tie_desc;
-                    dominantPercent = 50;
-                    isDominant = false;
-                }
+    if (dim.e_score > dim.i_score) {
+      dominantType = dim.e_name;
+      dominantDesc = dim.e_desc;
+      dominantPercent = e_percent;
+    } else if (dim.i_score > dim.e_score) {
+      dominantType = dim.i_name;
+      dominantDesc = dim.i_desc;
+      dominantPercent = i_percent;
+    } else {
+      dominantType = `${dim.e_name} / ${dim.i_name}`;
+      dominantDesc = dim.tie_desc;
+      dominantPercent = 50;
+      isDominant = false;
+    }
 
-                const bgColor = index % 2 === 0 ? 'bg-white' : 'bg-indigo-25';
-                const borderColor = isDominant ? 'border-indigo-300' : 'border-yellow-300';
-                const headerColor = isDominant ? 'text-indigo-800' : 'text-yellow-800';
+    const bgColor = index % 2 === 0 ? "bg-white" : "bg-indigo-25";
+    const borderColor = isDominant ? "border-indigo-300" : "border-yellow-300";
+    const headerColor = isDominant ? "text-indigo-800" : "text-yellow-800";
 
-                explanationHTML += `
+    explanationHTML += `
                     <div class="${bgColor} ${borderColor} border-2 rounded-xl p-6">
                         <div class="flex items-center mb-4">
                             <span class="text-2xl ml-3">${dim.icon}</span>
                             <div class="flex-1">
-                                <h4 class="text-lg font-bold ${headerColor}">${dim.name}</h4>
+                                <h4 class="text-lg font-bold ${headerColor}">${
+      dim.name
+    }</h4>
                                 <div class="text-sm text-gray-600">
-                                    ${dim.e_letter}: ${dim.e_score || 0} نقطة | ${dim.i_letter}: ${dim.i_score || 0} نقطة
+                                    ${dim.e_letter}: ${
+      dim.e_score || 0
+    } نقطة | ${dim.i_letter}: ${dim.i_score || 0} نقطة
                                 </div>
                             </div>
-                            ${isDominant ? `
+                            ${
+                              isDominant
+                                ? `
                                 <div class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm font-medium">
                                     ${dominantPercent}%
                                 </div>
-                            ` : `
+                            `
+                                : `
                                 <div class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-medium">
                                     متوازن 50/50
                                 </div>
-                            `}
+                            `
+                            }
                         </div>
                         
                         <div class="mb-4">
                             <div class="font-semibold text-gray-800 mb-2">
-                                ${isDominant ? '🎯 النمط المهيمن:' : '⚖️ التوازن:'} ${dominantType}
+                                ${
+                                  isDominant
+                                    ? "🎯 النمط المهيمن:"
+                                    : "⚖️ التوازن:"
+                                } ${dominantType}
                             </div>
                             <p class="text-gray-700 leading-relaxed">${dominantDesc}</p>
                         </div>
@@ -2398,9 +2884,13 @@
                             <div class="w-full bg-gray-200 rounded-full h-3 relative">
                                 <div class="bg-gradient-to-r from-blue-500 to-blue-600 h-3 rounded-full transition-all duration-1000" 
                                      style="width: ${e_percent}%"></div>
-                                ${!isDominant ? `
+                                ${
+                                  !isDominant
+                                    ? `
                                     <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-1 h-3 bg-yellow-400"></div>
-                                ` : ''}
+                                `
+                                    : ""
+                                }
                             </div>
                             <div class="flex justify-between text-xs text-gray-500 mt-1">
                                 <span>${e_percent}%</span>
@@ -2408,26 +2898,32 @@
                             </div>
                         </div>
                         
-                        ${!isDominant ? `
+                        ${
+                          !isDominant
+                            ? `
                             <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mt-3">
                                 <div class="flex items-center text-yellow-800 text-sm">
                                     <span class="ml-2">⚡</span>
                                     <strong>ميزة التوازن:</strong> لديك مرونة عالية في التكيف مع مختلف المواقف والأشخاص
                                 </div>
                             </div>
-                        ` : ''}
+                        `
+                            : ""
+                        }
                     </div>
                 `;
-            });
+  });
 
-            // إضافة ملخص شامل
-            const typeLetters = type.split('').join(' - ');
-            explanationHTML += `
+  // إضافة ملخص شامل
+  const typeLetters = type.split("").join(" - ");
+  explanationHTML += `
                 <div class="bg-gradient-to-r from-purple-100 to-indigo-100 border-2 border-purple-300 rounded-xl p-6 mt-6">
                     <div class="text-center mb-4">
                         <h4 class="text-xl font-bold text-purple-800 mb-2">🎭 ملخص نمط شخصيتك</h4>
                         <div class="text-2xl font-bold text-purple-900 mb-2">${typeLetters}</div>
-                        <div class="text-purple-700">${personalityTypes[type]?.name || 'نمط شخصية مميز'}</div>
+                        <div class="text-purple-700">${
+                          personalityTypes[type]?.name || "نمط شخصية مميز"
+                        }</div>
                     </div>
                     
                     <div class="grid md:grid-cols-2 gap-4">
@@ -2454,656 +2950,731 @@
                 </div>
             `;
 
-            explanationContainer.innerHTML = explanationHTML;
+  explanationContainer.innerHTML = explanationHTML;
+}
+
+function showContradictionMarkers() {
+  // عرض علامات التناقض للمطور فقط
+  if (
+    contradictionFlags.length > 0 ||
+    quickAnswerCount > 5 ||
+    randomAnswerPattern > 1
+  ) {
+    const details = [];
+
+    // حساب النسب للتحديد إذا كان المختبر اختار عشوائي أو بسرعة
+    const totalQuestions = Object.values(allPathAnswers).reduce(
+      (sum, pathAnswers) => sum + pathAnswers.length,
+      0
+    );
+    const quickAnswerPercentage =
+      totalQuestions > 0 ? (quickAnswerCount / totalQuestions) * 100 : 0;
+    const randomPatternPercentage =
+      totalQuestions > 0 ? (randomAnswerPattern / totalQuestions) * 100 : 0;
+
+    // إضافة نجمة إذا تجاوزت النسبة 40%
+    const quickStar = quickAnswerPercentage >= 40 ? " ⭐" : "";
+    const randomStar = randomPatternPercentage >= 40 ? " ⭐" : "";
+
+    if (contradictionFlags.length > 0) {
+      details.push(`تناقضات: ${contradictionFlags.length}`);
+    }
+
+    if (quickAnswerCount > 5) {
+      details.push(`إجابات سريعة: ${quickAnswerCount}${quickStar}`);
+    }
+
+    if (randomAnswerPattern > 1) {
+      details.push(`أنماط عشوائية: ${randomAnswerPattern}${randomStar}`);
+    }
+
+    details.push(`مستوى الاتساق: ${consistencyScore}%`);
+
+    // إضافة تحذير إضافي إذا كانت النسب عالية
+    if (quickAnswerPercentage >= 40 || randomPatternPercentage >= 40) {
+      details.push("⚠️ نمط إجابة مشكوك فيه");
+    }
+
+    document.getElementById("contradictionDetails").textContent =
+      details.join(" | ");
+
+    // إظهار الزر للمطور
+    document.getElementById("advancedAnalysisBtn").classList.remove("hidden");
+  }
+}
+
+function toggleAdvancedAnalysis() {
+  const markers = document.getElementById("contradictionMarkers");
+  if (markers.classList.contains("hidden")) {
+    markers.classList.remove("hidden");
+    document.getElementById("advancedAnalysisBtn").textContent =
+      "🔍 إخفاء التحليل";
+  } else {
+    markers.classList.add("hidden");
+    document.getElementById("advancedAnalysisBtn").textContent =
+      "🔍 تحليل متقدم";
+  }
+}
+
+function calculatePersonalityType() {
+  let type = "";
+
+  // حساب النمط بناءً على النقاط مع نظام موثوقية محسن
+
+  // جمع جميع الإجابات لتحليل أعمق
+  const allAnswers = getAllAnswers();
+  const dimensionWeights = calculateDimensionWeights(allAnswers);
+
+  // E vs I - مصدر الطاقة
+  const eiResult = calculateDimensionType(["E", "I"], dimensionWeights);
+  type += eiResult.type;
+
+  // S vs N - جمع المعلومات
+  const snResult = calculateDimensionType(["S", "N"], dimensionWeights);
+  type += snResult.type;
+
+  // T vs F - اتخاذ القرارات
+  const tfResult = calculateDimensionType(["T", "F"], dimensionWeights);
+  type += tfResult.type;
+
+  // J vs P - نمط الحياة
+  const jpResult = calculateDimensionType(["J", "P"], dimensionWeights);
+  type += jpResult.type;
+
+  // console.log('النمط المحسوب:', type);
+  // console.log('تفاصيل الحساب:', {
+  //     EI: eiResult,
+  //     SN: snResult,
+  //     TF: tfResult,
+  //     JP: jpResult
+  // });
+
+  return type;
+}
+
+// حساب أوزان الأبعاد بناءً على جودة الإجابات
+function calculateDimensionWeights(allAnswers) {
+  const weights = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
+
+  allAnswers.forEach((answer) => {
+    // حساب وزن الإجابة بناءً على عدة عوامل
+    let weight = 1.0;
+
+    // تقليل الوزن للإجابات السريعة جداً
+    if (answer.timeSpent < 2) {
+      weight *= 0.3;
+    } else if (answer.timeSpent < 4) {
+      weight *= 0.7;
+    } else if (answer.timeSpent > 60) {
+      weight *= 0.8; // تقليل طفيف للإجابات البطيئة جداً
+    }
+
+    // زيادة الوزن للمسارات المتخصصة
+    if (answer.path === 3 || answer.path === 4) {
+      // مسار العمل والعلاقات
+      weight *= 1.2;
+    }
+
+    // زيادة الوزن للأسئلة المعقدة (ترتيب، خيارات متعددة)
+    if (answer.type === "ranking" || answer.type === "checkbox") {
+      weight *= 1.3;
+    }
+
+    // زيادة الوزن للأسئلة المقياسية
+    if (answer.type === "scale") {
+      weight *= 1.1;
+    }
+
+    // توزيع الوزن على الأبعاد
+    if (
+      typeof answer.dimension === "string" &&
+      weights.hasOwnProperty(answer.dimension)
+    ) {
+      weights[answer.dimension] += weight;
+    } else if (
+      answer.dimension &&
+      (typeof answer.dimension === "object" || answer.dimension.includes(":"))
+    ) {
+      try {
+        let dimensionScores;
+        if (answer.dimension.includes(":")) {
+          dimensionScores = {};
+          const parts = answer.dimension.split(",");
+          parts.forEach((part) => {
+            const [dim, score] = part.split(":");
+            if (weights.hasOwnProperty(dim)) {
+              dimensionScores[dim] = parseInt(score) || 0;
+            }
+          });
+        } else {
+          dimensionScores = JSON.parse(answer.dimension);
         }
 
-        function showContradictionMarkers() {
-            // عرض علامات التناقض للمطور فقط
-            if (contradictionFlags.length > 0 || quickAnswerCount > 5 || randomAnswerPattern > 1) {
-                const details = [];
+        Object.keys(dimensionScores).forEach((dim) => {
+          if (weights.hasOwnProperty(dim)) {
+            weights[dim] += dimensionScores[dim] * weight;
+          }
+        });
+      } catch (e) {
+        // console.log('Could not parse complex dimension for weighting');
+      }
+    }
+  });
 
-                // حساب النسب للتحديد إذا كان المختبر اختار عشوائي أو بسرعة
-                const totalQuestions = Object.values(allPathAnswers).reduce((sum, pathAnswers) => sum + pathAnswers.length, 0);
-                const quickAnswerPercentage = totalQuestions > 0 ? (quickAnswerCount / totalQuestions) * 100 : 0;
-                const randomPatternPercentage = totalQuestions > 0 ? (randomAnswerPattern / totalQuestions) * 100 : 0;
+  return weights;
+}
 
-                // إضافة نجمة إذا تجاوزت النسبة 40%
-                const quickStar = quickAnswerPercentage >= 40 ? ' ⭐' : '';
-                const randomStar = randomPatternPercentage >= 40 ? ' ⭐' : '';
+// حساب نوع البُعد بناءً على الأوزان المحسنة
+function calculateDimensionType(dimensions, weights) {
+  const [dim1, dim2] = dimensions;
+  const score1 = weights[dim1] || 0;
+  const score2 = weights[dim2] || 0;
+  const total = score1 + score2;
 
-                if (contradictionFlags.length > 0) {
-                    details.push(`تناقضات: ${contradictionFlags.length}`);
-                }
+  if (total === 0) {
+    // في حالة عدم وجود بيانات، استخدم التفضيل الافتراضي
+    return {
+      type: dim1,
+      confidence: 0,
+      percentage: 50,
+      reason: "no_data_default",
+    };
+  }
+  //مهم   total !== 0 ? :0
+  const percentage1 = Math.round((score1 / total) * 100);
+  const percentage2 = 100 - percentage1;
+  const difference = Math.abs(percentage1 - percentage2);
 
-                if (quickAnswerCount > 5) {
-                    details.push(`إجابات سريعة: ${quickAnswerCount}${quickStar}`);
-                }
+  // تحديد النوع المهيمن
+  let dominantType, dominantPercentage;
+  if (score1 > score2) {
+    dominantType = dim1;
+    dominantPercentage = percentage1;
+  } else if (score2 > score1) {
+    dominantType = dim2;
+    dominantPercentage = percentage2;
+  } else {
+    // في حالة التعادل التام، استخدم الإجابات الأحدث
+    const recentPreference = getRecentPreference(dimensions);
+    dominantType = recentPreference || dim1;
+    dominantPercentage = 50;
+  }
 
-                if (randomAnswerPattern > 1) {
-                    details.push(`أنماط عشوائية: ${randomAnswerPattern}${randomStar}`);
-                }
+  // حساب مستوى الثقة
+  let confidence;
+  if (difference >= 40) {
+    confidence = "high"; // ثقة عالية
+  } else if (difference >= 20) {
+    confidence = "medium"; // ثقة متوسطة
+  } else if (difference >= 10) {
+    confidence = "low"; // ثقة منخفضة
+  } else {
+    confidence = "balanced"; // متوازن
+  }
 
-                details.push(`مستوى الاتساق: ${consistencyScore}%`);
+  return {
+    type: dominantType,
+    confidence: confidence,
+    percentage: dominantPercentage,
+    difference: difference,
+    scores: { [dim1]: score1, [dim2]: score2 },
+    reason: difference < 5 ? "very_close" : "clear_preference",
+  };
+}
 
-                // إضافة تحذير إضافي إذا كانت النسب عالية
-                if (quickAnswerPercentage >= 40 || randomPatternPercentage >= 40) {
-                    details.push('⚠️ نمط إجابة مشكوك فيه');
-                }
+// وظيفة مساعدة لاختيار التفضيل الأحدث في حالة التوازن
+function getRecentPreference(dimensions) {
+  const allAnswers = getAllAnswers();
+  const recentAnswers = allAnswers.slice(-10); // آخر 10 إجابات
 
-                document.getElementById('contradictionDetails').textContent = details.join(' | ');
+  let counts = {};
+  dimensions.forEach((dim) => (counts[dim] = 0));
 
-                // إظهار الزر للمطور
-                document.getElementById('advancedAnalysisBtn').classList.remove('hidden');
+  recentAnswers.forEach((answer) => {
+    if (
+      typeof answer.dimension === "string" &&
+      dimensions.includes(answer.dimension)
+    ) {
+      counts[answer.dimension]++;
+    } else if (
+      typeof answer.dimension === "object" ||
+      (answer.dimension && answer.dimension.includes(":"))
+    ) {
+      // معالجة الإجابات المعقدة (مقياس، ترتيب، خيارات متعددة)
+      try {
+        let dimensionScores;
+        if (answer.dimension.includes(":")) {
+          dimensionScores = {};
+          const parts = answer.dimension.split(",");
+          parts.forEach((part) => {
+            const [dim, score] = part.split(":");
+            if (dimensions.includes(dim)) {
+              dimensionScores[dim] = parseInt(score);
             }
+          });
+        } else {
+          dimensionScores = JSON.parse(answer.dimension);
         }
 
-        function toggleAdvancedAnalysis() {
-            const markers = document.getElementById('contradictionMarkers');
-            if (markers.classList.contains('hidden')) {
-                markers.classList.remove('hidden');
-                document.getElementById('advancedAnalysisBtn').textContent = '🔍 إخفاء التحليل';
-            } else {
-                markers.classList.add('hidden');
-                document.getElementById('advancedAnalysisBtn').textContent = '🔍 تحليل متقدم';
+        Object.keys(dimensionScores).forEach((dim) => {
+          if (dimensions.includes(dim)) {
+            counts[dim] += dimensionScores[dim] || 0;
+          }
+        });
+      } catch (e) {
+        // console.log('Could not parse complex dimension');
+      }
+    }
+  });
+
+  // إرجاع البُعد الأعلى نقاطاً
+  return Object.keys(counts).reduce((a, b) => (counts[a] > counts[b] ? a : b));
+}
+
+function calculateConfidenceLevel() {
+  const totalQuestions = Object.values(allPathAnswers).reduce(
+    (sum, pathAnswers) => sum + pathAnswers.length,
+    0
+  );
+
+  // كشف التناقضات
+  detectContradictions();
+
+  // جمع جميع الإجابات لتحليل أعمق
+  const allAnswers = getAllAnswers();
+  const dimensionWeights = calculateDimensionWeights(allAnswers);
+
+  // حساب وضوح كل بُعد بناءً على الأوزان المحسنة
+  const dimensions = [
+    { name: "EI", dims: ["E", "I"] },
+    { name: "SN", dims: ["S", "N"] },
+    { name: "TF", dims: ["T", "F"] },
+    { name: "JP", dims: ["J", "P"] },
+  ];
+
+  let totalClarity = 0;
+  let validDimensions = 0;
+  let dimensionResults = [];
+
+  dimensions.forEach((dim) => {
+    const result = calculateDimensionType(dim.dims, dimensionWeights);
+    if (result.scores) {
+      const total = Object.values(result.scores).reduce(
+        (sum, score) => sum + score,
+        0
+      );
+      if (total > 0) {
+        totalClarity += result.difference;
+        validDimensions++;
+        dimensionResults.push({
+          name: dim.name,
+          clarity: result.difference,
+          confidence: result.confidence,
+          total: total,
+        });
+        // console.log(`${dim.name}: وضوح ${result.difference}%, ثقة: ${result.confidence}`);
+      }
+    }
+  });
+
+  const avgClarity = validDimensions > 0 ? totalClarity / validDimensions : 0;
+  // console.log('متوسط الوضوح المحسن:', avgClarity.toFixed(1) + '%');
+
+  // حساب مستوى الثقة المحسن بناءً على عوامل متعددة
+  let baseConfidence = 70; // قاعدة أكثر واقعية
+
+  // مكافأة الوضوح المحسن (بناءً على الأوزان)
+  const clarityBonus = Math.min(25, (avgClarity / 100) * 25);
+
+  // مكافأة عدد الأسئلة مع حد أقصى واقعي
+  const questionBonus = Math.min(8, (totalQuestions / 50) * 8);
+
+  // مكافأة إكمال جميع المسارات
+  const pathCompletionBonus = (completedPaths.length / 5) * 6;
+
+  // مكافأة جودة الإجابات (وقت مناسب)
+  const timings = allAnswers.map((a) => a.timeSpent).filter((t) => t > 0);
+  let qualityBonus = 0;
+  if (timings.length > 0) {
+    const avgTime = timings.reduce((sum, t) => sum + t, 0) / timings.length;
+    const goodTimingRatio =
+      timings.filter((t) => t >= 4 && t <= 30).length / timings.length;
+    qualityBonus = goodTimingRatio * 8; // مكافأة للأوقات المناسبة
+  }
+
+  // مكافأة التنوع في المسارات
+  const pathDiversityBonus = completedPaths.length >= 4 ? 3 : 0;
+
+  // خصم للإجابات السريعة المفرطة (أكثر دقة)
+  const quickRatio = totalQuestions > 0 ? quickAnswerCount / totalQuestions : 0;
+  const quickAnswerPenalty = Math.min(20, quickRatio * 35);
+
+  // خصم للأنماط العشوائية (أكثر صرامة)
+  const randomPatternPenalty = Math.min(15, randomAnswerPattern * 6);
+
+  // خصم للتناقضات (متدرج)
+  const contradictionPenalty = Math.min(18, contradictionFlags.length * 4);
+
+  // خصم لعدم الاتساق (محسن)
+  const consistencyPenalty = ((100 - consistencyScore) / 100) * 25;
+
+  // خصم للأبعاد غير الواضحة
+  const unclearDimensionsCount = dimensionResults.filter(
+    (d) => d.clarity < 15
+  ).length;
+  const unclearPenalty = unclearDimensionsCount * 5;
+
+  // حساب الثقة النهائية
+  const finalConfidence =
+    baseConfidence +
+    clarityBonus +
+    questionBonus +
+    pathCompletionBonus +
+    qualityBonus +
+    pathDiversityBonus -
+    quickAnswerPenalty -
+    randomPatternPenalty -
+    contradictionPenalty -
+    consistencyPenalty -
+    unclearPenalty;
+
+  // تطبيق حدود واقعية للثقة
+  let confidence = Math.round(finalConfidence);
+
+  // تطبيق قواعد إضافية للثقة
+  if (quickRatio > 0.6) confidence = Math.min(confidence, 75); // حد أقصى للإجابات السريعة
+  if (contradictionFlags.length > 5) confidence = Math.min(confidence, 70); // حد أقصى للتناقضات
+  if (avgClarity < 20) confidence = Math.min(confidence, 80); // حد أقصى للوضوح المنخفض
+  if (totalQuestions < 30) confidence = Math.min(confidence, 85); // حد أقصى للأسئلة القليلة
+
+  confidence = Math.min(98, Math.max(55, confidence)); // حدود نهائية واقعية
+
+  // console.log('تفاصيل حساب الثقة المحسن:', {
+  //     baseConfidence,
+  //     clarityBonus: clarityBonus.toFixed(1),
+  //     questionBonus: questionBonus.toFixed(1),
+  //     pathCompletionBonus: pathCompletionBonus.toFixed(1),
+  //     qualityBonus: qualityBonus.toFixed(1),
+  //     pathDiversityBonus,
+  //     quickAnswerPenalty: quickAnswerPenalty.toFixed(1),
+  //     randomPatternPenalty: randomPatternPenalty.toFixed(1),
+  //     contradictionPenalty: contradictionPenalty.toFixed(1),
+  //     consistencyPenalty: consistencyPenalty.toFixed(1),
+  //     unclearPenalty,
+  //     finalConfidence: confidence,
+  //     avgClarity: avgClarity.toFixed(1),
+  //     quickRatio: (quickRatio * 100).toFixed(1) + '%'
+  // });
+
+  return confidence;
+}
+
+function detectContradictions() {
+  contradictionFlags = [];
+
+  // جمع جميع الإجابات من كل المسارات
+  const allAnswers = [];
+  Object.values(allPathAnswers).forEach((pathAnswers) => {
+    allAnswers.push(...pathAnswers);
+  });
+
+  if (allAnswers.length === 0) {
+    consistencyScore = 100;
+    return;
+  }
+
+  // تحليل أنماط الإجابة لكل بُعد
+  const dimensionScores = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
+  const dimensionCounts = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
+
+  allAnswers.forEach((answer) => {
+    if (
+      typeof answer.dimension === "string" &&
+      dimensionScores.hasOwnProperty(answer.dimension)
+    ) {
+      dimensionScores[answer.dimension]++;
+      dimensionCounts[answer.dimension]++;
+    } else if (
+      answer.dimension &&
+      (typeof answer.dimension === "object" || answer.dimension.includes(":"))
+    ) {
+      // معالجة الإجابات المعقدة
+      try {
+        let dimensionData;
+        if (answer.dimension.includes(":")) {
+          dimensionData = {};
+          const parts = answer.dimension.split(",");
+          parts.forEach((part) => {
+            const [dim, score] = part.split(":");
+            if (dimensionScores.hasOwnProperty(dim)) {
+              dimensionData[dim] = parseInt(score);
             }
+          });
+        } else {
+          dimensionData = JSON.parse(answer.dimension);
         }
 
-        function calculatePersonalityType() {
-            let type = '';
+        Object.keys(dimensionData).forEach((dim) => {
+          if (dimensionScores.hasOwnProperty(dim)) {
+            dimensionScores[dim] += dimensionData[dim];
+            dimensionCounts[dim]++;
+          }
+        });
+      } catch (e) {
+        // console.log('Could not parse complex dimension for contradiction detection');
+      }
+    }
+  });
 
-            // حساب النمط بناءً على النقاط مع نظام موثوقية محسن
+  // كشف التناقضات في الوقت
+  const timings = allAnswers.map((a) => a.timeSpent).filter((t) => t > 0);
+  if (timings.length > 10) {
+    const avgTime = timings.reduce((sum, t) => sum + t, 0) / timings.length;
+    const stdDev = Math.sqrt(
+      timings.reduce((sum, t) => sum + Math.pow(t - avgTime, 2), 0) /
+        timings.length
+    );
 
-            // جمع جميع الإجابات لتحليل أعمق
-            const allAnswers = getAllAnswers();
-            const dimensionWeights = calculateDimensionWeights(allAnswers);
+    const veryFast = timings.filter((t) => t < 2).length;
+    const verySlow = timings.filter((t) => t > avgTime + 2 * stdDev).length;
+    const inconsistentTiming = (veryFast + verySlow) / timings.length;
 
-            // E vs I - مصدر الطاقة
-            const eiResult = calculateDimensionType(['E', 'I'], dimensionWeights);
-            type += eiResult.type;
+    if (inconsistentTiming > 0.3) {
+      // أكثر من 30% إجابات غير متسقة زمنياً
+      contradictionFlags.push("timing_inconsistency");
+    }
+  }
 
-            // S vs N - جمع المعلومات  
-            const snResult = calculateDimensionType(['S', 'N'], dimensionWeights);
-            type += snResult.type;
+  // كشف التناقضات في الأبعاد المتضادة
+  const contradictoryPairs = [
+    ["E", "I"],
+    ["S", "N"],
+    ["T", "F"],
+    ["J", "P"],
+  ];
 
-            // T vs F - اتخاذ القرارات
-            const tfResult = calculateDimensionType(['T', 'F'], dimensionWeights);
-            type += tfResult.type;
+  contradictoryPairs.forEach(([dim1, dim2]) => {
+    const score1 = dimensionScores[dim1];
+    const score2 = dimensionScores[dim2];
+    const total = score1 + score2;
 
-            // J vs P - نمط الحياة
-            const jpResult = calculateDimensionType(['J', 'P'], dimensionWeights);
-            type += jpResult.type;
+    if (total > 5) {
+      // فقط إذا كان هناك عدد كافٍ من الإجابات
+      const difference = Math.abs(score1 - score2);
+      const ratio = difference / total;
 
-            // console.log('النمط المحسوب:', type);
-            // console.log('تفاصيل الحساب:', {
-            //     EI: eiResult,
-            //     SN: snResult,
-            //     TF: tfResult,
-            //     JP: jpResult
-            // });
+      // إذا كانت النتائج متقاربة جداً (أقل من 10% فرق) مع عدد كبير من الإجابات
+      if (ratio < 0.1 && total > 15) {
+        contradictionFlags.push(`dimension_balance_${dim1}_${dim2}`);
+      }
 
-            return type;
+      // كشف التذبذب الشديد (تغيير مفاجئ في النمط)
+      const recentAnswers = allAnswers.slice(
+        -Math.min(10, Math.floor(allAnswers.length / 2))
+      );
+      let recentDim1 = 0,
+        recentDim2 = 0;
+
+      recentAnswers.forEach((answer) => {
+        if (answer.dimension === dim1) recentDim1++;
+        if (answer.dimension === dim2) recentDim2++;
+      });
+
+      const recentTotal = recentDim1 + recentDim2;
+      if (recentTotal > 3) {
+        const overallRatio = score1 / (score1 + score2);
+        const recentRatio = recentDim1 / (recentDim1 + recentDim2);
+
+        if (Math.abs(overallRatio - recentRatio) > 0.4) {
+          // تغيير كبير في النمط
+          contradictionFlags.push(`pattern_shift_${dim1}_${dim2}`);
         }
-
-        // حساب أوزان الأبعاد بناءً على جودة الإجابات
-        function calculateDimensionWeights(allAnswers) {
-            const weights = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
-
-            allAnswers.forEach(answer => {
-                // حساب وزن الإجابة بناءً على عدة عوامل
-                let weight = 1.0;
-
-                // تقليل الوزن للإجابات السريعة جداً
-                if (answer.timeSpent < 2) {
-                    weight *= 0.3;
-                } else if (answer.timeSpent < 4) {
-                    weight *= 0.7;
-                } else if (answer.timeSpent > 60) {
-                    weight *= 0.8; // تقليل طفيف للإجابات البطيئة جداً
-                }
-
-                // زيادة الوزن للمسارات المتخصصة
-                if (answer.path === 3 || answer.path === 4) { // مسار العمل والعلاقات
-                    weight *= 1.2;
-                }
-
-                // زيادة الوزن للأسئلة المعقدة (ترتيب، خيارات متعددة)
-                if (answer.type === 'ranking' || answer.type === 'checkbox') {
-                    weight *= 1.3;
-                }
-
-                // زيادة الوزن للأسئلة المقياسية
-                if (answer.type === 'scale') {
-                    weight *= 1.1;
-                }
-
-                // توزيع الوزن على الأبعاد
-                if (typeof answer.dimension === 'string' && weights.hasOwnProperty(answer.dimension)) {
-                    weights[answer.dimension] += weight;
-                } else if (answer.dimension && (typeof answer.dimension === 'object' || answer.dimension.includes(':'))) {
-                    try {
-                        let dimensionScores;
-                        if (answer.dimension.includes(':')) {
-                            dimensionScores = {};
-                            const parts = answer.dimension.split(',');
-                            parts.forEach(part => {
-                                const [dim, score] = part.split(':');
-                                if (weights.hasOwnProperty(dim)) {
-                                    dimensionScores[dim] = parseInt(score) || 0;
-                                }
-                            });
-                        } else {
-                            dimensionScores = JSON.parse(answer.dimension);
-                        }
-
-                        Object.keys(dimensionScores).forEach(dim => {
-                            if (weights.hasOwnProperty(dim)) {
-                                weights[dim] += dimensionScores[dim] * weight;
-                            }
-                        });
-                    } catch (e) {
-                        // console.log('Could not parse complex dimension for weighting');
-                    }
-                }
-            });
-
-            return weights;
-        }
-
-        // حساب نوع البُعد بناءً على الأوزان المحسنة
-        function calculateDimensionType(dimensions, weights) {
-            const [dim1, dim2] = dimensions;
-            const score1 = weights[dim1] || 0;
-            const score2 = weights[dim2] || 0;
-            const total = score1 + score2;
-
-            if (total === 0) {
-                // في حالة عدم وجود بيانات، استخدم التفضيل الافتراضي
-                return {
-                    type: dim1,
-                    confidence: 0,
-                    percentage: 50,
-                    reason: 'no_data_default'
-                };
-            }
-            //مهم   total !== 0 ? :0
-            const percentage1 = Math.round((score1 / total) * 100);
-            const percentage2 = 100 - percentage1;
-            const difference = Math.abs(percentage1 - percentage2);
-
-            // تحديد النوع المهيمن
-            let dominantType, dominantPercentage;
-            if (score1 > score2) {
-                dominantType = dim1;
-                dominantPercentage = percentage1;
-            } else if (score2 > score1) {
-                dominantType = dim2;
-                dominantPercentage = percentage2;
-            } else {
-                // في حالة التعادل التام، استخدم الإجابات الأحدث
-                const recentPreference = getRecentPreference(dimensions);
-                dominantType = recentPreference || dim1;
-                dominantPercentage = 50;
-            }
-
-            // حساب مستوى الثقة
-            let confidence;
-            if (difference >= 40) {
-                confidence = 'high'; // ثقة عالية
-            } else if (difference >= 20) {
-                confidence = 'medium'; // ثقة متوسطة
-            } else if (difference >= 10) {
-                confidence = 'low'; // ثقة منخفضة
-            } else {
-                confidence = 'balanced'; // متوازن
-            }
-
-            return {
-                type: dominantType,
-                confidence: confidence,
-                percentage: dominantPercentage,
-                difference: difference,
-                scores: { [dim1]: score1, [dim2]: score2 },
-                reason: difference < 5 ? 'very_close' : 'clear_preference'
-            };
-        }
-
-        // وظيفة مساعدة لاختيار التفضيل الأحدث في حالة التوازن
-        function getRecentPreference(dimensions) {
-            const allAnswers = getAllAnswers();
-            const recentAnswers = allAnswers.slice(-10); // آخر 10 إجابات
-
-            let counts = {};
-            dimensions.forEach(dim => counts[dim] = 0);
-
-            recentAnswers.forEach(answer => {
-                if (typeof answer.dimension === 'string' && dimensions.includes(answer.dimension)) {
-                    counts[answer.dimension]++;
-                } else if (typeof answer.dimension === 'object' || (answer.dimension && answer.dimension.includes(':'))) {
-                    // معالجة الإجابات المعقدة (مقياس، ترتيب، خيارات متعددة)
-                    try {
-                        let dimensionScores;
-                        if (answer.dimension.includes(':')) {
-                            dimensionScores = {};
-                            const parts = answer.dimension.split(',');
-                            parts.forEach(part => {
-                                const [dim, score] = part.split(':');
-                                if (dimensions.includes(dim)) {
-                                    dimensionScores[dim] = parseInt(score);
-                                }
-                            });
-                        } else {
-                            dimensionScores = JSON.parse(answer.dimension);
-                        }
-
-                        Object.keys(dimensionScores).forEach(dim => {
-                            if (dimensions.includes(dim)) {
-                                counts[dim] += dimensionScores[dim] || 0;
-                            }
-                        });
-                    } catch (e) {
-                        // console.log('Could not parse complex dimension');
-                    }
-                }
-            });
-
-            // إرجاع البُعد الأعلى نقاطاً
-            return Object.keys(counts).reduce((a, b) => counts[a] > counts[b] ? a : b);
-        }
-
-        function calculateConfidenceLevel() {
-            const totalQuestions = Object.values(allPathAnswers).reduce((sum, pathAnswers) => sum + pathAnswers.length, 0);
-
-            // كشف التناقضات
-            detectContradictions();
-
-            // جمع جميع الإجابات لتحليل أعمق
-            const allAnswers = getAllAnswers();
-            const dimensionWeights = calculateDimensionWeights(allAnswers);
-
-            // حساب وضوح كل بُعد بناءً على الأوزان المحسنة
-            const dimensions = [
-                { name: 'EI', dims: ['E', 'I'] },
-                { name: 'SN', dims: ['S', 'N'] },
-                { name: 'TF', dims: ['T', 'F'] },
-                { name: 'JP', dims: ['J', 'P'] }
-            ];
-
-            let totalClarity = 0;
-            let validDimensions = 0;
-            let dimensionResults = [];
-
-            dimensions.forEach(dim => {
-                const result = calculateDimensionType(dim.dims, dimensionWeights);
-                if (result.scores) {
-                    const total = Object.values(result.scores).reduce((sum, score) => sum + score, 0);
-                    if (total > 0) {
-                        totalClarity += result.difference;
-                        validDimensions++;
-                        dimensionResults.push({
-                            name: dim.name,
-                            clarity: result.difference,
-                            confidence: result.confidence,
-                            total: total
-                        });
-                        // console.log(`${dim.name}: وضوح ${result.difference}%, ثقة: ${result.confidence}`);
-                    }
-                }
-            });
-
-            const avgClarity = validDimensions > 0 ? totalClarity / validDimensions : 0;
-            // console.log('متوسط الوضوح المحسن:', avgClarity.toFixed(1) + '%');
-
-            // حساب مستوى الثقة المحسن بناءً على عوامل متعددة
-            let baseConfidence = 70; // قاعدة أكثر واقعية
-
-            // مكافأة الوضوح المحسن (بناءً على الأوزان)
-            const clarityBonus = Math.min(25, (avgClarity / 100) * 25);
-
-            // مكافأة عدد الأسئلة مع حد أقصى واقعي
-            const questionBonus = Math.min(8, (totalQuestions / 50) * 8);
-
-            // مكافأة إكمال جميع المسارات
-            const pathCompletionBonus = (completedPaths.length / 5) * 6;
-
-            // مكافأة جودة الإجابات (وقت مناسب)
-            const timings = allAnswers.map(a => a.timeSpent).filter(t => t > 0);
-            let qualityBonus = 0;
-            if (timings.length > 0) {
-                const avgTime = timings.reduce((sum, t) => sum + t, 0) / timings.length;
-                const goodTimingRatio = timings.filter(t => t >= 4 && t <= 30).length / timings.length;
-                qualityBonus = goodTimingRatio * 8; // مكافأة للأوقات المناسبة
-            }
-
-            // مكافأة التنوع في المسارات
-            const pathDiversityBonus = completedPaths.length >= 4 ? 3 : 0;
-
-            // خصم للإجابات السريعة المفرطة (أكثر دقة)
-            const quickRatio = totalQuestions > 0 ? quickAnswerCount / totalQuestions : 0;
-            const quickAnswerPenalty = Math.min(20, quickRatio * 35);
-
-            // خصم للأنماط العشوائية (أكثر صرامة)
-            const randomPatternPenalty = Math.min(15, randomAnswerPattern * 6);
-
-            // خصم للتناقضات (متدرج)
-            const contradictionPenalty = Math.min(18, contradictionFlags.length * 4);
-
-            // خصم لعدم الاتساق (محسن)
-            const consistencyPenalty = ((100 - consistencyScore) / 100) * 25;
-
-            // خصم للأبعاد غير الواضحة
-            const unclearDimensionsCount = dimensionResults.filter(d => d.clarity < 15).length;
-            const unclearPenalty = unclearDimensionsCount * 5;
-
-            // حساب الثقة النهائية
-            const finalConfidence = baseConfidence
-                + clarityBonus
-                + questionBonus
-                + pathCompletionBonus
-                + qualityBonus
-                + pathDiversityBonus
-                - quickAnswerPenalty
-                - randomPatternPenalty
-                - contradictionPenalty
-                - consistencyPenalty
-                - unclearPenalty;
-
-            // تطبيق حدود واقعية للثقة
-            let confidence = Math.round(finalConfidence);
-
-            // تطبيق قواعد إضافية للثقة
-            if (quickRatio > 0.6) confidence = Math.min(confidence, 75); // حد أقصى للإجابات السريعة
-            if (contradictionFlags.length > 5) confidence = Math.min(confidence, 70); // حد أقصى للتناقضات
-            if (avgClarity < 20) confidence = Math.min(confidence, 80); // حد أقصى للوضوح المنخفض
-            if (totalQuestions < 30) confidence = Math.min(confidence, 85); // حد أقصى للأسئلة القليلة
-
-            confidence = Math.min(98, Math.max(55, confidence)); // حدود نهائية واقعية
-
-            // console.log('تفاصيل حساب الثقة المحسن:', {
-            //     baseConfidence,
-            //     clarityBonus: clarityBonus.toFixed(1),
-            //     questionBonus: questionBonus.toFixed(1),
-            //     pathCompletionBonus: pathCompletionBonus.toFixed(1),
-            //     qualityBonus: qualityBonus.toFixed(1),
-            //     pathDiversityBonus,
-            //     quickAnswerPenalty: quickAnswerPenalty.toFixed(1),
-            //     randomPatternPenalty: randomPatternPenalty.toFixed(1),
-            //     contradictionPenalty: contradictionPenalty.toFixed(1),
-            //     consistencyPenalty: consistencyPenalty.toFixed(1),
-            //     unclearPenalty,
-            //     finalConfidence: confidence,
-            //     avgClarity: avgClarity.toFixed(1),
-            //     quickRatio: (quickRatio * 100).toFixed(1) + '%'
-            // });
-
-            return confidence;
-        }
-
-        function detectContradictions() {
-            contradictionFlags = [];
-
-            // جمع جميع الإجابات من كل المسارات
-            const allAnswers = [];
-            Object.values(allPathAnswers).forEach(pathAnswers => {
-                allAnswers.push(...pathAnswers);
-            });
-
-            if (allAnswers.length === 0) {
-                consistencyScore = 100;
-                return;
-            }
-
-            // تحليل أنماط الإجابة لكل بُعد
-            const dimensionScores = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
-            const dimensionCounts = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
-
-            allAnswers.forEach(answer => {
-                if (typeof answer.dimension === 'string' && dimensionScores.hasOwnProperty(answer.dimension)) {
-                    dimensionScores[answer.dimension]++;
-                    dimensionCounts[answer.dimension]++;
-                } else if (answer.dimension && (typeof answer.dimension === 'object' || answer.dimension.includes(':'))) {
-                    // معالجة الإجابات المعقدة
-                    try {
-                        let dimensionData;
-                        if (answer.dimension.includes(':')) {
-                            dimensionData = {};
-                            const parts = answer.dimension.split(',');
-                            parts.forEach(part => {
-                                const [dim, score] = part.split(':');
-                                if (dimensionScores.hasOwnProperty(dim)) {
-                                    dimensionData[dim] = parseInt(score);
-                                }
-                            });
-                        } else {
-                            dimensionData = JSON.parse(answer.dimension);
-                        }
-
-                        Object.keys(dimensionData).forEach(dim => {
-                            if (dimensionScores.hasOwnProperty(dim)) {
-                                dimensionScores[dim] += dimensionData[dim];
-                                dimensionCounts[dim]++;
-                            }
-                        });
-                    } catch (e) {
-                        // console.log('Could not parse complex dimension for contradiction detection');
-                    }
-                }
-            });
-
-            // كشف التناقضات في الوقت
-            const timings = allAnswers.map(a => a.timeSpent).filter(t => t > 0);
-            if (timings.length > 10) {
-                const avgTime = timings.reduce((sum, t) => sum + t, 0) / timings.length;
-                const stdDev = Math.sqrt(timings.reduce((sum, t) => sum + Math.pow(t - avgTime, 2), 0) / timings.length);
-
-                const veryFast = timings.filter(t => t < 2).length;
-                const verySlow = timings.filter(t => t > avgTime + (2 * stdDev)).length;
-                const inconsistentTiming = (veryFast + verySlow) / timings.length;
-
-                if (inconsistentTiming > 0.3) { // أكثر من 30% إجابات غير متسقة زمنياً
-                    contradictionFlags.push('timing_inconsistency');
-                }
-            }
-
-            // كشف التناقضات في الأبعاد المتضادة
-            const contradictoryPairs = [
-                ['E', 'I'], ['S', 'N'], ['T', 'F'], ['J', 'P']
-            ];
-
-            contradictoryPairs.forEach(([dim1, dim2]) => {
-                const score1 = dimensionScores[dim1];
-                const score2 = dimensionScores[dim2];
-                const total = score1 + score2;
-
-                if (total > 5) { // فقط إذا كان هناك عدد كافٍ من الإجابات
-                    const difference = Math.abs(score1 - score2);
-                    const ratio = difference / total;
-
-                    // إذا كانت النتائج متقاربة جداً (أقل من 10% فرق) مع عدد كبير من الإجابات
-                    if (ratio < 0.1 && total > 15) {
-                        contradictionFlags.push(`dimension_balance_${dim1}_${dim2}`);
-                    }
-
-                    // كشف التذبذب الشديد (تغيير مفاجئ في النمط)
-                    const recentAnswers = allAnswers.slice(-Math.min(10, Math.floor(allAnswers.length / 2)));
-                    let recentDim1 = 0, recentDim2 = 0;
-
-                    recentAnswers.forEach(answer => {
-                        if (answer.dimension === dim1) recentDim1++;
-                        if (answer.dimension === dim2) recentDim2++;
-                    });
-
-                    const recentTotal = recentDim1 + recentDim2;
-                    if (recentTotal > 3) {
-                        const overallRatio = score1 / (score1 + score2);
-                        const recentRatio = recentDim1 / (recentDim1 + recentDim2);
-
-                        if (Math.abs(overallRatio - recentRatio) > 0.4) { // تغيير كبير في النمط
-                            contradictionFlags.push(`pattern_shift_${dim1}_${dim2}`);
-                        }
-                    }
-                }
-            });
-
-            // كشف الإجابات العشوائية المحتملة
-            if (allAnswers.length > 20) {
-                const pathConsistency = {};
-                Object.keys(allPathAnswers).forEach(pathNum => {
-                    const pathAnswers = allPathAnswers[pathNum];
-                    if (pathAnswers.length > 5) {
-                        const pathTimings = pathAnswers.map(a => a.timeSpent).filter(t => t > 0);
-                        const avgPathTime = pathTimings.reduce((sum, t) => sum + t, 0) / pathTimings.length;
-                        const veryQuickInPath = pathTimings.filter(t => t < 3).length;
-
-                        pathConsistency[pathNum] = {
-                            avgTime: avgPathTime,
-                            quickRatio: veryQuickInPath / pathTimings.length
-                        };
-                    }
-                });
-
-                // إذا كان هناك مسار واحد أو أكثر بنسبة إجابات سريعة عالية
-                const suspiciousPaths = Object.values(pathConsistency).filter(p => p.quickRatio > 0.6);
-                if (suspiciousPaths.length > 0) {
-                    contradictionFlags.push('potential_random_answers');
-                }
-            }
-
-            // حساب نقاط الاتساق المحسن
-            consistencyScore = 100;
-
-            // خصم للإجابات السريعة المفرطة
-            const quickRatio = allAnswers.length > 0 ? quickAnswerCount / allAnswers.length : 0;
-            if (quickRatio > 0.3) consistencyScore -= Math.min(25, quickRatio * 50);
-
-            // خصم للأنماط العشوائية
-            if (randomAnswerPattern > 2) consistencyScore -= Math.min(20, randomAnswerPattern * 8);
-
-            // خصم للتناقضات
-            if (contradictionFlags.length > 0) {
-                const contradictionPenalty = Math.min(30, contradictionFlags.length * 8);
-                consistencyScore -= contradictionPenalty;
-            }
-
-            // مكافأة للاتساق الزمني
-            if (timings.length > 10) {
-                const avgTime = timings.reduce((sum, t) => sum + t, 0) / timings.length;
-                const consistentTimings = timings.filter(t => t >= avgTime * 0.5 && t <= avgTime * 2).length;
-                const timeConsistencyRatio = consistentTimings / timings.length;
-
-                if (timeConsistencyRatio > 0.7) {
-                    consistencyScore += 5; // مكافأة صغيرة للاتساق الزمني
-                }
-            }
-
-            consistencyScore = Math.max(30, Math.min(100, consistencyScore));
-
-            // console.log('تحليل التناقضات:', {
-            //     contradictionFlags,
-            //     quickRatio: (quickRatio * 100).toFixed(1) + '%',
-            //     randomPatterns: randomAnswerPattern,
-            //     consistencyScore
-            // });
-        }
-
-        function showDimensionsAnalysis() {
-            const dimensionsContainer = document.getElementById('dimensionsAnalysis');
-
-            // جمع جميع الإجابات وحساب الأوزان المحسنة
-            const allAnswers = getAllAnswers();
-            const dimensionWeights = calculateDimensionWeights(allAnswers);
-
-            const dimensions = [
-                {
-                    name: 'مصدر الطاقة',
-                    dims: ['E', 'I'],
-                    labels: ['انبساط (E)', 'انطواء (I)'],
-                    icon: '⚡'
-                },
-                {
-                    name: 'جمع المعلومات',
-                    dims: ['S', 'N'],
-                    labels: ['حسّي (S)', 'حدسي (N)'],
-                    icon: '🔍'
-                },
-                {
-                    name: 'اتخاذ القرارات',
-                    dims: ['T', 'F'],
-                    labels: ['تفكير (T)', 'شعور (F)'],
-                    icon: '⚖️'
-                },
-                {
-                    name: 'نمط الحياة',
-                    dims: ['J', 'P'],
-                    labels: ['حكم (J)', 'إدراك (P)'],
-                    icon: '📅'
-                }
-            ];
-
-            let sfat = [];
-            dimensionsContainer.innerHTML = dimensions.map((dim, index) => {
-                const result = calculateDimensionType(dim.dims, dimensionWeights);
-                const [dim1, dim2] = dim.dims;
-                const [label1, label2] = dim.labels;
-                // حساب النسب المئوية بناءً على الأوزان المحسنة
-                const score1 = result.scores[dim1] || 0;
-                const score2 = result.scores[dim2] || 0;
-                const total = score1 + score2;
-
-                let percent1, percent2, dominant, dominantPercent, confidenceText, confidenceColor;
-
-                if (total > 0) {
-                    percent1 = Math.round((score1 / total) * 100);
-                    percent2 = 100 - percent1;
-                    dominant = percent1 > percent2 ? label1 : percent2 > percent1 ? label2 : 'متوازن';
-                    dominantPercent = Math.max(percent1, percent2);
-                } else {
-                    percent1 = percent2 = 50;
-                    dominant = 'غير محدد';
-                    dominantPercent = 50;
-                }
-                sfat.push({ name: dominant, persent: dominantPercent })
-
-                // تحديد لون ونص الثقة
-                switch (result.confidence) {
-                    case 'high':
-                        confidenceText = 'ثقة عالية';
-                        confidenceColor = 'text-green-600 bg-green-100';
-                        break;
-                    case 'medium':
-                        confidenceText = 'ثقة متوسطة';
-                        confidenceColor = 'text-blue-600 bg-blue-100';
-                        break;
-                    case 'low':
-                        confidenceText = 'ثقة منخفضة';
-                        confidenceColor = 'text-yellow-600 bg-yellow-100';
-                        break;
-                    case 'balanced':
-                        confidenceText = 'متوازن';
-                        confidenceColor = 'text-purple-600 bg-purple-100';
-                        break;
-                    default:
-                        confidenceText = 'غير محدد';
-                        confidenceColor = 'text-gray-600 bg-gray-100';
-                }
-
-                // تحديد لون الشريط بناءً على مستوى الوضوح
-                let barColorClass;
-                if (result.difference >= 40) {
-                    barColorClass = 'from-green-500 to-green-600'; // واضح جداً
-                } else if (result.difference >= 20) {
-                    barColorClass = 'from-blue-500 to-blue-600'; // واضح
-                } else if (result.difference >= 10) {
-                    barColorClass = 'from-yellow-500 to-yellow-600'; // متوسط
-                } else {
-                    barColorClass = 'from-gray-500 to-gray-600'; // متوازن
-                }
-
-                return `
+      }
+    }
+  });
+
+  // كشف الإجابات العشوائية المحتملة
+  if (allAnswers.length > 20) {
+    const pathConsistency = {};
+    Object.keys(allPathAnswers).forEach((pathNum) => {
+      const pathAnswers = allPathAnswers[pathNum];
+      if (pathAnswers.length > 5) {
+        const pathTimings = pathAnswers
+          .map((a) => a.timeSpent)
+          .filter((t) => t > 0);
+        const avgPathTime =
+          pathTimings.reduce((sum, t) => sum + t, 0) / pathTimings.length;
+        const veryQuickInPath = pathTimings.filter((t) => t < 3).length;
+
+        pathConsistency[pathNum] = {
+          avgTime: avgPathTime,
+          quickRatio: veryQuickInPath / pathTimings.length,
+        };
+      }
+    });
+
+    // إذا كان هناك مسار واحد أو أكثر بنسبة إجابات سريعة عالية
+    const suspiciousPaths = Object.values(pathConsistency).filter(
+      (p) => p.quickRatio > 0.6
+    );
+    if (suspiciousPaths.length > 0) {
+      contradictionFlags.push("potential_random_answers");
+    }
+  }
+
+  // حساب نقاط الاتساق المحسن
+  consistencyScore = 100;
+
+  // خصم للإجابات السريعة المفرطة
+  const quickRatio =
+    allAnswers.length > 0 ? quickAnswerCount / allAnswers.length : 0;
+  if (quickRatio > 0.3) consistencyScore -= Math.min(25, quickRatio * 50);
+
+  // خصم للأنماط العشوائية
+  if (randomAnswerPattern > 2)
+    consistencyScore -= Math.min(20, randomAnswerPattern * 8);
+
+  // خصم للتناقضات
+  if (contradictionFlags.length > 0) {
+    const contradictionPenalty = Math.min(30, contradictionFlags.length * 8);
+    consistencyScore -= contradictionPenalty;
+  }
+
+  // مكافأة للاتساق الزمني
+  if (timings.length > 10) {
+    const avgTime = timings.reduce((sum, t) => sum + t, 0) / timings.length;
+    const consistentTimings = timings.filter(
+      (t) => t >= avgTime * 0.5 && t <= avgTime * 2
+    ).length;
+    const timeConsistencyRatio = consistentTimings / timings.length;
+
+    if (timeConsistencyRatio > 0.7) {
+      consistencyScore += 5; // مكافأة صغيرة للاتساق الزمني
+    }
+  }
+
+  consistencyScore = Math.max(30, Math.min(100, consistencyScore));
+
+  // console.log('تحليل التناقضات:', {
+  //     contradictionFlags,
+  //     quickRatio: (quickRatio * 100).toFixed(1) + '%',
+  //     randomPatterns: randomAnswerPattern,
+  //     consistencyScore
+  // });
+}
+
+function showDimensionsAnalysis() {
+  const dimensionsContainer = document.getElementById("dimensionsAnalysis");
+
+  // جمع جميع الإجابات وحساب الأوزان المحسنة
+  const allAnswers = getAllAnswers();
+  const dimensionWeights = calculateDimensionWeights(allAnswers);
+
+  const dimensions = [
+    {
+      name: "مصدر الطاقة",
+      dims: ["E", "I"],
+      labels: ["انبساط (E)", "انطواء (I)"],
+      icon: "⚡",
+    },
+    {
+      name: "جمع المعلومات",
+      dims: ["S", "N"],
+      labels: ["حسّي (S)", "حدسي (N)"],
+      icon: "🔍",
+    },
+    {
+      name: "اتخاذ القرارات",
+      dims: ["T", "F"],
+      labels: ["تفكير (T)", "شعور (F)"],
+      icon: "⚖️",
+    },
+    {
+      name: "نمط الحياة",
+      dims: ["J", "P"],
+      labels: ["حكم (J)", "إدراك (P)"],
+      icon: "📅",
+    },
+  ];
+
+  let sfat = [];
+  dimensionsContainer.innerHTML = dimensions
+    .map((dim, index) => {
+      const result = calculateDimensionType(dim.dims, dimensionWeights);
+      const [dim1, dim2] = dim.dims;
+      const [label1, label2] = dim.labels;
+      // حساب النسب المئوية بناءً على الأوزان المحسنة
+      const score1 = result.scores[dim1] || 0;
+      const score2 = result.scores[dim2] || 0;
+      const total = score1 + score2;
+
+      let percent1,
+        percent2,
+        dominant,
+        dominantPercent,
+        confidenceText,
+        confidenceColor;
+
+      if (total > 0) {
+        percent1 = Math.round((score1 / total) * 100);
+        percent2 = 100 - percent1;
+        dominant =
+          percent1 > percent2
+            ? label1
+            : percent2 > percent1
+            ? label2
+            : "متوازن";
+        dominantPercent = Math.max(percent1, percent2);
+      } else {
+        percent1 = percent2 = 50;
+        dominant = "غير محدد";
+        dominantPercent = 50;
+      }
+      sfat.push({ name: dominant, persent: dominantPercent });
+
+      // تحديد لون ونص الثقة
+      switch (result.confidence) {
+        case "high":
+          confidenceText = "ثقة عالية";
+          confidenceColor = "text-green-600 bg-green-100";
+          break;
+        case "medium":
+          confidenceText = "ثقة متوسطة";
+          confidenceColor = "text-blue-600 bg-blue-100";
+          break;
+        case "low":
+          confidenceText = "ثقة منخفضة";
+          confidenceColor = "text-yellow-600 bg-yellow-100";
+          break;
+        case "balanced":
+          confidenceText = "متوازن";
+          confidenceColor = "text-purple-600 bg-purple-100";
+          break;
+        default:
+          confidenceText = "غير محدد";
+          confidenceColor = "text-gray-600 bg-gray-100";
+      }
+
+      // تحديد لون الشريط بناءً على مستوى الوضوح
+      let barColorClass;
+      if (result.difference >= 40) {
+        barColorClass = "from-green-500 to-green-600"; // واضح جداً
+      } else if (result.difference >= 20) {
+        barColorClass = "from-blue-500 to-blue-600"; // واضح
+      } else if (result.difference >= 10) {
+        barColorClass = "from-yellow-500 to-yellow-600"; // متوسط
+      } else {
+        barColorClass = "from-gray-500 to-gray-600"; // متوازن
+      }
+
+      return `
                     <div class="bg-white p-5 rounded-lg border-2 border-gray-200 hover:border-blue-300 transition-all duration-300 shadow-sm hover:shadow-md">
                         <div class="flex justify-between items-start mb-3">
                             <div class="flex items-center">
                                 <span class="text-xl ml-2">${dim.icon}</span>
-                                <h5 class="font-semibold text-gray-800">${dim.name}</h5>
+                                <h5 class="font-semibold text-gray-800">${
+                                  dim.name
+                                }</h5>
                             </div>
                             <div class="text-right">
                                 <div class="text-sm font-bold text-gray-800">${dominant}</div>
@@ -3119,9 +3690,13 @@
                             <div class="w-full bg-gray-200 rounded-full h-4 mb-2 relative overflow-hidden">
                                 <div class="bg-gradient-to-r ${barColorClass} h-4 rounded-full transition-all duration-1000 shadow-inner" 
                                      style="width: ${percent1}%"></div>
-                                ${result.difference < 10 ? `
+                                ${
+                                  result.difference < 10
+                                    ? `
                                     <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-1 h-4 bg-white opacity-80"></div>
-                                ` : ''}
+                                `
+                                    : ""
+                                }
                             </div>
                             <div class="flex justify-between text-xs font-medium">
                                 <span class="text-gray-700">${percent1}%</span>
@@ -3133,154 +3708,211 @@
                         <div class="bg-gray-50 rounded-lg p-3 text-xs">
                             <div class="flex justify-between items-center mb-1">
                                 <span class="text-gray-600">النقاط الموزونة:</span>
-                                <span class="font-mono text-gray-800">${score1.toFixed(1)} : ${score2.toFixed(1)}</span>
+                                <span class="font-mono text-gray-800">${score1.toFixed(
+                                  1
+                                )} : ${score2.toFixed(1)}</span>
                             </div>
                             <div class="flex justify-between items-center mb-1">
                                 <span class="text-gray-600">مستوى الوضوح:</span>
-                                <span class="font-medium text-gray-800">${result.difference.toFixed(1)}%</span>
+                                <span class="font-medium text-gray-800">${result.difference.toFixed(
+                                  1
+                                )}%</span>
                             </div>
                             <div class="flex justify-between items-center">
                                 <span class="text-gray-600">إجمالي البيانات:</span>
-                                <span class="font-medium text-gray-800">${total.toFixed(1)} نقطة</span>
+                                <span class="font-medium text-gray-800">${total.toFixed(
+                                  1
+                                )} نقطة</span>
                             </div>
                         </div>
                     </div>
                 `;
-            }).join('');
+    })
+    .join("");
 
-            var data = new URLSearchParams();
-            data.append('data', JSON.stringify({ tops: sfat, time: testState.endTime, pers: personality.name, type }));
-            data.append('type', 'stat.p2');
-            data.append('ob', '1');
-            // fetch('', {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-            //     },
-            //     body: data
-            // }).then(() => {
+  var data = new URLSearchParams();
+  data.append(
+    "data",
+    JSON.stringify({
+      tops: sfat,
+      time: testState.endTime,
+      pers: personality.name,
+      type,
+    })
+  );
+  data.append("type", "stating");
+  data.append("ob", "1");
+  fetch("", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+    },
+    body: data,
+  })
+    .then(() => {
+      // location.reload()
+    })
+    .catch(() => {
+      alert("حصلت مشكلة في حفظ البيانات قد تضطر الى اعادة الاختبار");
+    });
+}
 
-            //     // location.reload()
+function showAdvancedAnalytics() {
+  // الرسم البياني الطولي المطور مع النسب والشرح
+  const scoresContainer = document.getElementById("scoresChart");
 
-            // }).catch(() => {
-            //     // إزالة رسالة الإكمال
-            //     alert("حصلت مشكلة في حفظ البيانات قد تضطر الى اعادة الاختبار")
-            // })
+  // تجميع الأبعاد في أزواج متضادة مع معلومات شاملة
+  const dimensionPairs = [
+    {
+      name: "مصدر الطاقة",
+      icon: "⚡",
+      color: "blue",
+      dimensions: [
+        {
+          key: "E",
+          name: "الانبساط",
+          fullName: "الانبساط (Extraversion)",
+          value: scores.E,
+          description: "يستمد طاقته من التفاعل مع العالم الخارجي والأشخاص",
+          characteristics: [
+            "يحب المناسبات الاجتماعية",
+            "يفكر بصوت عالٍ",
+            "يشعر بالحيوية مع الآخرين",
+            "يبادر بالحديث",
+          ],
+          gradient: "from-blue-400 to-blue-600",
+        },
+        {
+          key: "I",
+          name: "الانطواء",
+          fullName: "الانطواء (Introversion)",
+          value: scores.I,
+          description: "يستمد طاقته من العالم الداخلي والتأمل الذاتي",
+          characteristics: [
+            "يفضل الأنشطة الهادئة",
+            "يفكر قبل التحدث",
+            "يحتاج وقت منفرد",
+            "يركز بعمق",
+          ],
+          gradient: "from-blue-300 to-blue-500",
+        },
+      ],
+    },
+    {
+      name: "جمع المعلومات",
+      icon: "🔍",
+      color: "green",
+      dimensions: [
+        {
+          key: "S",
+          name: "الحسّي",
+          fullName: "الحسّي (Sensing)",
+          value: scores.S,
+          description: "يركز على الحقائق والتفاصيل الملموسة والخبرة العملية",
+          characteristics: [
+            "يثق في الخبرة المثبتة",
+            "يحب التفاصيل الدقيقة",
+            "يفضل الحلول العملية",
+            "يركز على الحاضر",
+          ],
+          gradient: "from-green-400 to-green-600",
+        },
+        {
+          key: "N",
+          name: "الحدسي",
+          fullName: "الحدسي (Intuition)",
+          value: scores.N,
+          description:
+            "يركز على الأنماط والإمكانيات المستقبلية والأفكار المجردة",
+          characteristics: [
+            "يثق في الحدس",
+            "يحب الأفكار الجديدة",
+            "يفضل الحلول الإبداعية",
+            "يركز على المستقبل",
+          ],
+          gradient: "from-green-300 to-green-500",
+        },
+      ],
+    },
+    {
+      name: "اتخاذ القرارات",
+      icon: "⚖️",
+      color: "purple",
+      dimensions: [
+        {
+          key: "T",
+          name: "التفكير",
+          fullName: "التفكير (Thinking)",
+          value: scores.T,
+          description: "يتخذ القرارات بناءً على التحليل المنطقي والموضوعية",
+          characteristics: [
+            "يقدر العدالة",
+            "يحلل بموضوعية",
+            "يركز على الكفاءة",
+            "يقدم النقد البناء",
+          ],
+          gradient: "from-purple-400 to-purple-600",
+        },
+        {
+          key: "F",
+          name: "الشعور",
+          fullName: "الشعور (Feeling)",
+          value: scores.F,
+          description:
+            "يتخذ القرارات بناءً على القيم الشخصية والتأثير على الآخرين",
+          characteristics: [
+            "يقدر الانسجام",
+            "يراعي المشاعر",
+            "يركز على القيم",
+            "يقدم الدعم العاطفي",
+          ],
+          gradient: "from-purple-300 to-purple-500",
+        },
+      ],
+    },
+    {
+      name: "نمط الحياة",
+      icon: "📅",
+      color: "pink",
+      dimensions: [
+        {
+          key: "J",
+          name: "الحكم",
+          fullName: "الحكم (Judging)",
+          value: scores.J,
+          description: "يفضل الحياة المنظمة والمخططة مع قرارات سريعة",
+          characteristics: [
+            "يحب التخطيط المسبق",
+            "يلتزم بالمواعيد",
+            "يفضل الاستقرار",
+            "ينهي المهام مبكراً",
+          ],
+          gradient: "from-pink-400 to-pink-600",
+        },
+        {
+          key: "P",
+          name: "الإدراك",
+          fullName: "الإدراك (Perceiving)",
+          value: scores.P,
+          description: "يفضل الحياة المرنة والعفوية مع خيارات مفتوحة",
+          characteristics: [
+            "يحب المرونة",
+            "يتكيف مع التغيير",
+            "يفضل العفوية",
+            "يعمل تحت الضغط",
+          ],
+          gradient: "from-pink-300 to-pink-500",
+        },
+      ],
+    },
+  ];
 
+  const totalScore = Object.values(scores).reduce(
+    (sum, score) => sum + score,
+    0
+  );
 
-        }
-
-        function showAdvancedAnalytics() {
-            // الرسم البياني الطولي المطور مع النسب والشرح
-            const scoresContainer = document.getElementById('scoresChart');
-
-            // تجميع الأبعاد في أزواج متضادة مع معلومات شاملة
-            const dimensionPairs = [
-                {
-                    name: 'مصدر الطاقة',
-                    icon: '⚡',
-                    color: 'blue',
-                    dimensions: [
-                        {
-                            key: 'E',
-                            name: 'الانبساط',
-                            fullName: 'الانبساط (Extraversion)',
-                            value: scores.E,
-                            description: 'يستمد طاقته من التفاعل مع العالم الخارجي والأشخاص',
-                            characteristics: ['يحب المناسبات الاجتماعية', 'يفكر بصوت عالٍ', 'يشعر بالحيوية مع الآخرين', 'يبادر بالحديث'],
-                            gradient: 'from-blue-400 to-blue-600'
-                        },
-                        {
-                            key: 'I',
-                            name: 'الانطواء',
-                            fullName: 'الانطواء (Introversion)',
-                            value: scores.I,
-                            description: 'يستمد طاقته من العالم الداخلي والتأمل الذاتي',
-                            characteristics: ['يفضل الأنشطة الهادئة', 'يفكر قبل التحدث', 'يحتاج وقت منفرد', 'يركز بعمق'],
-                            gradient: 'from-blue-300 to-blue-500'
-                        }
-                    ]
-                },
-                {
-                    name: 'جمع المعلومات',
-                    icon: '🔍',
-                    color: 'green',
-                    dimensions: [
-                        {
-                            key: 'S',
-                            name: 'الحسّي',
-                            fullName: 'الحسّي (Sensing)',
-                            value: scores.S,
-                            description: 'يركز على الحقائق والتفاصيل الملموسة والخبرة العملية',
-                            characteristics: ['يثق في الخبرة المثبتة', 'يحب التفاصيل الدقيقة', 'يفضل الحلول العملية', 'يركز على الحاضر'],
-                            gradient: 'from-green-400 to-green-600'
-                        },
-                        {
-                            key: 'N',
-                            name: 'الحدسي',
-                            fullName: 'الحدسي (Intuition)',
-                            value: scores.N,
-                            description: 'يركز على الأنماط والإمكانيات المستقبلية والأفكار المجردة',
-                            characteristics: ['يثق في الحدس', 'يحب الأفكار الجديدة', 'يفضل الحلول الإبداعية', 'يركز على المستقبل'],
-                            gradient: 'from-green-300 to-green-500'
-                        }
-                    ]
-                },
-                {
-                    name: 'اتخاذ القرارات',
-                    icon: '⚖️',
-                    color: 'purple',
-                    dimensions: [
-                        {
-                            key: 'T',
-                            name: 'التفكير',
-                            fullName: 'التفكير (Thinking)',
-                            value: scores.T,
-                            description: 'يتخذ القرارات بناءً على التحليل المنطقي والموضوعية',
-                            characteristics: ['يقدر العدالة', 'يحلل بموضوعية', 'يركز على الكفاءة', 'يقدم النقد البناء'],
-                            gradient: 'from-purple-400 to-purple-600'
-                        },
-                        {
-                            key: 'F',
-                            name: 'الشعور',
-                            fullName: 'الشعور (Feeling)',
-                            value: scores.F,
-                            description: 'يتخذ القرارات بناءً على القيم الشخصية والتأثير على الآخرين',
-                            characteristics: ['يقدر الانسجام', 'يراعي المشاعر', 'يركز على القيم', 'يقدم الدعم العاطفي'],
-                            gradient: 'from-purple-300 to-purple-500'
-                        }
-                    ]
-                },
-                {
-                    name: 'نمط الحياة',
-                    icon: '📅',
-                    color: 'pink',
-                    dimensions: [
-                        {
-                            key: 'J',
-                            name: 'الحكم',
-                            fullName: 'الحكم (Judging)',
-                            value: scores.J,
-                            description: 'يفضل الحياة المنظمة والمخططة مع قرارات سريعة',
-                            characteristics: ['يحب التخطيط المسبق', 'يلتزم بالمواعيد', 'يفضل الاستقرار', 'ينهي المهام مبكراً'],
-                            gradient: 'from-pink-400 to-pink-600'
-                        },
-                        {
-                            key: 'P',
-                            name: 'الإدراك',
-                            fullName: 'الإدراك (Perceiving)',
-                            value: scores.P,
-                            description: 'يفضل الحياة المرنة والعفوية مع خيارات مفتوحة',
-                            characteristics: ['يحب المرونة', 'يتكيف مع التغيير', 'يفضل العفوية', 'يعمل تحت الضغط'],
-                            gradient: 'from-pink-300 to-pink-500'
-                        }
-                    ]
-                }
-            ];
-
-            const totalScore = Object.values(scores).reduce((sum, score) => sum + score, 0);
-
-            scoresContainer.innerHTML = `
+  scoresContainer.innerHTML = `
                 <div class="bg-gradient-to-br from-indigo-50 via-white to-purple-50 p-8 rounded-2xl border-2 border-indigo-200 shadow-2xl relative overflow-hidden">
                     <!-- خلفية متحركة -->
                     <div class="absolute inset-0 opacity-5">
@@ -3303,47 +3935,81 @@
                         
                         <!-- الرسم البياني الطولي للأبعاد -->
                         <div class="space-y-8">
-                            ${dimensionPairs.map((pair, pairIndex) => {
-                const dim1 = pair.dimensions[0];
-                const dim2 = pair.dimensions[1];
-                console.log(pair) //مهم
-                const pairTotal = dim1.value + dim2.value;
-                const dim1Percentage = pairTotal > 0 ? Math.round((dim1.value / pairTotal) * 100) : 50;
-                const dim2Percentage = 100 - dim1Percentage;
-                const globalDim1Percentage = totalScore > 0 ? Math.round((dim1.value / totalScore) * 100) : 0;
-                const globalDim2Percentage = totalScore > 0 ? Math.round((dim2.value / totalScore) * 100) : 0;
+                            ${dimensionPairs
+                              .map((pair, pairIndex) => {
+                                const dim1 = pair.dimensions[0];
+                                const dim2 = pair.dimensions[1];
+                                console.log(pair); //مهم
+                                const pairTotal = dim1.value + dim2.value;
+                                const dim1Percentage =
+                                  pairTotal > 0
+                                    ? Math.round((dim1.value / pairTotal) * 100)
+                                    : 50;
+                                const dim2Percentage = 100 - dim1Percentage;
+                                const globalDim1Percentage =
+                                  totalScore > 0
+                                    ? Math.round(
+                                        (dim1.value / totalScore) * 100
+                                      )
+                                    : 0;
+                                const globalDim2Percentage =
+                                  totalScore > 0
+                                    ? Math.round(
+                                        (dim2.value / totalScore) * 100
+                                      )
+                                    : 0;
 
-                // تحديد البُعد المهيمن
-                const dominantDim = dim1.value > dim2.value ? dim1 : dim2.value > dim1.value ? dim2 : null;
-                const isDominant = dominantDim !== null;
-                const dominanceStrength = isDominant ? Math.abs(dim1Percentage - dim2Percentage) : 0;
+                                // تحديد البُعد المهيمن
+                                const dominantDim =
+                                  dim1.value > dim2.value
+                                    ? dim1
+                                    : dim2.value > dim1.value
+                                    ? dim2
+                                    : null;
+                                const isDominant = dominantDim !== null;
+                                const dominanceStrength = isDominant
+                                  ? Math.abs(dim1Percentage - dim2Percentage)
+                                  : 0;
 
-                let dominanceLevel = '';
-                let dominanceColor = '';
-                if (dominanceStrength >= 70) {
-                    dominanceLevel = 'مهيمن بقوة';
-                    dominanceColor = 'text-green-600 bg-green-100';
-                } else if (dominanceStrength >= 50) {
-                    dominanceLevel = 'مهيمن';
-                    dominanceColor = 'text-blue-600 bg-blue-100';
-                } else if (dominanceStrength >= 30) {
-                    dominanceLevel = 'ميل طفيف';
-                    dominanceColor = 'text-yellow-600 bg-yellow-100';
-                } else {
-                    dominanceLevel = 'متوازن';
-                    dominanceColor = 'text-purple-600 bg-purple-100';
-                }
+                                let dominanceLevel = "";
+                                let dominanceColor = "";
+                                if (dominanceStrength >= 70) {
+                                  dominanceLevel = "مهيمن بقوة";
+                                  dominanceColor =
+                                    "text-green-600 bg-green-100";
+                                } else if (dominanceStrength >= 50) {
+                                  dominanceLevel = "مهيمن";
+                                  dominanceColor = "text-blue-600 bg-blue-100";
+                                } else if (dominanceStrength >= 30) {
+                                  dominanceLevel = "ميل طفيف";
+                                  dominanceColor =
+                                    "text-yellow-600 bg-yellow-100";
+                                } else {
+                                  dominanceLevel = "متوازن";
+                                  dominanceColor =
+                                    "text-purple-600 bg-purple-100";
+                                }
 
-                return `
-                                    <div class="bg-gradient-to-r from-white to-${pair.color}-50 border-2 border-${pair.color}-200 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-500 transform hover:scale-[1.02]" 
-                                         style="animation: slideInFromLeft 0.8s ease-out ${pairIndex * 300}ms both;">
+                                return `
+                                    <div class="bg-gradient-to-r from-white to-${
+                                      pair.color
+                                    }-50 border-2 border-${
+                                  pair.color
+                                }-200 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-500 transform hover:scale-[1.02]" 
+                                         style="animation: slideInFromLeft 0.8s ease-out ${
+                                           pairIndex * 300
+                                         }ms both;">
                                         
                                         <!-- عنوان البُعد -->
                                         <div class="flex items-center justify-between mb-6">
                                             <div class="flex items-center">
-                                                <span class="text-3xl ml-3">${pair.icon}</span>
+                                                <span class="text-3xl ml-3">${
+                                                  pair.icon
+                                                }</span>
                                                 <div>
-                                                    <h6 class="text-xl font-bold text-${pair.color}-800">${pair.name}</h6>
+                                                    <h6 class="text-xl font-bold text-${
+                                                      pair.color
+                                                    }-800">${pair.name}</h6>
                                                     <div class="text-sm text-gray-600">إجمالي النقاط: ${pairTotal}</div>
                                                 </div>
                                             </div>
@@ -3351,39 +4017,68 @@
                                                 <div class="px-3 py-1 rounded-full text-sm font-bold ${dominanceColor}">
                                                     ${dominanceLevel}
                                                 </div>
-                                                ${isDominant ? `
+                                                ${
+                                                  isDominant
+                                                    ? `
                                                     <div class="text-xs text-gray-600 mt-1">
                                                         ${dominantDim.name}: ${dominanceStrength}%
                                                     </div>
-                                                ` : ''}
+                                                `
+                                                    : ""
+                                                }
                                             </div>
                                         </div>
                                         
                                         <!-- الرسم البياني الطولي -->
                                         <div class="grid md:grid-cols-2 gap-6">
-                                            ${pair.dimensions.map((dim, dimIndex) => {
-                    const isFirst = dimIndex === 0;
-                    const percentage = isFirst ? dim1Percentage : dim2Percentage;
-                    const globalPercentage = isFirst ? globalDim1Percentage : globalDim2Percentage;
-                    const maxHeight = 200; // الحد الأقصى للارتفاع بالبكسل
-                    const barHeight = Math.max((percentage / 100) * maxHeight, 20);
-                    const animationDelay = pairIndex * 300 + dimIndex * 150;
+                                            ${pair.dimensions
+                                              .map((dim, dimIndex) => {
+                                                const isFirst = dimIndex === 0;
+                                                const percentage = isFirst
+                                                  ? dim1Percentage
+                                                  : dim2Percentage;
+                                                const globalPercentage = isFirst
+                                                  ? globalDim1Percentage
+                                                  : globalDim2Percentage;
+                                                const maxHeight = 200; // الحد الأقصى للارتفاع بالبكسل
+                                                const barHeight = Math.max(
+                                                  (percentage / 100) *
+                                                    maxHeight,
+                                                  20
+                                                );
+                                                const animationDelay =
+                                                  pairIndex * 300 +
+                                                  dimIndex * 150;
 
-                    return `
-                                                    <div class="bg-white rounded-xl p-4 border border-${pair.color}-200 shadow-md hover:shadow-lg transition-all duration-300 group">
+                                                return `
+                                                    <div class="bg-white rounded-xl p-4 border border-${
+                                                      pair.color
+                                                    }-200 shadow-md hover:shadow-lg transition-all duration-300 group">
                                                         <!-- معلومات البُعد -->
                                                         <div class="text-center mb-4">
-                                                            <div class="text-lg font-bold text-${pair.color}-800 mb-1">${dim.fullName}</div>
-                                                            <div class="text-sm text-gray-600 leading-relaxed mb-3">${dim.description}</div>
+                                                            <div class="text-lg font-bold text-${
+                                                              pair.color
+                                                            }-800 mb-1">${
+                                                  dim.fullName
+                                                }</div>
+                                                            <div class="text-sm text-gray-600 leading-relaxed mb-3">${
+                                                              dim.description
+                                                            }</div>
                                                             
                                                             <!-- النقاط والنسب -->
                                                             <div class="flex justify-center items-center space-x-4 space-x-reverse mb-4">
                                                                 <div class="text-center">
-                                                                    <div class="text-2xl font-bold text-${pair.color}-700">${dim.value || 'متوازن'}</div>
+                                                                    <div class="text-2xl font-bold text-${
+                                                                      pair.color
+                                                                    }-700">${
+                                                  dim.value || "متوازن"
+                                                }</div>
                                                                     <div class="text-xs text-gray-500">نقطة</div>
                                                                 </div>
                                                                 <div class="text-center">
-                                                                    <div class="text-xl font-bold text-${pair.color}-600">${percentage}%</div>
+                                                                    <div class="text-xl font-bold text-${
+                                                                      pair.color
+                                                                    }-600">${percentage}%</div>
                                                                     <div class="text-xs text-gray-500">من البُعد</div>
                                                                 </div>
                                                             </div>
@@ -3395,7 +4090,9 @@
                                                                 <!-- خلفية العمود -->
                                                                 <div class="w-16 bg-gray-200 rounded-full relative overflow-hidden shadow-inner" style="height: ${maxHeight}px;">
                                                                     <!-- العمود المملوء -->
-                                                                    <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t ${dim.gradient} rounded-full transition-all duration-1500 shadow-lg group-hover:shadow-xl" 
+                                                                    <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t ${
+                                                                      dim.gradient
+                                                                    } rounded-full transition-all duration-1500 shadow-lg group-hover:shadow-xl" 
                                                                          style="height: ${barHeight}px;">
                                                                         
                                                                         <!-- تأثيرات بصرية -->
@@ -3405,12 +4102,21 @@
                                                                         <!-- نقاط متحركة -->
                                                                         <div class="absolute inset-0 opacity-30">
                                                                             <div class="absolute top-2 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-white rounded-full animate-ping" style="animation-delay: ${animationDelay}ms;"></div>
-                                                                            <div class="absolute bottom-2 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-white rounded-full animate-ping" style="animation-delay: ${animationDelay + 500}ms;"></div>
+                                                                            <div class="absolute bottom-2 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-white rounded-full animate-ping" style="animation-delay: ${
+                                                                              animationDelay +
+                                                                              500
+                                                                            }ms;"></div>
                                                                         </div>
                                                                     </div>
                                                                     
                                                                     <!-- مؤشر النسبة -->
-                                                                    <div class="absolute top-2 left-1/2 transform -translate-x-1/2 bg-white text-${pair.color}-800 text-xs font-bold px-2 py-1 rounded-full shadow-md border border-${pair.color}-200 group-hover:bg-${pair.color}-100 transition-all duration-300">
+                                                                    <div class="absolute top-2 left-1/2 transform -translate-x-1/2 bg-white text-${
+                                                                      pair.color
+                                                                    }-800 text-xs font-bold px-2 py-1 rounded-full shadow-md border border-${
+                                                  pair.color
+                                                }-200 group-hover:bg-${
+                                                  pair.color
+                                                }-100 transition-all duration-300">
                                                                         ${percentage}%
                                                                     </div>
                                                                 </div>
@@ -3427,35 +4133,66 @@
                                                         </div>
                                                         
                                                         <!-- الخصائص -->
-                                                        <div class="bg-${pair.color}-50 rounded-lg p-3">
-                                                            <div class="text-sm font-bold text-${pair.color}-800 mb-2">✨ الخصائص المميزة:</div>
-                                                            <ul class="text-xs text-${pair.color}-700 space-y-1">
-                                                                ${dim.characteristics.map(char => `
+                                                        <div class="bg-${
+                                                          pair.color
+                                                        }-50 rounded-lg p-3">
+                                                            <div class="text-sm font-bold text-${
+                                                              pair.color
+                                                            }-800 mb-2">✨ الخصائص المميزة:</div>
+                                                            <ul class="text-xs text-${
+                                                              pair.color
+                                                            }-700 space-y-1">
+                                                                ${dim.characteristics
+                                                                  .map(
+                                                                    (char) => `
                                                                     <li class="flex items-center">
                                                                         <span class="w-1 h-1 bg-${pair.color}-500 rounded-full ml-2 flex-shrink-0"></span>
                                                                         ${char}
                                                                     </li>
-                                                                `).join('')}
+                                                                `
+                                                                  )
+                                                                  .join("")}
                                                             </ul>
                                                         </div>
                                                     </div>
                                                 `;
-                }).join('')}
+                                              })
+                                              .join("")}
                                         </div>
                                         
                                         <!-- مقارنة البُعدين -->
-                                        <div class="mt-6 bg-gradient-to-r from-${pair.color}-100 to-white rounded-xl p-4 border border-${pair.color}-200">
+                                        <div class="mt-6 bg-gradient-to-r from-${
+                                          pair.color
+                                        }-100 to-white rounded-xl p-4 border border-${
+                                  pair.color
+                                }-200">
                                             <div class="text-center mb-3">
-                                                <div class="text-sm font-bold text-${pair.color}-800 mb-2">📊 مقارنة ${pair.name}</div>
+                                                <div class="text-sm font-bold text-${
+                                                  pair.color
+                                                }-800 mb-2">📊 مقارنة ${
+                                  pair.name
+                                }</div>
                                                 <div class="flex items-center justify-center space-x-4 space-x-reverse">
                                                     <div class="text-center">
-                                                        <div class="font-bold text-${pair.color}-700">${dim1.name}</div>
-                                                        <div class="text-lg font-bold text-${pair.color}-600">${dim1Percentage}%</div>
+                                                        <div class="font-bold text-${
+                                                          pair.color
+                                                        }-700">${
+                                  dim1.name
+                                }</div>
+                                                        <div class="text-lg font-bold text-${
+                                                          pair.color
+                                                        }-600">${dim1Percentage}%</div>
                                                     </div>
                                                     <div class="text-2xl">⚖️</div>
                                                     <div class="text-center">
-                                                        <div class="font-bold text-${pair.color}-700">${dim2.name}</div>
-                                                        <div class="text-lg font-bold text-${pair.color}-600">${dim2Percentage}%</div>
+                                                        <div class="font-bold text-${
+                                                          pair.color
+                                                        }-700">${
+                                  dim2.name
+                                }</div>
+                                                        <div class="text-lg font-bold text-${
+                                                          pair.color
+                                                        }-600">${dim2Percentage}%</div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -3464,36 +4201,49 @@
                                             <div class="relative">
                                                 <div class="w-full bg-gray-200 rounded-full h-4 overflow-hidden shadow-inner">
                                                     <div class="flex h-full">
-                                                        <div class="bg-gradient-to-r ${dim1.gradient} transition-all duration-1500" 
+                                                        <div class="bg-gradient-to-r ${
+                                                          dim1.gradient
+                                                        } transition-all duration-1500" 
                                                              style="width: ${dim1Percentage}%;"></div>
-                                                        <div class="bg-gradient-to-r ${dim2.gradient} transition-all duration-1500" 
+                                                        <div class="bg-gradient-to-r ${
+                                                          dim2.gradient
+                                                        } transition-all duration-1500" 
                                                              style="width: ${dim2Percentage}%;"></div>
                                                     </div>
                                                 </div>
                                                 <div class="flex justify-between text-xs text-gray-600 mt-1">
-                                                    <span>${dim1.key}: ${dim1.value || 0} نقطة</span>
-                                                    <span>${dim2.key}: ${dim2.value || 0} نقطة</span>
+                                                    <span>${dim1.key}: ${
+                                  dim1.value || 0
+                                } نقطة</span>
+                                                    <span>${dim2.key}: ${
+                                  dim2.value || 0
+                                } نقطة</span>
                                                 </div>
                                             </div>
                                             
                                             <!-- تفسير النتيجة -->
                                             <div class="mt-3 text-center">
-                                                ${isDominant ? `
+                                                ${
+                                                  isDominant
+                                                    ? `
                                                     <div class="text-sm text-${pair.color}-700">
                                                         <strong>النتيجة:</strong> لديك ميل واضح نحو <strong>${dominantDim.name}</strong> 
                                                         بنسبة <strong>${dominanceStrength}%</strong> في ${pair.name}
                                                     </div>
-                                                ` : `
+                                                `
+                                                    : `
                                                     <div class="text-sm text-purple-700">
                                                         <strong>النتيجة:</strong> لديك توازن ممتاز في ${pair.name} 
                                                         مما يمنحك مرونة في التكيف مع المواقف المختلفة
                                                     </div>
-                                                `}
+                                                `
+                                                }
                                             </div>
                                         </div>
                                     </div>
                                 `;
-            }).join('')}
+                              })
+                              .join("")}
                         </div>
                         
                         <!-- ملخص إجمالي -->
@@ -3510,21 +4260,42 @@
                                         الأبعاد المهيمنة
                                     </h7>
                                     <div class="space-y-2">
-                                        ${dimensionPairs.map(pair => {
-                const dim1 = pair.dimensions[0];
-                const dim2 = pair.dimensions[1];
-                const dominant = dim1.value > dim2.value ? dim1 : dim2.value > dim1.value ? dim2 : null;
-                const strength = dominant ? Math.abs(dim1.value - dim2.value) : 0;
+                                        ${dimensionPairs
+                                          .map((pair) => {
+                                            const dim1 = pair.dimensions[0];
+                                            const dim2 = pair.dimensions[1];
+                                            const dominant =
+                                              dim1.value > dim2.value
+                                                ? dim1
+                                                : dim2.value > dim1.value
+                                                ? dim2
+                                                : null;
+                                            const strength = dominant
+                                              ? Math.abs(
+                                                  dim1.value - dim2.value
+                                                )
+                                              : 0;
 
-                return `
-                                                <div class="flex justify-between items-center p-2 bg-${pair.color}-50 rounded-lg">
-                                                    <span class="text-sm font-medium text-${pair.color}-800">${pair.name}:</span>
-                                                    <span class="text-sm font-bold text-${pair.color}-700">
-                                                        ${dominant ? `${dominant.name} (+${strength})` : 'متوازن'}
+                                            return `
+                                                <div class="flex justify-between items-center p-2 bg-${
+                                                  pair.color
+                                                }-50 rounded-lg">
+                                                    <span class="text-sm font-medium text-${
+                                                      pair.color
+                                                    }-800">${pair.name}:</span>
+                                                    <span class="text-sm font-bold text-${
+                                                      pair.color
+                                                    }-700">
+                                                        ${
+                                                          dominant
+                                                            ? `${dominant.name} (+${strength})`
+                                                            : "متوازن"
+                                                        }
                                                     </span>
                                                 </div>
                                             `;
-            }).join('')}
+                                          })
+                                          .join("")}
                                     </div>
                                 </div>
                                 
@@ -3535,25 +4306,38 @@
                                     </h7>
                                     <div class="space-y-2">
                                         ${Object.entries(scores)
-                    .sort(([, a], [, b]) => b - a)
-                    .slice(0, 4)
-                    .map(([key, value], index) => {
-                        const dimInfo = dimensionPairs
-                            .flatMap(p => p.dimensions)
-                            .find(d => d.key === key);
-                        const percentage = Math.round((value / totalScore) * 100);
-                        const medals = ['🥇', '🥈', '🥉', '🏅'];
+                                          .sort(([, a], [, b]) => b - a)
+                                          .slice(0, 4)
+                                          .map(([key, value], index) => {
+                                            const dimInfo = dimensionPairs
+                                              .flatMap((p) => p.dimensions)
+                                              .find((d) => d.key === key);
+                                            const percentage = Math.round(
+                                              (value / totalScore) * 100
+                                            );
+                                            const medals = [
+                                              "🥇",
+                                              "🥈",
+                                              "🥉",
+                                              "🏅",
+                                            ];
 
-                        return `
+                                            return `
                                                     <div class="flex justify-between items-center p-2 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg">
                                                         <div class="flex items-center">
-                                                            <span class="ml-2">${medals[index]}</span>
-                                                            <span class="text-sm font-medium text-gray-800">${dimInfo?.name || key}:</span>
+                                                            <span class="ml-2">${
+                                                              medals[index]
+                                                            }</span>
+                                                            <span class="text-sm font-medium text-gray-800">${
+                                                              dimInfo?.name ||
+                                                              key
+                                                            }:</span>
                                                         </div>
                                                         <span class="text-sm font-bold text-orange-700">${value} نقطة (${percentage}%)</span>
                                                     </div>
                                                 `;
-                    }).join('')}
+                                          })
+                                          .join("")}
                                     </div>
                                 </div>
                             </div>
@@ -3593,44 +4377,52 @@
                 </style>
             `;
 
-            // Clarity Chart محسن - مربعات مصغرة تحت الرسم البياني
-            const clarityContainer = document.getElementById('clarityChart');
-            const dimensions = [
-                {
-                    name: 'مصدر الطاقة',
-                    clarity: Math.abs(scores.E - scores.I),
-                    icon: '⚡',
-                    dominant: scores.E > scores.I ? 'انبساط' : scores.I > scores.E ? 'انطواء' : 'متوازن',
-                    total: scores.E + scores.I,
-                    color: 'blue'
-                },
-                {
-                    name: 'جمع المعلومات',
-                    clarity: Math.abs(scores.S - scores.N),
-                    icon: '🔍',
-                    dominant: scores.S > scores.N ? 'حسّي' : scores.N > scores.S ? 'حدسي' : 'متوازن',
-                    total: scores.S + scores.N,
-                    color: 'green'
-                },
-                {
-                    name: 'اتخاذ القرارات',
-                    clarity: Math.abs(scores.T - scores.F),
-                    icon: '⚖️',
-                    dominant: scores.T > scores.F ? 'تفكير' : scores.F > scores.T ? 'شعور' : 'متوازن',
-                    total: scores.T + scores.F,
-                    color: 'purple'
-                },
-                {
-                    name: 'نمط الحياة',
-                    clarity: Math.abs(scores.J - scores.P),
-                    icon: '📅',
-                    dominant: scores.J > scores.P ? 'حكم' : scores.P > scores.J ? 'إدراك' : 'متوازن',
-                    total: scores.J + scores.P,
-                    color: 'pink'
-                }
-            ];
+  // Clarity Chart محسن - مربعات مصغرة تحت الرسم البياني
+  const clarityContainer = document.getElementById("clarityChart");
+  const dimensions = [
+    {
+      name: "مصدر الطاقة",
+      clarity: Math.abs(scores.E - scores.I),
+      icon: "⚡",
+      dominant:
+        scores.E > scores.I
+          ? "انبساط"
+          : scores.I > scores.E
+          ? "انطواء"
+          : "متوازن",
+      total: scores.E + scores.I,
+      color: "blue",
+    },
+    {
+      name: "جمع المعلومات",
+      clarity: Math.abs(scores.S - scores.N),
+      icon: "🔍",
+      dominant:
+        scores.S > scores.N ? "حسّي" : scores.N > scores.S ? "حدسي" : "متوازن",
+      total: scores.S + scores.N,
+      color: "green",
+    },
+    {
+      name: "اتخاذ القرارات",
+      clarity: Math.abs(scores.T - scores.F),
+      icon: "⚖️",
+      dominant:
+        scores.T > scores.F ? "تفكير" : scores.F > scores.T ? "شعور" : "متوازن",
+      total: scores.T + scores.F,
+      color: "purple",
+    },
+    {
+      name: "نمط الحياة",
+      clarity: Math.abs(scores.J - scores.P),
+      icon: "📅",
+      dominant:
+        scores.J > scores.P ? "حكم" : scores.P > scores.J ? "إدراك" : "متوازن",
+      total: scores.J + scores.P,
+      color: "pink",
+    },
+  ];
 
-            clarityContainer.innerHTML = `
+  clarityContainer.innerHTML = `
                 <div class="bg-gradient-to-br from-purple-50 via-white to-pink-50 p-4 rounded-xl border-2 border-purple-200 shadow-lg">
                     <h5 class="text-lg font-bold text-purple-800 mb-4 text-center flex items-center justify-center">
                         <span class="text-xl ml-2">🎯</span>
@@ -3639,34 +4431,42 @@
                     
                     <!-- مربعات الوضوح المصغرة في شبكة 2x2 -->
                     <div class="grid grid-cols-2 gap-3 mb-4">
-                        ${dimensions.map(dim => {
-                const actualPercentage = dim.total > 0 ? Math.round((dim.clarity / dim.total) * 100) : 0;
+                        ${dimensions
+                          .map((dim) => {
+                            const actualPercentage =
+                              dim.total > 0
+                                ? Math.round((dim.clarity / dim.total) * 100)
+                                : 0;
 
-                let clarityLevel, colorClass, bgClass, textClass;
+                            let clarityLevel, colorClass, bgClass, textClass;
 
-                if (actualPercentage >= 70) {
-                    clarityLevel = 'واضح جداً';
-                    colorClass = 'bg-gradient-to-r from-green-500 to-green-600';
-                    bgClass = `bg-${dim.color}-50 border-green-300`;
-                    textClass = 'text-green-800';
-                } else if (actualPercentage >= 50) {
-                    clarityLevel = 'واضح';
-                    colorClass = 'bg-gradient-to-r from-blue-500 to-blue-600';
-                    bgClass = `bg-${dim.color}-50 border-blue-300`;
-                    textClass = 'text-blue-800';
-                } else if (actualPercentage >= 30) {
-                    clarityLevel = 'متوسط';
-                    colorClass = 'bg-gradient-to-r from-yellow-500 to-yellow-600';
-                    bgClass = `bg-${dim.color}-50 border-yellow-300`;
-                    textClass = 'text-yellow-800';
-                } else {
-                    clarityLevel = 'متوازن';
-                    colorClass = 'bg-gradient-to-r from-gray-500 to-gray-600';
-                    bgClass = `bg-${dim.color}-50 border-gray-300`;
-                    textClass = 'text-gray-800';
-                }
+                            if (actualPercentage >= 70) {
+                              clarityLevel = "واضح جداً";
+                              colorClass =
+                                "bg-gradient-to-r from-green-500 to-green-600";
+                              bgClass = `bg-${dim.color}-50 border-green-300`;
+                              textClass = "text-green-800";
+                            } else if (actualPercentage >= 50) {
+                              clarityLevel = "واضح";
+                              colorClass =
+                                "bg-gradient-to-r from-blue-500 to-blue-600";
+                              bgClass = `bg-${dim.color}-50 border-blue-300`;
+                              textClass = "text-blue-800";
+                            } else if (actualPercentage >= 30) {
+                              clarityLevel = "متوسط";
+                              colorClass =
+                                "bg-gradient-to-r from-yellow-500 to-yellow-600";
+                              bgClass = `bg-${dim.color}-50 border-yellow-300`;
+                              textClass = "text-yellow-800";
+                            } else {
+                              clarityLevel = "متوازن";
+                              colorClass =
+                                "bg-gradient-to-r from-gray-500 to-gray-600";
+                              bgClass = `bg-${dim.color}-50 border-gray-300`;
+                              textClass = "text-gray-800";
+                            }
 
-                return `
+                            return `
                                 <div class="${bgClass} rounded-lg p-3 border-2 hover:shadow-md transition-all duration-300">
                                     <div class="flex items-center justify-between mb-2">
                                         <div class="flex items-center">
@@ -3696,7 +4496,8 @@
                                     </div>
                                 </div>
                             `;
-            }).join('')}
+                          })
+                          .join("")}
                     </div>
                     
                     <!-- ملخص عام مصغر -->
@@ -3704,102 +4505,184 @@
                         <div class="text-center">
                             <div class="text-sm font-bold text-purple-800 mb-2">📋 متوسط الوضوح العام</div>
                             <div class="text-lg font-bold text-purple-700">
-                                ${Math.round(dimensions.reduce((sum, dim) => {
-                const actualPercentage = dim.total > 0 ? (dim.clarity / dim.total) * 100 : 0;
-                return sum + actualPercentage;
-            }, 0) / dimensions.length)}%
+                                ${Math.round(
+                                  dimensions.reduce((sum, dim) => {
+                                    const actualPercentage =
+                                      dim.total > 0
+                                        ? (dim.clarity / dim.total) * 100
+                                        : 0;
+                                    return sum + actualPercentage;
+                                  }, 0) / dimensions.length
+                                )}%
                             </div>
                             <div class="text-xs text-gray-600">من جميع الأبعاد الأربعة</div>
                         </div>
                     </div>
                 </div>
             `;
-        }
+}
 
-        function showPathPerformance() {
-            const pathContainer = document.getElementById('pathPerformance');
-            const pathInfo = {
-                1: { name: "الشامل", icon: "📊", color: "blue", questions: 24, bgColor: "bg-blue-100", borderColor: "border-blue-300", textColor: "text-blue-800" },
-                2: { name: "السريع", icon: "⚡", color: "green", questions: 10, bgColor: "bg-green-100", borderColor: "border-green-300", textColor: "text-green-800" },
-                3: { name: "العمل", icon: "💼", color: "purple", questions: 6, bgColor: "bg-purple-100", borderColor: "border-purple-300", textColor: "text-purple-800" },
-                4: { name: "العلاقات", icon: "❤️", color: "pink", questions: 6, bgColor: "bg-pink-100", borderColor: "border-pink-300", textColor: "text-pink-800" },
-                5: { name: "التأكيد", icon: "✓", color: "orange", questions: 4, bgColor: "bg-orange-100", borderColor: "border-orange-300", textColor: "text-orange-800" }
-            };
+function showPathPerformance() {
+  const pathContainer = document.getElementById("pathPerformance");
+  const pathInfo = {
+    1: {
+      name: "الشامل",
+      icon: "📊",
+      color: "blue",
+      questions: 24,
+      bgColor: "bg-blue-100",
+      borderColor: "border-blue-300",
+      textColor: "text-blue-800",
+    },
+    2: {
+      name: "السريع",
+      icon: "⚡",
+      color: "green",
+      questions: 10,
+      bgColor: "bg-green-100",
+      borderColor: "border-green-300",
+      textColor: "text-green-800",
+    },
+    3: {
+      name: "العمل",
+      icon: "💼",
+      color: "purple",
+      questions: 6,
+      bgColor: "bg-purple-100",
+      borderColor: "border-purple-300",
+      textColor: "text-purple-800",
+    },
+    4: {
+      name: "العلاقات",
+      icon: "❤️",
+      color: "pink",
+      questions: 6,
+      bgColor: "bg-pink-100",
+      borderColor: "border-pink-300",
+      textColor: "text-pink-800",
+    },
+    5: {
+      name: "التأكيد",
+      icon: "✓",
+      color: "orange",
+      questions: 4,
+      bgColor: "bg-orange-100",
+      borderColor: "border-orange-300",
+      textColor: "text-orange-800",
+    },
+  };
 
-            pathContainer.innerHTML = Object.keys(pathInfo).map(pathNum => {
-                const path = pathInfo[pathNum];
-                const pathAnswers = allPathAnswers[pathNum] || [];
-                const avgTime = pathAnswers.length > 0 ?
-                    Math.round(pathAnswers.reduce((sum, q) => sum + q.timeSpent, 0) / pathAnswers.length) : 0;
-                const completed = completedPaths.includes(parseInt(pathNum));
+  pathContainer.innerHTML = Object.keys(pathInfo)
+    .map((pathNum) => {
+      const path = pathInfo[pathNum];
+      const pathAnswers = allPathAnswers[pathNum] || [];
+      const avgTime =
+        pathAnswers.length > 0
+          ? Math.round(
+              pathAnswers.reduce((sum, q) => sum + q.timeSpent, 0) /
+                pathAnswers.length
+            )
+          : 0;
+      const completed = completedPaths.includes(parseInt(pathNum));
 
-                return `
-                    <div class="text-center p-3 ${path.bgColor} rounded-lg border-2 ${path.borderColor} hover:shadow-md transition-all duration-300">
+      return `
+                    <div class="text-center p-3 ${
+                      path.bgColor
+                    } rounded-lg border-2 ${
+        path.borderColor
+      } hover:shadow-md transition-all duration-300">
                         <div class="text-xl mb-2">${path.icon}</div>
-                        <div class="font-bold ${path.textColor} text-sm mb-1">${path.name}</div>
-                        <div class="text-xs text-gray-600 mb-2">${path.questions} سؤال</div>
-                        ${completed ? `
+                        <div class="font-bold ${path.textColor} text-sm mb-1">${
+        path.name
+      }</div>
+                        <div class="text-xs text-gray-600 mb-2">${
+                          path.questions
+                        } سؤال</div>
+                        ${
+                          completed
+                            ? `
                             <div class="text-xs ${path.textColor}">
                                 <div class="font-medium bg-white rounded-full px-2 py-1 mb-1">✅ مكتمل</div>
                                 <div class="bg-white rounded-full px-2 py-1">متوسط: ${avgTime}ث</div>
                             </div>
-                        ` : `
+                        `
+                            : `
                             <div class="text-xs text-gray-500 bg-gray-100 rounded-full px-2 py-1">غير مكتمل</div>
-                        `}
+                        `
+                        }
                     </div>
                 `;
-            }).join('');
-        }
+    })
+    .join("");
+}
 
-        function showTimingStatistics() {
-            const timingContainer = document.getElementById('timingStats');
-            const totalTime = Math.round((Date.now() - totalStartTime) / 1000);
-            const totalMinutes = Math.floor(totalTime / 60);
-            const totalSeconds = totalTime % 60;
+function showTimingStatistics() {
+  const timingContainer = document.getElementById("timingStats");
+  const totalTime = Math.round((Date.now() - totalStartTime) / 1000);
+  const totalMinutes = Math.floor(totalTime / 60);
+  const totalSeconds = totalTime % 60;
 
-            // جمع جميع الأوقات من كل المسارات
-            const allTimes = [];
-            Object.values(allPathAnswers).forEach(pathAnswers => {
-                allTimes.push(...pathAnswers.map(q => ({ ...q, timeSpent: q.timeSpent || 0 })));
-            });
+  // جمع جميع الأوقات من كل المسارات
+  const allTimes = [];
+  Object.values(allPathAnswers).forEach((pathAnswers) => {
+    allTimes.push(
+      ...pathAnswers.map((q) => ({ ...q, timeSpent: q.timeSpent || 0 }))
+    );
+  });
 
-            const avgActual = allTimes.length > 0 ? Math.round(allTimes.reduce((sum, q) => sum + q.timeSpent, 0) / allTimes.length) : 0;
+  const avgActual =
+    allTimes.length > 0
+      ? Math.round(
+          allTimes.reduce((sum, q) => sum + q.timeSpent, 0) / allTimes.length
+        )
+      : 0;
 
-            // العثور على أسرع وأبطأ سؤال مع تفاصيلهما
-            let fastestQ = null;
-            let slowestQ = null;
+  // العثور على أسرع وأبطأ سؤال مع تفاصيلهما
+  let fastestQ = null;
+  let slowestQ = null;
 
-            allTimes.forEach(q => {
-                if (q.timeSpent > 0) {
-                    if (!fastestQ || q.timeSpent < fastestQ.timeSpent) {
-                        fastestQ = q;
-                    }
-                    if (!slowestQ || q.timeSpent > slowestQ.timeSpent) {
-                        slowestQ = q;
-                    }
-                }
-            });
+  allTimes.forEach((q) => {
+    if (q.timeSpent > 0) {
+      if (!fastestQ || q.timeSpent < fastestQ.timeSpent) {
+        fastestQ = q;
+      }
+      if (!slowestQ || q.timeSpent > slowestQ.timeSpent) {
+        slowestQ = q;
+      }
+    }
+  });
 
-            // حساب إحصائيات إضافية
-            const validTimes = allTimes.filter(q => q.timeSpent > 0).map(q => q.timeSpent);
-            const quickAnswers = validTimes.filter(t => t < 3).length;
-            const slowAnswers = validTimes.filter(t => t > 30).length;
-            const medianTime = validTimes.length > 0 ? validTimes.sort((a, b) => a - b)[Math.floor(validTimes.length / 2)] : 0;
+  // حساب إحصائيات إضافية
+  const validTimes = allTimes
+    .filter((q) => q.timeSpent > 0)
+    .map((q) => q.timeSpent);
+  const quickAnswers = validTimes.filter((t) => t < 3).length;
+  const slowAnswers = validTimes.filter((t) => t > 30).length;
+  const medianTime =
+    validTimes.length > 0
+      ? validTimes.sort((a, b) => a - b)[Math.floor(validTimes.length / 2)]
+      : 0;
 
-            // حساب الوقت لكل مسار
-            const pathTimings = {};
-            Object.keys(allPathAnswers).forEach(pathNum => {
-                const pathAnswers = allPathAnswers[pathNum] || [];
-                const pathTotalTime = pathAnswers.reduce((sum, q) => sum + (q.timeSpent || 0), 0);
-                const pathAvgTime = pathAnswers.length > 0 ? Math.round(pathTotalTime / pathAnswers.length) : 0;
-                pathTimings[pathNum] = {
-                    total: pathTotalTime,
-                    average: pathAvgTime,
-                    questions: pathAnswers.length
-                };
-            });
+  // حساب الوقت لكل مسار
+  const pathTimings = {};
+  Object.keys(allPathAnswers).forEach((pathNum) => {
+    const pathAnswers = allPathAnswers[pathNum] || [];
+    const pathTotalTime = pathAnswers.reduce(
+      (sum, q) => sum + (q.timeSpent || 0),
+      0
+    );
+    const pathAvgTime =
+      pathAnswers.length > 0
+        ? Math.round(pathTotalTime / pathAnswers.length)
+        : 0;
+    pathTimings[pathNum] = {
+      total: pathTotalTime,
+      average: pathAvgTime,
+      questions: pathAnswers.length,
+    };
+  });
 
-            timingContainer.innerHTML = `
+  timingContainer.innerHTML = `
                 <!-- الإحصائيات الأساسية -->
                 <div class="col-span-full">
                     <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-xl p-6 mb-6">
@@ -3807,7 +4690,9 @@
                         
                         <div class="grid md:grid-cols-4 gap-4 mb-6">
                             <div class="bg-white p-4 rounded-lg border border-blue-200 text-center">
-                                <div class="text-2xl font-bold text-blue-600">${totalMinutes}:${totalSeconds.toString().padStart(2, '0')}</div>
+                                <div class="text-2xl font-bold text-blue-600">${totalMinutes}:${totalSeconds
+    .toString()
+    .padStart(2, "0")}</div>
                                 <div class="text-sm text-gray-600">الوقت الإجمالي</div>
                                 <div class="text-xs text-gray-500 mt-1">${totalTime} ثانية</div>
                             </div>
@@ -3825,7 +4710,9 @@
                             </div>
                             
                             <div class="bg-white p-4 rounded-lg border border-orange-200 text-center">
-                                <div class="text-2xl font-bold text-orange-600">${allTimes.length}</div>
+                                <div class="text-2xl font-bold text-orange-600">${
+                                  allTimes.length
+                                }</div>
                                 <div class="text-sm text-gray-600">إجمالي الأسئلة</div>
                                 <div class="text-xs text-gray-500 mt-1">تم الإجابة عليها</div>
                             </div>
@@ -3838,19 +4725,33 @@
                                     <span class="text-2xl ml-2">⚡</span>
                                     <h5 class="font-bold text-green-800">أسرع إجابة</h5>
                                 </div>
-                                ${fastestQ ? `
+                                ${
+                                  fastestQ
+                                    ? `
                                     <div class="space-y-2">
-                                        <div class="text-lg font-bold text-green-700">${fastestQ.timeSpent} ثانية</div>
+                                        <div class="text-lg font-bold text-green-700">${
+                                          fastestQ.timeSpent
+                                        } ثانية</div>
                                         <div class="text-sm text-green-600 bg-white rounded-lg p-2">
-                                            <strong>السؤال:</strong> ${fastestQ.question.substring(0, 50)}...
+                                            <strong>السؤال:</strong> ${fastestQ.question.substring(
+                                              0,
+                                              50
+                                            )}...
                                         </div>
                                         <div class="text-xs text-green-500">
-                                            المسار ${fastestQ.path} - الإجابة: "${fastestQ.answer.substring(0, 30)}..."
+                                            المسار ${
+                                              fastestQ.path
+                                            } - الإجابة: "${fastestQ.answer.substring(
+                                        0,
+                                        30
+                                      )}..."
                                         </div>
                                     </div>
-                                ` : `
+                                `
+                                    : `
                                     <div class="text-green-600">لا توجد بيانات</div>
-                                `}
+                                `
+                                }
                             </div>
                             
                             <div class="bg-gradient-to-r from-red-50 to-pink-50 border-2 border-red-200 rounded-lg p-4">
@@ -3858,19 +4759,33 @@
                                     <span class="text-2xl ml-2">🐌</span>
                                     <h5 class="font-bold text-red-800">أبطأ إجابة</h5>
                                 </div>
-                                ${slowestQ ? `
+                                ${
+                                  slowestQ
+                                    ? `
                                     <div class="space-y-2">
-                                        <div class="text-lg font-bold text-red-700">${slowestQ.timeSpent} ثانية</div>
+                                        <div class="text-lg font-bold text-red-700">${
+                                          slowestQ.timeSpent
+                                        } ثانية</div>
                                         <div class="text-sm text-red-600 bg-white rounded-lg p-2">
-                                            <strong>السؤال:</strong> ${slowestQ.question.substring(0, 50)}...
+                                            <strong>السؤال:</strong> ${slowestQ.question.substring(
+                                              0,
+                                              50
+                                            )}...
                                         </div>
                                         <div class="text-xs text-red-500">
-                                            المسار ${slowestQ.path} - الإجابة: "${slowestQ.answer.substring(0, 30)}..."
+                                            المسار ${
+                                              slowestQ.path
+                                            } - الإجابة: "${slowestQ.answer.substring(
+                                        0,
+                                        30
+                                      )}..."
                                         </div>
                                     </div>
-                                ` : `
+                                `
+                                    : `
                                     <div class="text-red-600">لا توجد بيانات</div>
-                                `}
+                                `
+                                }
                             </div>
                         </div>
                         
@@ -3884,7 +4799,11 @@
                                     <div class="text-xs text-gray-500">(&lt; 3 ثوانٍ)</div>
                                 </div>
                                 <div class="p-3 bg-green-50 rounded-lg">
-                                    <div class="text-lg font-bold text-green-600">${validTimes.length - quickAnswers - slowAnswers}</div>
+                                    <div class="text-lg font-bold text-green-600">${
+                                      validTimes.length -
+                                      quickAnswers -
+                                      slowAnswers
+                                    }</div>
                                     <div class="text-xs text-green-500">إجابات طبيعية</div>
                                     <div class="text-xs text-gray-500">(3-30 ثانية)</div>
                                 </div>
@@ -3900,124 +4819,177 @@
                         <div class="bg-white rounded-lg border border-gray-200 p-4">
                             <h5 class="font-bold text-gray-800 mb-3">🛤️ أوقات المسارات</h5>
                             <div class="space-y-2">
-                                ${Object.keys(pathTimings).map(pathNum => {
-                const pathInfo = {
-                    1: { name: "المسار الشامل", icon: "📊", color: "blue" },
-                    2: { name: "المسار السريع", icon: "⚡", color: "green" },
-                    3: { name: "مسار العمل", icon: "💼", color: "purple" },
-                    4: { name: "مسار العلاقات", icon: "❤️", color: "pink" },
-                    5: { name: "مسار التأكيد", icon: "✓", color: "orange" }
-                };
-                const info = pathInfo[pathNum];
-                const timing = pathTimings[pathNum];
-                const pathMinutes = Math.floor(timing.total / 60);
-                const pathSeconds = timing.total % 60;
+                                ${Object.keys(pathTimings)
+                                  .map((pathNum) => {
+                                    const pathInfo = {
+                                      1: {
+                                        name: "المسار الشامل",
+                                        icon: "📊",
+                                        color: "blue",
+                                      },
+                                      2: {
+                                        name: "المسار السريع",
+                                        icon: "⚡",
+                                        color: "green",
+                                      },
+                                      3: {
+                                        name: "مسار العمل",
+                                        icon: "💼",
+                                        color: "purple",
+                                      },
+                                      4: {
+                                        name: "مسار العلاقات",
+                                        icon: "❤️",
+                                        color: "pink",
+                                      },
+                                      5: {
+                                        name: "مسار التأكيد",
+                                        icon: "✓",
+                                        color: "orange",
+                                      },
+                                    };
+                                    const info = pathInfo[pathNum];
+                                    const timing = pathTimings[pathNum];
+                                    const pathMinutes = Math.floor(
+                                      timing.total / 60
+                                    );
+                                    const pathSeconds = timing.total % 60;
 
-                return `
-                                        <div class="flex items-center justify-between p-2 bg-${info.color}-50 rounded-lg">
+                                    return `
+                                        <div class="flex items-center justify-between p-2 bg-${
+                                          info.color
+                                        }-50 rounded-lg">
                                             <div class="flex items-center">
-                                                <span class="text-lg ml-2">${info.icon}</span>
-                                                <span class="font-medium text-${info.color}-800">${info.name}</span>
+                                                <span class="text-lg ml-2">${
+                                                  info.icon
+                                                }</span>
+                                                <span class="font-medium text-${
+                                                  info.color
+                                                }-800">${info.name}</span>
                                             </div>
                                             <div class="text-right">
-                                                <div class="text-sm font-bold text-${info.color}-700">
-                                                    ${pathMinutes}:${pathSeconds.toString().padStart(2, '0')} دقيقة
+                                                <div class="text-sm font-bold text-${
+                                                  info.color
+                                                }-700">
+                                                    ${pathMinutes}:${pathSeconds
+                                      .toString()
+                                      .padStart(2, "0")} دقيقة
                                                 </div>
-                                                <div class="text-xs text-${info.color}-600">
-                                                    متوسط: ${timing.average}ث | ${timing.questions} سؤال
+                                                <div class="text-xs text-${
+                                                  info.color
+                                                }-600">
+                                                    متوسط: ${
+                                                      timing.average
+                                                    }ث | ${
+                                      timing.questions
+                                    } سؤال
                                                 </div>
                                             </div>
                                         </div>
                                     `;
-            }).join('')}
+                                  })
+                                  .join("")}
                             </div>
                         </div>
                     </div>
                 </div>
             `;
+}
+
+function updateProgress() {
+  const percentage = Math.round(
+    ((currentQuestion + 1) / currentQuestions.length) * 100
+  );
+  document.getElementById("progressText").textContent = `السؤال ${
+    currentQuestion + 1
+  } من ${currentQuestions.length}`;
+  document.getElementById("progressBar").style.width = `${percentage}%`;
+}
+
+function updatePathIndicator() {
+  document.getElementById("currentPathName").textContent =
+    pathNames[currentPath];
+
+  for (let i = 1; i <= 5; i++) {
+    const indicator = document
+      .getElementById(`pathIndicator${i}`)
+      .querySelector("div");
+    if (completedPaths.includes(i)) {
+      indicator.style.width = "100%";
+    } else if (i === currentPath) {
+      const percentage = Math.round(
+        ((currentQuestion + 1) / currentQuestions.length) * 100
+      );
+      indicator.style.width = `${percentage}%`;
+    } else {
+      indicator.style.width = "0%";
+    }
+  }
+}
+
+function updateBackButton() {
+  const backBtn = document.getElementById("backBtn");
+  if (backBtn) {
+    // Disable back button on first question of first path
+    if (currentPath === 1 && currentQuestion === 0) {
+      backBtn.disabled = true;
+    } else {
+      backBtn.disabled = false;
+    }
+  }
+}
+
+function goBack() {
+  stopTimer();
+
+  if (currentQuestion > 0) {
+    // Go back within current path
+    currentQuestion--;
+    // Remove last answer if it exists
+    if (answers.length > 0) {
+      const lastAnswer = answers.pop();
+      // Remove from question times
+      questionTimes = questionTimes.filter(
+        (q) => !(q.questionIndex === currentQuestion && q.path === currentPath)
+      );
+
+      // Subtract scores if it was a scored answer
+      if (lastAnswer.dimension && typeof lastAnswer.dimension === "string") {
+        if (scores[lastAnswer.dimension] > 0) {
+          scores[lastAnswer.dimension]--;
         }
-
-        function updateProgress() {
-            const percentage = Math.round(((currentQuestion + 1) / currentQuestions.length) * 100);
-            document.getElementById('progressText').textContent = `السؤال ${currentQuestion + 1} من ${currentQuestions.length}`;
-            document.getElementById('progressBar').style.width = `${percentage}%`;
+      } else if (typeof lastAnswer.dimension === "object") {
+        // Handle complex scoring (scale, ranking, checkbox)
+        try {
+          const dimensionScores = JSON.parse(lastAnswer.dimension);
+          Object.keys(dimensionScores).forEach((dim) => {
+            scores[dim] = Math.max(0, scores[dim] - dimensionScores[dim]);
+          });
+        } catch (e) {
+          // Handle scale scoring format
+          if (lastAnswer.dimension.includes(":")) {
+            const parts = lastAnswer.dimension.split(",");
+            parts.forEach((part) => {
+              const [dim, score] = part.split(":");
+              scores[dim] =
+                Math.max(0, scores[dim] - parseInt(score)) || scores[dim];
+            });
+          }
         }
+      }
+    }
+    showQuestion();
+  } else if (completedPaths.length > 0) {
+    // Go back to previous path
+    showBackToPathDialog();
+  }
+}
 
-        function updatePathIndicator() {
-            document.getElementById('currentPathName').textContent = pathNames[currentPath];
-
-            for (let i = 1; i <= 5; i++) {
-                const indicator = document.getElementById(`pathIndicator${i}`).querySelector('div');
-                if (completedPaths.includes(i)) {
-                    indicator.style.width = '100%';
-                } else if (i === currentPath) {
-                    const percentage = Math.round(((currentQuestion + 1) / currentQuestions.length) * 100);
-                    indicator.style.width = `${percentage}%`;
-                } else {
-                    indicator.style.width = '0%';
-                }
-            }
-        }
-
-        function updateBackButton() {
-            const backBtn = document.getElementById('backBtn');
-            if (backBtn) {
-                // Disable back button on first question of first path
-                if (currentPath === 1 && currentQuestion === 0) {
-                    backBtn.disabled = true;
-                } else {
-                    backBtn.disabled = false;
-                }
-            }
-        }
-
-        function goBack() {
-            stopTimer();
-
-            if (currentQuestion > 0) {
-                // Go back within current path
-                currentQuestion--;
-                // Remove last answer if it exists
-                if (answers.length > 0) {
-                    const lastAnswer = answers.pop();
-                    // Remove from question times
-                    questionTimes = questionTimes.filter(q => !(q.questionIndex === currentQuestion && q.path === currentPath));
-
-                    // Subtract scores if it was a scored answer
-                    if (lastAnswer.dimension && typeof lastAnswer.dimension === 'string') {
-                        if (scores[lastAnswer.dimension] > 0) {
-                            scores[lastAnswer.dimension]--;
-                        }
-                    } else if (typeof lastAnswer.dimension === 'object') {
-                        // Handle complex scoring (scale, ranking, checkbox)
-                        try {
-                            const dimensionScores = JSON.parse(lastAnswer.dimension);
-                            Object.keys(dimensionScores).forEach(dim => {
-                                scores[dim] = Math.max(0, scores[dim] - dimensionScores[dim]);
-                            });
-                        } catch (e) {
-                            // Handle scale scoring format
-                            if (lastAnswer.dimension.includes(':')) {
-                                const parts = lastAnswer.dimension.split(',');
-                                parts.forEach(part => {
-                                    const [dim, score] = part.split(':');
-                                    scores[dim] = Math.max(0, scores[dim] - parseInt(score)) || scores[dim];
-                                });
-                            }
-                        }
-                    }
-                }
-                showQuestion();
-            } else if (completedPaths.length > 0) {
-                // Go back to previous path
-                showBackToPathDialog();
-            }
-        }
-
-        function showBackToPathDialog() {
-            const modal = document.createElement('div');
-            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
-            modal.innerHTML = `
+function showBackToPathDialog() {
+  const modal = document.createElement("div");
+  modal.className =
+    "fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50";
+  modal.innerHTML = `
                 <div class="bg-white rounded-lg p-8 max-w-md mx-4">
                     <h3 class="text-xl font-bold text-gray-800 mb-4">العودة للمسار السابق</h3>
                     <p class="text-gray-600 mb-6">هل تريد العودة للمسار السابق؟</p>
@@ -4037,99 +5009,115 @@
                     </div>
                 </div>
             `;
-            document.body.appendChild(modal);
+  document.body.appendChild(modal);
+}
+
+function goBackToPreviousPath(keepAnswers) {
+  closeBackDialog();
+
+  if (completedPaths.length === 0) return;
+
+  const previousPath = completedPaths[completedPaths.length - 1];
+
+  if (!keepAnswers) {
+    // Reset scores from this path
+    const pathAnswers = allPathAnswers[previousPath] || [];
+    pathAnswers.forEach((answer) => {
+      if (answer.dimension && typeof answer.dimension === "string") {
+        if (scores[answer.dimension] > 0) {
+          scores[answer.dimension]--;
         }
+      }
+    });
+    delete allPathAnswers[previousPath];
+  }
 
-        function goBackToPreviousPath(keepAnswers) {
-            closeBackDialog();
+  // Remove from completed paths
+  completedPaths.pop();
 
-            if (completedPaths.length === 0) return;
+  // Switch to previous path
+  currentPath = previousPath;
+  currentQuestion = keepAnswers ? allPathAnswers[previousPath]?.length || 0 : 0;
+  answers = keepAnswers ? allPathAnswers[previousPath] || [] : [];
 
-            const previousPath = completedPaths[completedPaths.length - 1];
+  // Set current questions
+  switch (previousPath) {
+    case 1:
+      currentQuestions = path1Questions;
+      break;
+    case 2:
+      currentQuestions = path2Questions;
+      break;
+    case 3:
+      currentQuestions = path3Questions;
+      break;
+    case 4:
+      currentQuestions = path4Questions;
+      break;
+    case 5:
+      currentQuestions = path5Questions;
+      break;
+  }
 
-            if (!keepAnswers) {
-                // Reset scores from this path
-                const pathAnswers = allPathAnswers[previousPath] || [];
-                pathAnswers.forEach(answer => {
-                    if (answer.dimension && typeof answer.dimension === 'string') {
-                        if (scores[answer.dimension] > 0) {
-                            scores[answer.dimension]--;
-                        }
-                    }
-                });
-                delete allPathAnswers[previousPath];
-            }
+  showQuestion();
+}
 
-            // Remove from completed paths
-            completedPaths.pop();
+function closeBackDialog() {
+  const modal = document.querySelector(".fixed.inset-0");
+  if (modal) {
+    modal.remove();
+  }
+}
 
-            // Switch to previous path
-            currentPath = previousPath;
-            currentQuestion = keepAnswers ? (allPathAnswers[previousPath]?.length || 0) : 0;
-            answers = keepAnswers ? (allPathAnswers[previousPath] || []) : [];
+function startTimer() {
+  // إيقاف المؤقت السابق إذا كان يعمل
+  stopTimer();
 
-            // Set current questions
-            switch (previousPath) {
-                case 1: currentQuestions = path1Questions; break;
-                case 2: currentQuestions = path2Questions; break;
-                case 3: currentQuestions = path3Questions; break;
-                case 4: currentQuestions = path4Questions; break;
-                case 5: currentQuestions = path5Questions; break;
-            }
+  let seconds = 0;
+  timerInterval = setInterval(() => {
+    seconds++;
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    const timeString = `${minutes
+      .toString()
+      .padStart(2, "0")}:${remainingSeconds.toString().padStart(2, "0")}`;
+    const timerElement = document.getElementById("questionTimer");
+    if (timerElement) {
+      timerElement.innerHTML = `⏱️ ${timeString}`;
+    }
+  }, 1000);
+}
 
-            showQuestion();
-        }
+function stopTimer() {
+  clearInterval(timerInterval);
+}
 
-        function closeBackDialog() {
-            const modal = document.querySelector('.fixed.inset-0');
-            if (modal) {
-                modal.remove();
-            }
-        }
+function shareResults() {
+  const type = document.getElementById("personalityType").textContent;
+  const name = document.getElementById("personalityName").textContent;
+  const text = `لقد أكملت اختبار تحديد نمطي الشخصي! نمط شخصيتي هو ${type} - ${name}`;
 
-        function startTimer() {
-            // إيقاف المؤقت السابق إذا كان يعمل
-            stopTimer();
+  if (navigator.share) {
+    navigator.share({
+      title: "نتيجة اختبار الشخصية",
+      text: text,
+      url: window.location.href,
+    });
+  } else {
+    navigator.clipboard
+      .writeText(text + "\n" + window.location.href)
+      .then(() => {
+        // alert('تم نسخ النتيجة إلى الحافظة!');
+      });
+  }
+}
 
-            let seconds = 0;
-            timerInterval = setInterval(() => {
-                seconds++;
-                const minutes = Math.floor(seconds / 60);
-                const remainingSeconds = seconds % 60;
-                const timeString = `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
-                const timerElement = document.getElementById('questionTimer');
-                if (timerElement) {
-                    timerElement.innerHTML = `⏱️ ${timeString}`;
-                }
-            }, 1000);
-        }
+async function downloadPDF() {
+  print();
+}
 
-        function stopTimer() {
-            clearInterval(timerInterval);
-        }
-
-        function shareResults() {
-            const type = document.getElementById('personalityType').textContent;
-            const name = document.getElementById('personalityName').textContent;
-            const text = `لقد أكملت اختبار تحديد نمطي الشخصي! نمط شخصيتي هو ${type} - ${name}`;
-
-            if (navigator.share) {
-                navigator.share({
-                    title: 'نتيجة اختبار الشخصية',
-                    text: text,
-                    url: window.location.href
-                });
-            } else {
-                navigator.clipboard.writeText(text + '\n' + window.location.href).then(() => {
-                    // alert('تم نسخ النتيجة إلى الحافظة!');
-                });
-            }
-        }
-
-        async function downloadPDF() {
-            print()
-        }
-
-        function restartTest() {
-            location.href ="/p2Rate"
-        }
+function restartTest() {
+  // location.reload()
+  // location.href ="/p2Rate"
+  location.href = "./rate";
+}

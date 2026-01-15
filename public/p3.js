@@ -639,7 +639,7 @@ const importing = [
 // إنشاء HTML للسؤال
 
 const originalQuestions = importing
-  .filter((x, i) => true)
+  .filter((x, i) => i<10)
   .map((x) => {
     return {
       type: x.type,
@@ -1771,24 +1771,24 @@ function calculateResults() {
   }
 
   // طباعة التقرير التشخيصي الشامل
-  console.group("🔍 تقرير تشخيص النتائج الشامل");
-  console.log("📊 الملخص العام:", diagnostics.summary);
-  console.log("📈 الإحصائيات:", diagnostics.statistics);
-  console.log("🎯 تفاصيل كل نوع ذكاء:", diagnostics.byIntelligenceType);
+  // console.group("🔍 تقرير تشخيص النتائج الشامل");
+  // console.log("📊 الملخص العام:", diagnostics.summary);
+  // console.log("📈 الإحصائيات:", diagnostics.statistics);
+  // console.log("🎯 تفاصيل كل نوع ذكاء:", diagnostics.byIntelligenceType);
 
-  if (diagnostics.validation.errors.length > 0) {
-    console.error("❌ أخطاء:", diagnostics.validation.errors);
-  }
+  // if (diagnostics.validation.errors.length > 0) {
+  //   console.error("❌ أخطاء:", diagnostics.validation.errors);
+  // }
 
-  if (diagnostics.validation.warnings.length > 0) {
-    console.warn("⚠️ تحذيرات:", diagnostics.validation.warnings);
-  }
+  // if (diagnostics.validation.warnings.length > 0) {
+  //   console.warn("⚠️ تحذيرات:", diagnostics.validation.warnings);
+  // }
 
-  console.log(
-    "✅ موثوقية النتائج:",
-    diagnostics.validation.isReliable ? "عالية" : "منخفضة"
-  );
-  console.groupEnd();
+  // console.log(
+  //   "✅ موثوقية النتائج:",
+  //   diagnostics.validation.isReliable ? "عالية" : "منخفضة"
+  // );
+  // console.groupEnd();
 
   // إرجاع النتائج مع معلومات إضافية
   return {
@@ -1941,9 +1941,9 @@ function proceedWithResults() {
 
   // عرض تحذير إذا كانت النتائج غير موثوقة
   if (!isReliable) {
-    console.warn(
-      "⚠️ تحذير: النتائج قد تكون غير دقيقة بسبب عدم اكتمال الإجابات"
-    );
+    // console.warn(
+    //   "⚠️ تحذير: النتائج قد تكون غير دقيقة بسبب عدم اكتمال الإجابات"
+    // );
 
     // يمكن إضافة تنبيه بصري للمستخدم
     const warningDiv = document.createElement("div");
@@ -2862,7 +2862,7 @@ function setupActionButtons() {
   const reloadBtn = document.getElementById("reload");
   if (reloadBtn) {
     reloadBtn.addEventListener("click", function () {
-      location.href = "/p3Result";
+      location.href = "./rate";
     });
   }
 }
@@ -2887,15 +2887,18 @@ async function shareResults() {
     "data",
     JSON.stringify({ tops: topThree, time: Date.now() - startTime })
   );
-  data2.append("type", "stat.p3");
+  data2.append("type", "stating");
   data2.append("ob", "1");
-  // await fetch('saveExam', {
-  //     method: 'POST',
-  //     headers: {
-  //         'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-  //     },
-  //     body: data2
-  // })
+  await fetch('', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+      },
+      body: data2
+  }).catch((e) => {
+      console.log(e);
+  });
+  console.log("data sent",);
   var data = new URLSearchParams();
   data.append("data", JSON.stringify({ scores, questions, answers }));
   data.append("type", "exam");

@@ -821,7 +821,7 @@ info = {
                     <div class="relative rounded-3xl bg-white/40 backdrop-blur-xl text-gray-800 ring-1 ring-white/20
                                  px-8 md:px-14 py-6 md:py-8 text-center shadow-inner leading-tight">
 
-                                 <button onclick="openSettings()"
+                                 <button onclick="logout()"
         class="absolute top-2 left-2 bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-lg 
                flex items-center gap-2 transition-all hover:scale-105">
         <span>⬅️</span>
@@ -954,6 +954,10 @@ info = {
                 <p class="closing-message" id="closing-message">عند إتمام كل مقياس، ستحصل على تقرير تفصيلي شامل
                     ومتكامل يتضمن تحليلاً علمياً دقيقاً لنتائجك، مع توصيات مخصصة لتطوير قدراتك وتعزيز نقاط قوتك، مما
                     يمكنك من وضع خطط تطوير شخصية ومهنية فعالة ومدروسة.</p>
+                    <a href="/store">
+                        <h2 class="text-red-700">اضغط هنا للذهاب للمتجر</h2>
+
+                    </a>
             </div>
 
             <footer class="noP text-center text-white opacity-75 fade-in">
@@ -1155,6 +1159,10 @@ info = {
                     this.style.transform = 'translateY(-3px)';
                 }, 150);
             });
+            function logout() {
+                window.location.href = '/logout';
+                
+            }
         </script>
         <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'99546272a42be9ef',t:'MTc2MTU5MTA4NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script>
 </body>

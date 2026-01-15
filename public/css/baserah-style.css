@@ -1,0 +1,38 @@
+/* Custom Styles for Baserah Scale */
+
+/* الخلفية البنفسجية المتدرجة */
+.baserah-bg {
+    background: linear-gradient(135deg, 
+      oklch(0.55 0.25 280) 0%, 
+      oklch(0.6 0.2 260) 30%,
+      oklch(0.65 0.18 250) 60%,
+      oklch(0.75 0.12 300) 100%
+    );
+}
+
+/* حركة الطفو (Floating) */
+.float-animation {
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+}
+
+/* تأثير الظهور عند السكرول (بديل Framer Motion) */
+.reveal-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease-out;
+}
+
+.reveal-up.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* تحسين السكرول */
+html {
+    scroll-behavior: smooth;
+}

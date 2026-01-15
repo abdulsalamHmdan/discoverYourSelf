@@ -14,6 +14,8 @@ app.use(
     saveUninitialized: true,
   })
 );
+
+
 const path = require("path");
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -75,6 +77,7 @@ function isTeacher(req, res, next) {
 
 //   res.json(students);
 // });
+
 
 app.get("/adminStore", isAdmin, async function (req, res) {
   const students = await User.aggregate([
@@ -140,6 +143,9 @@ app.get("/adminStore", isTeacher, async function (req, res) {
   ]);
   res.render("adminStore", { data: JSON.stringify(students) });
 });
+app.get("/adminStore", function (req, res) {
+  res.render("403");
+});
 app.post("/adminStore", express.json(), async function (req, res) {
   console.log(req.body);
   const paymentData = {
@@ -196,6 +202,8 @@ app.post("/adminStore", express.json(), async function (req, res) {
       .json({ status: "error", message: "Error creating payment session" });
   }
 });
+
+
 app.get("/", isAuthenticated, function (req, res) {
   res.redirect("home");
 });
@@ -206,8 +214,10 @@ app.get("/", isTeacher, function (req, res) {
   res.redirect("admin");
 });
 app.get("/", function (req, res) {
-  res.render("firstpage");
+  res.render("home2");
 });
+
+
 
 app.get("/login", isAuthenticated, function (req, res) {
   res.redirect("/");
@@ -221,6 +231,8 @@ app.get("/login", isTeacher, function (req, res) {
 app.get("/login", function (req, res) {
   res.render("login", { collection: "users" });
 });
+
+
 app.get("/admin", isAdmin, function (req, res) {
   User.find()
     .then((usersFromDb) => {
@@ -277,7 +289,6 @@ app.get("/admin", isTeacher, function (req, res) {
       res.render("adminPage", { data: null });
     });
 });
-
 app.get("/admin", function (req, res) {
   res.render("login", { collection: "admin" });
 });
@@ -291,6 +302,7 @@ app.get("/addUsers", isTeacher, async function (req, res) {
 app.get("/addUsers", async function (req, res) {
   res.redirect("/");
 });
+
 app.post("/addUsers", isAdmin, express.json(), async function (req, res) {
   const studentsData = req.body; // مصفوفة JSON قادمة من الفرونت
   let result;
@@ -321,7 +333,6 @@ app.post("/addUsers", isAdmin, express.json(), async function (req, res) {
     }
   }
 });
-
 app.post("/addUsers", isTeacher, express.json(), async function (req, res) {
   const studentsData = req.body; // مصفوفة JSON قادمة من الفرونت
   let result;
@@ -369,7 +380,7 @@ app.get("/home", function (req, res) {
   res.redirect("/");
 });
 
-app.get("/exam/:id", async function (req, res) {
+app.get("/:id/exam", async function (req, res) {
   const examId = req.params.id;
   let exam = null;
   try {
@@ -392,7 +403,7 @@ app.get("/exam/:id", async function (req, res) {
     res.send("تم بدء الاختبار مسبقاً");
   }
 });
-app.get("/rate/:id", async function (req, res) {
+app.get("/:id/rate", async function (req, res) {
   const examId = req.params.id;
   let exam = null;
   try {
@@ -418,7 +429,7 @@ app.get("/rate/:id", async function (req, res) {
     res.send("لا يمكن التقييم في الوقت الحالي");
   }
 });
-app.get("/result/:id", async function (req, res) {
+app.get("/:id/result", async function (req, res) {
   const examId = req.params.id;
   let exam = null;
   try {
@@ -440,21 +451,29 @@ app.get("/result/:id", async function (req, res) {
     res.send("تم بدء الاختبار مسبقاً");
   }
 });
-
-
-app.post("/exam/:id", function (req, res) {
-  console.log(req.body);
-  console.log(req.params.id);
-  Exam.findByIdAndUpdate(req.params.id, {
-    result: JSON.parse(req.body.data),
-    stat: "inprogress",
-  })
-    .then(() => {
-      res.send("started");
+app.post("/:id/exam", function (req, res) {
+  if (req.body.type !== "stating") {
+    Exam.findByIdAndUpdate(req.params.id, {
+      result: JSON.parse(req.body.data),
+      stat: "inprogress",
     })
-    .catch(() => {
-      res.send("notFound");
-    });
+      .then(() => {
+        res.send("started");
+      })
+      .catch(() => {
+        res.send("notFound");
+      });
+      
+    }else{Exam.findByIdAndUpdate(req.params.id, {
+      short: JSON.parse(req.body.data),
+    })
+      .then(() => {
+        res.send("started");
+      })
+      .catch(() => {
+        res.send("notFound");
+      });}
+
 });
 app.post("/rate/:id", function (req, res) {
   console.log(req.body);
@@ -471,10 +490,11 @@ app.post("/rate/:id", function (req, res) {
     });
 });
 
-app.get("/", isAuthenticated, async (req, res) => {
-  res.render("store", { exams: [] });
+app.get("/store", isAuthenticated, async (req, res) => {
+  const exams = await Exam.find({ user: req.session.userId });
+  res.render("store", { exams: exams.map(e => e.type) });
 });
-app.post("/storepayment", isAuthenticated, async (req, res) => {
+app.post("/payment", isAuthenticated, async (req, res) => {
   const paymentData = {
     amount: +req.body.price,
     currency: "SAR",
@@ -795,5 +815,11 @@ app.get("/logout", (req, res) => {
     res.redirect("/");
   });
 });
+
+app.use((req, res, next) => {
+    res.status(404).render('404');
+});
+
+
 app.listen(3000);
 console.log("http://127.0.0.1:3000");
