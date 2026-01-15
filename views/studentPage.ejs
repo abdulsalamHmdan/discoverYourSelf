@@ -2,16 +2,19 @@
 info = {
     p1: {
         icon: "🎯",
+        color: "#FF6B6B",
         label: "Holland",
         title: "مقياس هولاند للميول المهنية",
     },
     p2: {
         icon: "🧠",
+        color: "#4FACFE",
         label: "MBTI",
         title: "مقياس مايرز-بريجز للأنماط الشخصية",
     },
     p3: {
-      icon: "🧩",
+        icon: "🧩",
+        color: "#A388A5",
         label: "Gardner",
         title: "مقياس الذكاءات المتعددة لجاردنر",
     }
@@ -68,46 +71,104 @@ info = {
       <!-- Test Cards Grid -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
         <!-- Test Card 1 -->
-         <% exams.forEach(function(exam) { %>
-        <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
-          <div
-            class="bg-blue-500 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:rotate-12 transition-transform duration-300">
-            <span class="text-3xl"> <%= info[exam.type].icon %> </span>
-          </div>
-          <h3 class="text-2xl text-center font-bold text-gray-800 mb-2"><%= info[exam.type].title %></h3>
-          <p class="text-xl text-center font-bold text-blue-600 mb-4 tracking-wide"><%= info[exam.type].label %></p>
-          <% if(exam) { %>
-            <div class="flex gap-3">
-              <button onclick="viewTest('<%=exam.id %>')"
-                class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
-                  </path>
-                </svg>
-                استعراض
-              </button>
-              <button onclick="deleteTest('p1')"
-                class="flex-1 bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
-                  </path>
-                </svg>
-                حذف
-              </button>
+<% exams.forEach(function(exam) { %>
+  <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
+    
+    <div class="bg-blue-500 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:rotate-12 transition-transform duration-300">
+      <span class="text-3xl"> <%= info[exam.type].icon %> </span>
+    </div>
+    <h3 class="text-2xl text-center font-bold text-gray-800 mb-2"><%= info[exam.type].title %></h3>
+    <p class="text-xl text-center font-bold text-blue-600 mb-4 tracking-wide"><%= info[exam.type].label %></p>
+
+    <% if(exam.stat !== "new") { %>
+      
+      <div class="flex gap-3 mb-4">
+        <button onclick="viewTest('<%=exam.id %>')"
+          class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+          </svg>
+          استعراض
+        </button>
+
+        <button onclick="assessTest('<%=exam.id %>')"
+          class="flex-1 hover:transition-colors duration-200 flex items-center justify-center gap-2"
+          style="background-color: #ea580c; color: white; font-weight: 600; padding: 0.5rem 1rem; border-radius: 0.5rem;"
+          onmouseover="this.style.opacity='0.8'"
+          onmouseout="this.style.opacity='1'">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+          </svg>
+          تقييم
+        </button>
+      </div>
+
+      <div class="pt-4 border-t border-gray-100">
+        
+        <% if (exam.type === 'p1') { %>
+          <% if (exam.short && exam.short.tops && exam.short.tops.length > 0) { %>
+            <p class="text-xs text-gray-400 text-center mb-2 font-medium">أعلى الميول المهنية</p>
+            <div class="flex flex-wrap justify-center gap-2 dir-rtl">
+              <% exam.short.tops.forEach(function(top) { %>
+                <div class="flex items-center bg-gray-50 border border-gray-100 rounded-full pl-3 pr-1 py-1 shadow-sm">
+                  <div class="w-7 h-7 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold ml-2">
+                    <%= top.dim %>
+                  </div>
+                  <div class="flex flex-col">
+                    <span class="text-xs font-bold text-gray-700 leading-tight"><%= top.arabicName %></span>
+                    <span class="text-[10px] text-gray-500 font-mono"><%= Math.round(top.percentages) %>%</span>
+                  </div>
+                </div>
+              <% }); %>
             </div>
-            <% }else{ %>
-              <div class="bg-gray-50 rounded-lg p-4 mb-4 min-h-[100px] border-2 border-dashed border-gray-300">
-                <p class="text-center ma">لم يتم الاختبار بعد</p>
-              </div>
-              <% } %>
-        </div>
+          <% } %>
 
+        <% } else if (exam.type === 'p2') { %>
+          <% if (exam.short && exam.short.tops && exam.short.tops.length > 0) { %>
+            <p class="text-xs text-gray-400 text-center mb-2 font-medium">نمط الشخصية</p>
+            <div class="text-center mb-3">
+               <span class="text-sm font-bold text-purple-800 bg-purple-100 px-2 py-0.5 rounded-md"><%= exam.short.pers %> - <%= exam.short.type %></span>
+            </div>
+            <div class="grid grid-cols-2 gap-2 dir-rtl">
+              <% exam.short.tops.forEach(function(trait) { %>
+                <div class="flex justify-between items-center bg-purple-50 border border-purple-100 rounded-lg px-2 py-1.5">
+                  <span class="text-[10px] font-bold text-purple-800 whitespace-nowrap"><%= trait.name %></span>
+                  <span class="text-xs font-black text-gray-600 font-mono"><%= trait.persent %>%</span>
+                </div>
+              <% }); %>
+            </div>
+          <% } %>
 
-                <% }) %>
+        <% } else if (exam.type === 'p3') { %>
+          <% if (exam.short && exam.short.tops && exam.short.tops.length > 0) { %>
+             <p class="text-xs text-gray-400 text-center mb-2 font-medium">أبرز الذكاءات</p>
+             <div class="space-y-2 dir-rtl px-1">
+               <% exam.short.tops.forEach(function(top) { %>
+                 <div class="relative">
+                   <div class="flex mb-1 items-center justify-between">
+                     <span class="text-xs font-bold text-emerald-700"><%= top.name %></span>
+                     <span class="text-[10px] font-semibold text-emerald-600 bg-emerald-100 px-1.5 rounded"><%= top.score %>%</span>
+                   </div>
+                   <div class="w-full bg-emerald-100 rounded-full h-1.5">
+                     <div class="bg-emerald-500 h-1.5 rounded-full transition-all duration-500" style="width: <%= top.score %>%"></div>
+                   </div>
+                 </div>
+               <% }); %>
+             </div>
+          <% } %>
+        <% } %>
+
+      </div>
+      
+    <% } else { %>
+      <div class="bg-gray-50 rounded-lg p-4 mb-4 min-h-[100px] border-2 border-dashed border-gray-300 flex items-center justify-center">
+        <p class="text-center text-gray-500 font-medium">لم يتم الاختبار بعد</p>
+      </div>
+    <% } %>
+
+  </div>
+<% }) %>
 
 
     <!-- General Control Buttons -->

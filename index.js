@@ -671,7 +671,7 @@ app.get("/admin/results/:id", async function (req, res) {
     res.send("notFound");
     return;
   }
-  if (exam.stat === "done") {
+  if (exam.stat !== "new") {
     res.render(`${exam.type}Result`, {
       [exam.type]: JSON.stringify(exam.result),
       name: exam.user.name,
