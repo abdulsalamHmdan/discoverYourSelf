@@ -475,7 +475,7 @@ app.post("/:id/exam", function (req, res) {
       });}
 
 });
-app.post("/rate/:id", function (req, res) {
+app.post("/:id/rate", function (req, res) {
   console.log(req.body);
   console.log(req.params.id);
   Exam.findByIdAndUpdate(req.params.id, {
@@ -641,13 +641,14 @@ app.get("/admin/end/:id", async function (req, res) {
   const user = await User.findById(req.params.id);
 
   if (user) {
-    exams = await Exam.find({ user: user._id, stat: "done" });
+    let exams = await Exam.find({ user: user._id });
     const p1 = exams.find((e) => e.type === "p1") || null;
     const p2 = exams.find((e) => e.type === "p2") || null;
     const p3 = exams.find((e) => e.type === "p3") || null;
     res.render("studentPage", {
       id: user.user,
       name: user.name,
+      exams: exams,
       p1,
       p2,
       p3,
@@ -658,7 +659,7 @@ app.get("/admin/end/:id", async function (req, res) {
   }
 });
 
-app.get("/admin/Result/:id", async function (req, res) {
+app.get("/admin/results/:id", async function (req, res) {
   const examId = req.params.id;
   let exam = null;
   try {
@@ -677,7 +678,7 @@ app.get("/admin/Result/:id", async function (req, res) {
       from: "show",
     });
   } else {
-    res.send("تم بدء الاختبار مسبقاً");
+    res.send("لم يبدأ الاختبار بعد");
   }
 });
 

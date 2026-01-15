@@ -1,3 +1,23 @@
+<%
+info = {
+    p1: {
+        icon: "🎯",
+        label: "Holland",
+        title: "مقياس هولاند للميول المهنية",
+    },
+    p2: {
+        icon: "🧠",
+        label: "MBTI",
+        title: "مقياس مايرز-بريجز للأنماط الشخصية",
+    },
+    p3: {
+      icon: "🧩",
+        label: "Gardner",
+        title: "مقياس الذكاءات المتعددة لجاردنر",
+    }
+};
+%>
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 
@@ -5,7 +25,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>إدارة بيانات الطالب</title>
-  <link rel="shortcut icon" href="c-logo.png" type="image/x-icon">
+  <link rel="shortcut icon" href="/c-logo.png" type="image/x-icon">
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap');
@@ -48,19 +68,17 @@
       <!-- Test Cards Grid -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
         <!-- Test Card 1 -->
+         <% exams.forEach(function(exam) { %>
         <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
           <div
             class="bg-blue-500 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:rotate-12 transition-transform duration-300">
-            <span class="text-3xl">🎯</span>
+            <span class="text-3xl"> <%= info[exam.type].icon %> </span>
           </div>
-          <h3 class="text-2xl text-center font-bold text-gray-800 mb-2">الميول المهنية</h3>
-          <p class="text-xl text-center font-bold text-blue-600 mb-4 tracking-wide">RIASEC</p>
-
-          <!-- Empty div for future data -->
-          <!-- <div class="bg-blue-50 rounded-xl p-6 border border-blue-200"> -->
-          <% if(p1) { %>
+          <h3 class="text-2xl text-center font-bold text-gray-800 mb-2"><%= info[exam.type].title %></h3>
+          <p class="text-xl text-center font-bold text-blue-600 mb-4 tracking-wide"><%= info[exam.type].label %></p>
+          <% if(exam) { %>
             <div class="flex gap-3">
-              <button onclick="viewTest('<%=p1.id %>')"
+              <button onclick="viewTest('<%=exam.id %>')"
                 class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -88,156 +106,9 @@
               <% } %>
         </div>
 
-        <!-- Test Card 2 -->
-        <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
-          <div
-            class="bg-purple-500 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:rotate-12 transition-transform duration-300">
-            <span class="text-3xl">🧠</span>
-          </div>
-          <h3 class="text-2xl text-center font-bold text-gray-800 mb-2">تحليل الشخصية</h3>
-          <p class="text-xl text-center font-bold text-purple-600 mb-4 tracking-wide">MBTI</p>
 
+                <% }) %>
 
-          <!-- Empty div for future data -->
-          <% if(p2) { %>
-            <div class="flex gap-3">
-              <button onclick="viewTest('<%=p2.id %>')"
-                class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
-                  </path>
-                </svg>
-                استعراض
-              </button>
-              <button onclick="deleteTest('p2')"
-                class="flex-1 bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
-                  </path>
-                </svg>
-                حذف
-              </button>
-            </div>
-            <% }else{ %>
-              <div class="p2Result bg-gray-50 rounded-lg p-4 mb-4 min-h-[100px] border-2 border-dashed border-gray-300">
-                <p class="text-center ma">لم يتم الاختبار بعد</p>
-              </div>
-
-              <% } %>
-        </div>
-
-        <!-- Test Card 3 -->
-        <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
-          <div
-            class="bg-orange-500 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:rotate-12 transition-transform duration-300">
-            <span class="text-3xl">🌟</span>
-          </div>
-          <h3 class="text-2xl text-center font-bold text-gray-800 mb-2">الذكاءات المتعددة</h3>
-          <p class="text-xl text-center font-bold text-orange-600 mb-4 tracking-wide">Multiple Intelligences</p>
-
-          <!-- Empty div for future data -->
-          <% if(p3) { %>
-            <div class="flex gap-3">
-              <button onclick="viewTest('<%=p3.id %>')"
-                class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
-                  </path>
-                </svg>
-                استعراض
-              </button>
-              <button onclick="deleteTest('p3')"
-                class="flex-1 bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
-                  </path>
-                </svg>
-                حذف
-              </button>
-            </div>
-
-            <% }else{ %>
-              <div class="bg-gray-50 rounded-lg p-4 mb-4 min-h-[100px] border-2 border-dashed border-gray-300">
-                <p class="text-center ma">لم يتم الاختبار بعد</p>
-              </div>
-              <% } %>
-        </div>
-
-
-
-        <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
-          <div
-            class="bg-green-500 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:rotate-12 transition-transform duration-300">
-            <span class="text-3xl">📊</span>
-          </div>
-          <h3 class="text-2xl text-center font-bold text-gray-800 mb-2">مستوى الرضا</h3>
-          <p class="text-xl text-center font-bold text-green-600 mb-4 tracking-wide">rate</p>
-
-          <!-- Empty div for future data -->
-          <% if(rate) { %>
-
-            <div class="bg-gray-50 rounded-lg p-4 mb-4 min-h-[100px] border-2 border-dashed border-gray-300">
-              <% rate.forEach(function(item,i) { %>
-
-                <div class="space-y-2">
-                  <div class="flex justify-between">
-                    <span class="text-sm">
-                      <%= item.name %>
-                    </span>
-                    <span class="font-bold text-green-600">
-                      <%=(item.val -3)/6 *100 %>%
-                    </span>
-                  </div>
-                  <div class="w-full bg-gray-200 rounded-full h-2">
-                    <div class="bg-green-500 h-2 rounded-full" style=<%='width:' + (item.val -3)/6 *100+"%" %>></div>
-                  </div>
-                </div>
-                <% }); %>
-            </div>
-
-
-            <div class="flex gap-3">
-              <button
-                class="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
-                  </path>
-                </svg>
-                استعراض
-              </button>
-              <button
-                class="flex-1 bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
-                  </path>
-                </svg>
-                حذف
-              </button>
-            </div>
-
-            <% }else{ %>
-              <div class="bg-gray-50 rounded-lg p-4 mb-4 min-h-[100px] border-2 border-dashed border-gray-300">
-                <p class="text-center ma">لم يتم الاختبار بعد</p>
-              </div>
-
-
-              <% } %>
-        </div>
-
-      </div>
-    </div>
 
     <!-- General Control Buttons -->
     <div class="bg-white rounded-xl shadow-lg p-6">

@@ -14,6 +14,7 @@ info = {
         desc:"أحد أشهر مقياسات الشخصية عالمياً، يحدد نمطك الشخصي من بين 16 نمطاً مختلفاً بناءً على أربعة أبعاد: الانطوائية/الانبساطية، الحدس/الحس، التفكير/الشعور، والحكم/الإدراك. يوفر فهماً عميقاً لطريقة تفكيرك واتخاذ قراراتك وتفاعلك مع العالم."
     },
     p3: {
+        icon: "🧩",
         label: "Gardner",
         title: "مقياس الذكاءات المتعددة لجاردنر",
         desc:"يستند إلى نظرية هوارد جاردنر للذكاءات المتعددة، ويقيس ثمانية أنواع من الذكاء: اللغوي، المنطقي-الرياضي، المكاني، الصوتي، الجسدي-الحركي، الطبيعي، الاجتماعي، والذاتي. يساعدك في اكتشاف نقاط قوتك الفكرية المتنوعة و تطوير إمكانياتك الكامنة."
@@ -28,7 +29,7 @@ info = {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مقياس بصيرة - صفحة ترحيبية</title>
-    <link rel="shortcut icon" href="c-logo.png" type="image/x-icon">
+    <link rel="shortcut icon" href="/c-logo.png" type="image/x-icon">
     <script src="/_sdk/element_sdk.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@500;700;800&display=swap" rel="stylesheet">
     <style>
@@ -919,7 +920,7 @@ info = {
 
                 <% data.exams.forEach(function(exam) { %>
                 <div class="test-card ">
-                    <div class="card-header"><span class="test-icon">🎯</span>
+                    <div class="card-header"><span class="test-icon"><%= info[exam.type].icon %></span>
                         <div class="card-badge">
                             <%=info[exam.type].label %>
                         </div>
@@ -929,10 +930,10 @@ info = {
                         <p class="test-description" id="test1-description"><%=info[exam.type].desc %></p>
                         <div class="test-features">
                             <% if (exam.stat == "new" ) { %>
-                                    <a href="exam/<%= exam._id %>" class="feature-tag1"
+                                    <a href="<%= exam._id %>/exam" class="feature-tag1"
                                         style="padding:12px 28px;font-size:18px;border-radius:10px;">بدء المقياس</a>
                                 <% }else if (exam.stat == "inprogress" ) { %>
-                                    <a href="rate/<%= exam._id %>" class="feature-tag1"
+                                    <a href="<%= exam._id %>/rate" class="feature-tag1"
                                         style="padding:12px 28px;font-size:18px;border-radius:10px;">التقييم</a>
                                     <% } else { %>
                                         <a href="result/<%= exam._id %>" class="feature-tag2"
