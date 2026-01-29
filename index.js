@@ -14,6 +14,8 @@ app.use(
     saveUninitialized: true,
   })
 );
+const sendEmail = require('./send.js');
+// sendEmail('411109447@qu.edu.sa', 'تجربة إرسال رسالة باستخدام Gmail API و Node.js من baserah.app');
 
 
 const path = require("path");
