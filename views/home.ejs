@@ -921,7 +921,8 @@ info = {
             <h2 class="section-title">🔹 باقة المقياس المختارة في رحلة بصيرة</h2>
             <div class="tests-grid">
 
-                <% data.exams.forEach(function(exam) { %>
+                <% [{type:"p1"},{type:"p2"},{type:"p3"}].forEach(function(exam) { %>
+                    <% const ex = data.exams.find(x => x.type === exam.type);%>
                 <div class="test-card ">
                     <div class="card-header"><span class="test-icon"><%= info[exam.type].icon %></span>
                         <div class="card-badge">
@@ -932,16 +933,31 @@ info = {
                         <h3 class="test-title" id="test1-title"><%=info[exam.type].title %></h3>
                         <p class="test-description" id="test1-description"><%=info[exam.type].desc %></p>
                         <div class="test-features">
-                            <% if (exam.stat == "new" ) { %>
+                            <% if (ex && ex.stat === "new") { %>
                                     <a href="<%= exam._id %>/exam" class="feature-tag1"
                                         style="padding:12px 28px;font-size:18px;border-radius:10px;">بدء المقياس</a>
-                                <% }else if (exam.stat == "inprogress" ) { %>
+                                <% }else if (ex && ex.stat === "inprogress") { %>
                                     <a href="<%= exam._id %>/rate" class="feature-tag1"
                                         style="padding:12px 28px;font-size:18px;border-radius:10px;">التقييم</a>
-                                    <% } else { %>
-                                        <a href="result/<%= exam._id %>" class="feature-tag2"
+                                    <% } else if (ex && ex.stat == "done") { %>
+                                        <a href="<%= ex._id %>/result" class="feature-tag2"
                                             style="padding:12px 28px;font-size:18px;border-radius:10px;">استعراض
                                             النتائج</a>
+                                        <% }else{ %>
+                                            <div class="gs" style="text-align: center; padding: 0.5rem;">
+                                                <div style="margin-bottom: 0.5rem;">
+                                                    <span style="font-size: 2rem;">🔒</span>
+                                                </div>
+                                                <p style="font-size: 1rem; color: #5a6c7d; margin-bottom: 0.5rem; font-weight: 600;">
+                                                    هذه الباقة غير متاحة حالياً
+                                                </p>
+                                                <p style="font-size: 0.9rem; color: #7a8a9d; margin-bottom: 0.5rem; line-height: 0.5;">
+                                                    يرجى زيارة المتجر للحصول على الوصول الكامل
+                                                </p>
+                                                <a href="/store" class="feature-tag3" style="padding: 14px 32px; font-size: 16px; border-radius: 12px; display: inline-block; text-decoration: none; font-weight: 600; transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(102, 126, 234, 0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(102, 126, 234, 0.3)';">
+                                                    🛍️ زيارة المتجر
+                                                </a>
+                                            </div>
                                         <% } %>
                         </div>
                     </div>
@@ -958,10 +974,6 @@ info = {
                 <p class="closing-message" id="closing-message">عند إتمام كل مقياس، ستحصل على تقرير تفصيلي شامل
                     ومتكامل يتضمن تحليلاً علمياً دقيقاً لنتائجك، مع توصيات مخصصة لتطوير قدراتك وتعزيز نقاط قوتك، مما
                     يمكنك من وضع خطط تطوير شخصية ومهنية فعالة ومدروسة.</p>
-                    <a href="/store">
-                        <h2 class="text-red-700">اضغط هنا للذهاب للمتجر</h2>
-
-                    </a>
             </div>
 
             <footer class="noP text-center text-white opacity-75 fade-in">

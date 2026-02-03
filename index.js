@@ -12,11 +12,10 @@ app.use(
     secret: "keyboard cat",
     resave: false,
     saveUninitialized: true,
-  })
+  }),
 );
-const sendEmail = require('./send.js');
-// sendEmail('411109447@qu.edu.sa', 'تجربة إرسال رسالة باستخدام Gmail API و Node.js من baserah.app');
-
+const sendEmail = require("./send.js");
+// sendEmail('hamadsuleman34@gmail.com', 'تجربة إرسال رسالة باستخدام Gmail API و Node.js من baserah.app');
 
 const path = require("path");
 app.set("view engine", "ejs");
@@ -79,7 +78,6 @@ function isTeacher(req, res, next) {
 
 //   res.json(students);
 // });
-
 
 app.get("/adminStore", isAdmin, async function (req, res) {
   const students = await User.aggregate([
@@ -180,7 +178,7 @@ app.post("/adminStore", express.json(), async function (req, res) {
           Authorization: `Bearer sk_test_XKokBfNWv6FIYuTMg5sLPjhJ`,
           "Content-Type": "application/json",
         },
-      }
+      },
     );
     const redirectUrl = response.data.transaction.url;
     const reqBodyUser = req.body.studentIds;
@@ -205,7 +203,6 @@ app.post("/adminStore", express.json(), async function (req, res) {
   }
 });
 
-
 app.get("/", isAuthenticated, function (req, res) {
   res.redirect("home");
 });
@@ -219,8 +216,6 @@ app.get("/", function (req, res) {
   res.render("home2");
 });
 
-
-
 app.get("/login", isAuthenticated, function (req, res) {
   res.redirect("/");
 });
@@ -233,7 +228,12 @@ app.get("/login", isTeacher, function (req, res) {
 app.get("/login", function (req, res) {
   res.render("login", { collection: "users" });
 });
-
+app.get("/login", function (req, res) {
+  res.render("login", { collection: "users" });
+});
+// app.get("/adminLogin", function (req, res) {
+//   res.render("adminLogin", { collection: "users" });
+// });
 
 app.get("/admin", isAdmin, function (req, res) {
   User.find()
@@ -292,7 +292,7 @@ app.get("/admin", isTeacher, function (req, res) {
     });
 });
 app.get("/admin", function (req, res) {
-  res.render("login", { collection: "admin" });
+  res.render("adminLogin", { collection: "admin" });
 });
 
 app.get("/addUsers", isAdmin, async function (req, res) {
@@ -465,8 +465,8 @@ app.post("/:id/exam", function (req, res) {
       .catch(() => {
         res.send("notFound");
       });
-      
-    }else{Exam.findByIdAndUpdate(req.params.id, {
+  } else {
+    Exam.findByIdAndUpdate(req.params.id, {
       short: JSON.parse(req.body.data),
     })
       .then(() => {
@@ -474,8 +474,8 @@ app.post("/:id/exam", function (req, res) {
       })
       .catch(() => {
         res.send("notFound");
-      });}
-
+      });
+  }
 });
 app.post("/:id/rate", function (req, res) {
   console.log(req.body);
@@ -494,7 +494,7 @@ app.post("/:id/rate", function (req, res) {
 
 app.get("/store", isAuthenticated, async (req, res) => {
   const exams = await Exam.find({ user: req.session.userId });
-  res.render("store", { exams: exams.map(e => e.type) });
+  res.render("store", { exams: exams.map((e) => e.type) });
 });
 app.post("/payment", isAuthenticated, async (req, res) => {
   const paymentData = {
@@ -527,7 +527,7 @@ app.post("/payment", isAuthenticated, async (req, res) => {
           Authorization: `Bearer sk_test_XKokBfNWv6FIYuTMg5sLPjhJ`,
           "Content-Type": "application/json",
         },
-      }
+      },
     );
     const redirectUrl = response.data.transaction.url;
     const user = await User.findOne({ user: req.session.user });
@@ -598,7 +598,8 @@ app.post("/signup", express.json(), async function ({ body: data }, res) {
     .then(() => {
       res.send("done");
     })
-    .catch(() => {
+    .catch((err) => {
+      console.log(err);
       res.send("err");
     });
 });
@@ -636,7 +637,7 @@ app.post(
         // console.log(err);
         res.send("err");
       });
-  }
+  },
 );
 
 app.get("/admin/end/:id", async function (req, res) {
@@ -805,7 +806,7 @@ app.post(
         res.send("notFound");
       }
     }
-  }
+  },
 );
 app.get("/logout", (req, res) => {
   req.session.destroy((err) => {
@@ -820,9 +821,8 @@ app.get("/logout", (req, res) => {
 });
 
 app.use((req, res, next) => {
-    res.status(404).render('404');
+  res.status(404).render("404");
 });
-
 
 app.listen(3000);
 console.log("http://127.0.0.1:3000");
