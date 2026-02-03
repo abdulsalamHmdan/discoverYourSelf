@@ -267,6 +267,12 @@
                         <span id="refreshIcon">📥</span>
                         <span class="mobile-hidden">استيراد الطلاب</span>
                     </button>
+                    <button onclick="openStore()"
+                        class="btn-primary text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all hover:scale-105 focus-visible">
+                        <div id="refreshSpinner" class="loading-spinner hidden"></div>
+                        <span id="refreshIcon">🏪</span>
+                        <span class="mobile-hidden">المتجر</span>
+                    </button>
                     <div class="relative">
                         <button onclick="toggleExportMenu()"
                             class="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all hover:scale-105">
@@ -1372,6 +1378,9 @@
 
         function importData() {
             location.href = '/addUsers';
+        }
+        function openStore() {
+            location.href = '/adminStore';
         }
 
         function exportCSV() {
