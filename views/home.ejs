@@ -5,6 +5,7 @@ info = {
         color: "#FF6B6B",
         label: "Holland",
         title: "مقياس هولاند للميول المهنية",
+        shorttitle:"jgjhj",
         desc:"يعتمد على نظرية جون هولاند الشهيرة التي تصنف الشخصيات إلى ستة أنماط مهنية: الواقعي، الاستقصائي، الفني، الاجتماعي، المغامر، والتقليدي. يساعدك هذا المقياس في اكتشاف الميول المهنية الحقيقية وتحديد المسارات الوظيفية الأنسب لشخصيتك وقدراتك."
 
     },
@@ -13,6 +14,7 @@ info = {
         color: "#4FACFE",
         label: "MBTI",
         title: "مقياس مايرز-بريجز للأنماط الشخصية",
+        shorttitle:"MBTI",
         desc:"أحد أشهر مقياسات الشخصية عالمياً، يحدد نمطك الشخصي من بين 16 نمطاً مختلفاً بناءً على أربعة أبعاد: الانطوائية/الانبساطية، الحدس/الحس، التفكير/الشعور، والحكم/الإدراك. يوفر فهماً عميقاً لطريقة تفكيرك واتخاذ قراراتك وتفاعلك مع العالم."
     },
     p3: {
@@ -20,6 +22,7 @@ info = {
         color: "#A388A5",
         label: "Gardner",
         title: "مقياس الذكاءات المتعددة لجاردنر",
+        shorttitle:"جاردنر",
         desc:"يستند إلى نظرية هوارد جاردنر للذكاءات المتعددة، ويقيس ثمانية أنواع من الذكاء: اللغوي، المنطقي-الرياضي، المكاني، الصوتي، الجسدي-الحركي، الطبيعي، الاجتماعي، والذاتي. يساعدك في اكتشاف نقاط قوتك الفكرية المتنوعة و تطوير إمكانياتك الكامنة."
     }
 };
@@ -498,28 +501,7 @@ info = {
             box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
             transition: all 0.3s ease;
         }
-        .feature-tag2 {
-            background: linear-gradient(135deg, #1e87bb, #9656bb76,  #227dbe);
-            color: white;
-            padding: 0.4rem 1rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-            transition: all 0.3s ease;
-        }
-        .feature-tag3 {
-            background: linear-gradient(135deg, #703636, #700824);
-            color: white;
-            padding: 0.4rem 1rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-            transition: all 0.3s ease;
-        }
+       
 
         .feature-tag:hover {
             transform: translateY(-2px);
@@ -934,31 +916,66 @@ info = {
                         <p class="test-description" id="test1-description"><%=info[exam.type].desc %></p>
                         <div class="test-features">
                             <% if (ex && ex.stat === "new") { %>
-                                    <a href="<%= exam._id %>/exam" class="feature-tag1"
-                                        style="padding:12px 28px;font-size:18px;border-radius:10px;">بدء المقياس</a>
-                                <% }else if (ex && ex.stat === "inprogress") { %>
-                                    <a href="<%= exam._id %>/rate" class="feature-tag1"
-                                        style="padding:12px 28px;font-size:18px;border-radius:10px;">التقييم</a>
-                                    <% } else if (ex && ex.stat == "done") { %>
-                                        <a href="<%= ex._id %>/result" class="feature-tag2"
-                                            style="padding:12px 28px;font-size:18px;border-radius:10px;">استعراض
-                                            النتائج</a>
-                                        <% }else{ %>
-                                            <div class="gs" style="text-align: center; padding: 0.5rem;">
-                                                <div style="margin-bottom: 0.5rem;">
-                                                    <span style="font-size: 2rem;">🔒</span>
-                                                </div>
-                                                <p style="font-size: 1rem; color: #5a6c7d; margin-bottom: 0.5rem; font-weight: 600;">
-                                                    هذه الباقة غير متاحة حالياً
-                                                </p>
-                                                <p style="font-size: 0.9rem; color: #7a8a9d; margin-bottom: 0.5rem; line-height: 0.5;">
-                                                    يرجى زيارة المتجر للحصول على الوصول الكامل
-                                                </p>
-                                                <a href="/store" class="feature-tag3" style="padding: 14px 32px; font-size: 16px; border-radius: 12px; display: inline-block; text-decoration: none; font-weight: 600; transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(102, 126, 234, 0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(102, 126, 234, 0.3)';">
-                                                    🛍️ زيارة المتجر
-                                                </a>
-                                            </div>
-                                        <% } %>
+                                <div class="gs" style="text-align: center; padding: 0rem;">
+                                    <div style="margin-bottom: 0.5rem;">
+                                        <span style="font-size: 2rem;">🚀</span>
+                                    </div>
+                                    <p style="font-size: 1rem; color: #5a6c7d; margin-bottom: 0.5rem; font-weight: 600;">
+                                        ابدأ اكتشاف <%= info[exam.type].shorttitle%>
+                                    </p>
+                                    <p style="font-size: 0.9rem; color: #7a8a9d; margin-bottom: 1rem; line-height: 0.5;">
+                                        اختبر نفسك الآن مع مقياس هولاند
+                                    </p>
+                                    <a href="<%= ex._id %>/exam" class="feature-tag1" style="padding: 14px 32px; font-size: 16px; border-radius: 12px; display: inline-block; text-decoration: none; font-weight: 600; transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(102, 126, 234, 0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(102, 126, 234, 0.3)';">
+                                         بدء المقياس
+                                    </a>
+                                </div>
+                            <% } else if (ex && ex.stat === "inprogress") { %>
+                                <div class="gs" style="text-align: center; padding: 0rem;">
+                                    <div style="margin-bottom: 0.5rem;">
+                                        <span style="font-size: 2rem;">⏳</span>
+                                    </div>
+                                    <p style="font-size: 1rem; color: #5a6c7d; margin-bottom: 0.5rem; font-weight: 600;">
+                                        أكمل تقييمك الآن
+                                    </p>
+                                    <p style="font-size: 0.9rem; color: #7a8a9d; margin-bottom: 1rem; line-height: 0.5;">
+                                        لم تنته من الإجابة بعد
+                                    </p>
+                                    <a href="<%= ex._id %>/rate" class="feature-tag1" style="padding: 14px 32px; font-size: 16px; border-radius: 12px; display: inline-block; text-decoration: none; font-weight: 600; transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(102, 126, 234, 0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(102, 126, 234, 0.3)';">
+                                         أكمل التقييم
+                                    </a>
+                                </div>
+                            <% } else if (ex && ex.stat == "done") { %>
+                                <div class="gs" style="text-align: center; padding: 0rem;">
+                                    <div style="margin-bottom: 0.5rem;">
+                                        <span style="font-size: 2rem;">✅</span>
+                                    </div>
+                                    <p style="font-size: 1rem; color: #5a6c7d; margin-bottom: 0.5rem; font-weight: 600;">
+                                        تم إكمال المقياس بنجاح
+                                    </p>
+                                    <p style="font-size: 0.9rem; color: #7a8a9d; margin-bottom: 1rem; line-height: 0.5;">
+                                        اطلع على نتائجك المفصلة
+                                    </p>
+                                    <a href="<%= ex._id %>/result" class="feature-tag1" style="padding: 14px 32px; font-size: 16px; border-radius: 12px; display: inline-block; text-decoration: none; font-weight: 600; transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(102, 126, 234, 0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(102, 126, 234, 0.3)';">
+                                         استعراض النتائج
+                                    </a>
+                                </div>
+                            <% } else { %>
+                                <div class="gs" style="text-align: center; padding: 0rem;">
+                                    <div style="margin-bottom: 0.5rem;">
+                                        <span style="font-size: 2rem;">🔐</span>
+                                    </div>
+                                    <p style="font-size: 1rem; color: #5a6c7d; margin-bottom: 0.5rem; font-weight: 600;">
+                                        هذا المقياس مقفل
+                                    </p>
+                                    <p style="font-size: 0.9rem; color: #7a8a9d; margin-bottom: 1rem; line-height: 0.5;">
+                                        احصل على الوصول من المتجر
+                                    </p>
+                                    <a href="/store" class="feature-tag1" style="padding: 14px 32px; font-size: 16px; border-radius: 12px; display: inline-block; text-decoration: none; font-weight: 600; transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(102, 126, 234, 0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(102, 126, 234, 0.3)';">
+                                        🛍️ زيارة المتجر
+                                    </a>
+                                </div>
+                            <% } %>
                         </div>
                     </div>
                 </div>

@@ -26,86 +26,190 @@
       }
 
       .container {
-        max-width: 800px;
+        max-width: 1200px;
         margin: 0 auto;
       }
 
-      /* تنسيق الكروت (نفس السابق) */
+      /* تنسيق الكروت */
       .products-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        grid-template-columns: repeat(3, 1fr);
         gap: 20px;
         margin-top: 30px;
       }
 
       .product-card {
         background: white;
-        border: 2px solid var(--border-color);
-        border-radius: 12px;
-        padding: 20px;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
         cursor: pointer;
         transition: all 0.3s ease;
-        position: relative;
-        text-align: center;
-      }
-
-      .product-card.active {
-        border-color: var(--accent-color);
-        background-color: var(--selected-bg);
-      }
-
-      .product-card.active::after {
-        content: "✔";
-        position: absolute;
-        top: -10px;
-        right: -10px;
-        background: var(--accent-color);
-        color: white;
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
         display: flex;
-        align-items: center;
-        justify-content: center;
+        flex-direction: column;
+        height: 100%;
       }
 
-      /* حالة تم الشراء */
-      .product-card.purchased {
-        border-color: var(--success-color);
-        background-color: #f0fdf4;
-        cursor: default;
-        pointer-events: none;
+      .product-card:hover {
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+        transform: translateY(-2px);
       }
-      .product-card.purchased .product-price {
-        color: var(--success-color);
-        font-size: 1.1rem;
+
+      /* رأس البطاقة */
+      .card-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 30px 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        min-height: 100px;
       }
-      .product-card.purchased::after {
-        content: "مملوك";
-        position: absolute;
-        top: -10px;
-        right: -10px;
-        background: var(--success-color);
+
+      .product-card:nth-child(2) .card-header {
+        background: linear-gradient(135deg, #c86dd7 0%, #7b68ee 100%);
+      }
+
+      .product-card:nth-child(3) .card-header {
+        background: linear-gradient(135deg, #6366f1 0%, #a78bfa 100%);
+      }
+
+      .product-icon {
+        font-size: 2.5rem;
+      }
+
+      .card-badge {
+        background: rgba(255, 255, 255, 0.3);
         color: white;
-        padding: 5px 15px;
+        padding: 6px 14px;
         border-radius: 20px;
-        font-size: 0.8rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        backdrop-filter: blur(10px);
+        position: absolute;
+        top: 10px;
+        right: 10px;
+      }
+
+      /* محتوى البطاقة */
+      .card-content {
+        padding: 24px;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
       }
 
       .product-title {
         font-weight: 700;
-        margin-bottom: 10px;
+        font-size: 1.1rem;
+        margin-bottom: 12px;
         color: var(--primary-color);
+        line-height: 1.4;
+        max-width: 100%;
       }
       .product-desc {
         font-size: 0.9rem;
-        color: #777;
-        margin-bottom: 15px;
+        color: #5a6c7d;
+        margin-bottom: 16px;
+        line-height: 1.6;
+        flex-grow: 1;
       }
+
+      /* حالة تم الشراء */
+      .product-card.purchased .card-header {
+        background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+      }
+
+      .product-card.purchased {
+        cursor: default;
+      }
+/* 
+      .product-card.purchased .card-header::after {
+        content: "مملوك";
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+      } */
+
+      /* حالة محددة (Active) */
+      .product-card.active .card-header {
+        box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.5);
+      }
+
+      .product-card.active .card-header::after {
+        content: "✔";
+        position: absolute;
+        top: 6px;
+        left: 6px;
+        background: #27ae60;
+        color: white;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 1.2rem;
+      }
+
+      /* زر الشراء */
+      .store-link {
+        display: none;
+      }
+
+      /* زر اختيار الباقة */
+      .select-btn {
+        padding: 12px 28px;
+        font-size: 0.95rem;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        cursor: pointer;
+        margin-top: 12px;
+      }
+
+      .product-card:nth-child(2) .select-btn {
+        background: linear-gradient(135deg, #c86dd7 0%, #7b68ee 100%);
+      }
+
+      .product-card:nth-child(3) .select-btn {
+        background: linear-gradient(135deg, #6366f1 0%, #a78bfa 100%);
+      }
+
+      .select-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(102, 126, 234, 0.3);
+      }
+
+      .product-card.active .select-btn {
+        background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+      }
+
+      .product-card.purchased .select-btn {
+        background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+        opacity: 0.7;
+        cursor: default;
+      }
+
       .product-price {
-        font-size: 1.3rem;
+        font-size: 1.2rem;
         font-weight: bold;
         color: var(--accent-color);
+        margin-top: 8px;
+        text-align: center;
       }
 
       /* الشريط السفلي */
@@ -267,47 +371,101 @@
           transform: rotate(360deg);
         }
       }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .products-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .container {
+          max-width: 100%;
+        }
+
+        .product-card {
+          aspect-ratio: auto;
+        }
+      }
+
+      /* زر العودة */
+      .back-btn {
+        display: inline-block;
+        /* margin-bottom: 0; */
+        padding: 10px 20px;
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        font-family: "Tajawal", sans-serif;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all 0.3s ease;
+      }
+
+      .back-btn:hover {
+        background-color: #1a2332;
+        transform: translateX(5px);
+      }
     </style>
   </head>
   <body>
     <!-- <%- include('nav') %> -->
     <div class="container">
+      <button class="back-btn" onclick="history.back();">← العودة</button>
       <h1 style="text-align: center; color: var(--primary-color)">
         مقياس بصيرة
       </h1>
 
       <div class="products-grid">
-        <div
-          class="product-card <%= exams.includes('p1') ? 'purchased' : '' %>"
-          onclick="toggleProduct(this, 99, 'p1')"
-        >
-          <div class="product-title">أنماط الشخصية</div>
-          <div class="product-desc">تحليل شامل لنمط شخصيتك.</div>
-          <div class="product-price">
-            <%= exams.includes('p1') ? 'تم الشراء' : '99 ر.س' %>
+        <div class="product-card <%= exams.includes('p1') ? 'purchased' : '' %>" onclick="toggleProduct(this, 99, 'p1')">
+          <div class="card-header">
+            <span class="product-icon">🧩</span>
+            <div class="card-badge">Gardner</div>
           </div>
-          <!-- <div class="product-price">99 ر.س</div> -->
-        </div>
-
-        <div
-          class="product-card <%= exams.includes('p2') ? 'purchased' : '' %>"
-          onclick="toggleProduct(this, 120, 'p2')"
-        >
-          <div class="product-title">الميول المهني</div>
-          <div class="product-desc">اكتشف المسارات الوظيفية.</div>
-          <div class="product-price">
-            <%= exams.includes('p2') ? 'تم الشراء' : '120 ر.س' %>
+          <div class="card-content">
+            <h3 class="product-title">مقياس الذكاءات المتعددة لجاردنر</h3>
+            <p class="product-desc">يستند إلى نظرية هوارد جاردنر للذكاءات المتعددة، ويقيس ثمانية أنواع من الذكاء: اللغوي، المنطقي-الرياضي، المكاني، الصوتي، الجسدي-الحركي، الطبيعي، الاجتماعي، والذاتي. يساعدك في اكتشاف نقاط قوتك الفكرية المتنوعة.</p>
+            <% if(!exams.includes('p1')) { %>
+              <button class="select-btn" onclick="event.stopPropagation(); toggleProduct(this.parentElement.parentElement, 99, 'p1');">اختيار الباقة</button>
+              <div class="product-price">99 ر.س</div>
+            <% } else { %>
+              <div class="product-price">تم الشراء ✓</div>
+            <% } %>
           </div>
         </div>
 
-        <div
-          class="product-card <%= exams.includes('p3') ? 'purchased' : '' %>"
-          onclick="toggleProduct(this, 199, 'p3')"
-        >
-          <div class="product-title">الذكاء العاطفي</div>
-          <div class="product-desc">قياس مهارات التواصل والمشاعر.</div>
-          <div class="product-price">
-            <%= exams.includes('p3') ? 'تم الشراء' : '199 ر.س' %>
+        <div class="product-card <%= exams.includes('p2') ? 'purchased' : '' %>" onclick="toggleProduct(this, 120, 'p2')">
+          <div class="card-header">
+            <span class="product-icon">🧠</span>
+            <div class="card-badge">MBTI</div>
+          </div>
+          <div class="card-content">
+            <h3 class="product-title">مقياس مايرز-بريجز للأنماط الشخصية</h3>
+            <p class="product-desc">أحد أشهر مقياسات الشخصية عالمياً، يحدد نمطك الشخصي من بين 16 نمطاً مختلفاً بناءً على أربعة أبعاد: الانطوائية/الانبساطية، الحدس/الحس، التفكير/الشعور، والحكم/الإدراك. يوفر فهماً عميقاً لطريقة تفكيرك.</p>
+            <% if(!exams.includes('p2')) { %>
+              <button class="select-btn" onclick="event.stopPropagation(); toggleProduct(this.parentElement.parentElement, 120, 'p2');">اختيار الباقة</button>
+              <div class="product-price">120 ر.س</div>
+            <% } else { %>
+              <div class="product-price">تم الشراء ✓</div>
+            <% } %>
+          </div>
+        </div>
+
+        <div class="product-card <%= exams.includes('p3') ? 'purchased' : '' %>" onclick="toggleProduct(this, 199, 'p3')">
+          <div class="card-header">
+            <span class="product-icon">🎯</span>
+            <div class="card-badge">Holland</div>
+          </div>
+          <div class="card-content">
+            <h3 class="product-title">مقياس هولاند للميول المهنية</h3>
+            <p class="product-desc">يعتمد على نظرية جون هولاند الشهيرة التي تصنف الشخصيات إلى ستة أنماط مهنية: الواقعي، الاستقصائي، الفني، الاجتماعي، المغامر، والتقليدي. يساعدك في اكتشاف الميول المهنية الحقيقية وتحديد المسارات الوظيفية المناسبة.</p>
+            <% if(!exams.includes('p3')) { %>
+              <button class="select-btn" onclick="event.stopPropagation(); toggleProduct(this.parentElement.parentElement, 199, 'p3');">اختيار الباقة</button>
+              <div class="product-price">199 ر.س</div>
+            <% } else { %>
+              <div class="product-price">تم الشراء ✓</div>
+            <% } %>
           </div>
         </div>
       </div>
@@ -365,6 +523,10 @@
 
       // 1. دالة اختيار المنتجات
       function toggleProduct(card, price, name) {
+        // منع التفاعل مع المنتجات المشتراة
+        if (card.classList.contains("purchased")) {
+          return;
+        }
         if (card.classList.contains("active")) {
           // إزالة
           card.classList.remove("active");
@@ -391,7 +553,6 @@
           btn.innerText = "متابعة الشراء";
         }
       }
-
       // 2. فتح نافذة الدفع (Modal)
       function openCheckoutModal() {
         const modal = document.getElementById("checkoutModal");
