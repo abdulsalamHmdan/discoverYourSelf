@@ -1,8 +1,8 @@
 const { google } = require('googleapis');
-const CLIENT_ID = '373094460713-m1gtufb81vmi4rp9nsup1lcff83ga0np.apps.googleusercontent.com';
-const CLIENT_SECRET = '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';
-const REDIRECT_URI = 'https://developers.google.com/oauthplayground';
-const REFRESH_TOKEN = '1//0468NzuSXWF3aCgYIARAAGAQSNwF-L9Ir_CGwapnr9W99kL0o4E7oCmkW2_BWIIGNuoSisB0KixcNiFcxKlWZSsaWG_KcJcVsgps';
+// const CLIENT_ID = '373094460713-m1gtufb81vmi4rp9nsup1lcff83ga0np.apps.googleusercontent.com';
+// const CLIENT_SECRET = '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';
+// const REDIRECT_URI = 'https://developers.google.com/oauthplayground';
+// const REFRESH_TOKEN = '1//0468NzuSXWF3aCgYIARAAGAQSNwF-L9Ir_CGwapnr9W99kL0o4E7oCmkW2_BWIIGNuoSisB0KixcNiFcxKlWZSsaWG_KcJcVsgps';
 
 // 2. إعداد عميل OAuth2
 const oAuth2Client = new google.auth.OAuth2(
