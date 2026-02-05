@@ -216,6 +216,10 @@ app.get("/", function (req, res) {
   res.render("home2");
 });
 
+app.get("/switcher", function (req, res) {
+  res.redirect("h2");
+});
+
 app.get("/login", isAuthenticated, function (req, res) {
   res.redirect("/");
 });
