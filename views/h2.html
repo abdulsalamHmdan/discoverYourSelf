@@ -1,251 +1,670 @@
 <!doctype html>
-<html lang="ar" dir="rtl">
+<html lang="ar">
  <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>اختيار نوع المستخدم</title>
+  <title>بوابة التسجيل الحديثة</title>
   <script src="/_sdk/element_sdk.js"></script>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+        body {
+            box-sizing: border-box;
+        }
 
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    .container {
-      background: white;
-      border-radius: 20px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-      padding: 60px 40px;
-      max-width: 600px;
-      width: 100%;
-      text-align: center;
-      animation: slideUp 0.6s ease-out;
-    }
+        html, body {
+            height: 100%;
+            width: 100%;
+        }
 
-    @keyframes slideUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+        body {
+            font-family: 'Poppins', 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            direction: rtl;
+            overflow: hidden;
+            position: relative;
+        }
 
-    h1 {
-      color: #2d3748;
-      font-size: 2.5em;
-      margin-bottom: 15px;
-      font-weight: 700;
-    }
+        body::before {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            top: -100px;
+            right: -100px;
+            animation: float 6s ease-in-out infinite;
+        }
 
-    .subtitle {
-      color: #718096;
-      font-size: 1.1em;
-      margin-bottom: 50px;
-      line-height: 1.6;
-    }
+        body::after {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 50%;
+            bottom: -80px;
+            left: -80px;
+            animation: float 8s ease-in-out infinite reverse;
+        }
 
-    .options-container {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 30px;
-      margin-bottom: 40px;
-    }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(30px); }
+        }
 
-    .option-card {
-      position: relative;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
+        .main-wrapper {
+            height: 100%;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
 
-    .option-card:hover {
-      transform: translateY(-10px);
-    }
+        .login-container {
+            width: 100%;
+            max-width: 1000px;
+        }
 
-    .card-content {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      border-radius: 15px;
-      padding: 40px 20px;
-      color: white;
-      transition: all 0.3s ease;
-      box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
-    }
+        .content-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
 
-    .option-card:nth-child(2) .card-content {
-      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-      box-shadow: 0 10px 30px rgba(245, 87, 108, 0.2);
-    }
+        .welcome-section {
+            color: white;
+            animation: slideInLeft 0.8s ease-out;
+        }
 
-    .option-card:hover .card-content {
-      box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
-    }
+        .welcome-section h1 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            font-weight: 800;
+            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            letter-spacing: -1px;
+        }
 
-    .option-card:nth-child(2):hover .card-content {
-      box-shadow: 0 15px 40px rgba(245, 87, 108, 0.4);
-    }
+        .welcome-section > p {
+            font-size: 1.2rem;
+            opacity: 0.95;
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
 
-    .icon {
-      font-size: 3em;
-      margin-bottom: 20px;
-      display: block;
-    }
+        .features-list {
+            list-style: none;
+            margin-top: 30px;
+        }
 
-    .card-label {
-      font-size: 1.5em;
-      font-weight: 600;
-      margin-bottom: 10px;
-    }
+        .features-list li {
+            font-size: 1.05rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            opacity: 0.9;
+            transition: all 0.3s ease;
+        }
 
-    .card-description {
-      font-size: 0.95em;
-      opacity: 0.9;
-      line-height: 1.5;
-    }
+        .features-list li:hover {
+            opacity: 1;
+            transform: translateX(10px);
+        }
 
-    .footer-text {
-      color: #a0aec0;
-      font-size: 0.9em;
-      margin-top: 30px;
-    }
+        .features-list li::before {
+            content: "✓";
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #4ade80;
+            width: 28px;
+            height: 28px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
 
-    @media (max-width: 600px) {
-      .container {
-        padding: 40px 25px;
-      }
+        .login-section {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            animation: slideInRight 0.8s ease-out;
+        }
 
-      h1 {
-        font-size: 2em;
-      }
+        .login-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
 
-      .options-container {
-        grid-template-columns: 1fr;
-        gap: 20px;
-      }
+        .login-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+        }
 
-      .card-content {
-        padding: 30px 20px;
-      }
+        .login-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
 
-      .icon {
-        font-size: 2.5em;
-      }
+        .login-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.8);
+        }
 
-      .card-label {
-        font-size: 1.3em;
-      }
-    }
-  </style>
+        .login-card:hover::after {
+            opacity: 1;
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            margin-bottom: 20px;
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+            flex-shrink: 0;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            color: #1f2937;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .card-description {
+            color: #6b7280;
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .card-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #667eea;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 1.05rem;
+        }
+
+        .card-link:hover {
+            gap: 14px;
+            color: #764ba2;
+        }
+
+        .card-link::after {
+            content: "→";
+            transition: transform 0.3s ease;
+        }
+
+        .login-card:hover .card-link::after {
+            transform: translateX(5px);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 25px;
+            padding: 45px;
+            max-width: 520px;
+            width: 90%;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.35);
+            animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .modal-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .modal-header h2 {
+            font-size: 2rem;
+            color: #1f2937;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .modal-header p {
+            color: #9ca3af;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            color: #374151;
+            font-weight: 600;
+            font-size: 1.05rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            direction: rtl;
+            text-align: right;
+            background: #f9fafb;
+            font-family: inherit;
+        }
+
+        .form-group input::placeholder {
+            color: #d1d5db;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            margin-top: 10px;
+            letter-spacing: 0.5px;
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #f3f4f6;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            color: #6b7280;
+        }
+
+        .close-btn:hover {
+            background: #e5e7eb;
+            transform: rotate(90deg);
+            color: #1f2937;
+        }
+
+        .success-message {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #4ade80, #22c55e);
+            color: white;
+            padding: 18px 28px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(74, 222, 128, 0.4);
+            z-index: 2000;
+            animation: slideDown 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            font-weight: 600;
+            font-size: 1.05rem;
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-60px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(60px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .content-wrapper {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .welcome-section {
+                display: none;
+            }
+
+            .welcome-section h1 {
+                font-size: 2.2rem;
+            }
+
+            .login-card {
+                padding: 28px;
+            }
+
+            .card-title {
+                font-size: 1.3rem;
+            }
+
+            .modal-content {
+                padding: 35px;
+            }
+
+            .modal-header h2 {
+                font-size: 1.6rem;
+            }
+
+            body::before, body::after {
+                width: 250px;
+                height: 250px;
+            }
+        }
+    </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
   <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
  </head>
  <body>
-  <main class="container">
-   <h1 id="main-title">اختر نوع الحساب</h1>
-   <p class="subtitle" id="main-subtitle">اختر نوع حسابك للمتابعة في النظام</p>
-   <div class="options-container">
-    <div class="option-card" id="student-option">
-     <div class="card-content"><span class="icon">👨‍🎓</span>
-      <div class="card-label" id="student-label">
-       طلاب
-      </div>
-      <p class="card-description">دخول منصة الطلاب والوصول للمقررات</p>
+  <div class="main-wrapper">
+   <div class="login-container">
+    <div class="content-wrapper">
+     <div class="welcome-section">
+      <h1 id="site-title" style="font-size:4.5rem; line-height:1; font-weight:800;">مرحباً بك</h1>
+      <p id="site-subtitle" style="font-size:1.6rem; opacity:0.96; margin-bottom:30px;">في بوابة التعليم الحديثة</p>
+      <ul class="features-list">
+       <li style="font-size:1.25rem;">وصول سهل وآمن</li>
+       <li style="font-size:1.25rem;">إدارة فعالة للعمليات</li>
+       <li style="font-size:1.25rem;">تجربة مستخدم متميزة</li>
+       <li style="font-size:1.25rem;">دعم متواصل وسريع</li>
+      </ul>
      </div>
-    </div>
-    <div class="option-card" id="supervisor-option">
-     <div class="card-content"><span class="icon">👨‍💼</span>
-      <div class="card-label" id="supervisor-label">
-       مشرفين
+     <div class="login-section">
+      <div class="login-card" onclick="openModal('studentModal')">
+       <div class="card-content">
+        <div class="card-header">
+         <div class="card-icon">
+          👨‍🎓
+         </div>
+         <div class="card-title" id="student-btn-text">
+          تسجيل دخول الطلاب
+         </div>
+        </div>
+        <p class="card-description">تسجيل الدخول كطالب للوصول إلى مقرراتك والمهام الدراسية</p><a href="#" class="card-link">ادخل الآن</a>
+       </div>
       </div>
-      <p class="card-description">دخول لوحة التحكم والإشراف</p>
+      <div class="login-card" onclick="openModal('adminModal')">
+       <div class="card-content">
+        <div class="card-header">
+         <div class="card-icon">
+          👨‍💼
+         </div>
+         <div class="card-title" id="admin-btn-text">
+          تسجيل دخول المشرفين
+         </div>
+        </div>
+        <p class="card-description">تسجيل الدخول كمشرف لإدارة الطلاب والمقررات</p><a href="#" class="card-link">ادخل الآن</a>
+       </div>
+      </div>
      </div>
     </div>
    </div>
-   <p class="footer-text" id="footer-text">انقر على أحد الخيارات أعلاه للمتابعة</p>
-  </main>
+  </div>
+  <div class="modal" id="studentModal">
+   <div class="modal-content"><button class="close-btn" onclick="closeModal('studentModal')">✕</button>
+    <div class="modal-header">
+     <div class="modal-icon">
+      👨‍🎓
+     </div>
+     <h2>تسجيل دخول الطالب</h2>
+     <p>أدخل بيانات حسابك</p>
+    </div>
+    <form onsubmit="handleStudentSubmit(event)">
+     <div class="form-group"><label for="student-id">رقم الطالب</label> <input type="text" id="student-id" placeholder="أدخل رقم الطالب" required>
+     </div>
+     <div class="form-group"><label for="student-email">البريد الإلكتروني</label> <input type="email" id="student-email" placeholder="أدخل بريدك الإلكتروني" required>
+     </div><button type="submit" class="submit-btn">دخول</button>
+    </form>
+   </div>
+  </div>
+  <div class="modal" id="adminModal">
+   <div class="modal-content"><button class="close-btn" onclick="closeModal('adminModal')">✕</button>
+    <div class="modal-header">
+     <div class="modal-icon">
+      👨‍💼
+     </div>
+     <h2>تسجيل دخول المشرف</h2>
+     <p>أدخل بيانات حسابك الإداري</p>
+    </div>
+    <form onsubmit="handleAdminSubmit(event)">
+     <div class="form-group"><label for="admin-id">رقم المشرف</label> <input type="text" id="admin-id" placeholder="أدخل رقم المشرف" required>
+     </div>
+     <div class="form-group"><label for="admin-email">البريد الإلكتروني</label> <input type="email" id="admin-email" placeholder="أدخل بريدك الإلكتروني" required>
+     </div><button type="submit" class="submit-btn">دخول</button>
+    </form>
+   </div>
+  </div>
   <script>
-    // SDK configuration
-    const defaultConfig = {
-      title: 'اختر نوع الحساب',
-      subtitle: 'اختر نوع حسابك للمتابعة في النظام',
-      student_label: 'طلاب',
-      supervisor_label: 'مشرفين'
-    };
+        const defaultConfig = {
+            site_title: "مرحباً بك",
+            site_subtitle: "في بوابة التعليم الحديثة",
+            student_button_text: "تسجيل دخول الطلاب",
+            admin_button_text: "تسجيل دخول المشرفين"
+        };
 
-    let config = { ...defaultConfig };
+        let config = { ...defaultConfig };
 
-    const elementSdk = window.elementSdk;
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+        }
 
-    async function initializeSDK() {
-      if (!elementSdk) return;
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
 
-      await elementSdk.init({
-        defaultConfig,
-        onConfigChange: async (newConfig) => {
-          config = newConfig;
-          updateUI();
-        },
-        mapToCapabilities: (cfg) => ({
-          recolorables: [
-            {
-              get: () => '#667eea',
-              set: () => {}
-            },
-            {
-              get: () => '#f5576c',
-              set: () => {}
-            }
-          ],
-          borderables: [],
-          fontEditable: undefined,
-          fontSizeable: undefined
-        }),
-        mapToEditPanelValues: (cfg) => new Map([
-          ['title', cfg.title || defaultConfig.title],
-          ['subtitle', cfg.subtitle || defaultConfig.subtitle],
-          ['student_label', cfg.student_label || defaultConfig.student_label],
-          ['supervisor_label', cfg.supervisor_label || defaultConfig.supervisor_label]
-        ])
-      });
-    }
+        function handleStudentSubmit(event) {
+            event.preventDefault();
+            const studentId = document.getElementById('student-id').value;
+            showSuccessMessage(`مرحباً بك يا طالب! (${studentId})`);
+            closeModal('studentModal');
+            event.target.reset();
+        }
 
-    function updateUI() {
-      document.getElementById('main-title').textContent = config.title || defaultConfig.title;
-      document.getElementById('main-subtitle').textContent = config.subtitle || defaultConfig.subtitle;
-      document.getElementById('student-label').textContent = config.student_label || defaultConfig.student_label;
-      document.getElementById('supervisor-label').textContent = config.supervisor_label || defaultConfig.supervisor_label;
-    }
+        function handleAdminSubmit(event) {
+            event.preventDefault();
+            const adminId = document.getElementById('admin-id').value;
+            showSuccessMessage(`مرحباً بك يا مشرف! (${adminId})`);
+            closeModal('adminModal');
+            event.target.reset();
+        }
 
-    // Event listeners for user selection
-    document.getElementById('student-option').addEventListener('click', () => {
-      handleSelection('student');
-    });
+        function showSuccessMessage(message) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'success-message';
+            messageDiv.textContent = message;
+            document.body.appendChild(messageDiv);
 
-    document.getElementById('supervisor-option').addEventListener('click', () => {
-      handleSelection('supervisor');
-    });
+            setTimeout(() => {
+                messageDiv.style.animation = 'slideUp 0.3s ease';
+                setTimeout(() => messageDiv.remove(), 300);
+            }, 3000);
+        }
 
-    function handleSelection(type) {
-      const message = type === 'student' ? '👨‍🎓 تم اختيار: طلاب' : '👨‍💼 تم اختيار: مشرفين';
-      console.log('Selection:', message);
-      // يمكن إضافة منطق إضافي هنا
-    }
+        document.getElementById('studentModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal('studentModal');
+        });
 
-    // Initialize
-    initializeSDK();
-  </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9c93b56530b50e6f',t:'MTc3MDMwODE0OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+        document.getElementById('adminModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal('adminModal');
+        });
+
+        if (window.elementSdk) {
+            window.elementSdk.init({
+                defaultConfig,
+                onConfigChange: async (newConfig) => {
+                    config = newConfig;
+                    document.getElementById('site-title').textContent = config.site_title || defaultConfig.site_title;
+                    document.getElementById('site-subtitle').textContent = config.site_subtitle || defaultConfig.site_subtitle;
+                    document.getElementById('student-btn-text').textContent = config.student_button_text || defaultConfig.student_button_text;
+                    document.getElementById('admin-btn-text').textContent = config.admin_button_text || defaultConfig.admin_button_text;
+                },
+                mapToCapabilities: () => ({
+                    recolorables: [],
+                    borderables: [],
+                    fontEditable: undefined,
+                    fontSizeable: undefined
+                }),
+                mapToEditPanelValues: () => new Map([
+                    ['site_title', config.site_title || defaultConfig.site_title],
+                    ['site_subtitle', config.site_subtitle || defaultConfig.site_subtitle],
+                    ['student_button_text', config.student_button_text || defaultConfig.student_button_text],
+                    ['admin_button_text', config.admin_button_text || defaultConfig.admin_button_text]
+                ])
+            });
+        }
+    </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9c942d1ca3a7e177',t:'MTc3MDMxMzA1MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
