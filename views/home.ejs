@@ -5,7 +5,7 @@ info = {
         color: "#FF6B6B",
         label: "Holland",
         title: "مقياس هولاند للميول المهنية",
-        shorttitle:"jgjhj",
+        shorttitle:"ابدأ اكتشاف ميولك المهنية",
         desc:"يعتمد على نظرية جون هولاند الشهيرة التي تصنف الشخصيات إلى ستة أنماط مهنية: الواقعي، الاستقصائي، الفني، الاجتماعي، المغامر، والتقليدي. يساعدك هذا المقياس في اكتشاف الميول المهنية الحقيقية وتحديد المسارات الوظيفية الأنسب لشخصيتك وقدراتك."
 
     },
@@ -14,7 +14,7 @@ info = {
         color: "#4FACFE",
         label: "MBTI",
         title: "مقياس مايرز-بريجز للأنماط الشخصية",
-        shorttitle:"MBTI",
+        shorttitle:"ابدأ اكتشاف أنماطك الشخصية",
         desc:"أحد أشهر مقياسات الشخصية عالمياً، يحدد نمطك الشخصي من بين 16 نمطاً مختلفاً بناءً على أربعة أبعاد: الانطوائية/الانبساطية، الحدس/الحس، التفكير/الشعور، والحكم/الإدراك. يوفر فهماً عميقاً لطريقة تفكيرك واتخاذ قراراتك وتفاعلك مع العالم."
     },
     p3: {
@@ -22,7 +22,7 @@ info = {
         color: "#A388A5",
         label: "Gardner",
         title: "مقياس الذكاءات المتعددة لجاردنر",
-        shorttitle:"جاردنر",
+        shorttitle:"ابدأ اكتشاف ذكاءاتك المتعددة",
         desc:"يستند إلى نظرية هوارد جاردنر للذكاءات المتعددة، ويقيس ثمانية أنواع من الذكاء: اللغوي، المنطقي-الرياضي، المكاني، الصوتي، الجسدي-الحركي، الطبيعي، الاجتماعي، والذاتي. يساعدك في اكتشاف نقاط قوتك الفكرية المتنوعة و تطوير إمكانياتك الكامنة."
     }
 };
@@ -805,16 +805,14 @@ info = {
 
                     <!-- المحتوى الداخلي -->
                     <div class="relative rounded-3xl bg-white/40 backdrop-blur-xl text-gray-800 ring-1 ring-white/20
-                                 px-8 md:px-14 py-6 md:py-8 text-center shadow-inner leading-tight">
+                                 px-6 md:px-10 py-4 md:py-6 text-center shadow-inner leading-tight">
 
                                  <button onclick="logout()"
-        class="absolute top-2 left-2 bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-lg 
-               flex items-center gap-2 transition-all hover:scale-105">
-        <span>⬅️</span>
-        <span class="mobile-hidden">رجوع</span>
-    </button>
-
-                
+                        class="absolute top-1 left-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-3 py-1.5 rounded-lg 
+                               flex items-center gap-1 transition-all hover:scale-105 shadow-lg hover:shadow-xl font-semibold text-sm">
+                        <span>⬅️</span>
+                        <span class="mobile-hidden">رجوع</span>
+                    </button>
                         <!-- تأثيرات الإضاءة الناعمة -->
                         <span
                             class="absolute -top-12 -right-12 h-44 w-44 rounded-full bg-white/30 blur-3xl opacity-60"></span>
@@ -879,21 +877,23 @@ info = {
                     <div class="section-icon">
                         🚀
                     </div>
-                    <h3 class="section-title-small">الفوائد المحققة</h3>
-                    <div class="benefits-grid-4">
-
-                        <style>
-                            .benefit-item {
-                                font-family: 'Tajawal', sans-serif;
-                            }
-                        </style>
-                        <div class="benefit-item"><span class="benefit-icon">🎯قرارات أكثر وعياً </span>
+                    <h3 class="section-title-small" style="font-family:'Tajawal', sans-serif;">الفوائد المحققة</h3>
+                    <div class="benefits-grid">
+                        <div class="benefit-item">
+                            <span class="benefit-icon">🎯</span>
+                            <span class="benefit-text">قرارات أكثر وعياً</span>
                         </div>
-                        <div class="benefit-item"><span class="benefit-icon">💼نجاح مهني متميز</span>
+                        <div class="benefit-item">
+                            <span class="benefit-icon">💼</span>
+                            <span class="benefit-text">نجاح مهني متميز</span>
                         </div>
-                        <div class="benefit-item"><span class="benefit-icon">🌱 تطوير شخصي مستمر</span>
+                        <div class="benefit-item">
+                            <span class="benefit-icon">🌱</span>
+                            <span class="benefit-text">تطوير شخصي مستمر</span>
                         </div>
-                        <div class="benefit-item"><span class="benefit-icon">🧠 فهم عميق للذات</span>
+                        <div class="benefit-item">
+                            <span class="benefit-icon">🧠</span>
+                            <span class="benefit-text">فهم عميق للذات</span>
                         </div>
                     </div>
                 </div>
@@ -921,13 +921,13 @@ info = {
                                         <span style="font-size: 2rem;">🚀</span>
                                     </div>
                                     <p style="font-size: 1rem; color: #5a6c7d; margin-bottom: 0.5rem; font-weight: 600;">
-                                        ابدأ اكتشاف <%= info[exam.type].shorttitle%>
+                                        <%= info[exam.type].shorttitle%>
                                     </p>
                                     <p style="font-size: 0.9rem; color: #7a8a9d; margin-bottom: 1rem; line-height: 0.5;">
                                         اختبر نفسك الآن مع مقياس هولاند
                                     </p>
                                     <a href="<%= ex._id %>/exam" class="feature-tag1" style="padding: 14px 32px; font-size: 16px; border-radius: 12px; display: inline-block; text-decoration: none; font-weight: 600; transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(102, 126, 234, 0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(102, 126, 234, 0.3)';">
-                                         بدء المقياس
+                                        🎯 بدء المقياس
                                     </a>
                                 </div>
                             <% } else if (ex && ex.stat === "inprogress") { %>
@@ -957,7 +957,7 @@ info = {
                                         اطلع على نتائجك المفصلة
                                     </p>
                                     <a href="<%= ex._id %>/result" class="feature-tag1" style="padding: 14px 32px; font-size: 16px; border-radius: 12px; display: inline-block; text-decoration: none; font-weight: 600; transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(102, 126, 234, 0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(102, 126, 234, 0.3)';">
-                                         استعراض النتائج
+                                        📊 استعراض النتائج
                                     </a>
                                 </div>
                             <% } else { %>

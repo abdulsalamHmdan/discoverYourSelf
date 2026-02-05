@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>اختيار نوع المستخدم</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      padding: 60px 40px;
+      max-width: 600px;
+      width: 100%;
+      text-align: center;
+      animation: slideUp 0.6s ease-out;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    h1 {
+      color: #2d3748;
+      font-size: 2.5em;
+      margin-bottom: 15px;
+      font-weight: 700;
+    }
+
+    .subtitle {
+      color: #718096;
+      font-size: 1.1em;
+      margin-bottom: 50px;
+      line-height: 1.6;
+    }
+
+    .options-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin-bottom: 40px;
+    }
+
+    .option-card {
+      position: relative;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .option-card:hover {
+      transform: translateY(-10px);
+    }
+
+    .card-content {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 15px;
+      padding: 40px 20px;
+      color: white;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+    }
+
+    .option-card:nth-child(2) .card-content {
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      box-shadow: 0 10px 30px rgba(245, 87, 108, 0.2);
+    }
+
+    .option-card:hover .card-content {
+      box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+    }
+
+    .option-card:nth-child(2):hover .card-content {
+      box-shadow: 0 15px 40px rgba(245, 87, 108, 0.4);
+    }
+
+    .icon {
+      font-size: 3em;
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    .card-label {
+      font-size: 1.5em;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .card-description {
+      font-size: 0.95em;
+      opacity: 0.9;
+      line-height: 1.5;
+    }
+
+    .footer-text {
+      color: #a0aec0;
+      font-size: 0.9em;
+      margin-top: 30px;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 40px 25px;
+      }
+
+      h1 {
+        font-size: 2em;
+      }
+
+      .options-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      .card-content {
+        padding: 30px 20px;
+      }
+
+      .icon {
+        font-size: 2.5em;
+      }
+
+      .card-label {
+        font-size: 1.3em;
+      }
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+ </head>
+ <body>
+  <main class="container">
+   <h1 id="main-title">اختر نوع الحساب</h1>
+   <p class="subtitle" id="main-subtitle">اختر نوع حسابك للمتابعة في النظام</p>
+   <div class="options-container">
+    <div class="option-card" id="student-option">
+     <div class="card-content"><span class="icon">👨‍🎓</span>
+      <div class="card-label" id="student-label">
+       طلاب
+      </div>
+      <p class="card-description">دخول منصة الطلاب والوصول للمقررات</p>
+     </div>
+    </div>
+    <div class="option-card" id="supervisor-option">
+     <div class="card-content"><span class="icon">👨‍💼</span>
+      <div class="card-label" id="supervisor-label">
+       مشرفين
+      </div>
+      <p class="card-description">دخول لوحة التحكم والإشراف</p>
+     </div>
+    </div>
+   </div>
+   <p class="footer-text" id="footer-text">انقر على أحد الخيارات أعلاه للمتابعة</p>
+  </main>
+  <script>
+    // SDK configuration
+    const defaultConfig = {
+      title: 'اختر نوع الحساب',
+      subtitle: 'اختر نوع حسابك للمتابعة في النظام',
+      student_label: 'طلاب',
+      supervisor_label: 'مشرفين'
+    };
+
+    let config = { ...defaultConfig };
+
+    const elementSdk = window.elementSdk;
+
+    async function initializeSDK() {
+      if (!elementSdk) return;
+
+      await elementSdk.init({
+        defaultConfig,
+        onConfigChange: async (newConfig) => {
+          config = newConfig;
+          updateUI();
+        },
+        mapToCapabilities: (cfg) => ({
+          recolorables: [
+            {
+              get: () => '#667eea',
+              set: () => {}
+            },
+            {
+              get: () => '#f5576c',
+              set: () => {}
+            }
+          ],
+          borderables: [],
+          fontEditable: undefined,
+          fontSizeable: undefined
+        }),
+        mapToEditPanelValues: (cfg) => new Map([
+          ['title', cfg.title || defaultConfig.title],
+          ['subtitle', cfg.subtitle || defaultConfig.subtitle],
+          ['student_label', cfg.student_label || defaultConfig.student_label],
+          ['supervisor_label', cfg.supervisor_label || defaultConfig.supervisor_label]
+        ])
+      });
+    }
+
+    function updateUI() {
+      document.getElementById('main-title').textContent = config.title || defaultConfig.title;
+      document.getElementById('main-subtitle').textContent = config.subtitle || defaultConfig.subtitle;
+      document.getElementById('student-label').textContent = config.student_label || defaultConfig.student_label;
+      document.getElementById('supervisor-label').textContent = config.supervisor_label || defaultConfig.supervisor_label;
+    }
+
+    // Event listeners for user selection
+    document.getElementById('student-option').addEventListener('click', () => {
+      handleSelection('student');
+    });
+
+    document.getElementById('supervisor-option').addEventListener('click', () => {
+      handleSelection('supervisor');
+    });
+
+    function handleSelection(type) {
+      const message = type === 'student' ? '👨‍🎓 تم اختيار: طلاب' : '👨‍💼 تم اختيار: مشرفين';
+      console.log('Selection:', message);
+      // يمكن إضافة منطق إضافي هنا
+    }
+
+    // Initialize
+    initializeSDK();
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9c93b56530b50e6f',t:'MTc3MDMwODE0OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
