@@ -213,11 +213,11 @@ app.get("/", isTeacher, function (req, res) {
   res.redirect("admin");
 });
 app.get("/", function (req, res) {
-  res.render("home2");
+  res.render("firstpage");
 });
 
 app.get("/switcher", function (req, res) {
-  res.redirect("h2");
+  res.render("h2");
 });
 
 app.get("/login", isAuthenticated, function (req, res) {

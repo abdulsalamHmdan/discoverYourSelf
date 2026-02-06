@@ -523,7 +523,7 @@
       </ul>
      </div>
      <div class="login-section">
-      <div class="login-card" onclick="openModal('studentModal')">
+      <div class="login-card" onclick="openModal('login')">
        <div class="card-content">
         <div class="card-header">
          <div class="card-icon">
@@ -533,10 +533,10 @@
           تسجيل دخول الطلاب
          </div>
         </div>
-        <p class="card-description">تسجيل الدخول كطالب للوصول إلى مقرراتك والمهام الدراسية</p><a href="#" class="card-link">ادخل الآن</a>
+        <p class="card-description">تسجيل الدخول كطالب للوصول إلى مقرراتك والمهام الدراسية</p><a href="login" class="card-link">ادخل الآن</a>
        </div>
       </div>
-      <div class="login-card" onclick="openModal('adminModal')">
+      <div class="login-card" onclick="openModal('admin')">
        <div class="card-content">
         <div class="card-header">
          <div class="card-icon">
@@ -546,7 +546,7 @@
           تسجيل دخول المشرفين
          </div>
         </div>
-        <p class="card-description">تسجيل الدخول كمشرف لإدارة الطلاب والمقررات</p><a href="#" class="card-link">ادخل الآن</a>
+        <p class="card-description">تسجيل الدخول كمشرف لإدارة الطلاب والمقررات</p><a href="/admin" class="card-link">ادخل الآن</a>
        </div>
       </div>
      </div>
@@ -598,7 +598,7 @@
         let config = { ...defaultConfig };
 
         function openModal(modalId) {
-            document.getElementById(modalId).classList.add('active');
+            location.href = `/${modalId}`;
         }
 
         function closeModal(modalId) {
