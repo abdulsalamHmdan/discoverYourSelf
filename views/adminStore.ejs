@@ -505,7 +505,8 @@
 
         // تحقق وهمي من الكوبون (يمكنك تغييره لاستدعاء API)
         if (code === "KSA2030") {
-          discountMultiplier = 0.8; // خصم 20%
+          discountMultiplier = 0.01; // خصم 20%
+          console.log("كود الكوبون صحيح! تم تطبيق الخصم.");
 
           // تحديث شكل الحقل ليدل على النجاح
           input.disabled = true;

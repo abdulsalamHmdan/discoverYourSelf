@@ -147,7 +147,6 @@ app.get("/adminStore", function (req, res) {
   res.render("403");
 });
 app.post("/adminStore", express.json(), async function (req, res) {
-  console.log(req.body);
   const paymentData = {
     amount: +req.body.finalPrice,
     currency: "SAR",
@@ -183,7 +182,6 @@ app.post("/adminStore", express.json(), async function (req, res) {
     const redirectUrl = response.data.transaction.url;
     const reqBodyUser = req.body.studentIds;
     reqBodyUser.map(async (id) => await new mongoose.Types.ObjectId(id));
-    console.log(reqBodyUser);
     const user = await User.find({ _id: { $in: reqBodyUser } });
     Payment.create({
       tapId: response.data.id,
@@ -375,11 +373,9 @@ app.post("/addUsers", isTeacher, express.json(), async function (req, res) {
 });
 
 app.get("/home", isAuthenticated, async (req, res) => {
-  // console.log(req.session.userId);
   const exams = await Exam.find({
     user: new mongoose.Types.ObjectId(req.session.userId),
   });
-  // console.log(exams);
   res.render("home", { data: { exams } });
 });
 app.get("/home", function (req, res) {
@@ -558,7 +554,6 @@ app.get("/text", async (req, res) => {
     tapId: req.query.tap_id,
   }).populate("users");
   if (paymentRecord && paymentRecord.stat === "pending") {
-    // console.log("Payment completed for users:", paymentRecord);
     let exams = [];
     paymentRecord.users.forEach((u) => {
       paymentRecord.exams.forEach((e) => {
@@ -574,15 +569,15 @@ app.get("/text", async (req, res) => {
   }
 });
 app.post("/paying", isAuthenticated, async (req, res) => {
-  // console.log("Payment successful:", req.body);
   res.sendStatus(200);
 });
 app.get("/signup", async function ({ body: data }, res) {
   res.render("signup");
 });
-app.post("/signup", express.json(), async function ({ body: data }, res) {
+app.post("/signup", express.json(), async function (req, res) {
+  const data = req.body;
   const check = await User.findOne({ user: data.user });
-  const check2 = await User.findOne({ user: data.user });
+  const check2 = await User.findOne({ email: data.email });
   if (check) {
     res.send("قم باختيار اسم مستخدم اخر");
     return;
@@ -599,11 +594,20 @@ app.post("/signup", express.json(), async function ({ body: data }, res) {
     email: data.email,
   };
   await User.create(userData)
-    .then(() => {
-      res.send("done");
+    .then((user) => {
+      req.session.regenerate(function (err) {
+        if (err) next(err);
+        req.session.userId = user._id.toString();
+        req.session.user = user.user;
+        req.session.name = user.name;
+        req.session.role = user.role;
+        req.session.save(function (err) {
+          if (err) return next(err);
+          res.send("done");
+        });
+      });
     })
     .catch((err) => {
-      console.log(err);
       res.send("err");
     });
 });
@@ -613,10 +617,10 @@ app.get("/teacherSignup", async function ({ body: data }, res) {
 app.post(
   "/teacherSignup",
   express.json(),
-  async function ({ body: data }, res) {
+  async function (req, res) {
+    const data = req.body;
     const check = await Teacher.findOne({ user: data.user });
     const check2 = await Teacher.findOne({ email: data.email });
-    console.log(check, check2);
     if (check) {
       res.send("قم باختيار اسم مستخدم اخر");
       return;
@@ -632,13 +636,21 @@ app.post(
       phone: data.phone,
       email: data.email,
     };
-    console.log(userData);
     await Teacher.create(userData)
-      .then(() => {
-        res.send("done");
+      .then((user) => {
+        req.session.regenerate(function (err) {
+        if (err) next(err);
+        req.session.userId = user._id.toString();
+        req.session.user = user.user;
+        req.session.name = user.name;
+        req.session.role = user.role;
+        req.session.save(function (err) {
+          if (err) return next(err);
+          res.send("done");
+        });
+      });
       })
       .catch((err) => {
-        // console.log(err);
         res.send("err");
       });
   },
@@ -695,7 +707,6 @@ app.get("/admin/results/:id", async function (req, res) {
 //   await client.connect();
 //   const db = client.db("soqy");
 //   const collection = db.collection("users");
-//   // console.log(req.body.user)
 //   await collection
 //     .updateOne(
 //       { user: req.body.user },
@@ -718,7 +729,6 @@ app.get("/admin/results/:id", async function (req, res) {
 //   await client.connect();
 //   const db = client.db("soqy");
 //   const collection = db.collection("users");
-//   // console.log(req.body.user)
 //   await collection
 //     .updateOne(
 //       { user: req.body.user },
@@ -744,7 +754,6 @@ app.get("/admin/results/:id", async function (req, res) {
 //   await client.connect();
 //   const db = client.db("soqy");
 //   const collection = db.collection("users");
-//   // console.log(req.body.user)
 //   await collection
 //     .deleteOne({ user: req.body.user })
 //     .then(() => {
@@ -761,16 +770,12 @@ app.post(
   async function (req, res) {
     const collection = req.body.collection;
     if (collection == "users") {
-      // console.log("user login");
       const user = await User.findOne({
         user: req.body.user,
         pass: req.body.pass,
       });
-      // console.log(user);
       if (user) {
-        // console.log("User ID:", user._id.toString());
         const aa = user._id.toString();
-        // console.log(typeof aa);
         req.session.regenerate(function (err) {
           if (err) next(err);
           req.session.userId = aa;
@@ -786,12 +791,10 @@ app.post(
         res.send("notFound");
       }
     } else {
-      // console.log("admin login");
       const user = await Teacher.findOne({
         user: req.body.user,
         pass: req.body.pass,
       });
-      // console.log(user);
       if (user) {
         const aa = user._id.toString();
 
