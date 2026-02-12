@@ -6,7 +6,6 @@ const examSchema = new mongoose.Schema(
     payment: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "payment",
-      required: true,
     },
     user: {
       type: mongoose.Schema.Types.ObjectId,
