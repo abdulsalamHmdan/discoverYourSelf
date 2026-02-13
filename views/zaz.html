@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مقياس بصيرة - اكتشف ذاتك الحقيقية</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-blue: #1e40af;
+            --primary-orange: #f97316;
+            --dark-blue: #0c2340;
+            --light-blue: #3b82f6;
+            --text-dark: #1f2937;
+            --text-light: #6b7280;
+            --bg-light: #f9fafb;
+            --white: #ffffff;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            color: var(--text-dark);
+            background-color: var(--white);
+            overflow-x: hidden;
+        }
+
+        /* ==================== HERO SECTION ==================== */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7e8ba3 100%);
+            padding-top: 80px;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(249, 115, 22, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            max-width: 800px;
+            padding: 40px 20px;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero-logo {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 30px;
+            background: white;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            animation: scaleIn 0.8s ease-out;
+        }
+
+        .hero-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 10px;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: white;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            animation: slideDown 0.8s ease-out 0.2s both;
+        }
+
+        .hero h1 span {
+            color: var(--primary-orange);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 40px;
+            line-height: 1.8;
+            animation: slideUp 0.8s ease-out 0.4s both;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+            animation: slideUp 0.8s ease-out 0.6s both;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--primary-orange);
+            margin-bottom: 10px;
+        }
+
+        .stat-text {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .hero-button {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary-orange) 0%, #ea580c 100%);
+            color: white;
+            padding: 18px 50px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(249, 115, 22, 0.3);
+            animation: slideUp 0.8s ease-out 0.8s both;
+        }
+
+        .hero-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(249, 115, 22, 0.4);
+        }
+
+        /* ==================== ABOUT SECTION ==================== */
+        .about {
+            background: white;
+            padding: 80px 20px;
+            position: relative;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-header h2 {
+            font-size: 2.8rem;
+            font-weight: 900;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+        }
+
+        .section-header h2 span {
+            color: var(--primary-orange);
+        }
+
+        .section-header p {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .feature-card {
+            background: var(--bg-light);
+            border-radius: 15px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .feature-card:hover {
+            border-color: var(--primary-blue);
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+        }
+
+        .feature-card p {
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        .benefits-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            padding: 20px;
+            background: var(--bg-light);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .benefit-item:hover {
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        .benefit-check {
+            color: var(--primary-orange);
+            font-weight: bold;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .benefit-item:hover .benefit-check {
+            color: white;
+        }
+
+        /* ==================== PILLARS SECTION ==================== */
+        .pillars {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7e8ba3 100%);
+            padding: 80px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pillars::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(249, 115, 22, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .pillars .section-header h2,
+        .pillars .section-header p {
+            color: white;
+        }
+
+        .pillars-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .pillar-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .pillar-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+        }
+
+        .pillar-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%);
+        }
+
+        .pillar-content {
+            padding: 30px;
+        }
+
+        .pillar-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+        }
+
+        .pillar-subtitle {
+            font-size: 0.9rem;
+            color: var(--primary-blue);
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .pillar-description {
+            color: var(--text-light);
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        /* ==================== START SECTION ==================== */
+        .start {
+            background: var(--bg-light);
+            padding: 80px 20px;
+            position: relative;
+        }
+
+        .start-content {
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .start-logo {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 30px;
+            background: white;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .start-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; 
+            padding: 10px;
+        }
+
+        .start h2 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--text-dark);
+            margin-bottom: 20px;
+        }
+
+        .start h2 span {
+            color: var(--primary-orange);
+        }
+
+        .start > p {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            line-height: 1.8;
+            margin-bottom: 40px;
+        }
+
+        .start-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .start-feature {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .start-feature:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .start-feature-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .start-feature-text {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        /* ==================== FAQ SECTION ==================== */
+        .faq {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7e8ba3 100%);
+            padding: 80px 20px;
+            position: relative;
+        }
+
+        .faq .section-header h2,
+        .faq .section-header p {
+            color: white;
+        }
+
+        .faq-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .faq-item {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-question {
+            padding: 20px;
+            font-weight: 700;
+            color: var(--text-dark);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            border: none;
+            width: 100%;
+            text-align: right;
+            transition: all 0.3s ease;
+        }
+
+        .faq-question:hover {
+            background: var(--bg-light);
+        }
+
+        .faq-item.active .faq-question {
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        .faq-toggle {
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item.active .faq-toggle {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 300px;
+        }
+
+        .faq-answer-content {
+            padding: 20px;
+            color: var(--text-light);
+            line-height: 1.7;
+            border-top: 1px solid var(--bg-light);
+        }
+
+        /* ==================== FOOTER ==================== */
+        .footer {
+            background: var(--dark-blue);
+            color: white;
+            padding: 60px 20px 30px;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .footer-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 10px;
+        }
+
+        .footer-text {
+            font-size: 1rem;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        .footer-divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.2);
+            margin: 30px 0;
+        }
+
+        .footer-bottom {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        /* ==================== ANIMATIONS ==================== */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .section-header h2 {
+                font-size: 2rem;
+            }
+
+            .hero-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .pillars-grid,
+            .faq-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ==================== HERO SECTION ==================== -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-logo">
+                <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663252886384/fVWPRDzKVOYczegN.png" alt="مقياس بصيرة">
+            </div>
+            <h1>هل أنت مستعد لاكتشاف <span>بصيرتك</span> الحقيقية؟</h1>
+            <p>أجب على أسئلة تفاعلية بصدق واحصل على تقرير شامل يكشف عن نقاط قوتك وميولك المهنية وأنماط ذكاءاتك. معرفة الذات هي أول خطوة نحو النجاح.</p>
+            
+            <div class="hero-stats">
+                <div class="stat-card">
+                    <div class="stat-number">3</div>
+                    <div class="stat-text">محاور متكاملة</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">50+</div>
+                    <div class="stat-text">سؤال علمي دقيق</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-text">سرية البيانات</div>
+                </div>
+            </div>
+
+            <button class="hero-button">ابدأ المقياس الآن</button>
+        </div>
+    </section>
+
+    <!-- ==================== ABOUT SECTION ==================== -->
+    <section class="about">
+        <div class="container">
+            <div class="section-header">
+                <h2>عن <span>مقياس بصيرة</span></h2>
+                <p>أداة علمية موثوقة لاكتشاف ذاتك بعمق</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>الهدف</h3>
+                    <p>تمكين الأفراد من فهم ذواتهم بعمق واتخاذ قرارات واعية</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📘</div>
+                    <h3>المصداقية</h3>
+                    <p>مبني على نماذج نفسية معتمدة عالميًا: MBTI، هولاند RIASEC</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">👥</div>
+                    <h3>الفئة المستهدفة</h3>
+                    <p>الطلاب والباحثون عن وظيفة والمهتمون بالتطوير الذاتي</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">⏱️</div>
+                    <h3>المدة الزمنية</h3>
+                    <p>45-55 دقيقة، وتحصل على النتائج فورًا مع تقرير تفصيلي</p>
+                </div>
+            </div>
+
+            <div style="margin-top: 60px; text-align: center;">
+                <h3 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 30px; color: var(--text-dark);">لماذا مقياس بصيرة؟</h3>
+                <div class="benefits-list">
+                    <div class="benefit-item">
+                        <span class="benefit-check">✓</span>
+                        <span>لأنه لا يصنّفك… بل يفهمك بعمق</span>
+                    </div>
+                    <div class="benefit-item">
+                        <span class="benefit-check">✓</span>
+                        <span>يعرض صورة شمولية من ثلاثة أبعاد وليس بُعدًا واحدًا</span>
+                    </div>
+                    <div class="benefit-item">
+                        <span class="benefit-check">✓</span>
+                        <span>يستند إلى نماذج علمية موثوقة بأسلوب بسيط وواضح</span>
+                    </div>
+                    <div class="benefit-item">
+                        <span class="benefit-check">✓</span>
+                        <span>يقدّم لك وضوحًا ينعكس على قراراتك وثقتك بنفسك</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== PILLARS SECTION ==================== -->
+    <section class="pillars">
+        <div class="container">
+            <div class="section-header">
+                <h2>محاور بصيرة <span>الثلاثة</span></h2>
+                <p>ثلاثة محاور متكاملة تمنحك صورة شاملة عن ذاتك</p>
+            </div>
+
+            <div class="pillars-grid">
+                <div class="pillar-card">
+                    <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663252886384/OKoyCPxvCPFOUIet.png" alt="الميول المهنية" class="pillar-image">
+                    <div class="pillar-content">
+                        <div class="pillar-title">📈 الميول المهنية</div>
+                        <div class="pillar-subtitle">نموذج RIASEC</div>
+                        <p class="pillar-description">يكشف عن المجالات المهنية المناسبة لرغباتك وقيمك وأسلوبك في العمل.</p>
+                    </div>
+                </div>
+
+                <div class="pillar-card">
+                    <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663252886384/fVWPRDzKVOYczegN.png" alt="أنماط الشخصية" class="pillar-image">
+                    <div class="pillar-content">
+                        <div class="pillar-title">💫 أنماط الشخصية</div>
+                        <div class="pillar-subtitle">MBTI المعروف</div>
+                        <p class="pillar-description">يكشف عن طريقة رؤيتك للعالم، طريقة اتخاذك للقرارات، وطريقة تفاعلك مع الآخرين.</p>
+                    </div>
+                </div>
+
+                <div class="pillar-card">
+                    <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663252886384/QLzXRcxGwpNKjYmd.png" alt="أنماط الذكاءات" class="pillar-image">
+                    <div class="pillar-content">
+                        <div class="pillar-title">🧠 أنماط الذكاءات</div>
+                        <div class="pillar-subtitle">نظرية هوارد جاردنر</div>
+                        <p class="pillar-description">يكشف عن أنواع الذكاء المتعددة لديك وكيف يمكنك استخدامها في العمل والدراسة.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== START SECTION ==================== -->
+    <section class="start">
+        <div class="start-content">
+            <div class="start-logo">
+                <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663252886384/fVWPRDzKVOYczegN.png" alt="مقياس بصيرة">
+            </div>
+            <h2>هل أنت مستعد لاكتشاف <span>بصيرتك</span> الحقيقية؟</h2>
+            <p>أجب على أسئلة تفاعلية بصدق واحصل على تقرير شامل يكشف عن نقاط قوتك وميولك المهنية وأنماط ذكاءاتك. معرفة الذات هي أول خطوة نحو النجاح.</p>
+            
+            <div class="start-features">
+                <div class="start-feature">
+                    <div class="start-feature-icon">⏱️</div>
+                    <div class="start-feature-text">45-55 دقيقة للمحاور الثلاثة</div>
+                </div>
+                <div class="start-feature">
+                    <div class="start-feature-icon">📊</div>
+                    <div class="start-feature-text">تقرير علمي متكامل فوري</div>
+                </div>
+                <div class="start-feature">
+                    <div class="start-feature-icon">🎯</div>
+                    <div class="start-feature-text">توصيات مخصصة لمسارك</div>
+                </div>
+            </div>
+
+            <button class="hero-button">ابدأ المقياس الآن</button>
+        </div>
+    </section>
+
+    <!-- ==================== FAQ SECTION ==================== -->
+    <section class="faq">
+        <div class="container">
+            <div class="section-header">
+                <h2>الأسئلة <span>الشائعة</span></h2>
+                <p>إجابات على أكثر الأسئلة التي يطرحها المستخدمون</p>
+            </div>
+
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFAQ(this)">
+                        <span class="faq-toggle">▼</span>
+                        <span>هل المقياس مجاني؟</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">لا، المقياس غير مجاني. يتطلب رسومًا بسيطة تشمل الوصول الكامل للمقياس بالإضافة إلى تقرير تفصيلي ودقيق لنتائجك.</div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFAQ(this)">
+                        <span class="faq-toggle">▼</span>
+                        <span>كم من الوقت يستغرق إكمال المقياس؟</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">عادة بين 45-55 دقيقة لإكمال المحاور الثلاثة. يمكنك أخذ استراحة والعودة لاحقًا إذا احتجت.</div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFAQ(this)">
+                        <span class="faq-toggle">▼</span>
+                        <span>هل يمكنني إعادة المقياس؟</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">نعم، لكننا ننصح بالانتظار 6 أشهر على الأقل بين كل مقياس وآخر، حيث أن الشخصية والميول تتطور مع الخبرات.</div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFAQ(this)">
+                        <span class="faq-toggle">▼</span>
+                        <span>هل النتائج دقيقة 100%؟</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">المقياس أداة علمية موثوقة، لكن دقة النتائج تعتمد على صدقك في الإجابات. النتائج تمثل ميولك الحالية وليست حكمًا نهائيًا على شخصيتك.</div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFAQ(this)">
+                        <span class="faq-toggle">▼</span>
+                        <span>هل تحفظ بياناتي بسرية؟</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">نعم، نحن نلتزم تمامًا بسياسة الخصوصية. بياناتك محمية ولن تُشارك مع أي جهة خارجية دون موافقتك الصريحة.</div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFAQ(this)">
+                        <span class="faq-toggle">▼</span>
+                        <span>من أي عمر يمكنني إجراء المقياس؟</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">المقياس مناسب لمن هم في سن 15 عامًا فأكثر. للأعمار الأصغر، نوصي بمساعدة ولي الأمر في فهم بعض الأسئلة.</div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFAQ(this)">
+                        <span class="faq-toggle">▼</span>
+                        <span>ماذا أفعل بعد الحصول على النتائج؟</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">اقرأ تقريرك بعناية، ناقش النتائج مع مرشد أكاديمي أو مستشار مهني، واستخدمها كدليل لاتخاذ قرارات واعية بشأن دراستك ومسارك المهني.</div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFAQ(this)">
+                        <span class="faq-toggle">▼</span>
+                        <span>هل يمكن للمؤسسات التعليمية استخدام المقياس؟</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">نعم، نوفر نسخة مؤسسية بلوحة تحكم للمرشدين الأكاديميين وتقارير جماعية. تواصل معنا للحصول على عرض خاص.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663252886384/fVWPRDzKVOYczegN.png" alt="مقياس بصيرة">
+            </div>
+            <p class="footer-text">مقياس بصيرة - اكتشف ذاتك الحقيقية</p>
+            <p class="footer-text">أداة علمية موثوقة لفهم شخصيتك وميولك المهنية وأنماط ذكاءاتك</p>
+            <div class="footer-divider"></div>
+            <p class="footer-bottom">© 2024 مقياس بصيرة. جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleFAQ(button) {
+            const item = button.closest('.faq-item');
+            const isActive = item.classList.contains('active');
+            
+            // Close all other items
+            document.querySelectorAll('.faq-item.active').forEach(el => {
+                if (el !== item) {
+                    el.classList.remove('active');
+                }
+            });
+            
+            // Toggle current item
+            item.classList.toggle('active');
+        }
+
+        // Smooth scroll for buttons
+        document.querySelectorAll('.hero-button').forEach(button => {
+            button.addEventListener('click', () => {
+                alert('سيتم توجيهك إلى صفحة المقياس');
+            });
+        });
+
+        // Add scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeInUp 0.6s ease-out forwards';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.feature-card, .pillar-card, .faq-item').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
