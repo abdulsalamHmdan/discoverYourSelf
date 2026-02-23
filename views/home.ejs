@@ -930,22 +930,7 @@ info = {
                                         🎯 بدء المقياس
                                     </a>
                                 </div>
-                            <% } else if (ex && ex.stat === "inprogress") { %>
-                                <div class="gs" style="text-align: center; padding: 0rem;">
-                                    <div style="margin-bottom: 0.5rem;">
-                                        <span style="font-size: 2rem;">⏳</span>
-                                    </div>
-                                    <p style="font-size: 1rem; color: #5a6c7d; margin-bottom: 0.5rem; font-weight: 600;">
-                                        أكمل تقييمك الآن
-                                    </p>
-                                    <p style="font-size: 0.9rem; color: #7a8a9d; margin-bottom: 1rem; line-height: 0.5;">
-                                        لم تنته من الإجابة بعد
-                                    </p>
-                                    <a href="<%= ex._id %>/rate" class="feature-tag1" style="padding: 14px 32px; font-size: 16px; border-radius: 12px; display: inline-block; text-decoration: none; font-weight: 600; transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(102, 126, 234, 0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(102, 126, 234, 0.3)';">
-                                         أكمل التقييم
-                                    </a>
-                                </div>
-                            <% } else if (ex && ex.stat == "done") { %>
+                            <% }  else if (ex && (ex.stat == "done" || ex.stat == "inprogress")) { %>
                                 <div class="gs" style="text-align: center; padding: 0rem;">
                                     <div style="margin-bottom: 0.5rem;">
                                         <span style="font-size: 2rem;">✅</span>
@@ -959,6 +944,11 @@ info = {
                                     <a href="<%= ex._id %>/result" class="feature-tag1" style="padding: 14px 32px; font-size: 16px; border-radius: 12px; display: inline-block; text-decoration: none; font-weight: 600; transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(102, 126, 234, 0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(102, 126, 234, 0.3)';">
                                         📊 استعراض النتائج
                                     </a>
+                                    <% if (ex.stat == "inprogress") { %>
+                                    <a href="<%= ex._id %>/rate" class="feature-tag1" style=" margin-top: 5px; padding: 14px 32px; font-size: 16px; border-radius: 12px; display: inline-block; text-decoration: none; font-weight: 600; transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(102, 126, 234, 0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(102, 126, 234, 0.3)';">
+                                         أكمل التقييم
+                                    </a>
+                                    <% } %>
                                 </div>
                             <% } else { %>
                                 <div class="gs" style="text-align: center; padding: 0rem;">
@@ -1186,7 +1176,6 @@ info = {
             // Add click handler for CTA button
             document.getElementById('cta-button').addEventListener('click', function (e) {
                 e.preventDefault();
-                // Add a nice click animation
                 this.style.transform = 'scale(0.95)';
                 setTimeout(() => {
                     this.style.transform = 'translateY(-3px)';

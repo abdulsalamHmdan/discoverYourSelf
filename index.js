@@ -417,11 +417,6 @@ app.get("/:id/rate", async function (req, res) {
     res.send("notFound");
     return;
   }
-  // if (exam.user.toString() !== req.session.userId) {
-  //   res.send("غير مسموح");
-  //   return;
-  // }
-
   if (exam.stat === "inprogress") {
     res.render(`${exam.type}Rate`, {
       user: exam.user.name,
@@ -431,6 +426,7 @@ app.get("/:id/rate", async function (req, res) {
     res.send("لا يمكن التقييم في الوقت الحالي");
   }
 });
+
 app.get("/:id/result", async function (req, res) {
   const examId = req.params.id;
   let exam = null;
@@ -443,14 +439,14 @@ app.get("/:id/result", async function (req, res) {
     res.send("notFound");
     return;
   }
-  if (exam.stat === "done") {
+  if (exam.stat !== "new") {
     res.render(`${exam.type}Result`, {
       [exam.type]: JSON.stringify(exam.result),
       name: exam.user.name,
       from: "show",
     });
   } else {
-    res.send("تم بدء الاختبار مسبقاً");
+    res.send("يجب عليك الاختبار أولاً");
   }
 });
 app.post("/:id/exam", function (req, res) {
