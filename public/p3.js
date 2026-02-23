@@ -639,7 +639,7 @@ const importing = [
 // إنشاء HTML للسؤال
 
 const originalQuestions = importing
-  .filter((x, i) => i<10)
+  // .filter((x, i) => i<10)
   .map((x) => {
     return {
       type: x.type,

@@ -211,7 +211,7 @@ app.get("/", isTeacher, function (req, res) {
   res.redirect("admin");
 });
 app.get("/", function (req, res) {
-  res.render("firstpage");
+  res.render("realhome");
 });
 
 app.get("/switcher", function (req, res) {
