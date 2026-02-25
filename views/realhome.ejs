@@ -897,182 +897,9 @@
           gap: 0;
         }
 
-<<<<<<< HEAD
         .nav-link {
           padding: 12px 16px;
           border-radius: 0;
-=======
-        .faq-question {
-            padding: 20px;
-            font-weight: 700;
-            color: var(--text-dark);
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgb(240, 233, 233);
-            border: none;
-            width: 100%;
-            text-align: right;
-            transition: all 0.3s ease;
-        }
-
-        .faq-question:hover {
-            background: var(--bg-light);
-        }
-
-        .faq-item.active .faq-question {
-            background: var(--primary-blue);
-            color: white;
-        }
-
-        .faq-toggle {
-            font-size: 1.5rem;
-            transition: transform 0.3s ease;
-        }
-
-        .faq-item.active .faq-toggle {
-            transform: rotate(180deg);
-        }
-
-        .faq-answer {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-        }
-
-        .faq-item.active .faq-answer {
-            max-height: 300px;
-        }
-
-        .faq-answer-content {
-            padding: 20px;
-            color: var(--text-light);
-            line-height: 1.7;
-            border-top: 1px solid var(--bg-light);
-        }
-
-        /* ==================== FOOTER ==================== */
-        .footer {
-            background: var(--dark-blue);
-            color: white;
-            padding: 60px 20px 30px;
-            text-align: center;
-        }
-
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .footer-logo {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 30px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .footer-logo img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            padding: 10px;
-        }
-
-        .footer-text {
-            font-size: 1rem;
-            margin-bottom: 20px;
-            opacity: 0.9;
-        }
-
-        .footer-divider {
-            height: 1px;
-            background: rgba(255, 255, 255, 0.2);
-            margin: 30px 0;
-        }
-
-        .footer-bottom {
-            font-size: 0.9rem;
-            opacity: 0.7;
-        }
-
-        /* ==================== ANIMATIONS ==================== */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes scaleIn {
-            from {
-                opacity: 0;
-                transform: scale(0.8);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        /* ==================== RESPONSIVE ==================== */
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.2rem;
-            }
-
-            .hero p {
-                font-size: 1rem;
-            }
-
-            .section-header h2 {
-                font-size: 2rem;
-            }
-
-            .pillars-grid,
-            .faq-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .nav-links {
-                gap: 0;
-            }
-
-            .nav-link {
-                padding: 12px 16px;
-                border-radius: 0;
-            }
->>>>>>> 0d8a0fc7caf25fde8f23022058d37983dbe72a21
         }
       }
     </style>
@@ -1080,7 +907,6 @@
   <body>
     <!-- ==================== NAVBAR ==================== -->
     <nav class="navbar" id="navbar">
-<<<<<<< HEAD
       <div class="navbar-container">
         <a href="#home" class="navbar-logo">
           <img src="/logo.svg" alt="مقياس بصيرة" />
@@ -1106,31 +932,6 @@
           <a href="#faq" class="nav-link" onclick="setActive(this)"
             >الأسئلة الشائعة</a
           >
-=======
-        <div class="navbar-container">
-            <a href="#home" class="navbar-logo">
-                <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663252886384/fVWPRDzKVOYczegN.png" alt="مقياس بصيرة">
-                <div class="navbar-logo-text">
-                    <span>مقياس بصيرة</span>
-                    <span>اكتشف ذاتك</span>
-                </div>
-            </a>
-
-            <div class="nav-links active" id="navLinks">
-                <a href="#home" class="nav-link active" onclick="setActive(this)">الرئيسية</a>
-                <a href="#about" class="nav-link" onclick="setActive(this)">عن المقياس</a>
-                <a href="#pillars" class="nav-link" onclick="setActive(this)">محاور بصيرة</a>
-                <a href="#start" class="nav-link" onclick="setActive(this)">بدء المقياس</a>
-                <a href="#faq" class="nav-link" onclick="setActive(this)">الأسئلة الشائعة</a>
-            </div>
-
-            <div class="nav-right">
-                <a href="#" class="login-btn">تسجيل الدخول</a>
-                <button class="menu-toggle" id="menuToggle">
-                    <i class="fas fa-bars"></i>
-                </button>
-            </div>
->>>>>>> 0d8a0fc7caf25fde8f23022058d37983dbe72a21
         </div>
 
         <div class="nav-right">
@@ -1144,102 +945,9 @@
 
     <!-- ==================== HERO SECTION ==================== -->
     <section class="hero" id="home">
-<<<<<<< HEAD
       <div class="hero-content">
         <div class="hero-logo">
           <img src="/logo.svg" alt="مقياس بصيرة" />
-=======
-        <div class="hero-content">
-            <div class="hero-logo">
-                <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663252886384/fVWPRDzKVOYczegN.png" alt="مقياس بصيرة">
-            </div>
-            <p class="hero-subtitle" style="font-size: 1.4rem;">هل أنت مستعد لاكتشاف <span style="color: var(--primary-orange);">بصيرتك</span> الحقيقية؟</p>
-            <h1 style="font-size: 4.5rem;">مقياس <span>بصيرة</span></h1>
-            <p style="font-size: 1.5rem; color: rgba(233, 208, 208, 0.95); font-weight: 600; line-height: 1.8; letter-spacing: 0.5px;">رؤية واضحة… تعطي حياة أوضح.</p>
-            <p class="hero-tagline" style="font-size: 1.05rem; color: rgba(240, 223, 223, 0.95); margin-top: 18px; font-weight: 700;">
-                منظومة متكاملة لاكتشاف أنماط الشخصية، الميول، والذكاءات
-            </p>
-            <style>
-                .hero-content {
-                    position: relative;
-                }
-
-                .hero-content::before {
-                    content: '';
-                    position: absolute;
-                    width: 100%;
-                    height: 100%;
-                    top: 0;
-                    left: 0;
-                    z-index: -1;
-                    border-radius: 20px;
-                }
-                
-                .moving-square {
-                    position: absolute;
-                    background: rgba(249, 115, 22, 0.1);
-                    border: 2px solid rgba(249, 115, 22, 0.2);
-                    z-index: -1;
-                }
-                
-                .square-1 {
-                    width: 80px;
-                    height: 80px;
-                    top: 10%;
-                    left: 5%;
-                    animation: moveSquare1 8s infinite ease-in-out;
-                }
-                
-                .square-2 {
-                    width: 60px;
-                    height: 60px;
-                    top: 70%;
-                    right: 10%;
-                    animation: moveSquare2 10s infinite ease-in-out;
-                }
-                
-                .square-3 {
-                    width: 100px;
-                    height: 100px;
-                    top: 40%;
-                    right: 5%;
-                    animation: moveSquare3 12s infinite ease-in-out;
-                    opacity: 0.6;
-                }
-                
-                .square-4 {
-                    width: 50px;
-                    height: 50px;
-                    bottom: 15%;
-                    left: 15%;
-                    animation: moveSquare4 9s infinite ease-in-out;
-                }
-                
-                @keyframes moveSquare1 {
-                    0%, 100% { transform: translate(0, 0) rotate(0deg); }
-                    50% { transform: translate(30px, -30px) rotate(45deg); }
-                }
-                
-                @keyframes moveSquare2 {
-                    0%, 100% { transform: translate(0, 0) rotate(0deg); }
-                    50% { transform: translate(-25px, 25px) rotate(45deg); }
-                }
-                
-                @keyframes moveSquare3 {
-                    0%, 100% { transform: translate(0, 0) rotate(45deg); }
-                    50% { transform: translate(-35px, -35px) rotate(90deg); }
-                }
-                
-                @keyframes moveSquare4 {
-                    0%, 100% { transform: translate(0, 0) rotate(0deg); }
-                    50% { transform: translate(20px, 20px) rotate(-45deg); }
-                }
-            </style>
-            <div class="moving-square square-1"></div>
-            <div class="moving-square square-2"></div>
-            <div class="moving-square square-3"></div>
-            <div class="moving-square square-4"></div>
->>>>>>> 0d8a0fc7caf25fde8f23022058d37983dbe72a21
         </div>
         <p class="hero-subtitle" style="font-size: 1.4rem">
           هل أنت مستعد لاكتشاف
@@ -1741,7 +1449,6 @@
 
     <!-- ==================== START SECTION ==================== -->
     <section class="start" id="start">
-<<<<<<< HEAD
       <div class="container">
         <div
           style="
@@ -1834,130 +1541,9 @@
               <div style="color: var(--text-light)">
                 الحصول على المقاييس من المتجر
               </div>
-=======
-        <div class="container">
-            <div style="background:var(--bg-light); border-radius:14px; padding:30px 20px; margin-bottom:18px; box-shadow:0 6px 20px rgba(49, 22, 111, 0.551); border-left:6px solid var(--primary-orange);">
-            <h2 style="font-size:2rem; font-weight:900; color:var(--text-dark); text-align:center; margin-bottom:18px;">
-                كيف تبدأ رحلتك مع <span style="color:var(--primary-orange);">بصيرة</span>؟
-            </h2><div style="display:flex; gap:18px; justify-content:space-between; flex-wrap:wrap; align-items:flex-start;">
-                <div style="flex:1 1 200px; text-align:center; padding:18px; cursor:pointer; transition:all 0.3s ease;" onclick="this.style.transform='scale(1.05)'; this.style.background='rgba(249, 115, 22, 0.1)';" onmouseleave="this.style.transform='scale(1)'; this.style.background='transparent';">
-                <div style="width:72px; height:72px; border-radius:50%; background:rgba(255,255,255,0.9); margin:0 auto 12px; display:flex; align-items:center; justify-content:center; font-weight:900; color:var(--primary-orange); font-size:1.25rem; transition:all 0.3s ease;" onclick="event.stopPropagation(); this.style.boxShadow='0 8px 24px rgba(249, 115, 22, 0.4)';" onmouseleave="this.style.boxShadow='none';">1</div>
-                <div style="font-weight:800; color:var(--primary-orange); margin-bottom:8px;">التسجيل</div>
-                <div style="color:var(--text-light);">أنشئ حسابك في دقائق</div>
-                </div>
-
-                <div style="flex:1 1 200px; text-align:center; padding:18px; cursor:pointer; transition:all 0.3s ease;" onclick="this.style.transform='scale(1.05)'; this.style.background='rgba(249, 115, 22, 0.1)';" onmouseleave="this.style.transform='scale(1)'; this.style.background='transparent';">
-                <div style="width:72px; height:72px; border-radius:50%; background:rgba(255,255,255,0.9); margin:0 auto 12px; display:flex; align-items:center; justify-content:center; font-weight:900; color:var(--primary-orange); font-size:1.25rem; transition:all 0.3s ease;" onclick="event.stopPropagation(); this.style.boxShadow='0 8px 24px rgba(249, 115, 22, 0.4)';" onmouseleave="this.style.boxShadow='none';">2</div>
-                <div style="font-weight:800; color:var(--primary-orange); margin-bottom:8px;">اكتساب المقاييس</div>
-                <div style="color:var(--text-light);">الحصول على المقاييس من المتجر</div>
-                </div>
-
-                <div style="flex:1 1 200px; text-align:center; padding:18px; cursor:pointer; transition:all 0.3s ease;" onclick="this.style.transform='scale(1.05)'; this.style.background='rgba(249, 115, 22, 0.1)';" onmouseleave="this.style.transform='scale(1)'; this.style.background='transparent';">
-                <div style="width:72px; height:72px; border-radius:50%; background:rgba(255,255,255,0.9); margin:0 auto 12px; display:flex; align-items:center; justify-content:center; font-weight:900; color:var(--primary-orange); font-size:1.25rem; transition:all 0.3s ease;" onclick="event.stopPropagation(); this.style.boxShadow='0 8px 24px rgba(249, 115, 22, 0.4)';" onmouseleave="this.style.boxShadow='none';">3</div>
-                <div style="font-weight:800; color:var(--primary-orange); margin-bottom:8px;">الإجابة</div>
-                <div style="color:var(--text-light);"> أجب بصدق على المقاييس الثلاث</div>
-                </div>
-
-                <div style="flex:1 1 200px; text-align:center; padding:18px; cursor:pointer; transition:all 0.3s ease;" onclick="this.style.transform='scale(1.05)'; this.style.background='rgba(249, 115, 22, 0.1)';" onmouseleave="this.style.transform='scale(1)'; this.style.background='transparent';">
-                <div style="width:72px; height:72px; border-radius:50%; background:rgba(255,255,255,0.9); margin:0 auto 12px; display:flex; align-items:center; justify-content:center; font-weight:900; color:var(--primary-orange); font-size:1.25rem; transition:all 0.3s ease;" onclick="event.stopPropagation(); this.style.boxShadow='0 8px 24px rgba(249, 115, 22, 0.4)';" onmouseleave="this.style.boxShadow='none';">4</div>
-                <div style="font-weight:800; color:var(--primary-orange); margin-bottom:8px;">التحليل و التطبيق</div>
-                <div style="color:var(--text-light);">بصيرتك تقودك لقرارات ذكية ونتائج فورية بتقرير شامل</div>
-                </div>
             </div>
             </div>
 
-            <div style="display:flex; gap:20px; align-items:flex-start; flex-wrap:wrap; direction:rtl;">
-            <aside style="width:360px; min-width:260px; background:var(--bg-light); border-radius:10px; padding:18px; border-left:4px solid var(--primary-orange); box-shadow: 0 6px 18px rgba(0,0,0,0.04);">
-                <h3 style="margin:0 0 12px; color:var(--primary-orange); font-weight:800;">نصائح للحصول على أفضل نتائج:</h3>
-                <ul style="list-style:disc; padding-inline-start:18px; color:var(--text-light); line-height:1.9; margin:0;">
-                <li>أجب بتلقائية دون تفكير مطوّل — الإجابة الأولى غالبًا هي الأدق.</li>
-                <li>اختر الإجابات التي تعكس ما أنت عليه حقًا، ليس ما تريد أن تكون.</li>
-                <li>خصص وقتًا هادئًا دون مقاطعات لإتمام المقياس بتركيز.</li>
-                <li>لا توجد إجابات صحيحة أو خاطئة — كل النتائج صحيحة بالنسبة لوضعك.</li>
-                <li>احتفظ بنسخة من تقريرك للرجوع إليه مستقبلًا.</li>
-                </ul>
-            </aside>
-            <style>
-            .vertical-cards { display:flex; flex-direction:column; gap:16px; width:100%; }
-            .v-card {
-                display:flex;
-                gap:14px;
-                align-items:center;
-                padding:18px;
-                border-radius:12px;
-                background:white;
-                box-shadow:0 8px 18px rgba(0,0,0,0.04);
-                border-right:6px solid var(--primary-orange);
-                transition:transform .22s ease, box-shadow .22s ease;
-                cursor:pointer;
-            }
-            .v-card:hover { transform: translateX(-6px); box-shadow:0 18px 40px rgba(0,0,0,0.08); }
-            .v-card:active { transform: translateX(-3px) scale(0.98); box-shadow:0 10px 25px rgba(0,0,0,0.06); }
-            .v-card .icon {
-                width:64px;
-                height:64px;
-                border-radius:12px;
-                display:flex;
-                align-items:center;
-                justify-content:center;
-                background:linear-gradient(135deg,#fff,#f8fafc);
-                box-shadow:inset 0 -2px 6px rgba(0,0,0,0.03);
-                font-size:22px;
-                transition:all 0.3s ease;
-            }
-            .v-card:hover .icon { transform: scale(1.1); box-shadow:0 6px 16px rgba(249, 115, 22, 0.2), inset 0 -2px 6px rgba(0,0,0,0.03); }
-            .v-card:active .icon { transform: scale(0.95); }
-            .v-card .content { text-align:right; }
-            .v-card .title { font-weight:800; color:var(--text-dark); font-size:1rem; transition:color 0.3s ease; }
-            .v-card:active .title { color:var(--primary-orange); }
-            .v-card .subtitle { margin-top:6px; color:var(--text-light); font-size:0.95rem; line-height:1.4; }
-            /* اختلاف ألوان الشريط لكل بطاقة */
-            .v-card.second { border-right-color: var(--dark-blue); }
-            .v-card.third { border-right-color: var(--primary-blue); }
-            /* تجاوب */
-            @media (max-width:520px) {
-                .v-card { padding:14px; gap:12px; }
-                .v-card .icon { width:56px; height:56px; font-size:20px; }
-            }
-            </style>
-
-            <div style="flex:1 1 540px; min-height:0; align-self:stretch; background: rgba(243,245,247,0.95); border-radius:10px; border:1px solid #e1e6ea; padding:18px; display:flex; align-items:center; justify-content:center;">
-            <div class="vertical-cards">
-                <div class="v-card" onclick="this.style.boxShadow='0 18px 40px rgba(249, 115, 22, 0.3)';" onmouseleave="this.style.boxShadow='0 8px 18px rgba(0,0,0,0.04)';">
-                <div class="icon" aria-hidden="true">
-                    <i class="fas fa-bullseye" style="color:var(--primary-orange);"></i>
-                </div>
-                <div class="content">
-                    <div class="title">توصيات مخصصة لمسارك</div>
-                    <div class="subtitle">اقتراحات عملية ومجالات دراسية ومهنية متوافقة مع ميولك وذكاءاتك.</div>
-                </div>
-                </div>
-
-                <div class="v-card second" onclick="this.style.boxShadow='0 18px 40px rgba(30, 64, 175, 0.3)';" onmouseleave="this.style.boxShadow='0 8px 18px rgba(0,0,0,0.04)';">
-                <div class="icon" aria-hidden="true">
-                    <i class="fas fa-chart-bar" style="color:#374151;"></i>
-                </div>
-                <div class="content">
-                    <div class="title">تقرير علمي متكامل فوري</div>
-                    <div class="subtitle">تقرير مرئي ومقروء يشرح نتائجك مع خرائط ومقارنات مبسطة.</div>
-                </div>
-                </div>
-
-                <div class="v-card third" onclick="this.style.boxShadow='0 18px 40px rgba(59, 130, 246, 0.3)';" onmouseleave="this.style.boxShadow='0 8px 18px rgba(0,0,0,0.04)';">
-                <div class="icon" aria-hidden="true">
-                    <i class="fas fa-stopwatch" style="color:var(--primary-blue);"></i>
-                </div>
-                <div class="content">
-                    <div class="title">45-55 دقيقة للمحاور الثلاثة</div>
-                    <div class="subtitle">مدة تقريبية موزّعة بشكل متوازن لتمنحك نتائج دقيقة دون إجهاد.</div>
-                </div>
-                </div>
-            </div>
->>>>>>> 0d8a0fc7caf25fde8f23022058d37983dbe72a21
-            </div>
-            </div>
-
-<<<<<<< HEAD
             <div style="flex: 1 1 200px; text-align: center; padding: 18px">
               <div
                 style="
@@ -1988,16 +1574,6 @@
               <div style="color: var(--text-light)">
                 أجب بصدق على المقاييس الثلاث
               </div>
-=======
-            <div style="text-align: center; margin-top: 50px;">
-            <a href="/login" class="hero-button" style="display: inline-block; background: linear-gradient(135deg, var(--primary-orange) 0%, #ea580c 100%); color: white; padding: 20px 60px; border-radius: 50px; font-size: 1.2rem; font-weight: 800; text-decoration: none; cursor: pointer; border: none; transition: all 0.3s ease; box-shadow: 0 12px 35px rgba(249, 115, 22, 0.4); letter-spacing: 0.5px; position: relative; overflow: hidden;" 
-                onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 18px 50px rgba(249, 115, 22, 0.5)';" 
-                onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 12px 35px rgba(249, 115, 22, 0.4)';"
-                onclick="this.style.transform='scale(0.98)'; setTimeout(() => { this.style.transform='translateY(-3px)'; }, 100);">
-                <i class="fas fa-arrow-left" style="margin-left: 10px;"></i>
-                سجل الدخول الآن
-            </a>
->>>>>>> 0d8a0fc7caf25fde8f23022058d37983dbe72a21
             </div>
 
             <div style="flex: 1 1 200px; text-align: center; padding: 18px">
@@ -2346,20 +1922,9 @@
 
     <!-- ==================== FOOTER ==================== -->
     <footer class="footer">
-<<<<<<< HEAD
       <div class="footer-content">
         <div class="footer-logo">
           <img src="/logo.svg" alt="مقياس بصيرة" />
-=======
-        <div class="footer-content">
-            <div class="footer-logo">
-                <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663252886384/fVWPRDzKVOYczegN.png" alt="مقياس بصيرة">
-            </div>
-            <p class="footer-text">مقياس بصيرة - مساحة صافية للوعي الذاتي</p>
-            <p class="footer-text">أداة علمية موثوقة لفهم شخصيتك وميولك المهنية وأنماط ذكاءاتك</p>
-            <div class="footer-divider"></div>
-            <p class="footer-bottom">© 2026 مقياس بصيرة — جميع الحقوق محفوظة</p>
->>>>>>> 0d8a0fc7caf25fde8f23022058d37983dbe72a21
         </div>
         <p class="footer-text">مقياس بصيرة - مساحة صافية للوعي الذاتي</p>
         <p class="footer-text">
